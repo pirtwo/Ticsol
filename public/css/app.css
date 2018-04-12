@@ -64019,3 +64019,73 @@ input[dir=rtl] {
   content: "\E6D7";
 }
 
+.container-fluid {
+  background-image: url("/themes/nature_01.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0px 100px 0px 100px;
+}
+
+#main-nav {
+  background-color: #fff0 !important;
+}
+
+#main-nav .navview-pane {
+  background-color: #e5e5e5b3 !important;
+}
+
+#main-nav .content {
+  background-color: #fff9 !important;
+  min-height: 500px !important;
+  margin-left: 10px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.iconbar-top {
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+
+.iconbar-bot {
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+.iconbar-top,
+.iconbar-bot {
+  background-color: transparent !important;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  color: white;
+}
+
+.iconbar-top li a,
+.iconbar-bot li a {
+  border: none !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: auto !important;
+  padding: 0.2rem 0.7rem !important;
+  position: relative !important;
+}
+
+.iconbar-top li a .tag,
+.iconbar-bot li a .tag {
+  font-size: 0.6875rem !important;
+  top: -13px !important;
+  right: 10px !important;
+}
+
+.iconbar-top li a .caption,
+.iconbar-bot li a .caption {
+  position: relative;
+  font-size: 10px;
+  line-height: 10px;
+  width: 50px;
+  text-align: center;
+}
+

@@ -18,17 +18,16 @@ Vue.use(VueRouter);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import App from './components/App.vue';
-import Example from './components/Example.vue';
-
+import App from "./components/App.vue";
+import Dashboard from "./components/pages/dashboard/Dashboard.vue";
 
 const router = new VueRouter({
     mode: 'history',
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: Example
+            name: 'dashboard',
+            component: Dashboard
         },
     ]
 })
