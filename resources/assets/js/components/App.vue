@@ -1,5 +1,7 @@
 <template>
-  <h1>This is a example vue component.</h1>
+  <div class="container-fluid">
+      <router-view></router-view>
+  </div>
 </template>
 
 <script>
