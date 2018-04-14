@@ -64028,15 +64028,57 @@ input[dir=rtl] {
   padding: 0px 100px 0px 100px;
 }
 
-#main-nav {
+header,
+footer {
+  padding: 0px !important;
+}
+
+.main-menu {
+  background-color: #e5e5e5b3;
+  margin: 20px 150px 50px 150px;
+  padding: 100px 150px 100px 150px;
+  text-align: center;
+}
+
+.main-menu .app-logo {
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
+  max-width: 150px;
+}
+
+.main-menu .shortcut {
+  background-color: #ebebeb80 !important;
+  border-color: #fff0 !important;
+  color: #684986 !important;
+  margin: 12px;
+}
+
+.main-menu .shortcut:hover {
+  border-color: #0000004d !important;
+}
+
+.main-menu .shortcut [class*="mif-"] {
+  line-height: 60px;
+}
+
+.main-menu .caption {
+  line-height: 5px;
+}
+
+.dashboard {
+  padding: 30px 0px 50px 0px;
+}
+
+#dash-nav {
   background-color: #fff0 !important;
 }
 
-#main-nav .navview-pane {
+#dash-nav .navview-pane {
   background-color: #e5e5e5b3 !important;
 }
 
-#main-nav .content {
+#dash-nav .content {
   background-color: #fff9 !important;
   min-height: 500px !important;
   margin-left: 10px;
@@ -64045,22 +64087,13 @@ input[dir=rtl] {
   position: relative;
 }
 
-.iconbar-top {
-  margin-top: 10px;
-  margin-bottom: 50px;
-}
-
-.iconbar-bot {
-  margin-top: 50px;
-  margin-bottom: 10px;
-}
-
 .iconbar-top,
 .iconbar-bot {
   background-color: transparent !important;
   -webkit-box-shadow: none;
           box-shadow: none;
   color: white;
+  margin: 10px 0px 10px 0px;
 }
 
 .iconbar-top li a,
@@ -64084,8 +64117,13 @@ input[dir=rtl] {
 .iconbar-bot li a .caption {
   position: relative;
   font-size: 10px;
-  line-height: 10px;
+  line-height: 4px;
   width: 50px;
   text-align: center;
+}
+
+.iconbar-top li a [class*="mif-"],
+.iconbar-bot li a [class*="mif-"] {
+  line-height: 2;
 }
 
