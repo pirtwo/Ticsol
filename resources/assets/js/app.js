@@ -29,6 +29,7 @@ import TimeSheets from "./components/pages/dashboard/TimeSheets.vue";
 
 const router = new VueRouter({
     mode: 'history',
+    linkActiveClass: 'active',
     routes: [
         {
             path: '/',
@@ -42,22 +43,27 @@ const router = new VueRouter({
             children:[
                 {
                     path: 'inbox',
+                    name: 'inbox',
                     component: Inbox
                 },
                 {
                     path: 'hr',
+                    name: 'hr',
                     component: HR
                 },
                 {
                     path: 'requests',
+                    name: 'requests',
                     component: Requests
                 },
                 {
                     path: 'schedule',
+                    name: 'schedule',
                     component: Schedule
                 },
                 {
                     path: 'timesheets',
+                    name: 'timesheets',
                     component: TimeSheets
                 }
             ]

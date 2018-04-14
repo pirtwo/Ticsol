@@ -11864,6 +11864,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     mode: 'history',
+    linkActiveClass: 'active',
     routes: [{
         path: '/',
         name: 'home',
@@ -11874,18 +11875,23 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
         component: __WEBPACK_IMPORTED_MODULE_4__components_pages_dashboard_Dashboard_vue___default.a,
         children: [{
             path: 'inbox',
+            name: 'inbox',
             component: __WEBPACK_IMPORTED_MODULE_5__components_pages_dashboard_Inbox_vue___default.a
         }, {
             path: 'hr',
+            name: 'hr',
             component: __WEBPACK_IMPORTED_MODULE_6__components_pages_dashboard_HR_vue___default.a
         }, {
             path: 'requests',
+            name: 'requests',
             component: __WEBPACK_IMPORTED_MODULE_7__components_pages_dashboard_Requests_vue___default.a
         }, {
             path: 'schedule',
+            name: 'schedule',
             component: __WEBPACK_IMPORTED_MODULE_8__components_pages_dashboard_Schedule_vue___default.a
         }, {
             path: 'timesheets',
+            name: 'timesheets',
             component: __WEBPACK_IMPORTED_MODULE_9__components_pages_dashboard_TimeSheets_vue___default.a
         }]
     }]
@@ -46555,7 +46561,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -46595,26 +46601,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "ul",
-      {
-        staticClass:
-          "t-menu open horizontal compact right float-right iconbar-top"
-      },
-      [
-        _c("li", [
+  return _c(
+    "ul",
+    {
+      staticClass:
+        "t-menu open horizontal compact right float-right iconbar-top"
+    },
+    [
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: "", role: "button" }
             },
             [
               _c("span", { staticClass: "mif-cog mif-2x" }),
@@ -46624,14 +46625,18 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("Settings")])
             ]
           )
-        ]),
-        _vm._v(" "),
-        _c("li", [
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: "", role: "button" }
             },
             [
               _c("span", { staticClass: "mif-user mif-2x" }),
@@ -46641,11 +46646,13 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("User")])
             ]
           )
-        ])
-      ]
-    )
-  }
-]
+        ],
+        1
+      )
+    ]
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -46679,7 +46686,10 @@ var render = function() {
             _vm._v(" "),
             _c(
               "router-link",
-              { staticClass: "shortcut", attrs: { to: "dash" } },
+              {
+                staticClass: "shortcut",
+                attrs: { to: { name: "dash" }, role: "button" }
+              },
               [
                 _c("span", { staticClass: "tag" }),
                 _vm._v(" "),
@@ -46691,7 +46701,10 @@ var render = function() {
             _vm._v(" "),
             _c(
               "router-link",
-              { staticClass: "shortcut", attrs: { to: "inbox" } },
+              {
+                staticClass: "shortcut",
+                attrs: { to: { name: "inbox" }, role: "button" }
+              },
               [
                 _c("span", { staticClass: "tag" }, [_vm._v("14")]),
                 _vm._v(" "),
@@ -46703,7 +46716,10 @@ var render = function() {
             _vm._v(" "),
             _c(
               "router-link",
-              { staticClass: "shortcut", attrs: { to: "hr" } },
+              {
+                staticClass: "shortcut",
+                attrs: { to: { name: "hr" }, role: "button" }
+              },
               [
                 _c("span", { staticClass: "tag" }),
                 _vm._v(" "),
@@ -46715,7 +46731,10 @@ var render = function() {
             _vm._v(" "),
             _c(
               "router-link",
-              { staticClass: "shortcut", attrs: { to: "requests" } },
+              {
+                staticClass: "shortcut",
+                attrs: { to: { name: "requests" }, role: "button" }
+              },
               [
                 _c("span", { staticClass: "tag" }, [_vm._v("3")]),
                 _vm._v(" "),
@@ -46727,7 +46746,10 @@ var render = function() {
             _vm._v(" "),
             _c(
               "router-link",
-              { staticClass: "shortcut", attrs: { to: "timesheets" } },
+              {
+                staticClass: "shortcut",
+                attrs: { to: { name: "timesheets" }, role: "button" }
+              },
               [
                 _c("span", { staticClass: "tag" }),
                 _vm._v(" "),
@@ -46739,7 +46761,10 @@ var render = function() {
             _vm._v(" "),
             _c(
               "router-link",
-              { staticClass: "shortcut", attrs: { to: "schedule" } },
+              {
+                staticClass: "shortcut",
+                attrs: { to: { name: "schedule" }, role: "button" }
+              },
               [
                 _c("span", { staticClass: "tag" }, [_vm._v("2")]),
                 _vm._v(" "),
@@ -46749,13 +46774,17 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _c("router-link", { staticClass: "shortcut", attrs: { to: "" } }, [
-              _c("span", { staticClass: "tag" }),
-              _vm._v(" "),
-              _c("span", { staticClass: "caption" }, [_vm._v("SETTINGS")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "mif-cog mif-5x" })
-            ])
+            _c(
+              "router-link",
+              { staticClass: "shortcut", attrs: { to: "", role: "button" } },
+              [
+                _c("span", { staticClass: "tag" }),
+                _vm._v(" "),
+                _c("span", { staticClass: "caption" }, [_vm._v("SETTINGS")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "mif-cog mif-5x" })
+              ]
+            )
           ],
           1
         )
@@ -47306,7 +47335,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47317,6 +47346,13 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47374,26 +47410,41 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "ul",
-      {
-        staticClass:
-          "t-menu open horizontal compact right float-left iconbar-bot"
-      },
-      [
-        _c("li", [
+  return _c(
+    "ul",
+    {
+      staticClass: "t-menu open horizontal compact right float-left iconbar-bot"
+    },
+    [
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: { name: "home" }, role: "button" }
+            },
+            [
+              _c("span", { staticClass: "mif-home mif-2x" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "tag" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "caption" }, [_vm._v("Home")])
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "shortcut button",
+              attrs: { to: { name: "inbox" }, role: "button" }
             },
             [
               _c("span", { staticClass: "mif-envelop mif-2x" }),
@@ -47403,14 +47454,18 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("Inbox")])
             ]
           )
-        ]),
-        _vm._v(" "),
-        _c("li", [
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: { name: "hr" }, role: "button" }
             },
             [
               _c("span", { staticClass: "mif-users mif-2x" }),
@@ -47420,14 +47475,18 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("H.R")])
             ]
           )
-        ]),
-        _vm._v(" "),
-        _c("li", [
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: { name: "requests" }, role: "button" }
             },
             [
               _c("span", { staticClass: "mif-user-plus mif-2x" }),
@@ -47437,14 +47496,18 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("Requests")])
             ]
           )
-        ]),
-        _vm._v(" "),
-        _c("li", [
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: { name: "timesheets" }, role: "button" }
             },
             [
               _c("span", { staticClass: "mif-alarm mif-2x" }),
@@ -47454,14 +47517,18 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("TimeSheets")])
             ]
           )
-        ]),
-        _vm._v(" "),
-        _c("li", [
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: { name: "schedule" }, role: "button" }
             },
             [
               _c("span", { staticClass: "mif-calendar mif-2x" }),
@@ -47471,14 +47538,18 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("Schedule")])
             ]
           )
-        ]),
-        _vm._v(" "),
-        _c("li", [
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
           _c(
-            "a",
+            "router-link",
             {
-              staticClass: "button shortcut",
-              attrs: { role: "button", href: "#" }
+              staticClass: "shortcut button",
+              attrs: { to: "", role: "button" }
             },
             [
               _c("span", { staticClass: "mif-cog mif-2x" }),
@@ -47488,11 +47559,13 @@ var staticRenderFns = [
               _c("span", { staticClass: "caption" }, [_vm._v("Setting")])
             ]
           )
-        ])
-      ]
-    )
-  }
-]
+        ],
+        1
+      )
+    ]
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
