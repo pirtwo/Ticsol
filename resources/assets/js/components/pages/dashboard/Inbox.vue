@@ -1,5 +1,5 @@
 <template>
-  
+  <h1>Inbox Page</h1>
 </template>
 
 <script>
