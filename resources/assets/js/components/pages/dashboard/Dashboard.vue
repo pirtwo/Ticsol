@@ -1,10 +1,10 @@
 <template>
     <div class="row">
-        <header class="col-xs-12 col-sm-12 col-md-12">            
+        <header class="col-xs-12">            
             <iconbar-top></iconbar-top>            
         </header>
-        <main class="col-xs-12 col-sm-12 col-md-12">
-            <div id="main-nav" data-role="navview">
+        <main class="col-xs-12 dashboard">
+            <div id="dash-nav" data-role="navview">
                 <div class="navview-pane">
                     <main-nav></main-nav>
                 </div>
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </main>
-        <footer class="col-xs-12 col-sm-12 col-md-12">           
+        <footer class="col-xs-12">           
             <iconbar-bot></iconbar-bot>            
         </footer>
     </div>
