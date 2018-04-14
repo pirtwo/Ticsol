@@ -1,28 +1,25 @@
 <template>
     <ul class="t-menu open horizontal compact right float-right iconbar-top">
         <li>
-            <a class="button shortcut" role="button" href="#">
-                <span class="mif-cog mif-2x"></span> 
+            <router-link to="" class="shortcut button" role="button">
+                <span class="mif-cog mif-2x"></span>
                 <span class="tag"></span>
-                <span class="caption">Settings</span>               
-            </a>
+                <span class="caption">Settings</span>
+            </router-link>           
         </li>
         <li>
-            <a class="button shortcut" role="button" href="#">
-                <span class="mif-user mif-2x"></span> 
+            <router-link to="" class="shortcut button" role="button">
+                <span class="mif-user mif-2x"></span>
                 <span class="tag"></span>
-                <span class="caption">User</span>               
-            </a>
-        </li>        
-    </ul>        
+                <span class="caption">User</span>
+            </router-link>           
+        </li>
+    </ul>
 </template>
 <script>
-export default {
-  
-};
+    export default {
+
+    };
 </script>
 <style scoped>
-
 </style>
-
-

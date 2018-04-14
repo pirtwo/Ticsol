@@ -11,7 +11,7 @@
 
                 <div class="navview-content">
                     <div class="content">
-
+                        <router-view></router-view>
                     </div>
                 </div>
             </div>
