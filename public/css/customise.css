@@ -73,6 +73,11 @@
     color: white;
     margin: 10px 0px 10px 0px;
   }
+
+  .iconbar-top li .active,
+  .iconbar-bot li .active {
+    background-color: #fff3 !important;
+  }
   
   .iconbar-top li a,
   .iconbar-bot li a {
@@ -83,7 +88,16 @@
     padding: 0.2rem 0.7rem !important;
     position: relative !important;
   }
-  
+
+  .iconbar-top li a:active, 
+  .iconbar-top li a:focus,
+  .iconbar-bot li a:active, 
+  .iconbar-bot li a:focus {
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+  }
+
   .iconbar-top li a .tag,
   .iconbar-bot li a .tag {
     font-size: 0.6875rem !important;

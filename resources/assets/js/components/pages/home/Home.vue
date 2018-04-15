@@ -46,7 +46,7 @@
             </div>
         </main>
         <footer class="col-xs-12">
-            <iconbar-bot></iconbar-bot>
+           
         </footer>
     </div>
 </template>

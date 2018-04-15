@@ -1,12 +1,12 @@
 <template>
-    <ul class="t-menu open horizontal compact right float-left iconbar-bot">
+    <ul class="t-menu open horizontal compact right float-left iconbar-bot">        
         <li>
             <router-link :to="{ name: 'home' }" class="shortcut button" role="button">
                 <span class="mif-home mif-2x"></span>
                 <span class="tag"></span>
                 <span class="caption">Home</span>
             </router-link>
-        </li>
+        </li>        
         <li>
             <router-link :to="{ name: 'inbox' }" class="shortcut button" role="button">
                 <span class="mif-envelop mif-2x"></span>
@@ -43,7 +43,7 @@
             </router-link>
         </li>
         <li>
-            <router-link to="" class="shortcut button" role="button">
+            <router-link to="settings" class="shortcut button" role="button">
                 <span class="mif-cog mif-2x"></span>
                 <span class="tag">15</span>
                 <span class="caption">Setting</span>

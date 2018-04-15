@@ -11864,7 +11864,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     mode: 'history',
-    linkActiveClass: 'active',
+    linkExactActiveClass: 'active',
     routes: [{
         path: '/',
         name: 'home',
@@ -46615,7 +46615,7 @@ var render = function() {
             "router-link",
             {
               staticClass: "shortcut button",
-              attrs: { to: "", role: "button" }
+              attrs: { to: "settings", role: "button" }
             },
             [
               _c("span", { staticClass: "mif-cog mif-2x" }),
@@ -46636,7 +46636,7 @@ var render = function() {
             "router-link",
             {
               staticClass: "shortcut button",
-              attrs: { to: "", role: "button" }
+              attrs: { to: "user", role: "button" }
             },
             [
               _c("span", { staticClass: "mif-user mif-2x" }),
@@ -46791,7 +46791,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("footer", { staticClass: "col-xs-12" }, [_c("iconbar-bot")], 1)
+    _c("footer", { staticClass: "col-xs-12" })
   ])
 }
 var staticRenderFns = []
@@ -47549,7 +47549,7 @@ var render = function() {
             "router-link",
             {
               staticClass: "shortcut button",
-              attrs: { to: "", role: "button" }
+              attrs: { to: "settings", role: "button" }
             },
             [
               _c("span", { staticClass: "mif-cog mif-2x" }),

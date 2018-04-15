@@ -28,8 +28,8 @@ import Schedule from "./components/pages/dashboard/Schedule.vue";
 import TimeSheets from "./components/pages/dashboard/TimeSheets.vue";
 
 const router = new VueRouter({
-    mode: 'history',
-    linkActiveClass: 'active',
+    mode: 'history',    
+    linkExactActiveClass: 'active',
     routes: [
         {
             path: '/',
