@@ -64034,7 +64034,7 @@ footer {
 }
 
 .main-menu {
-  background-color: #e5e5e5b3;
+  background-color: rgba(255, 255, 255, 0.5);
   margin: 20px 150px 50px 150px;
   padding: 100px 150px 100px 150px;
   text-align: center;
@@ -64048,14 +64048,14 @@ footer {
 }
 
 .main-menu .shortcut {
-  background-color: #ebebeb80 !important;
-  border-color: #fff0 !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
   color: #684986 !important;
   margin: 12px;
 }
 
 .main-menu .shortcut:hover {
-  border-color: #0000004d !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 .main-menu .shortcut [class*="mif-"] {
@@ -64071,15 +64071,15 @@ footer {
 }
 
 #dash-nav {
-  background-color: #fff0 !important;
+  background-color: rgba(255, 255, 255, 0) !important;
 }
 
 #dash-nav .navview-pane {
-  background-color: #e5e5e5b3 !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
 }
 
 #dash-nav .content {
-  background-color: #fff9 !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
   min-height: 500px !important;
   margin-left: 10px;
   width: 100%;
@@ -64098,7 +64098,7 @@ footer {
 
 .iconbar-top li .active,
 .iconbar-bot li .active {
-  background-color: #fff3 !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .iconbar-top li a,
@@ -64115,9 +64115,9 @@ footer {
 .iconbar-top li a:focus,
 .iconbar-bot li a:active,
 .iconbar-bot li a:focus {
-  outline: 0;
-  border: none;
-  -moz-outline-style: none;
+  outline: 0px !important;
+  border: none !important;
+  -moz-outline-style: none !important;
 }
 
 .iconbar-top li a .tag,
