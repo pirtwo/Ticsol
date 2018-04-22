@@ -13,7 +13,7 @@
   }
 
   .main-menu{
-    background-color: rgba(255,255,255,0.5);   
+    background-color: rgba(255,255,255,0.8);   
     margin: 20px 150px 50px 150px;
     padding: 100px 150px 100px 150px;
     text-align: center;
@@ -27,14 +27,18 @@
   }
 
   .main-menu .shortcut{    
-    background-color: rgba(255,255,255,0.7) !important;
+    background-color: rgba(255,255,255,0.0) !important;
     border-color: rgba(255,255,255,0.1) !important;
     color: #684986 !important;
     margin: 12px;
+    
   }
 
   .main-menu .shortcut:hover{    
-    border-color: rgba(0,0,0,0.2) !important;    
+    background-color: rgba(255,255,255,0.5) !important;
+    -webkit-box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);
+    -moz-box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);
+    box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);    
   }
 
   .main-menu .shortcut [class*="mif-"]{    
@@ -87,15 +91,6 @@
     line-height: auto !important;
     padding: 0.2rem 0.7rem !important;
     position: relative !important;
-  }
-
-  .iconbar-top li a:active, 
-  .iconbar-top li a:focus,
-  .iconbar-bot li a:active, 
-  .iconbar-bot li a:focus {
-    outline: 0px !important;
-    border: none !important;
-    -moz-outline-style: none !important;
   }
 
   .iconbar-top li a .tag,
