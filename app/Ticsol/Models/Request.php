@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Ticsol\Models;
 
-class Request 
+use Illuminate\Database\Eloquent\Model;
+
+class Request extends Model
 {    
     protected $primaryKey = 'request_id';
 

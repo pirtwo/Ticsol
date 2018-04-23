@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Ticsol\Models;
 
-class Client 
+use Illuminate\Database\Eloquent\Model;
+
+class Client extends Model
 {    
     protected $primaryKey = 'client_id';
 

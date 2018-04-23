@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Ticsol\Models;
 
-class Schedule 
+use Illuminate\Database\Eloquent\Model;
+
+class Schedule extends Model
 {    
     protected $primaryKey = 'schedule_id';
 

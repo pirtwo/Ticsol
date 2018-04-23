@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Ticsol\Models;
 
-class Permission 
+use Illuminate\Database\Eloquent\Model;
+
+class Permission extends Model
 {    
     protected $primaryKey = 'permission_id';
 

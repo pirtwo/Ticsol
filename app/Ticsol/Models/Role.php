@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Ticsol\Models;
 
-class Role 
+use Illuminate\Database\Eloquent\Model;
+
+class Role extends Model
 {    
     protected $primaryKey = 'role_id';
 

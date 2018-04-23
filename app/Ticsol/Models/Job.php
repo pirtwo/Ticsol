@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Ticsol\Models;
 
-class Job 
+use Illuminate\Database\Eloquent\Model;
+
+class Job extends Model
 {    
     protected $primaryKey = 'job_id';
 
