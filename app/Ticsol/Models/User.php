@@ -4,6 +4,7 @@ namespace App\Ticsol\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Ticsol\Models;
 
 class User extends Authenticatable
 {
@@ -41,16 +42,16 @@ class User extends Authenticatable
 
     public function client()
     {
-        return $this->belongsTo('App\Ticsol\Models\Client', 'client_id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     public function role()
     {
-        $this->belongsTo('App\Ticsol\Models\Role', 'role_id');
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     public function requests()
     {
-        $this->hasMany('App\Ticsol\Models\Request');
+        return $this->hasMany(Request::class);
     }
 }

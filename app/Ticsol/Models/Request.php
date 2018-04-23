@@ -3,6 +3,7 @@
 namespace App\Ticsol\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Ticsol\Models;
 
 class Request extends Model
 {
@@ -32,6 +33,6 @@ class Request extends Model
 
     public function user()
     {
-        $this->belongsTo('App\Ticsol\Models\User', 'user_id');
+        $this->belongsTo(User::class, 'user_id');
     }
 }

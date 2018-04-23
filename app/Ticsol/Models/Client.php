@@ -3,6 +3,7 @@
 namespace App\Ticsol\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Ticsol\Models;
 
 class Client extends Model
 {
@@ -28,6 +29,6 @@ class Client extends Model
 
     public function users()
     {
-        return $this->hasMany('App\Ticsol\Models\User');
+        return $this->hasMany(User::class);
     }
 }

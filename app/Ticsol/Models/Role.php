@@ -3,6 +3,7 @@
 namespace App\Ticsol\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Ticsol\Models;
 
 class Role extends Model
 {
@@ -29,6 +30,6 @@ class Role extends Model
 
     public function users()
     {
-        $this->hasMany('App\Ticsol\Models\User');
+        $this->hasMany(User::class);
     }
 }
