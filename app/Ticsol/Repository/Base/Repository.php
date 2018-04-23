@@ -41,6 +41,7 @@ abstract class Repository implements IRepository, ICriteria
         $this->app = $app;
         $this->criteria = $collection;
 
+        $this->resetScope();
         $this->makeModel();
     }
 
@@ -67,22 +68,22 @@ abstract class Repository implements IRepository, ICriteria
 
     /**
      * @param array $columns
-     *
      * @return mixed
      */
     public function all($columns = array('*'))
     {
+        $this->applyCriteria();
         return $this->model->get($columns);
     }
 
     /**
      * @param $id
      * @param array $columns
-     *
      * @return mixed
      */
     public function find($id, $columns = array('*'))
     {
+        $this->applyCriteria();
         return $this->model->find($id, $columns);
     }
 
@@ -90,28 +91,27 @@ abstract class Repository implements IRepository, ICriteria
      * @param $field
      * @param $value
      * @param array $columns
-     *
      * @return mixed
      */
     public function findBy($field, $value, $columns = array('*'))
     {
+        $this->applyCriteria();
         return $this->model->where($field, '=', $value)->first($columns);
     }
 
     /**
      * @param int $perPage
      * @param array $columns
-     *
      * @return mixed
      */
     public function paginate($perPage = 15, $columns = array('*'))
     {
+        $this->applyCriteria();
         return $this->model->paginate($perPage, $columns);
     }
 
     /**
      * @param array $data
-     *
      * @return mixed
      */
     public function create(array $data)
@@ -123,7 +123,6 @@ abstract class Repository implements IRepository, ICriteria
      * @param array $data
      * @param string $field
      * @param string $value
-     *
      * @return mixed
      */
     public function update(array $data, $field, $value)
@@ -133,7 +132,6 @@ abstract class Repository implements IRepository, ICriteria
 
     /**
      * @param $id
-     *
      * @return mixed
      */
     public function delete($id)
