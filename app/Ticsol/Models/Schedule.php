@@ -17,6 +17,7 @@ class Schedule
         'schedule_event',
         'schedule_start',
         'schedule_end',
+        'schedule_offsite',
         'user_id',
         'job_id'
     ];
