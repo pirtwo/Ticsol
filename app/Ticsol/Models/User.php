@@ -39,6 +39,11 @@ class User extends Authenticatable
         return $this->user_password;
     }
 
+    public function client()
+    {
+        return $this->belongsTo('App\Ticsol\Models\Client', 'client_id');
+    }
+
     public function role()
     {
         $this->belongsTo('App\Ticsol\Models\Role', 'role_id');

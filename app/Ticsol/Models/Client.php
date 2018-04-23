@@ -5,7 +5,7 @@ namespace App\Ticsol\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
-{    
+{
     protected $primaryKey = 'client_id';
 
     /**
@@ -14,7 +14,7 @@ class Client extends Model
      * @var array
      */
     protected $fillable = [
-        'client_name'
+        'client_name',
     ];
 
     /**
@@ -23,6 +23,11 @@ class Client extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
+
+    public function users()
+    {
+        return $this->hasMany('App\Ticsol\Models\User');
+    }
 }
