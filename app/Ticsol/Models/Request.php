@@ -5,7 +5,7 @@ namespace App\Ticsol\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Request extends Model
-{    
+{
     protected $primaryKey = 'request_id';
 
     /**
@@ -18,7 +18,7 @@ class Request extends Model
         'request_status',
         'user_id',
         'job_id',
-        'meta'
+        'meta',
     ];
 
     /**
@@ -27,6 +27,11 @@ class Request extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
+
+    public function user()
+    {
+        $this->belongsTo('App\Ticsol\Models\User', 'user_id');
+    }
 }

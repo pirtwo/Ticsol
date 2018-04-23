@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         $this->belongsTo('App\Ticsol\Models\Role', 'role_id');
     }
+
+    public function requests()
+    {
+        $this->hasMany('App\Ticsol\Models\Request');
+    }
 }
