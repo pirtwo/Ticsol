@@ -2,8 +2,8 @@
 
 namespace App\Ticsol\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -17,12 +17,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user_name', 
-        'user_email', 
+        'user_name',
+        'user_email',
         'user_password',
         'user_isowner',
         'client_id',
-        'role_id'
+        'role_id',
     ];
 
     /**
@@ -37,5 +37,10 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->user_password;
+    }
+
+    public function role()
+    {
+        $this->belongsTo('App\Ticsol\Models\Role', 'role_id');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Ticsol\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
-{    
+{
     protected $primaryKey = 'role_id';
 
     /**
@@ -14,7 +14,8 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'role_name'
+        'role_name',
+        'user_id'
     ];
 
     /**
@@ -23,6 +24,11 @@ class Role extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
+
+    public function users()
+    {
+        $this->hasMany('App\Ticsol\Models\User');
+    }
 }
