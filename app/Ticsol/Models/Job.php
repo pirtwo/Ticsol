@@ -29,4 +29,9 @@ class Job extends Model
     protected $hidden = [
         
     ];
+
+    public function Requests()
+    {
+        return $this->hasMany(Request::class);
+    }
 }
