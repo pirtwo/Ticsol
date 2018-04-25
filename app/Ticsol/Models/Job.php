@@ -34,4 +34,9 @@ class Job extends Model
     {
         return $this->hasMany(Request::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
