@@ -3,6 +3,7 @@
 namespace App\Ticsol\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Ticsol\Models;
 
 class Resource extends Model
 {    

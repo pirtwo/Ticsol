@@ -5,7 +5,7 @@ namespace App\Ticsol\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Ticsol\Models;
 
-class Permission extends Model
+class Activity extends Model
 {    
     protected $primaryKey = 'activity_id';
 
