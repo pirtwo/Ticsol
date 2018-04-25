@@ -3,6 +3,7 @@
 namespace App\Ticsol\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Ticsol\Models;
 
 class Schedule extends Model
 {    
@@ -32,4 +33,9 @@ class Schedule extends Model
     protected $hidden = [
         
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
