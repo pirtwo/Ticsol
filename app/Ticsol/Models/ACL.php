@@ -30,6 +30,11 @@ class ACL extends Model
 
     ];
 
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
     public function permission()
     {
         return $this->belongsTo(Permission::class);

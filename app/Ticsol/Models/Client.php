@@ -31,4 +31,9 @@ class Client extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function ACLs()
+    {
+        return $this->hasMany(ACL::class);
+    }
 }
