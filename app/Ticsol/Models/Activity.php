@@ -2,11 +2,11 @@
 
 namespace App\Ticsol\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Ticsol\Models;
+use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
-{    
+{
     protected $primaryKey = 'activity_id';
 
     /**
@@ -27,6 +27,11 @@ class Activity extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 }
