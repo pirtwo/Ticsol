@@ -15,10 +15,10 @@ class ACL extends Model
      * @var array
      */
     protected $fillable = [
-        'resource_id',
-        'permission_id',
         'role_id',
         'client_id',
+        'resource_id',
+        'permission_id',
     ];
 
     /**
@@ -33,5 +33,10 @@ class ACL extends Model
     public function permission()
     {
         return $this->belongsTo(Permission::class);
+    }
+
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Ticsol\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Ticsol\Models;
+use Illuminate\Database\Eloquent\Model;
 
 class Resource extends Model
-{    
+{
     protected $primaryKey = 'resource_id';
 
     /**
@@ -15,7 +15,7 @@ class Resource extends Model
      * @var array
      */
     protected $fillable = [
-        'resource_name'
+        'resource_name',
     ];
 
     /**
@@ -24,6 +24,11 @@ class Resource extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
+
+    public function ACLs()
+    {
+        return $this->hasMany(ACL::class);
+    }
 }
