@@ -31,4 +31,9 @@ class Permission extends Model
     {
         return $this->hasMany(ACL::class);
     }
+
+    public function resources()
+    {
+        return $this->blongsToMany(Resource::class, 'accessible_permissions', 'permission_id', 'resource_id');
+    }
 }

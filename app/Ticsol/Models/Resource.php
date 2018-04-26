@@ -31,4 +31,9 @@ class Resource extends Model
     {
         return $this->hasMany(ACL::class);
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
 }
