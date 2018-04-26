@@ -2,11 +2,11 @@
 
 namespace App\Ticsol\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Ticsol\Models;
+use Illuminate\Database\Eloquent\Model;
 
 class ACL extends Model
-{    
+{
     protected $primaryKey = 'acl_id';
 
     /**
@@ -27,6 +27,11 @@ class ACL extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
+
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class);
+    }
 }
