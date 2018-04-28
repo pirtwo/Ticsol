@@ -31,4 +31,9 @@ class Bank extends Model
     protected $hidden = [
         
     ];
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
 }
