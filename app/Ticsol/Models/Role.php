@@ -31,7 +31,7 @@ class Role extends Model
 
     public function users()
     {
-        $this->hasMany(User::class);
+        $this->belongsToMany(User::class);
     }
 
     public function ACLs()
