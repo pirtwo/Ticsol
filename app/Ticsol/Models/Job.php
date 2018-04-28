@@ -7,6 +7,7 @@ use App\Ticsol\Models;
 
 class Job extends Model
 {    
+    protected $table = 'ts_jobs';
     protected $primaryKey = 'job_id';
 
     /**

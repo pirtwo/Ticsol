@@ -7,6 +7,7 @@ use App\Ticsol\Models;
 
 class Contact extends Model
 {    
+    protected $table = 'ts_contacts';
     protected $primaryKey = 'contact_id';
 
     /**

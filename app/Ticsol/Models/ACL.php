@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ACL extends Model
 {
+    protected $table = 'ts_acl';
     protected $primaryKey = 'acl_id';
 
     /**

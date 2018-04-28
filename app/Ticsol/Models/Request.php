@@ -7,6 +7,7 @@ use App\Ticsol\Models;
 
 class Request extends Model
 {
+    protected $table = 'ts_requests';
     protected $primaryKey = 'request_id';
 
     /**

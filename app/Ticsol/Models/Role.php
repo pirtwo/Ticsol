@@ -7,6 +7,7 @@ use App\Ticsol\Models;
 
 class Role extends Model
 {
+    protected $table = 'ts_roles';
     protected $primaryKey = 'role_id';
 
     /**

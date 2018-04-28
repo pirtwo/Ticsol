@@ -7,6 +7,7 @@ use App\Ticsol\Models;
 
 class Client extends Model
 {
+    protected $table = 'ts_clients';
     protected $primaryKey = 'client_id';
 
     /**

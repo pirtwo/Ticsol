@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Resource extends Model
 {
+    protected $table = 'ts_resources';
     protected $primaryKey = 'resource_id';
 
     /**
