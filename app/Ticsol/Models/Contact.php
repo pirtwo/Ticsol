@@ -20,6 +20,8 @@ class Contact extends Model
         'contact_group',
         'contact_firstname',
         'contact_lastname',
+        'contact_telephone',
+        'contact_mobilephone',
     ];
 
     /**
