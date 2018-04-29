@@ -4,11 +4,12 @@ namespace App\Ticsol\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 use App\Ticsol\Models;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
     protected $table = 'ts_users';
     protected $primaryKey = 'user_id';
