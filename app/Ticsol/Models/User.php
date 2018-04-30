@@ -42,6 +42,10 @@ class User extends Authenticatable
         return $this->user_password;
     }
 
+    public function findForPassport($username) {
+        return $this->where('user_name', $username)->first();
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
