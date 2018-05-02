@@ -21,12 +21,12 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        try {
-            $user = User::where('user_name', $request->input('username'))->first();
+        try {            
+            $user = User::where('user_name', $request->json('body.username'))->first();
             if ($user != null) {
                 return $this->proxy('password', [
-                    'username' => $request->input('username'),
-                    'password' => $request->input('password'),
+                    'username' => $request->json('body.username'),
+                    'password' => $request->json('body.password'),
                 ]);
             } else {
                 throw new \Exception('Invalid username.');

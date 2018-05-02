@@ -1,5 +1,11 @@
 <template>
-  
+    <div class="cnt-logout border-radius">
+      <img src="/img/app.png" class="app-logo" />
+      <div class="text-center">
+        <h3>You loged out successfuly</h3>
+        <h5>Hope to see you soon :D</h5>
+      </div>      
+  </div>
 </template>
 <script>
 export default {

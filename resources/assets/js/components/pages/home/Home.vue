@@ -4,7 +4,7 @@
             <iconbar-top></iconbar-top>
         </header>
         <main class="col-xs-12">
-            <div class="main-menu row">
+            <div class="main-menu border-radius row">
                 <div class="col-md-12">
                     <img src="/img/app.png" class="app-logo" />
                     <router-link :to="{ name: 'dash'}" class="shortcut" role="button">

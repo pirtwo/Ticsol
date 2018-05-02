@@ -64020,12 +64020,36 @@ input[dir=rtl] {
 }
 
 .container-fluid {
+  font-family: Raleway !important;
   background-image: url("/themes/nature_01.jpg");
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   padding: 0px 100px 0px 100px;
+}
+
+.cnt-login,
+.cnt-logout,
+.cnt-register,
+.cnt-resetPassword {
+  background-color: rgba(255, 255, 255, 0.97);
+  margin: 180px auto 180px auto;
+  padding: 40px 70px 40px 70px;
+  width: 450px;
+  min-height: 400px;
+  position: relative;
+}
+
+.cnt-login .app-logo,
+.cnt-logout .app-logo,
+.cnt-register .app-logo,
+.cnt-resetPassword .app-logo {
+  width: 70px;
+  height: 70px;
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
 }
 
 header,

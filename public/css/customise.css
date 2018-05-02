@@ -1,115 +1,139 @@
 .container-fluid {
-    background-image: url("/themes/nature_01.jpg");
-    height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 0px 100px 0px 100px;
-  }  
-    
-  header,
-  footer{
-    padding: 0px !important;
-  }
+  font-family: Raleway !important;
+  background-image: url("/themes/nature_01.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0px 100px 0px 100px;
+}  
 
-  .main-menu{
-    background-color: rgba(255,255,255,0.8);   
-    margin: 20px 150px 50px 150px;
-    padding: 100px 150px 100px 150px;
-    text-align: center;
-  }
+.cnt-login,
+.cnt-logout,
+.cnt-register,
+.cnt-resetPassword{    
+  background-color: rgba(255,255,255,0.97);
+  margin: 180px auto 180px auto;
+  padding: 40px 70px 40px 70px;
+  width: 450px;
+  min-height: 400px;
+  position: relative;
+}
 
-  .main-menu .app-logo{
-    display: block;
-    margin: auto;
-    margin-bottom: 20px;
-    max-width: 150px;
-  }
-
-  .main-menu .shortcut{    
-    background-color: rgba(255,255,255,0.0) !important;
-    border-color: rgba(255,255,255,0.1) !important;
-    color: #684986 !important;
-    margin: 12px;
-    
-  }
-
-  .main-menu .shortcut:hover{    
-    background-color: rgba(255,255,255,0.5) !important;
-    -webkit-box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);
-    -moz-box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);
-    box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);    
-  }
-
-  .main-menu .shortcut [class*="mif-"]{    
-    line-height: 60px;
-  }
-
-  .main-menu .caption {
-    line-height: 5px;
-  }
-
-  .dashboard{
-    padding: 30px 0px 50px 0px;
-  }
-
-  #dash-nav {
-    background-color: rgba(255,255,255,0) !important;    
-  }
+.cnt-login .app-logo,
+.cnt-logout .app-logo,
+.cnt-register .app-logo,
+.cnt-resetPassword .app-logo{
+  width: 70px;
+  height: 70px;
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
+}
   
-  #dash-nav .navview-pane {
-    background-color: rgba(255,255,255,0.7) !important;
-  }
-  
-  #dash-nav .content {
-    background-color: rgba(255,255,255,0.5) !important;
-    min-height: 500px !important;
-    margin-left: 10px;
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
- 
-  .iconbar-top,
-  .iconbar-bot {
-    background-color: transparent !important;    
-    box-shadow: none;
-    color: white;
-    margin: 10px 0px 10px 0px;
-  }
+header,
+footer{
+  padding: 0px !important;
+}
 
-  .iconbar-top li .active,
-  .iconbar-bot li .active {
-    background-color: rgba(255,255,255,0.2) !important;
-  }
-  
-  .iconbar-top li a,
-  .iconbar-bot li a {
-    border: none !important;
-    width: auto !important;
-    height: auto !important;
-    line-height: auto !important;
-    padding: 0.2rem 0.7rem !important;
-    position: relative !important;
-  }
+.main-menu{
+  background-color: rgba(255,255,255,0.8);   
+  margin: 20px 150px 50px 150px;
+  padding: 100px 150px 100px 150px;
+  text-align: center;
+}
 
-  .iconbar-top li a .tag,
-  .iconbar-bot li a .tag {
-    font-size: 0.6875rem !important;
-    top: -13px !important;
-    right: 10px !important;
-  }
+.main-menu .app-logo{
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
+  max-width: 150px;
+}
 
-  .iconbar-top li a .caption,
-  .iconbar-bot li a .caption {
-    position: relative;
-    font-size: 10px;
-    line-height: 4px;
-    width: 50px;
-    text-align: center;
-  }
+.main-menu .shortcut{    
+  background-color: rgba(255,255,255,0.0) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #684986 !important;
+  margin: 12px;
   
-  .iconbar-top li a [class*="mif-"],
-  .iconbar-bot li a [class*="mif-"] {
-    line-height: 2;
-  }
+}
+
+.main-menu .shortcut:hover{    
+  background-color: rgba(255,255,255,0.5) !important;
+  -webkit-box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);
+  -moz-box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);
+  box-shadow: 0px 0px 5px 7px rgba(0,0,0,0.09);    
+}
+
+.main-menu .shortcut [class*="mif-"]{    
+  line-height: 60px;
+}
+
+.main-menu .caption {
+  line-height: 5px;
+}
+
+.dashboard{
+  padding: 30px 0px 50px 0px;
+}
+
+#dash-nav {
+  background-color: rgba(255,255,255,0) !important;    
+}
+
+#dash-nav .navview-pane {
+  background-color: rgba(255,255,255,0.7) !important;
+}
+
+#dash-nav .content {
+  background-color: rgba(255,255,255,0.5) !important;
+  min-height: 500px !important;
+  margin-left: 10px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.iconbar-top,
+.iconbar-bot {
+  background-color: transparent !important;    
+  box-shadow: none;
+  color: white;
+  margin: 10px 0px 10px 0px;
+}
+
+.iconbar-top li .active,
+.iconbar-bot li .active {
+  background-color: rgba(255,255,255,0.2) !important;
+}
+
+.iconbar-top li a,
+.iconbar-bot li a {
+  border: none !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: auto !important;
+  padding: 0.2rem 0.7rem !important;
+  position: relative !important;
+}
+
+.iconbar-top li a .tag,
+.iconbar-bot li a .tag {
+  font-size: 0.6875rem !important;
+  top: -13px !important;
+  right: 10px !important;
+}
+
+.iconbar-top li a .caption,
+.iconbar-bot li a .caption {
+  position: relative;
+  font-size: 10px;
+  line-height: 4px;
+  width: 50px;
+  text-align: center;
+}
+
+.iconbar-top li a [class*="mif-"],
+.iconbar-bot li a [class*="mif-"] {
+  line-height: 2;
+}

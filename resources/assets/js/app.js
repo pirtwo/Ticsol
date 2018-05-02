@@ -19,52 +19,73 @@ Vue.use(VueRouter);
  */
 
 import App from "./components/App.vue";
-import Home from "./components/pages/home/Home.vue";
-import Dashboard from "./components/pages/dashboard/Dashboard.vue";
-import Inbox from "./components/pages/dashboard/Inbox.vue";
-import HR from "./components/pages/dashboard/HR.vue";
-import Requests from "./components/pages/dashboard/Requests.vue";
-import Schedule from "./components/pages/dashboard/Schedule.vue";
-import TimeSheets from "./components/pages/dashboard/TimeSheets.vue";
 
 const router = new VueRouter({
-    mode: 'history',    
+    mode: 'history',
     linkExactActiveClass: 'active',
-    routes: [
+    routes: [        
         {
             path: '/',
+            name: 'auth',
+            redirect: { name: 'login' },            
+            component: require('./components/pages/auth/Auth.vue'),
+            children:[
+                {
+                    path: 'login',
+                    name: 'login',
+                    component: require('./components/pages/auth/Login.vue')
+                },
+                {
+                    path: 'logout',
+                    name: 'logout',
+                    component: require('./components/pages/auth/Logout.vue')
+                },
+                {
+                    path: 'register',
+                    name: 'register',
+                    component: require('./components/pages/auth/Register.vue')
+                },
+                {
+                    path: 'resetpassword',
+                    name: 'resetpassword',
+                    component: require('./components/pages/auth/ResetPassword.vue')
+                },
+            ]
+        },
+        {
+            path: '/home',
             name: 'home',
-            component: Home
+            component: require('./components/pages/home/Home.vue')
         },
         {
             path: '/dash',
             name: 'dash',
-            component: Dashboard,
-            children:[
+            component: require('./components/pages/dashboard/Dashboard.vue'),
+            children: [
                 {
                     path: 'inbox',
                     name: 'inbox',
-                    component: Inbox
+                    component: require('./components/pages/dashboard/Inbox.vue')
                 },
                 {
                     path: 'hr',
                     name: 'hr',
-                    component: HR
+                    component: require('./components/pages/dashboard/HR.vue')
                 },
                 {
                     path: 'requests',
                     name: 'requests',
-                    component: Requests
+                    component: require('./components/pages/dashboard/Requests.vue')
                 },
                 {
                     path: 'schedule',
                     name: 'schedule',
-                    component: Schedule
+                    component: require('./components/pages/dashboard/Schedule.vue')
                 },
                 {
                     path: 'timesheets',
                     name: 'timesheets',
-                    component: TimeSheets
+                    component: require('./components/pages/dashboard/TimeSheets.vue')
                 }
             ]
         }
