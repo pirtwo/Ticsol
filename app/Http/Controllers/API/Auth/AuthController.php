@@ -4,23 +4,21 @@ namespace App\Http\Controllers\api\auth;
 
 use App\Http\Controllers\Controller;
 use App\Ticsol\Models\User;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
 
     const REFRESH_TOKEN = 'refresh_token';
-    private $app;
-    private $auth;
-    private $cookie;
+    const COOKIE_LIFE_TIME = 640000;
 
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
+    /**
+     * method: POST.
+     * @param Request
+     */
     public function login(Request $request)
     {
         try {
@@ -31,25 +29,48 @@ class AuthController extends Controller
                     'password' => $request->input('password'),
                 ]);
             } else {
-                throw new \Exception('');
+                throw new \Exception('Invalid username.');
             }
-        } catch (\Exception $e) {
-            return Response(['error' => true, 'msg' => 'Internal server error.']);
+        } catch (Exception $e) {
+            $this->handelError($e);
         }
     }
 
-    public function refresh()
+    /**
+     * method: POST.
+     * @param Request
+     */
+    public function refresh(Request $request)
     {
-
-    }
-
-    public function logout()
-    {
-
+        try {
+            $refreshToken = $request->cookie(self::REFRESH_TOKEN);
+            return $this->proxy(self::REFRESH_TOKEN, [self::REFRESH_TOKEN => $refreshToken]);
+        } catch (Exception $e) {
+            $this->handelError($e);
+        }
     }
 
     /**
-     * Proxy a request for oauth.
+     * method: POST.
+     * @param Request
+     */
+    public function logout(Request $request)
+    {
+        try {
+            $token = $request->user()->token();
+            DB::table('oauth_refresh_tokens')
+                ->where('access_token_id', $token->id)
+                ->update(['revoked' => true]);
+            $token->revoke();
+            $request->cookie->forget(self::REFRESH_TOKEN);
+            return Response(['success' => true, 'msg' => 'You logout successfuly.']);
+        } catch (Exception $e) {
+            $this->handelError($e);
+        }
+    }
+
+    /**
+     * Proxy a request for oauth server.
      *
      * @param string $grantType
      * @param array $data
@@ -77,14 +98,25 @@ class AuthController extends Controller
                 return Response([
                     'access_token' => $body->access_token,
                     'expires_in' => $body->expires_in,
-                ])->cookie(self::REFRESH_TOKEN, $body->refresh_token, 840000, null, null, false, true);
+                ])->cookie(self::REFRESH_TOKEN, $body->refresh_token, self::COOKIE_LIFE_TIME, null, null, false, true);
 
             } else {
-                return Response(['error' => true, 'msg' => 'Invalid Credentials.']);
+                throw new \Exception('Invalid Credentials.', 0, null);
             }
 
-        } catch (\Exception $e) {
-            return Response(['error' => true, 'msg' => 'Internal server error.']);
+        } catch (Exception $e) {
+            $this->handelError($e);
         }
     }
+
+    /**
+     * Handele the exceptions that occurs in class.
+     * @param \Exception $e
+     * @return Response
+     */
+    public function handelError(Exception $e)
+    {
+        return Response(['error' => true, 'msg' => $e->getMessage()]);
+    }
+
 }
