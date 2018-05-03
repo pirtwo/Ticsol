@@ -11,6 +11,9 @@
 |
 */
 
+Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Base\Controllers'], function(){
+    Route::get('/{any}', 'AppController@index')->where('any', '.*');
+});
 
-Route::get('/{any}', 'AppController@index')->where('any', '.*');
+
 

@@ -17,13 +17,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\API'], function(){
+    
+    Route::post('/login', 'AuthController@login');
+    Route::post('/refresh', 'AuthController@refresh');
 
-Route::post('/login', 'api\auth\AuthController@login');
-Route::post('/refresh', 'api\auth\AuthController@refresh');
-
-/**
- * Protected api routes
- */
-Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', 'api\auth\AuthController@logout');
+    /**
+     * Protected api routes
+     */
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/logout', 'AuthController@logout');
+    });
+    
 });
+
+

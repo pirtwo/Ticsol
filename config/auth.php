@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Ticsol\Models\User::class,
+            'model' => App\Ticsol\Components\Models\User::class,
         ],
 
         // 'users' => [
