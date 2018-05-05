@@ -48214,7 +48214,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48228,10 +48228,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      dayPilot: "",
       dpUrl: "https://server.dev/js/daypilot-all.min.js",
       styleUrl: "https://server.dev/css/calendar_white.css"
     };
@@ -48262,27 +48276,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     dpLoaded.then(function () {
       console.log("loaded...");
-      var dayPilot = new window.DayPilot.Calendar("dp");
-      dayPilot.cssClassPrefix = "calendar_white";
-      dayPilot.viewType = "Week";
-      dayPilot.events.list = [{
-        id: "5",
+      _this.dayPilot = new window.DayPilot.Scheduler("dp");
+      _this.dayPilot.width = "100%";
+      _this.dayPilot.timeHeaders = [{ groupBy: "Week" }, { groupBy: "Day" }];
+      _this.dayPilot.startDate = "2018-04-30T14:30:00";
+      console.log(window.DayPilot.Date.today().firstDayOfMonth());
+      _this.dayPilot.days = 30;
+      //dayPilot.cssClassPrefix = "calendar_white";
+      //dayPilot.viewType = "Week";
+      //dayPilot.heightSpec = "Parent100Pct";
+      //dayPilot.height = 400;
+
+      _this.dayPilot.resources = [{ name: "Room A", id: "A" }, { name: "Room B", id: "B" }, { name: "Room C", id: "C" }, { name: "Room D", id: "D" }, { name: "Room E", id: "E" }, { name: "Room F", id: "F" }, { name: "Room G", id: "G" }, { name: "Room H", id: "H" }, { name: "Room I", id: "I" }, { name: "Room J", id: "J" }, { name: "Room K", id: "K" }, { name: "Room L", id: "L" }];
+
+      _this.dayPilot.events.list = [{
+        id: "B",
         text: "Calendar Event 5",
-        start: "2018-05-01T10:30:00",
-        end: "2018-05-01T16:30:00"
+        start: "2018-05-05T10:30:00",
+        end: "2018-05-05T16:30:00",
+        resource: "B"
       }, {
-        id: "6",
+        id: "A",
         text: "Calendar Event 6",
-        start: "2018-05-24T09:00:00",
-        end: "2018-05-24T14:30:00"
+        start: "2018-05-05T09:00:00",
+        end: "2018-05-05T14:30:00",
+        resource: "A"
       }, {
-        id: "7",
+        id: "C",
         text: "Calendar Event 7",
-        start: "2018-05-26T12:00:00",
-        end: "2018-05-27T16:00:00"
+        start: "2018-05-05T12:00:00",
+        end: "2018-05-08T16:00:00",
+        resource: "C"
       }];
-      dayPilot.init();
+      _this.dayPilot.init();
     });
+  },
+
+  methods: {
+    changeScale: function changeScale(event) {
+      event.preventDefault();
+      console.log(event.target.value);
+      this.dayPilot.scale = event.target.value;
+      this.dayPilot.update();
+    },
+    changeDate: function changeDate(event) {
+      event.preventDefault();
+      console.log(event.target.value);
+      this.dayPilot.startDate = event.target.value + "T00:00:00";
+      this.dayPilot.update();
+    }
   }
 });
 
@@ -48294,7 +48336,27 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "dp" } })
+  return _c("div", [
+    _c("div", { staticClass: "inline-form" }, [
+      _c("select", { staticClass: "select", on: { change: _vm.changeScale } }, [
+        _c("option", { attrs: { value: "Minute" } }, [_vm._v("Minute")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Hour" } }, [_vm._v("Hour")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Day" } }, [_vm._v("Day")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Week" } }, [_vm._v("Week")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Month" } }, [_vm._v("Month")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Year" } }, [_vm._v("Year")])
+      ]),
+      _vm._v(" "),
+      _c("input", { attrs: { type: "date" }, on: { change: _vm.changeDate } })
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "dp" } })
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

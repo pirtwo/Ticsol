@@ -1,5 +1,5 @@
 <template>
-  <day-pilot></day-pilot>
+  <day-pilot></day-pilot> 
 </template>
 
 <script>

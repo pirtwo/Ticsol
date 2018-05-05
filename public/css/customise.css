@@ -75,6 +75,7 @@ footer{
 
 .dashboard{
   padding: 30px 0px 50px 0px;
+  height: 100%;
 }
 
 #dash-nav {
@@ -83,6 +84,10 @@ footer{
 
 #dash-nav .navview-pane {
   background-color: rgba(255,255,255,0.7) !important;
+}
+
+#dash-nav .navview-content {
+  height: 100%;
 }
 
 #dash-nav .content {
