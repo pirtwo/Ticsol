@@ -4,6 +4,7 @@ namespace App\Ticsol\Components\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Ticsol\Components\Models\User;
+use App\Ticsol\Components\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -19,9 +20,13 @@ class AuthController extends Controller
      * method: POST.
      * @param Request
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        try {            
+        try {     
+            
+            // Validate user input
+            $validate = $request->validate(); 
+                        
             $user = User::where('user_name', $request->json('body.username'))->first();
             if ($user != null) {
                 return $this->proxy('password', [
