@@ -182,6 +182,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /**
+         * Ticsol Service Providers
+         */
+        App\Ticsol\Components\Providers\CaptchaServiceProvider::class,
     ],
 
     /*
