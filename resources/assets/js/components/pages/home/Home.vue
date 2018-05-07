@@ -1,11 +1,11 @@
 <template>
     <div class="row">
-        <header class="col-xs-12">
+        <header class="cell-sm-12">
             <iconbar-top></iconbar-top>
         </header>
-        <main class="col-xs-12">
+        <main class="cell-sm-12">
             <div class="main-menu border-radius row">
-                <div class="col-md-12">
+                <div class="cell-md-12">
                     <img src="/img/app.png" class="app-logo" />
                     <router-link :to="{ name: 'dash'}" class="shortcut" role="button">
                         <span class="tag"></span>
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </main>
-        <footer class="col-xs-12">
+        <footer class="cell-sm-12">
            
         </footer>
     </div>

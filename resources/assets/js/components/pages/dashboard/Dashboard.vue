@@ -1,9 +1,9 @@
 <template>
     <div class="row">
-        <header class="col-xs-12">            
+        <header class="cell-sm-12">            
             <iconbar-top></iconbar-top>            
         </header>
-        <main class="col-xs-12 dashboard">
+        <main class="cell-sm-12 dashboard">
             <div id="dash-nav" data-role="navview">
                 <div class="navview-pane">
                     <main-nav></main-nav>
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </main>
-        <footer class="col-xs-12">           
+        <footer class="cell-sm-12">           
             <iconbar-bot></iconbar-bot>            
         </footer>
     </div>
@@ -32,6 +32,11 @@ export default {
     "main-nav": MainMenu,
     "iconbar-top": IconbarTop,
     "iconbar-bot": IconbarBot
+  },
+  methods:{
+      updateSidebar: function(){
+          
+      }
   }
 };
 </script>

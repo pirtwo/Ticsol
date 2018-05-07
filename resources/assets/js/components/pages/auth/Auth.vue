@@ -1,11 +1,11 @@
 <template>
      <div class="row">
-        <header class="col-xs-12">                      
+        <header class="cell-sm-12">                      
         </header>
-        <main class="col-xs-12 auth">
+        <main class="cell-sm-12 auth">
             <router-view></router-view>
         </main>
-        <footer class="col-xs-12">                        
+        <footer class="cell-sm-12">                        
         </footer>
     </div>
 </template>
