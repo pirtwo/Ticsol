@@ -19,8 +19,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\API'], function(){
     
+    // Route: Post
     Route::post('/login', 'AuthController@login');
     Route::post('/refresh', 'AuthController@refresh');
+    
+
+    // Route: Get
+    
+    Route::get('user/list', 'UserController@get');
+    
+    Route::get('jobs/list', 'JobController@get');
+    
 
     /**
      * Protected api routes
