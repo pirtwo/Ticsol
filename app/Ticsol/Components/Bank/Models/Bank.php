@@ -8,7 +8,7 @@ use App\Ticsol\Components\Models;
 
 class Bank extends Model
 {    
-    protected $table = 'ts_bank';
+    protected $table = 'ts_banks';
     protected $primaryKey = 'bank_id';
     protected $dates = ['deleted_at'];
 

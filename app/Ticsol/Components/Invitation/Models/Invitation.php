@@ -8,7 +8,7 @@ use App\Ticsol\Components\Models;
 
 class Invitation extends Model
 {    
-    protected $table = 'ts_invitation';
+    protected $table = 'ts_invitations';
     protected $primaryKey = 'invitation_id';
     protected $dates = ['deleted_at'];
 

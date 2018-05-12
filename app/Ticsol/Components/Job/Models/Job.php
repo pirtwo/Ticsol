@@ -42,4 +42,14 @@ class Job extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(Job::class, 'parent_id');
+    }
+
+    public function childs()
+    {
+        return $this->hasMany(Job::class, 'parent_id');
+    }
 }

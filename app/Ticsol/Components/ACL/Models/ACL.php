@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ACL extends Model
 {
-    protected $table = 'ts_acl';
+    protected $table = 'ts_acls';
     protected $primaryKey = 'acl_id';
     protected $dates = ['deleted_at'];
 
