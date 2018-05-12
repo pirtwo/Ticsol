@@ -32,4 +32,14 @@ class Contact extends Model
     protected $hidden = [
         
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function jobs()
+    {
+        return $this->belongsToMany(Job::class, 'job_contact', 'contact_id', 'job_id');
+    }
 }

@@ -19,6 +19,7 @@ class Request extends Model
         'request_type',
         'request_status',
         'user_id',
+        'manager_id',
         'job_id',
         'meta',
     ];
@@ -35,6 +36,11 @@ class Request extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'manager_id');
     }
 
     public function job()

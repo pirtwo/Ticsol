@@ -46,6 +46,9 @@ class User extends Authenticatable
         return $this->where('user_name', $username)->first();
     }
 
+
+    // Eloquent Relationships
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
@@ -61,8 +64,18 @@ class User extends Authenticatable
         return $this->hasMany(Request::class);
     }
 
+    public function assignedRequests()
+    {
+        return $this->hasMany(Request::class);
+    }
+
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
     }
 }
