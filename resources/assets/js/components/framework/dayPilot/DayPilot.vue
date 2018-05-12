@@ -3,8 +3,8 @@
     <div class="inline-form">
       <div class="form-group">        
           <label class="label">View: </label>
-          <select class="select" style="display:inline !important;" v-model="view" v-on:change="changeScale">
-            <option value="Job">Job</option>
+          <select class="select" style="display:inline !important;" v-model="view" v-on:change="changeType">
+            <option value="Job" selected>Job</option>
             <option value="Employee">Employee</option>
           </select>        
       </div>
@@ -29,50 +29,60 @@
   </div>
 </template>
 <script>
+import { EventBus } from "../../../event-bus.js";
+import axios from "axios";
 export default {
-  props:{
+  props: {
     dpResources: {
       type: String,
-      default: 'Employee',
-      validator:function(value){
-        return ['Employee', 'Job'].indexOf(value) !== -1;
+      default: "Employee",
+      validator: function(value) {
+        return ["Employee", "Job"].indexOf(value) !== -1;
       }
     },
     dpType: {
       type: String,
-      default: 'Scheduler',
-      validator:function(value){
-        return ['Employee', 'Job'].indexOf(value) !== -1;
+      default: "Scheduler",
+      validator: function(value) {
+        return ["Employee", "Job"].indexOf(value) !== -1;
       }
     },
-    dpView:{
+    dpView: {
       type: String,
-      default: 'Day',
-      validator:function(value){
-        return ['Minute', 'Hour', 'Day', 'Week', 'Month', 'Year'].indexOf(value) !== -1;
+      default: "Day",
+      validator: function(value) {
+        return (
+          ["Minute", "Hour", "Day", "Week", "Month", "Year"].indexOf(value) !==
+          -1
+        );
       }
     },
-    dpFrom:{
-      type:String,
+    dpFrom: {
+      type: String,
       default: Date.now()
     },
-    dpDays:{
+    dpDays: {
       type: Number,
       default: 30
     }
-
   },
   data() {
     return {
       dayPilot: "",
       scale: "",
+      resourcetype: "Job",
+      eventType: "Employee",
       dateFrom: "",
       view: "",
       scriptUrl: "https://server.dev/js/daypilot-all.min.js",
-      styleUrl: "https://server.dev/css/calendar_white.css"
+      styleUrl: "https://server.dev/css/calendar_white.css",
+      urls: {
+        Job: "https://server.dev/api/jobs/list",
+        Employee: "https://server.dev/api/user/list"
+      }
     };
   },
-  created() {
+  mounted() {
     // append daypilot style to head
     let dpStyleLoaded = new Promise(resolve => {
       let dpStyle = document.createElement("link");
@@ -100,57 +110,45 @@ export default {
 
     dpScriptLoaded.then(() => {
       this.dayPilot = new window.DayPilot.Scheduler("dp");
-      this.dayPilot.width = "100%";
-      //this.dayPilot.timeHeaders = [{ groupBy: "Week" }, { groupBy: "Day" }];
-      this.dayPilot.startDate = "2018-04-30T14:30:00";      
-      this.dayPilot.days = 30;
-      //dayPilot.cssClassPrefix = "calendar_white";
-      //dayPilot.viewType = "Week";
-      //dayPilot.heightSpec = "Parent100Pct";
-      //dayPilot.height = 400;
+      this.dayPilot.width = "100%";      
+      this.dayPilot.startDate = "2018-04-30T14:30:00";
+      this.dayPilot.days = 30;     
+      this.dayPilot.heightSpec = "Fixed";
+      this.dayPilot.height = 400;      
 
-      this.dayPilot.resources = [
-        { name: "Room A", id: "A" },
-        { name: "Room B", id: "B" },
-        { name: "Room C", id: "C" },
-        { name: "Room D", id: "D" },
-        { name: "Room E", id: "E" },
-        { name: "Room F", id: "F" },
-        { name: "Room G", id: "G" },
-        { name: "Room H", id: "H" },
-        { name: "Room I", id: "I" },
-        { name: "Room J", id: "J" },
-        { name: "Room K", id: "K" },
-        { name: "Room L", id: "L" }
-      ];
-
-      this.dayPilot.events.list = [
-        {
-          id: "B",
-          text: "Calendar Event 5",
-          start: "2018-05-05T10:30:00",
-          end: "2018-05-05T16:30:00",
-          resource: "B"
-        },
-        {
-          id: "A",
-          text: "Calendar Event 6",
-          start: "2018-05-05T09:00:00",
-          end: "2018-05-05T14:30:00",
-          resource: "A"
-        },
-        {
-          id: "C",
-          text: "Calendar Event 7",
-          start: "2018-05-05T12:00:00",
-          end: "2018-05-08T16:00:00",
-          resource: "C"
-        }
-      ];
-      this.dayPilot.init();
+      EventBus.$on('sidebar-updated', this.makeDragable);
+      EventBus.$emit("sidebar-update", this.eventType);
+      this.fetchResorce().then(() => {
+        this.dayPilot.init();           
+      });
     });
   },
   methods: {
+    fetchResorce: function() {
+      return new Promise(resolve => {
+        axios
+          .get(this.urls[this.resourcetype], {
+            headers: { Accept: "application/json" }
+          })
+          .then(respond => {           
+            let data = Object.values(respond.data).map((item, index) => {
+              if (this.resourcetype === "Job") return { id: item.id, name: item.title };
+              else return { id: item.user_id, name: item.user_name };
+            });
+            this.dayPilot.resources = data;
+            resolve();
+          });
+      });
+    },
+
+    changeType: function(event) {
+      this.resourcetype = event.target.value;
+      this.eventType = event.target.value === "Job" ? "Employee" : "Job";
+      EventBus.$emit("sidebar-update", this.eventType);      
+      this.fetchResorce().then(() => {        
+        this.dayPilot.update();               
+      });      
+    },
     changeScale: function(event) {
       event.preventDefault();
       this.dayPilot.scale = event.target.value;
@@ -161,44 +159,58 @@ export default {
       this.dayPilot.startDate = event.target.value + "T00:00:00";
       this.dayPilot.update();
     },
-    fetchResources(){
-
-    },
-    fetchEvents(){
-
+    makeDragable() {      
+      var parent = document.getElementById("resource");      
+      var items = parent.getElementsByTagName("li");      
+      for (var i = 0; i < items.length; i++) {
+        var e = items[i];        
+        var item = {
+          element: e,
+          id: e.getAttribute("data-id"),
+          text: e.innerText,
+          keepElement: true,
+          duration: e.getAttribute("data-duration")
+        };        
+        window.DayPilot.Scheduler.makeDraggable(item);         
+      }
+      this.dayPilot.update();  
     }
   }
 };
 </script>
 <style scoped>
-  input[type="date"]{
-    font-size: 10px;
-    padding: 5px;
-    height: 25px;
-    border: 1px #d9d9d9 solid;
-    border-radius: 3px;
-  } 
+#dp {
+  background-color: white !important;
+}
 
-  .select{
-    font-size: 10px !important;
-    padding: 5px !important;
-    height: 25px !important;
-    min-width: 80px !important;
-    border-radius: 3px !important;
-  }
+input[type="date"] {
+  font-size: 10px;
+  padding: 5px;
+  height: 25px;
+  border: 1px #d9d9d9 solid;
+  border-radius: 3px;
+}
 
-  .inline-form{
-    vertical-align: bottom !important;
-  }
+.select {
+  font-size: 10px !important;
+  padding: 5px !important;
+  height: 25px !important;
+  min-width: 80px !important;
+  border-radius: 3px !important;
+}
 
-  .form-group{
-    margin-top: 1rem !important;
-    margin-bottom: 1rem !important;
-    padding-left: 7px;
-  }
+.inline-form {
+  vertical-align: bottom !important;
+}
 
-  .label{
-    font-size: 15px !important;
-    vertical-align: bottom !important;
-  }
+.form-group {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+  padding-left: 7px;
+}
+
+.label {
+  font-size: 15px !important;
+  vertical-align: bottom !important;
+}
 </style>

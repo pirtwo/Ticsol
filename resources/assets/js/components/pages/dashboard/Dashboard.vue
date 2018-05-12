@@ -6,7 +6,7 @@
         <main class="cell-sm-12 dashboard">
             <div id="dash-nav" data-role="navview">
                 <div class="navview-pane">
-                    <main-nav></main-nav>
+                    <sidebar></sidebar>
                 </div>
 
                 <div class="navview-content">
@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import MainMenu from "../../framework/menu/NavView.vue";
+import Sidebar from "../../framework/menu/NavView.vue";
 import IconbarTop from "../../framework/iconbar/IconbarTop.vue";
 import IconbarBot from "../../framework/iconbar/IconbarBot.vue";
 
 export default {
   components: {
-    "main-nav": MainMenu,
+    "sidebar": Sidebar,
     "iconbar-top": IconbarTop,
     "iconbar-bot": IconbarBot
   },

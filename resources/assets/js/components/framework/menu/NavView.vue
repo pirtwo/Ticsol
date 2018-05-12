@@ -14,71 +14,77 @@
             <li class="active">
                 <a href="#">
                     <span class="icon">
-                        <span class="mif-dashboard"></span>
+                        <span class="mif-stack"></span>
                     </span>
-                    <span class="caption">Dashboard</span>
+                    <span class="caption">Resource</span>
                 </a>
             </li>
 
             <li class="item-separator"></li>
-            <li class="item-header">Menu</li>
-
-            <li>
-                <a href="#">
-                    <span class="icon">
-                        <span class="mif-event-available"></span>
-                    </span>
-                    <span class="caption">Work Availabites</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="dropdown-toggle">
-                    <span class="icon">
-                        <span class="mif-books"></span>
-                    </span>
-                    <span class="caption">Bank Details</span>
-                </a>
-                <ul class="navview-menu" data-role="dropdown">
-                    <li>
-                        <a href="#">
-                            <span class="icon">
-                                <span class="mif-balance-scale"></span>
-                            </span>
-                            <span class="caption">Leave Balances</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="icon">
-                                <span class="mif-balance-scale"></span>
-                            </span>
-                            <span class="caption">Leave Balances</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon">
-                        <span class="mif-balance-scale"></span>
-                    </span>
-                    <span class="caption">Leave Balances</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon">
-                        <span class="mif-dollars"></span>
-                    </span>
-                    <span class="caption">Payment Summary</span>
-                </a>
-            </li>
-        </ul>
+           
+            <div id="resource">                
+                <template v-if="resType === 'Job'">
+                    <template v-for="res in resource">  
+                        <li :key="res.id" v-bind:data-id="res.id">
+                            <a href="#">
+                                <span class="caption">{{ res.title }}</span>
+                            </a>                        
+                        </li>
+                    </template>  
+                </template>  
+                <template v-else>
+                    <template v-for="res in resource">  
+                        <li :key="res.user_id" v-bind:data-id="res.user_id">
+                            <a href="#">
+                                <span class="caption">{{ res.user_name }}</span>
+                            </a>                        
+                        </li>
+                    </template>  
+                </template>                 
+            </div>           
+        </ul>       
     </nav>
 </template>
 <script>
-export default {};
+import { EventBus } from "../../../event-bus.js";
+import axios from "axios";
+export default {
+  data() {
+    return {
+      message: "",
+      resType: "Job",
+      resource: "",
+      urls: {
+        Job: "https://server.dev/api/jobs/list",
+        Employee: "https://server.dev/api/user/list"
+      }
+    };
+  },
+  mounted() {
+    // subscribe to 'sidebar-update' chanel for updating sidebar resources
+    EventBus.$on("sidebar-update", resource => {
+      if (["Job", "Employee"].indexOf(resource) !== -1) {
+        this.resType = resource;
+        this.fetchResource(this.resType);
+      }
+    });
+  },
+  updated() {
+      EventBus.$emit("sidebar-updated");
+  },
+  methods: {
+    fetchResource: function(res) {
+      axios
+        .get(this.urls[res], { headers: { Accept: "application/json" } })
+        .then(respond => {          
+          this.resource = respond.data;         
+        });
+    }
+  }
+};
 </script>
 <style scoped>
-
+#resource li a {
+  cursor: move !important;
+}
 </style>
