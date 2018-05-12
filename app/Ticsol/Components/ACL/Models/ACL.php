@@ -3,12 +3,14 @@
 namespace App\Ticsol\Components\Models;
 
 use App\Ticsol\Components\Models;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class ACL extends Model
 {
     protected $table = 'ts_acl';
     protected $primaryKey = 'acl_id';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

@@ -4,6 +4,7 @@ namespace App\Ticsol\Components\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 use App\Ticsol\Components\Models;
 
@@ -13,6 +14,7 @@ class User extends Authenticatable
 
     protected $table = 'ts_users';
     protected $primaryKey = 'user_id';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +27,6 @@ class User extends Authenticatable
         'user_password',
         'user_isowner',
         'client_id',
-        'role_id',
     ];
 
     /**
@@ -34,7 +35,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'user_password', 'remember_token',
+        'user_password',
     ];
 
     public function getAuthPassword()
@@ -49,33 +50,67 @@ class User extends Authenticatable
 
     // Eloquent Relationships
 
+    /**
+     * User associated client.
+     */
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
 
+    /**
+     * User roles in system.
+     */
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
     }
 
+    /**
+     * User drafted requests.
+     */
     public function requests()
     {
         return $this->hasMany(Request::class);
     }
 
+    /**
+     * Assigned requests to the current user.
+     */
     public function assignedRequests()
     {
         return $this->hasMany(Request::class);
     }
 
+    /**
+     * User schedule items.
+     */
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
     }
 
+    /**
+     * User contacts.
+     */
     public function contacts()
     {
         return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * User password reset tokens.
+     */
+    public function resetToken()
+    {
+        return $this->hasMany(PasswordReset::class);
+    }
+
+    /**
+     * Invitations sended by user.
+     */
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
     }
 }

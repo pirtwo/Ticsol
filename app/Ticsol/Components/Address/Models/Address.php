@@ -3,12 +3,14 @@
 namespace App\Ticsol\Components\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Ticsol\Components\Models;
 
 class Address extends Model
 {    
     protected $table = 'ts_Addresses';
     protected $primaryKey = 'address_id';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

@@ -3,12 +3,14 @@
 namespace App\Ticsol\Components\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Ticsol\Components\Models;
 
 class Role extends Model
 {
     protected $table = 'ts_roles';
     protected $primaryKey = 'role_id';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
