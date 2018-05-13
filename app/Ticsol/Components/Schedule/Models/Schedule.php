@@ -20,10 +20,11 @@ class Schedule extends Model
     protected $fillable = [
         'schedule_status',
         'schedule_type',
-        'schedule_event',
+        'schedule_event_type',
         'schedule_start',
         'schedule_end',
         'schedule_offsite',
+        'schedule_breake_length',
         'user_id',
         'job_id',
     ];

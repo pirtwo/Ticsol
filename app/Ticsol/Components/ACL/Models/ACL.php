@@ -18,6 +18,7 @@ class ACL extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'role_id',
         'client_id',
         'resource_id',

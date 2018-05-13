@@ -7,7 +7,8 @@ use App\Ticsol\Components\Models;
 
 class PasswordReset extends Model
 {    
-    protected $table = 'ts_password_reset';    
+    protected $table = 'ts_password_reset'; 
+    protected $primaryKey = 'passreset_id';   
 
     /**
      * The attributes that are mass assignable.
@@ -16,8 +17,8 @@ class PasswordReset extends Model
      */
     protected $fillable = [
         'user_id',
-        'email',
-        'token',        
+        'passreset_email',
+        'passreset_token',        
     ];
 
     /**

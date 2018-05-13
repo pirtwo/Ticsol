@@ -67,6 +67,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Roles created by current user.
+     */
+    public function createdRoles()
+    {
+        return $this->hasMany(Role::class);
+    }
+
+    /**
      * User drafted requests.
      */
     public function requests()

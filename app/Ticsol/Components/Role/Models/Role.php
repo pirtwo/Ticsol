@@ -36,6 +36,11 @@ class Role extends Model
         $this->belongsToMany(User::class);
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function ACLs()
     {
         return $this->hasMany(ACL::class);

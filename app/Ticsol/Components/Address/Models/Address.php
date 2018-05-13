@@ -18,6 +18,8 @@ class Address extends Model
      * @var array
      */
     protected $fillable = [
+        'contact_id',
+        'address_id',
         'address_unit',
         'address_street',
         'address_suburb',
@@ -36,6 +38,6 @@ class Address extends Model
 
     public function contact()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Contact::class, 'contact_id');
     }
 }
