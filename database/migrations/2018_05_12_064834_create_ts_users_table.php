@@ -13,8 +13,31 @@ class CreateTsUsersTable extends Migration
      */
     public function up()
     {
+        
+        Schema::create('ts_users', function (Blueprint $table) {
+            
+            // Keys
+            $table->increments('user_id')
+                ->primary();
+            $table->unsignedInteger('client_id');
+
+            // Attributes
+            $table->string('user_name');
+            $table->string('user_email')
+                ->unique();
+            $table->string('user_password');
+            $table->boolean('user_isowner');
+            $table->json('user_settings');            
+            $table->softDeletes();
+            $table->timestamps();           
+        });
+        
+
         Schema::table('ts_users', function (Blueprint $table) {
-            //
+            $table->foreign('client_id')
+                ->references('client_id')
+                ->on('ts_clients')
+                ->onDelete('cascade');
         });
     }
 

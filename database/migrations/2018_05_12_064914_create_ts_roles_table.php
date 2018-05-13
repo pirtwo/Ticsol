@@ -13,8 +13,25 @@ class CreateTsRolesTable extends Migration
      */
     public function up()
     {
+        
+        Schema::create('ts_roles', function (Blueprint $table) {
+            
+            // Keys
+            $table->increments('id')
+                ->primary();
+            $table->unsignedInteger('user_id');
+
+            // Attributes
+            $table->string('role_name');            
+            $table->softDeletes();
+            $table->timestamps();
+        });
+        
         Schema::table('ts_roles', function (Blueprint $table) {
-            //
+            $table->foreign('user_id')
+                ->references('user_id')
+                ->on('ts_users')
+                ->onDelete('cascade');
         });
     }
 

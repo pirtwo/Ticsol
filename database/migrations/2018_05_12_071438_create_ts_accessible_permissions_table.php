@@ -12,9 +12,29 @@ class CreateTsAccessiblePermissionsTable extends Migration
      * @return void
      */
     public function up()
-    {
+    {        
+        Schema::create('ts_accessible_permissions', function (Blueprint $table) {
+            
+            // Keys
+            $table->unsignedInteger('resource_id');
+            $table->unsignedInteger('permission_id');
+
+            // Attributes
+            $table->softDeletes();
+            $table->timestamps();
+        });
+        
         Schema::table('ts_accessible_permissions', function (Blueprint $table) {
-            //
+            
+            $table->foreign('resource_id')
+                ->references('resource_id')
+                ->on('ts_resources')
+                ->onDelete('cascade');
+
+            $table->foreign('permission_id')
+                ->references('permission_id')
+                ->on('ts_permissions')
+                ->onDelete('cascade');
         });
     }
 

@@ -13,6 +13,19 @@ class CreateTsPermissionsTable extends Migration
      */
     public function up()
     {
+        
+        Schema::create('ts_permissions', function (Blueprint $table) {
+            
+            // Keys
+            $table->increments('permission_id')
+                ->primary();
+
+            // Attributes
+            $table->string('permission_name');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+        
         Schema::table('ts_permissions', function (Blueprint $table) {
             //
         });
