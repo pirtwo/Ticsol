@@ -17,8 +17,7 @@ class CreateTsInvitationsTable extends Migration
         Schema::create('ts_invitations', function (Blueprint $table) {
             
             // Keys
-            $table->increments('invitation_id')
-                ->primary();
+            $table->increments('invitation_id');
             $table->unsignedInteger('user_id');
             
             // Attributes

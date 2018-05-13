@@ -17,13 +17,13 @@ class CreateTsActivitiesTable extends Migration
         Schema::create('ts_activities', function (Blueprint $table) {
             
             // Keys
-            $table->increments('activity_id')->primary();
+            $table->increments('activity_id');
             $table->unsignedInteger('schedule_id');
 
             // Attributes
             $table->dateTime('activity_from');
             $table->dateTime('activity_till');
-            $table->dateTime('activity_desc');
+            $table->mediumText('activity_desc');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,7 +32,7 @@ class CreateTsActivitiesTable extends Migration
             
             $table->foreign('schedule_id')
                 ->references('schedule_id')
-                ->on('schedules')
+                ->on('ts_schedules')
                 ->onDelete('cascade');
         });
     }

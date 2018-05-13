@@ -17,8 +17,7 @@ class CreateTsJobsTable extends Migration
         Schema::create('ts_jobs', function (Blueprint $table) {
             
             // Keys
-            $table->increments('job_id')
-                ->primary();
+            $table->increments('job_id');
             $table->unsignedInteger('parent_id')
                 ->nullable();
 

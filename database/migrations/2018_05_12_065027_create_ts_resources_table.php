@@ -17,8 +17,7 @@ class CreateTsResourcesTable extends Migration
         Schema::create('ts_resources', function (Blueprint $table) {
             
             // Keys
-            $table->increments('resource_id')
-                ->primary();
+            $table->increments('resource_id');
 
             // Attributes
             $table->string('resource_name');

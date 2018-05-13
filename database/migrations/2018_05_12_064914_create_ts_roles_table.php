@@ -17,8 +17,7 @@ class CreateTsRolesTable extends Migration
         Schema::create('ts_roles', function (Blueprint $table) {
             
             // Keys
-            $table->increments('id')
-                ->primary();
+            $table->increments('role_id');
             $table->unsignedInteger('user_id');
 
             // Attributes

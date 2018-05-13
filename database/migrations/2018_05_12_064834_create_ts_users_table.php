@@ -17,8 +17,7 @@ class CreateTsUsersTable extends Migration
         Schema::create('ts_users', function (Blueprint $table) {
             
             // Keys
-            $table->increments('user_id')
-                ->primary();
+            $table->increments('user_id');
             $table->unsignedInteger('client_id');
 
             // Attributes

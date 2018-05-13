@@ -17,8 +17,7 @@ class CreateTsSchedulesTable extends Migration
         Schema::create('ts_schedules', function (Blueprint $table) {
             
             // Keys
-            $table->increments('schedule_id')
-                ->primary();
+            $table->increments('schedule_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('job_id');     
             
@@ -35,7 +34,15 @@ class CreateTsSchedulesTable extends Migration
         });
         
         Schema::table('ts_schedules', function (Blueprint $table) {
-            //
+            $table->foreign('user_id')
+                ->references('user_id')
+                ->on('ts_users')
+                ->onDelete('cascade');
+
+            $table->foreign('job_id')
+                ->references('job_id')
+                ->on('ts_jobs')
+                ->onDelete('cascade');
         });
     }
 

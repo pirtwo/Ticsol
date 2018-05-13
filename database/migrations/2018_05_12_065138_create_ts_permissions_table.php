@@ -17,8 +17,7 @@ class CreateTsPermissionsTable extends Migration
         Schema::create('ts_permissions', function (Blueprint $table) {
             
             // Keys
-            $table->increments('permission_id')
-                ->primary();
+            $table->increments('permission_id');
 
             // Attributes
             $table->string('permission_name');

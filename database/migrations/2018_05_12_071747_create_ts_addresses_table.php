@@ -17,8 +17,7 @@ class CreateTsAddressesTable extends Migration
         Schema::create('ts_addresses', function (Blueprint $table) {
             
             // Keys
-            $table->increments('address_id')
-                ->primary();
+            $table->increments('address_id');
             $table->unsignedInteger('contact_id');
 
             // Attributes

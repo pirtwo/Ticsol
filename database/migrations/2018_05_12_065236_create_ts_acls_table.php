@@ -17,8 +17,7 @@ class CreateTsAclsTable extends Migration
         Schema::create('ts_acls', function (Blueprint $table) {
             
             // Keys
-            $table->increments('acl_id')
-                ->primary();
+            $table->increments('acl_id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('role_id');

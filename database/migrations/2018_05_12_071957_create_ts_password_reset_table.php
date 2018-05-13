@@ -17,8 +17,7 @@ class CreateTsPasswordResetTable extends Migration
         Schema::create('ts_password_reset', function (Blueprint $table) {
             
             // Keys
-            $table->increments('passreset_id')
-                ->primary();
+            $table->increments('passreset_id');
             $table->unsignedInteger('user_id');
             
             // Attributes
