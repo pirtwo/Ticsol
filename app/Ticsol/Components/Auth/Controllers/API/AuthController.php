@@ -96,7 +96,6 @@ class AuthController extends Controller
             $res = app()->handle($req);
 
             if ($res->status() === 200) {
-
                 $body = json_decode($res->getContent());
 
                 // attach the cookie with refresh_token to response

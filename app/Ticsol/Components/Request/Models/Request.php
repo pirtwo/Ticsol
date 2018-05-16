@@ -35,18 +35,31 @@ class Request extends Model
 
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * The owner of current request.
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * The assigned user to current request.
+     */
     public function assigned()
     {
         return $this->belongsTo(User::class, 'assigned_id');
     }
 
+    /**
+     * Assosiated job to current request.
+     */
     public function job()
     {
         return $this->belongsTo(Job::class, 'job_id');
     }
+
+    #endregion
 }

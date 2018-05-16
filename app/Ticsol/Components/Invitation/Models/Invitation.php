@@ -32,8 +32,15 @@ class Invitation extends Model
         
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * The sender of current invitation.
+     */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
+
+    #endregion
 }

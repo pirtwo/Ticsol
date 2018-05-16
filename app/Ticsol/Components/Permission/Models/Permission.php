@@ -30,13 +30,23 @@ class Permission extends Model
 
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * Assosiated ACL rules to current permission.
+     */
     public function ACLs()
     {
         return $this->hasMany(ACL::class);
     }
 
+    /**
+     * Availible resources for current permission.
+     */
     public function resources()
     {
         return $this->blongsToMany(Resource::class, 'accessible_permissions', 'permission_id', 'resource_id');
     }
+
+    #endregion
 }

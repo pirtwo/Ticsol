@@ -36,8 +36,15 @@ class Address extends Model
         
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * Associated contact to current address.
+     */
     public function contact()
     {
         return $this->belongsTo(Contact::class, 'contact_id');
     }
+
+    #endregion
 }

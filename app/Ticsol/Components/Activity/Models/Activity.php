@@ -31,10 +31,17 @@ class Activity extends Model
      */
     protected $hidden = [
 
-    ];
+    ];    
 
+    #region Eloquent_Relationships
+
+    /**
+     * Associated schedule to current activity.
+     */
     public function schedule()
     {
-        return $this->belongsTo(Schedule::class);
+        return $this->belongsTo(Schedule::class, 'schedule_id');
     }
+
+    #endregion
 }

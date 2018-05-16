@@ -33,23 +33,40 @@ class Job extends Model
         
     ];
 
+
+    #region Eloquent_Relationships
+
+    /**
+     * Assosiated requests to current job.
+     */
     public function Requests()
     {
         return $this->hasMany(Request::class);
     }
 
+    /**
+     * Assosiated schedules to current job.
+     */
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
     }
 
+    /**
+     * Parent of current job.
+     */
     public function parent()
     {
         return $this->belongsTo(Job::class, 'parent_id');
     }
 
+    /**
+     * Childs of current job.
+     */
     public function childs()
     {
         return $this->hasMany(Job::class, 'parent_id');
     }
+
+    #regionend
 }

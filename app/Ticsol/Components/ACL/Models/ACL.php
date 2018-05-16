@@ -34,23 +34,40 @@ class ACL extends Model
 
     ];
 
+
+    #region Eloquent_Relationships
+
+    /**
+     * Owner of current ACL rule.
+     */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
+    /**
+     * Effectied role by current rule.
+     */
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
+    /**
+     * Effectied permission by current rule.
+     */
     public function permission()
     {
-        return $this->belongsTo(Permission::class);
+        return $this->belongsTo(Permission::class, 'permission_id');
     }
 
+    /**
+     * Effectied resource by current rule.
+     */
     public function resource()
     {
-        return $this->belongsTo(Resource::class);
+        return $this->belongsTo(Resource::class, 'resource_id');
     }
+
+    #endregion
 }

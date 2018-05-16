@@ -38,18 +38,31 @@ class Schedule extends Model
 
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * Assosiated user to current schedule item.
+     */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * Assosiated job to current schedule item.
+     */
     public function job()
     {
-        return $this->belongsTo(Job::class);
+        return $this->belongsTo(Job::class, 'job_id');
     }
 
+    /**
+     * Current schedule item activities.
+     */
     public function activities()
     {
         return $this->hasMany(Activity::class);
     }
+
+    #endregion
 }

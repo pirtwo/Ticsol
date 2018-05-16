@@ -34,8 +34,15 @@ class Bank extends Model
         
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * Associated contact to current bank.
+     */
     public function contact()
     {
         return $this->belongsTo(Contact::class, 'contact_id');
     }
+
+    #endregion
 }

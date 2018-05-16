@@ -48,10 +48,10 @@ class User extends Authenticatable
     }
 
 
-    // Eloquent Relationships
+    #region Eloquent Relationships
 
     /**
-     * User associated client.
+     * Assosiated client to current user.
      */
     public function client()
     {
@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
 
     /**
-     * User roles in system.
+     * Roles of current user.
      */
     public function roles()
     {
@@ -75,7 +75,7 @@ class User extends Authenticatable
     }
 
     /**
-     * User drafted requests.
+     * Requests of current user.
      */
     public function requests()
     {
@@ -115,10 +115,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Invitations sended by user.
+     * Invitations sended by current user.
      */
     public function invitations()
     {
         return $this->hasMany(Invitation::class);
     }
+
+    #endregion
 }

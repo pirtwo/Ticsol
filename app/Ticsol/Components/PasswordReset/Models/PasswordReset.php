@@ -30,8 +30,15 @@ class PasswordReset extends Model
         
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * The owner of password reset token.
+     */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
+
+    #endregion
 }

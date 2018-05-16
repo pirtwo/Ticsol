@@ -30,13 +30,23 @@ class Client extends Model
 
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * Associated users to current client.
+     */
     public function users()
     {
         return $this->hasMany(User::class);
     }
 
+    /**
+     * Client ACL rules.
+     */
     public function ACLs()
     {
         return $this->hasMany(ACL::class);
     }
+
+    #endregion
 }

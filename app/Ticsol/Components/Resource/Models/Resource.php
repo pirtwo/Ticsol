@@ -30,13 +30,23 @@ class Resource extends Model
 
     ];
 
+    #region Eloquent_Relationships
+
+    /**
+     * Assosiated ACL rules to current resource.
+     */
     public function ACLs()
     {
         return $this->hasMany(ACL::class);
     }
 
+    /**
+     * Availible permissions for current resource.
+     */
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }
+
+    #endregion
 }
