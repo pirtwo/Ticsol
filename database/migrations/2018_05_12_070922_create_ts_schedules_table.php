@@ -18,13 +18,13 @@ class CreateTsSchedulesTable extends Migration
             
             // Keys
             $table->increments('schedule_id');
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('job_id');     
             
             // Attributes
-            $table->string('schedule_status');
-            $table->string('schedule_type');
-            $table->string('schedule_event_type');
+            $table->string('schedule_type');  
+            $table->string('schedule_status');                      
             $table->dateTime('schedule_start');
             $table->dateTime('schedule_end');
             $table->integer('schedule_offsite');
@@ -33,7 +33,12 @@ class CreateTsSchedulesTable extends Migration
             $table->timestamps();
         });
         
-        Schema::table('ts_schedules', function (Blueprint $table) {
+        Schema::table('ts_schedules', function (Blueprint $table) {            
+            $table->foreign('creator_id')
+                ->references('user_id')
+                ->on('ts_users')
+                ->onDelete('cascade');
+
             $table->foreign('user_id')
                 ->references('user_id')
                 ->on('ts_users')

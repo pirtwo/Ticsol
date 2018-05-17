@@ -32,7 +32,7 @@ class CreateTsJobContactsTable extends Migration
                 ->on('ts_contacts')
                 ->onDelete('cascade');
 
-            $table->foreign('job_id')
+            $table->foreign('parent_id')
                 ->references('job_id')
                 ->on('ts_jobs')
                 ->onDelete('cascade');

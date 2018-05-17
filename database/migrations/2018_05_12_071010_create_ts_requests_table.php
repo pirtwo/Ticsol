@@ -21,6 +21,8 @@ class CreateTsRequestsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('job_id');
             $table->unsignedInteger('assigned_id');
+            $table->unsignedInteger('form_id')
+                ->nullable();
 
             // Attributes
             $table->string('request_type');

@@ -20,11 +20,15 @@ class CreateTsJobsTable extends Migration
             $table->increments('job_id');
             $table->unsignedInteger('parent_id')
                 ->nullable();
+            $table->unsignedInteger('form_id')
+                ->nullable();
 
             // Attributes
             $table->string('job_title');
             $table->integer('job_code');
             $table->boolean('job_isactive');
+            $table->json('job_meta')
+                ->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,7 +37,7 @@ class CreateTsJobsTable extends Migration
             $table->foreign('parent_id')
                 ->references('job_id')
                 ->on('ts_jobs')
-                ->onDelete('cascade');
+                ->onDelete('cascade');            
         });
     }
 

@@ -18,10 +18,12 @@ class Job extends Model
      * @var array
      */
     protected $fillable = [
+        'parent_id',
+        'form_id',
         'job_title',
         'job_code',
-        'job_isactive',
-        'parent_id'
+        'job_isactive', 
+        'job_meta',       
     ];
 
     /**
@@ -66,6 +68,14 @@ class Job extends Model
     public function childs()
     {
         return $this->hasMany(Job::class, 'parent_id');
+    }
+
+    /**
+     * Assosiated form to current job.
+     */
+    public function form()
+    {
+        return $this->belongsTo(Form::class, 'form_id');
     }
 
     #regionend

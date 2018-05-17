@@ -26,7 +26,8 @@ class CreateTsUsersTable extends Migration
                 ->unique();
             $table->string('user_password');
             $table->boolean('user_isowner');
-            $table->json('user_settings');            
+            $table->json('user_settings')
+                ->nullable();            
             $table->softDeletes();
             $table->timestamps();           
         });

@@ -41,6 +41,14 @@ class Client extends Model
     }
 
     /**
+     * Client created forms.
+     */
+    public function forms()
+    {
+        return $this->hasMany(Form::class);
+    }
+
+    /**
      * Client ACL rules.
      */
     public function ACLs()

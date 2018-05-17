@@ -18,7 +18,8 @@ class CreateTsContactsTable extends Migration
             
             // Keys
             $table->increments('contact_id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')
+                ->nullable();
 
             // Attributes
             $table->string('contact_group');

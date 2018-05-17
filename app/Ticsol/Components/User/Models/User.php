@@ -75,6 +75,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Schedule items created by current user.
+     */
+    public function createdSchedules()
+    {
+        return $this->hasMany(Schedule::class, 'creator_id', 'user_id');
+    }
+
+    /**
+     * Forms created by current user.
+     */
+    public function createdForms()
+    {
+        return $this->hasMany(Form::class);
+    }
+
+    /**
      * Requests of current user.
      */
     public function requests()
@@ -91,11 +107,11 @@ class User extends Authenticatable
     }
 
     /**
-     * User schedule items.
+     * User scheduled items.
      */
     public function schedules()
     {
-        return $this->hasMany(Schedule::class);
+        return $this->hasMany(Schedule::class, 'user_id', 'user_id');
     }
 
     /**

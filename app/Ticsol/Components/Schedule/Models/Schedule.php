@@ -18,15 +18,15 @@ class Schedule extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
+        'job_id',
+        'creator_id',
         'schedule_status',
-        'schedule_type',
-        'schedule_event_type',
+        'schedule_type',        
         'schedule_start',
         'schedule_end',
         'schedule_offsite',
-        'schedule_breake_length',
-        'user_id',
-        'job_id',
+        'schedule_breake_length',        
     ];
 
     /**
@@ -39,6 +39,11 @@ class Schedule extends Model
     ];
 
     #region Eloquent_Relationships
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
 
     /**
      * Assosiated user to current schedule item.

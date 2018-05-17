@@ -23,7 +23,8 @@ class Request extends Model
         'user_id',
         'assigned_id',
         'job_id',
-        'meta',
+        'form_id',
+        'request_meta',
     ];
 
     /**
@@ -59,6 +60,11 @@ class Request extends Model
     public function job()
     {
         return $this->belongsTo(Job::class, 'job_id');
+    }
+
+    public function form()
+    {
+        return $this->belongsTo(Form::class, 'form_id');
     }
 
     #endregion
