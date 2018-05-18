@@ -25,6 +25,6 @@ class JobController extends Controller{
     }
     
     public function get(){        
-        return response()->json($this->data, 200);        
+        return response()->json($this->data, 201);        
     }
 }

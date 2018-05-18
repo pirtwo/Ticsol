@@ -68,7 +68,7 @@ class AuthController extends Controller
                 ->update(['revoked' => true]);
             $token->revoke();
             $request->cookie->forget(self::REFRESH_TOKEN);
-            return Response(['success' => true, 'msg' => 'You logout successfuly.']);
+            return Response(['success' => true, 'msg' => 'You loggedout successfuly.']);
         } catch (Exception $e) {
             $this->handelError($e);
         }
@@ -103,7 +103,7 @@ class AuthController extends Controller
                     'access_token' => $body->access_token,
                     'expires_in' => $body->expires_in,
                 ])->cookie(self::REFRESH_TOKEN, $body->refresh_token, self::COOKIE_LIFE_TIME, null, null, false, true);
-
+                
             } else {
                 throw new \Exception('Invalid Credentials.', 0, null);
             }
