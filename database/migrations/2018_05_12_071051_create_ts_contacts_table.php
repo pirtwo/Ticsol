@@ -25,7 +25,8 @@ class CreateTsContactsTable extends Migration
             $table->string('contact_group');
             $table->string('contact_firstname');
             $table->string('contact_lastname');
-            $table->string('contact_telephone');
+            $table->string('contact_telephone')
+                ->nullable();
             $table->string('contact_mobilephone');
             $table->softDeletes();
             $table->timestamps();

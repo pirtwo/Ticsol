@@ -24,7 +24,7 @@ class CreateTsBanksTable extends Migration
             $table->string('bank_bsb');
             $table->string('bank_acc_name');
             $table->string('bank_acc_number');
-            $table->string('bank_split');            
+            $table->float('bank_split');            
             $table->softDeletes();
             $table->timestamps();
         });

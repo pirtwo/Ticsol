@@ -21,9 +21,11 @@ class CreateTsAddressesTable extends Migration
             $table->unsignedInteger('contact_id');
 
             // Attributes
-            $table->string('address_unit');
+            $table->string('address_unit')
+                ->nullable();
+            $table->string('address_number');
             $table->string('address_street');
-            $table->string('address_subrb');
+            $table->string('address_suburb');
             $table->string('address_country');
             $table->string('address_postcode');            
             $table->softDeletes();

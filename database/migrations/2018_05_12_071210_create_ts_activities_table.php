@@ -22,7 +22,8 @@ class CreateTsActivitiesTable extends Migration
 
             // Attributes
             $table->dateTime('activity_from');
-            $table->dateTime('activity_till');
+            $table->dateTime('activity_till')
+                ->nullable();
             $table->mediumText('activity_desc');
             $table->softDeletes();
             $table->timestamps();

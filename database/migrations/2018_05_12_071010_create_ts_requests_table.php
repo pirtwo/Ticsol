@@ -26,7 +26,9 @@ class CreateTsRequestsTable extends Migration
 
             // Attributes
             $table->string('request_type');
-            $table->string('request_status');    
+            $table->string('request_status');
+            $table->json('request_meta')
+                ->nullable();    
             $table->softDeletes();
             $table->timestamps();
         });
