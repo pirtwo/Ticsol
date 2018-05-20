@@ -82,7 +82,7 @@ export default {
       }
     };
   },
-  mounted() {
+  created() {
     // append daypilot style to head
     let dpStyleLoaded = new Promise(resolve => {
       let dpStyle = document.createElement("link");
@@ -107,21 +107,24 @@ export default {
       };
       document.body.appendChild(dpScript);
     });
-
+    
     dpScriptLoaded.then(() => {
       this.dayPilot = new window.DayPilot.Scheduler("dp");
-      this.dayPilot.width = "100%";      
+      this.dayPilot.width = "100%";
       this.dayPilot.startDate = "2018-04-30T14:30:00";
-      this.dayPilot.days = 30;     
+      this.dayPilot.days = 30;
       this.dayPilot.heightSpec = "Fixed";
-      this.dayPilot.height = 400;      
+      this.dayPilot.height = 400;
 
-      EventBus.$on('sidebar-updated', this.makeDragable);
+      EventBus.$on("sidebar-updated", this.makeDragable);
       EventBus.$emit("sidebar-update", this.eventType);
       this.fetchResorce().then(() => {
-        this.dayPilot.init();           
+        this.dayPilot.init();
       });
     });
+  },
+  mounted() {
+    
   },
   methods: {
     fetchResorce: function() {
@@ -130,9 +133,10 @@ export default {
           .get(this.urls[this.resourcetype], {
             headers: { Accept: "application/json" }
           })
-          .then(respond => {           
+          .then(respond => {
             let data = Object.values(respond.data).map((item, index) => {
-              if (this.resourcetype === "Job") return { id: item.id, name: item.title };
+              if (this.resourcetype === "Job")
+                return { id: item.id, name: item.title };
               else return { id: item.user_id, name: item.user_name };
             });
             this.dayPilot.resources = data;
@@ -144,10 +148,10 @@ export default {
     changeType: function(event) {
       this.resourcetype = event.target.value;
       this.eventType = event.target.value === "Job" ? "Employee" : "Job";
-      EventBus.$emit("sidebar-update", this.eventType);      
-      this.fetchResorce().then(() => {        
-        this.dayPilot.update();               
-      });      
+      EventBus.$emit("sidebar-update", this.eventType);
+      this.fetchResorce().then(() => {
+        this.dayPilot.update();
+      });
     },
     changeScale: function(event) {
       event.preventDefault();
@@ -159,21 +163,21 @@ export default {
       this.dayPilot.startDate = event.target.value + "T00:00:00";
       this.dayPilot.update();
     },
-    makeDragable() {      
-      var parent = document.getElementById("resource");      
-      var items = parent.getElementsByTagName("li");      
+    makeDragable() {
+      var parent = document.getElementById("resource");
+      var items = parent.getElementsByTagName("li");
       for (var i = 0; i < items.length; i++) {
-        var e = items[i];        
+        var e = items[i];
         var item = {
           element: e,
           id: e.getAttribute("data-id"),
           text: e.innerText,
           keepElement: true,
           duration: e.getAttribute("data-duration")
-        };        
-        window.DayPilot.Scheduler.makeDraggable(item);         
+        };
+        window.DayPilot.Scheduler.makeDraggable(item);
       }
-      this.dayPilot.update();  
+      this.dayPilot.update();
     }
   }
 };

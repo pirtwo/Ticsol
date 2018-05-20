@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" v-model="password" placeholder="Enter password here..."/>
-                <small class="text-muted">Never share your password in public.</small>
+                <small class="text-muted">Keep your password secret.</small>
             </div>
             <div class="form-group text-center">
                 <router-link :to="{ name : 'register' }">Create account</router-link> <br/>
@@ -22,23 +22,32 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import { mapActions } from "vuex";
 export default {
   name: "Login",
+  ...mapActions(["user/login"]),
   data() {
     return {
       username: "",
       password: ""
     };
   },
+  mounted() {
+    console.log(this.$store);
+  },
   methods: {
     onSubmit() {
-      axios.post("https://server.dev/api/login", {
-        headers: {
-            'Accept' : 'application/json'
-        },
-        body: { 'username' : this.username, 'password' : this.password}
-      });
+      this.$store
+        .dispatch("user/login", {
+          username: this.username,
+          password: this.password
+        })
+        .then(fulfilled => {
+          console.log(fulfilled);
+        })
+        .catch(reason => {
+          console.log(reason);
+        });
     }
   }
 };

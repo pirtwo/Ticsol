@@ -1,0 +1,6 @@
+
+// User and Auth mutations
+export const USER_OBJECT = 'USER_OBJECT';
+export const USRE_TOKKEN = 'USRE_TOKKEN';
+export const USER_AUTHENTICATED = 'USER_AUTHENTICATED';
+export const USER_NOTAUTHENTICATED = 'USER_NOTAUTHENTICATED';
