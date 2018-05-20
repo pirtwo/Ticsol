@@ -3,6 +3,10 @@
 namespace App\Ticsol\Components\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Ticsol\Components\Exceptions\AuthException;
+use App\Ticsol\Components\Models\Invitation;
+use App\Ticsol\Components\Models\PasswordReset;
+use App\Ticsol\Components\Models\Role;
 use App\Ticsol\Components\Models\User;
 use App\Ticsol\Components\Requests\LoginRequest;
 use Illuminate\Http\Request;
@@ -22,22 +26,20 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        try {     
-            
-            // Validate user input
-            $validate = $request->validate(); 
-                        
-            $user = User::where('user_name', $request->json('body.username'))->first();
+        try {
+
+            $user = User::where('user_name', $request->json('username'))->first();
             if ($user != null) {
                 return $this->proxy('password', [
-                    'username' => $request->json('body.username'),
-                    'password' => $request->json('body.password'),
+                    'username' => $request->json('username'),
+                    'password' => $request->json('password'),
                 ]);
             } else {
-                throw new \Exception('Invalid username.');
+                throw new AuthException('Invalid username or password.');
             }
-        } catch (Exception $e) {
-            $this->handelError($e);
+
+        } catch (AuthException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 400);
         }
     }
 
@@ -75,6 +77,80 @@ class AuthController extends Controller
     }
 
     /**
+     * Method: POST.
+     * @param Request
+     */
+    public function resetToken(Request $request)
+    {
+        try {
+            $user = User::where('user_name', $request->json('username'))
+                ->where('user_email', $request->json('email'))
+                ->first();
+            if ($user != null) {
+                // create or update token for user
+                // send email to user email address
+            } else {
+                throw new AuthException('Invalid username or email address.');
+            }
+        } catch (AuthException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * Method: POST
+     * @param Request
+     */
+    public function resetPassword(Request $request)
+    {
+        try {
+            $token = PasswordReset::where('passreset_token', $request->json('token'))
+                ->first();
+            if ($token != null) {
+                $token->user()->update(['user_password', password_hash($request->json('password'))]);
+                $token->forceDelete();
+                //return success message
+            } else {
+                throw new AuthException('Invalid password reset token.');
+            }
+        } catch (Exception $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * Method: POST
+     * @param Request
+     */
+    public function register(Request $request)
+    {
+        try {
+            $token = Invitation::where('invitation_email', $request->json('email'))
+                ->where('invitation_token', $request->json('token'))
+                ->first();
+            if ($token != null) {
+
+                DB::transaction(function () {
+                    $user = User::create([
+                        'user_name' => $request->json('username'),
+                        'user_email' => $request->json('email'),
+                        'user_password' => password_hash($request->json('password')),
+                        'client_id' => $token->user->client_id,
+                    ]);
+                    $role = Role::where('role_name', 'Employee')->firstOrFail();
+                    $user->roles->attach($role->role_id);
+                });
+                // return success message
+
+            } else {
+                throw new AuthException('Invalid invitation token.');
+            }
+        } catch (AuthException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
      * Proxy a request for oauth server.
      *
      * @param string $grantType
@@ -92,7 +168,7 @@ class AuthController extends Controller
             // create request to oauth
             $req = Request::create('/oauth/token', 'POST', $data);
 
-            // get respond
+            // process the request and get response
             $res = app()->handle($req);
 
             if ($res->status() === 200) {
@@ -103,7 +179,7 @@ class AuthController extends Controller
                     'access_token' => $body->access_token,
                     'expires_in' => $body->expires_in,
                 ])->cookie(self::REFRESH_TOKEN, $body->refresh_token, self::COOKIE_LIFE_TIME, null, null, false, true);
-                
+
             } else {
                 throw new \Exception('Invalid Credentials.', 0, null);
             }
@@ -112,15 +188,4 @@ class AuthController extends Controller
             $this->handelError($e);
         }
     }
-
-    /**
-     * Handele the exceptions that occurs in class.
-     * @param \Exception $e
-     * @return Response
-     */
-    public function handelError(Exception $e)
-    {
-        return Response(['error' => true, 'msg' => $e->getMessage()]);
-    }
-
 }
