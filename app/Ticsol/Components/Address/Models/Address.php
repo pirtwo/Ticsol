@@ -21,6 +21,7 @@ class Address extends Model
         'contact_id',
         'address_id',
         'address_unit',
+        'address_number',
         'address_street',
         'address_suburb',
         'address_country',
