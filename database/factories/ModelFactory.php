@@ -12,13 +12,23 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Ticsol\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Ticsol\Components\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
+        'client_id' => 1,
         'user_name' => $faker->name,
         'user_email' => $faker->unique()->safeEmail,
         'user_password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'user_isowner' => false,
+    ];
+});
+
+$factory->define(App\Ticsol\Components\Models\Client::class, function (Faker\Generator $faker) {
+    static $password;
+
+    return [
+        'client_name' => $faker->company,
+        'client_licences' => json_encode(array( 'type' => 'basic')),        
     ];
 });

@@ -132,10 +132,11 @@ class AuthController extends Controller
 
                 DB::transaction(function () {
                     $user = User::create([
+                        'client_id' => $token->user->client_id,
                         'user_name' => $request->json('username'),
                         'user_email' => $request->json('email'),
-                        'user_password' => password_hash($request->json('password')),
-                        'client_id' => $token->user->client_id,
+                        'user_password' => bcrypt($request->json('password')),
+                        'user_isowner' => false,                        
                     ]);
                     $role = Role::where('role_name', 'Employee')->firstOrFail();
                     $user->roles->attach($role->role_id);

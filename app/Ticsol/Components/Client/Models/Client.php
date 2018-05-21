@@ -38,7 +38,7 @@ class Client extends Model
      */
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'client_id', 'client_id');
     }
 
     /**
