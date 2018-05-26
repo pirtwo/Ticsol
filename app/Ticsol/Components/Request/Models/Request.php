@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Request extends Model
 {
     protected $table = 'ts_requests';
-    protected $primaryKey = 'request_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -17,14 +17,16 @@ class Request extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'request_type',
-        'request_status',
-        'user_id',
+    protected $fillable = [        
+        'client_id',
+        'user_id',        
         'assigned_id',
         'job_id',
         'form_id',
-        'request_meta',
+        'schedule_id',
+        'type',
+        'status',
+        'meta',
     ];
 
     /**
@@ -37,6 +39,14 @@ class Request extends Model
     ];
 
     #region Eloquent_Relationships
+
+    /**
+     * Assosiated job to current request.
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
 
     /**
      * The owner of current request.
@@ -62,9 +72,20 @@ class Request extends Model
         return $this->belongsTo(Job::class, 'job_id');
     }
 
+    /**
+     * Assosiated form to current request.
+     */
     public function form()
     {
         return $this->belongsTo(Form::class, 'form_id');
+    }
+
+    /**
+     * Assosiated schedule item to current request.
+     */
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_id');
     }
 
     #endregion

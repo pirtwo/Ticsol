@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Bank extends Model
 {    
     protected $table = 'ts_banks';
-    protected $primaryKey = 'bank_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,11 +18,13 @@ class Bank extends Model
      * @var array
      */
     protected $fillable = [
+        'client_id',
+        'creator_id',
         'contact_id',
-        'bank_bsb',
-        'bank_acc_name',
-        'bank_acc_number',
-        'bank_split',
+        'bsb',
+        'acc_name',
+        'acc_number',
+        'split',
     ];
 
     /**
@@ -35,6 +37,22 @@ class Bank extends Model
     ];
 
     #region Eloquent_Relationships
+
+    /**
+     * Associated client to current bank.
+     */
+    public function client()
+    {
+        return $this->belongsTo(Contact::class, 'client_id');
+    }
+
+    /**
+     * Creator of current bank.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
 
     /**
      * Associated contact to current bank.

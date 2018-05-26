@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Invitation extends Model
 {    
     protected $table = 'ts_invitations';
-    protected $primaryKey = 'invitation_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -17,10 +17,11 @@ class Invitation extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'invitation_email',
-        'invitation_token',
+    protected $fillable = [        
+        'client_id',
+        'creator_id',
+        'email',
+        'token',
     ];
 
     /**
@@ -35,11 +36,19 @@ class Invitation extends Model
     #region Eloquent_Relationships
 
     /**
-     * The sender of current invitation.
+     * Assosiated client to current invitation.
      */
-    public function user()
+    public function client()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    /**
+     * Creator of current invitation.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     #endregion

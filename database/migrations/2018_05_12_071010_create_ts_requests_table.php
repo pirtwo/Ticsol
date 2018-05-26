@@ -17,37 +17,49 @@ class CreateTsRequestsTable extends Migration
         Schema::create('ts_requests', function (Blueprint $table) {
            
             // Keys
-            $table->increments('request_id');
+            $table->increments('id');
+            $table->unsignedInteger('client_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('job_id');
             $table->unsignedInteger('assigned_id');
+            $table->unsignedInteger('schedule_id')
+                ->nullable();
             $table->unsignedInteger('form_id')
                 ->nullable();
 
             // Attributes
-            $table->string('request_type');
-            $table->string('request_status');
-            $table->json('request_meta')
+            $table->string('type');
+            $table->string('status');
+            $table->json('meta')
                 ->nullable();    
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::table('ts_requests', function (Blueprint $table) {
+            
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade');
+            
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
 
             $table->foreign('assigned_id')
-                ->references('user_id')
-                ->on('ts_users')
-                ->onDelete('cascade');
+                ->references('id')
+                ->on('ts_users');
 
             $table->foreign('job_id')
-                ->references('job_id')
+                ->references('id')
                 ->on('ts_jobs')
                 ->onDelete('cascade');
+                
+            $table->foreign('schedule_id')
+                ->references('id')
+                ->on('ts_schedules');
         });
     }
 

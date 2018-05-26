@@ -17,24 +17,37 @@ class CreateTsContactsTable extends Migration
         Schema::create('ts_contacts', function (Blueprint $table) {
             
             // Keys
-            $table->increments('contact_id');
+            $table->increments('id');
+            $table->unsignedInteger('client_id');
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('user_id')
                 ->nullable();
 
             // Attributes
-            $table->string('contact_group');
-            $table->string('contact_firstname');
-            $table->string('contact_lastname');
-            $table->string('contact_telephone')
+            $table->string('group');
+            $table->string('firstname');
+            $table->string('lastname');
+            $table->string('telephone')
                 ->nullable();
-            $table->string('contact_mobilephone');
+            $table->string('mobilephone');
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::table('ts_contacts', function (Blueprint $table) {
+            
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade'); 
+            
+            $table->foreign('creator_id')
+                ->references('id')
+                ->on('ts_users')
+                ->onDelete('cascade'); 
+            
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
         });

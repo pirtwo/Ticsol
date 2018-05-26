@@ -17,9 +17,9 @@ class CreateTsAclsTable extends Migration
         Schema::create('ts_acls', function (Blueprint $table) {
             
             // Keys
-            $table->increments('acl_id');
+            $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('role_id');
             $table->unsignedInteger('resource_id');
             $table->unsignedInteger('permission_id');
@@ -31,27 +31,27 @@ class CreateTsAclsTable extends Migration
         
         Schema::table('ts_acls', function (Blueprint $table) {
             $table->foreign('client_id')
-                ->references('client_id')
+                ->references('id')
                 ->on('ts_clients')
                 ->onDelete('cascade');
 
-            $table->foreign('user_id')
-                ->references('user_id')
+            $table->foreign('creator_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
 
             $table->foreign('role_id')
-                ->references('role_id')
+                ->references('id')
                 ->on('ts_roles')
                 ->onDelete('cascade');
 
             $table->foreign('resource_id')
-                ->references('resource_id')
+                ->references('id')
                 ->on('ts_resources')
                 ->onDelete('cascade');
 
             $table->foreign('permission_id')
-                ->references('permission_id')
+                ->references('id')
                 ->on('ts_permissions')
                 ->onDelete('cascade');
         });

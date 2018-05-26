@@ -17,19 +17,25 @@ class CreateTsInvitationsTable extends Migration
         Schema::create('ts_invitations', function (Blueprint $table) {
             
             // Keys
-            $table->increments('invitation_id');
-            $table->unsignedInteger('user_id');
+            $table->increments('id');
+            $table->unsignedInteger('client_id');
+            $table->unsignedInteger('creator_id');
             
             // Attributes
-            $table->string('invitation_email');
-            $table->string('invitation_token');
+            $table->string('email');
+            $table->string('token');
             $table->timestamps();
         });
         
         Schema::table('ts_invitations', function (Blueprint $table) {
             
-            $table->foreign('user_id')
-                ->references('user_id')
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade');
+
+            $table->foreign('creator_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
         });

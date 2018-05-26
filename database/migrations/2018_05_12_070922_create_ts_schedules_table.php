@@ -17,35 +17,42 @@ class CreateTsSchedulesTable extends Migration
         Schema::create('ts_schedules', function (Blueprint $table) {
             
             // Keys
-            $table->increments('schedule_id');
+            $table->increments('id');
+            $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('job_id');     
             
             // Attributes
-            $table->string('schedule_type');  
-            $table->string('schedule_status');                      
-            $table->dateTime('schedule_start');
-            $table->dateTime('schedule_end');
-            $table->boolean('schedule_offsite');
-            $table->time('schedule_breake_length');
+            $table->string('type');  
+            $table->string('status');                      
+            $table->dateTime('start');
+            $table->dateTime('end');
+            $table->boolean('offsite');
+            $table->time('break_length');
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::table('ts_schedules', function (Blueprint $table) {            
+            
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade');
+
             $table->foreign('creator_id')
-                ->references('user_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
 
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
 
             $table->foreign('job_id')
-                ->references('job_id')
+                ->references('id')
                 ->on('ts_jobs')
                 ->onDelete('cascade');
         });

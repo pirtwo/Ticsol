@@ -17,27 +17,40 @@ class CreateTsJobsTable extends Migration
         Schema::create('ts_jobs', function (Blueprint $table) {
             
             // Keys
-            $table->increments('job_id');
+            $table->increments('id');
+            $table->unsignedInteger('client_id');
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('parent_id')
                 ->nullable();
             $table->unsignedInteger('form_id')
                 ->nullable();
 
             // Attributes
-            $table->string('job_title');
-            $table->integer('job_code');
-            $table->boolean('job_isactive');
-            $table->json('job_meta')
+            $table->string('title');
+            $table->integer('code');
+            $table->boolean('isactive');
+            $table->json('meta')
                 ->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::table('ts_jobs', function (Blueprint $table) {
+            
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade');   
+
+            $table->foreign('creator_id')
+                ->references('id')
+                ->on('ts_users')
+                ->onDelete('cascade');
+
             $table->foreign('parent_id')
-                ->references('job_id')
+                ->references('id')
                 ->on('ts_jobs')
-                ->onDelete('cascade');            
+                ->onDelete('cascade');                        
         });
     }
 

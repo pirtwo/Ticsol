@@ -17,25 +17,37 @@ class CreateTsAddressesTable extends Migration
         Schema::create('ts_addresses', function (Blueprint $table) {
             
             // Keys
-            $table->increments('address_id');
+            $table->increments('id');
+            $table->unsignedInteger('client_id');
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('contact_id');
 
             // Attributes
-            $table->string('address_unit')
+            $table->string('unit')
                 ->nullable();
-            $table->string('address_number');
-            $table->string('address_street');
-            $table->string('address_suburb');
-            $table->string('address_country');
-            $table->string('address_postcode');            
+            $table->string('number');
+            $table->string('street');
+            $table->string('suburb');
+            $table->string('country');
+            $table->string('postcode');            
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::table('ts_addresses', function (Blueprint $table) {
             
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade');
+                
+            $table->foreign('creator_id')
+                ->references('id')
+                ->on('ts_users')
+                ->onDelete('cascade');
+
             $table->foreign('contact_id')
-                ->references('contact_id')
+                ->references('id')
                 ->on('ts_contacts')
                 ->onDelete('cascade');
         });

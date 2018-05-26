@@ -13,15 +13,15 @@ class JobController extends Controller{
 
     public function __construct()
     {
-        $this->data = [
-            'job 1' => ['id' => 1, 'title' => 'Frontend Developer'],
-            'job 2' => ['id' => 2, 'title' => 'Find Requirement'],
-            'job 3' => ['id' => 3, 'title' => 'Css Styling'],
-            'job 4' => ['id' => 4, 'title' => 'Backend Developer'],
-            'job 5' => ['id' => 5, 'title' => 'Testing'],
-            'job 6' => ['id' => 6, 'title' => 'Debugging'],
-            'job 7' => ['id' => 7, 'title' => 'Database Managment'],
-        ];
+        $this->data = array(
+            ['id' => 1, 'title' => 'Frontend Developer'],
+            ['id' => 2, 'title' => 'Find Requirement'],
+            ['id' => 3, 'title' => 'Css Styling'],
+            ['id' => 4, 'title' => 'Backend Developer'],
+            ['id' => 5, 'title' => 'Testing'],
+            ['id' => 6, 'title' => 'Debugging'],
+            ['id' => 7, 'title' => 'Database Managment'],
+        );
     }
     
     public function get(){        

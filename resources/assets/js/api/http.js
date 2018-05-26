@@ -2,7 +2,7 @@
 import axios from 'axios';
 import * as resources from './resources';
 
-export default {
+export const auth = {
 
     login(credentials) {
         console.log("Sending request to:" + resources.LOGIN_URL);
@@ -57,4 +57,24 @@ export default {
             });
     },
 
+}
+
+export const user = {
+    list() {
+        return axios({
+            method: 'GET',
+            url: resources.USER_LIST_URL,
+            config: { headers: { Accept: 'application/json', } }
+        });
+    }
+}
+
+export const job = {
+    list(){
+        return axios({
+            method: 'GET',
+            url: resources.JOB_LIST_URL,
+            config: { headers: { Accept: 'application/json', } }
+        })
+    }
 }

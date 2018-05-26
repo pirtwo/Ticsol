@@ -55675,6 +55675,7 @@ input[dir=rtl] {
   background-repeat: no-repeat;
   background-size: cover;
   padding: 0px 100px 0px 100px;
+  position: relative;
 }
 
 .cnt-login,
@@ -55745,19 +55746,19 @@ footer {
   height: 100%;
 }
 
-#dash-nav {
+.navview {
   background-color: rgba(255, 255, 255, 0) !important;
 }
 
-#dash-nav .navview-pane {
+.navview .navview-pane {
   background-color: rgba(255, 255, 255, 0.7) !important;
 }
 
-#dash-nav .navview-content {
+.navview .navview-content {
   height: 100%;
 }
 
-#dash-nav .content {
+.navview .content {
   background-color: rgba(255, 255, 255, 0.5) !important;
   min-height: 500px !important;
   margin-left: 10px;
@@ -55766,8 +55767,15 @@ footer {
   position: relative;
 }
 
-.iconbar-top,
-.iconbar-bot {
+.toolbar-top .dropdown-button .button:hover,
+.toolbar-bot .dropdown-button .button:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.toolbar-top,
+.toolbar-bot,
+.toolbar-top .t-menu,
+.toolbar-bot .t-menu {
   background-color: transparent !important;
   -webkit-box-shadow: none;
           box-shadow: none;
@@ -55775,13 +55783,19 @@ footer {
   margin: 10px 0px 10px 0px;
 }
 
-.iconbar-top li .active,
-.iconbar-bot li .active {
+.toolbar-top .dropdown-button .button .active,
+.toolbar-bot .dropdown-button .button .active,
+.toolbar-top .t-menu li .active,
+.toolbar-bot .t-menu li .active {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.iconbar-top li a,
-.iconbar-bot li a {
+.toolbar-top .dropdown-button .button,
+.toolbar-bot .dropdown-button .button,
+.toolbar-top .t-menu li a,
+.toolbar-bot .t-menu li a {
+  color: white;
+  background-color: rgba(255, 255, 255, 0) !important;
   border: none !important;
   width: auto !important;
   height: auto !important;
@@ -55790,15 +55804,27 @@ footer {
   position: relative !important;
 }
 
-.iconbar-top li a .tag,
-.iconbar-bot li a .tag {
-  font-size: 0.6875rem !important;
-  top: -13px !important;
+.toolbar-top .dropdown-button .button .tag,
+.toolbar-bot .dropdown-button .button .tag,
+.toolbar-top .t-menu li a .tag,
+.toolbar-bot .t-menu li a .tag {
+  background-color: #b30000;
+  font-size: 0.5rem !important;
+  top: 10px !important;
   right: 10px !important;
+  padding: 5px;
+  width: auto;
+  min-width: 15px;
+  min-height: 15px;
+  max-height: 15px;
+  line-height: 4px;
+  border-radius: 3px;
 }
 
-.iconbar-top li a .caption,
-.iconbar-bot li a .caption {
+.toolbar-top .dropdown-button .button .caption,
+.toolbar-bot .dropdown-button .button .caption,
+.toolbar-top .t-menu li a .caption,
+.toolbar-bot .t-menu li a .caption {
   position: relative;
   font-size: 10px;
   line-height: 4px;
@@ -55806,9 +55832,185 @@ footer {
   text-align: center;
 }
 
-.iconbar-top li a [class*="mif-"],
-.iconbar-bot li a [class*="mif-"] {
+.toolbar-top .dropdown-button .button [class*="mif-"],
+.toolbar-bot .dropdown-button .button [class*="mif-"],
+.toolbar-top .t-menu li a [class*="mif-"],
+.toolbar-bot .t-menu li a [class*="mif-"] {
   line-height: 2;
+}
+
+.loading-box {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: #684986;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 5px 7px 5px 0px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.loading-box [class*="mif-"] {
+  color: #684986;
+  font-size: 1em !important;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.showElement {
+  -webkit-animation-name: elementIn;
+          animation-name: elementIn;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  opacity: 1;
+}
+
+.hideElement {
+  -webkit-animation-name: elementOut;
+          animation-name: elementOut;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  opacity: 0;
+}
+
+@-webkit-keyframes elementIn {
+  0% {
+    -webkit-transform: translate3d(0, -200px, 0) scale3d(0.1, 0.1, 0.1);
+            transform: translate3d(0, -200px, 0) scale3d(0.1, 0.1, 0.1);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+            animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1.08, 1.08, 1.08);
+            transform: translate3d(0, 0, 0) scale3d(1.08, 1.08, 1.08);
+  }
+
+  60% {
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+            transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  }
+
+  80% {
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1.03, 1.03, 1.03);
+            transform: translate3d(0, 0, 0) scale3d(1.03, 1.03, 1.03);
+  }
+
+  100% {
+    -webkit-animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+            transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  }
+}
+
+@keyframes elementIn {
+  0% {
+    -webkit-transform: translate3d(0, -200px, 0) scale3d(0.1, 0.1, 0.1);
+            transform: translate3d(0, -200px, 0) scale3d(0.1, 0.1, 0.1);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+            animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1.08, 1.08, 1.08);
+            transform: translate3d(0, 0, 0) scale3d(1.08, 1.08, 1.08);
+  }
+
+  60% {
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+            transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  }
+
+  80% {
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1.03, 1.03, 1.03);
+            transform: translate3d(0, 0, 0) scale3d(1.03, 1.03, 1.03);
+  }
+
+  100% {
+    -webkit-animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+            transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  }
+}
+
+@-webkit-keyframes elementOut {
+  0% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    -webkit-transform: scale3d(1.08, 1.08, 1.08);
+            transform: scale3d(1.08, 1.08, 1.08);
+  }
+
+  80% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+            animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+            transform: scale3d(0.3, 0.3, 0.3);
+  }
+}
+
+@keyframes elementOut {
+  0% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    -webkit-transform: scale3d(1.08, 1.08, 1.08);
+            transform: scale3d(1.08, 1.08, 1.08);
+  }
+
+  80% {
+    opacity: 1;
+    -webkit-animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+            animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+            animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+            transform: scale3d(0.3, 0.3, 0.3);
+  }
 }
 
 body::-webkit-scrollbar {

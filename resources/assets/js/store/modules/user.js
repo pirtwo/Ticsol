@@ -1,5 +1,5 @@
 
-import auth from '../../api/auth';
+import { auth } from '../../api/http';
 import {
     USER_OBJECT,
     USRE_TOKKEN,
@@ -10,29 +10,39 @@ import {
 export const userModule = {
     namespaced: true,
     state: {
-        isAuth:
-            localStorage.isAuth !== undefined ? localStorage.isAuth : false,
+        counter: 0,
+        isAuth: false,
         user: {
-            id:
-                localStorage.userId !== undefined ? localStorage.userId : null,
-            name:
-                localStorage.username !== undefined ? localStorage.username : 'Guest',
-            avatar:
-                localStorage.avatar !== undefined ? localStorage.avatar : null,
+            id: -1,
+            name: 'Guest',
+            avatar: '',
         },
         token: {
-            value:
-                localStorage.tokenValue !== undefined ? localStorage.tokenValue : null,
-            scope:
-                localStorage.tokenScope !== undefined ? localStorage.tokenScope : null,
-            expire:
-                localStorage.tokenExpire !== undefined ? localStorage.tokenExpire : null,
-            issued:
-                localStorage.tokenIssued !== undefined ? localStorage.tokenIssued : null,
+            value: '',
+            scope: '',
+            expire: '',
+            issued: '',
         }
     },
     getters: {
-
+        userIsAuth: (state) => {
+            return state.isAuth;
+        },
+        userInfo: (state) => {
+            return state.user;
+        },
+        userToken: (state) => {
+            return state.token;
+        },
+        getTick: (state) => {
+            return state.counter;
+        },
+        getTick: (state) => {
+            return state.counter;
+        },
+        routePath: (state, getters, rootState) => {
+            return rootState.route.path;
+        }
     },
     mutations: {
 
@@ -43,9 +53,9 @@ export const userModule = {
         },
 
         [USRE_TOKKEN](state, payload) {
-            state.token.value = payload.value;
+            state.token.value = payload.access_token;
             state.token.scope = payload.scope;
-            state.token.expire = payload.expire;
+            state.token.expire = payload.expires_in;
             state.token.issued = payload.issued;
         },
 
@@ -57,16 +67,25 @@ export const userModule = {
             state.isAuth = false;
         },
 
+        tickCounter(state) {
+            state.counter++;
+        }
+
     },
     actions: {
 
-        login({ state, commit }, payload) {
+        tick({ state, commit }) {
+            commit('tickCounter');
+        },
+
+        login({ state, commit, getters }, payload) {
             return new Promise((resolve, reject) => {
                 auth.login(payload).then(respond => {
-                    if (respond.status === 201) {
+                    if (respond.status === 200) {
                         commit(USRE_TOKKEN, respond.data);
                         commit(USER_AUTHENTICATED);
-                        resolve('You logged in successfuly.');
+                        console.log(getters.routePath);
+                        resolve(respond);
                     } else {
                         commit(USER_NOTAUTHENTICATED);
                         console.log('reject');
@@ -74,7 +93,7 @@ export const userModule = {
                     }
                 }).catch(error => {
                     console.log('error');
-                    reject(error.response.data);                    
+                    reject(error.response.data);
                 });
             });
         },

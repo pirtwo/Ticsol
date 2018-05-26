@@ -27,12 +27,12 @@ class CreateTsAccessiblePermissionsTable extends Migration
         Schema::table('ts_accessible_permissions', function (Blueprint $table) {
             
             $table->foreign('resource_id')
-                ->references('resource_id')
+                ->references('id')
                 ->on('ts_resources')
                 ->onDelete('cascade');
 
             $table->foreign('permission_id')
-                ->references('permission_id')
+                ->references('id')
                 ->on('ts_permissions')
                 ->onDelete('cascade');
         });

@@ -16,11 +16,11 @@ class CreateTsClientsTable extends Migration
         Schema::create('ts_clients', function(Blueprint $table){
             
             // Keys
-            $table->increments('client_id');
+            $table->increments('id');
 
             // Attributes
-            $table->string('client_name', 50);
-            $table->json('client_licences');
+            $table->string('name', 50);
+            $table->json('licences');
             $table->softDeletes();
             $table->timestamps();
         });

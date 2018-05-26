@@ -21,7 +21,7 @@ class UserController extends Controller{
 
     public function client($id)
     {        
-        $client = Client::where('client_id', $id)->first();
+        $client = Client::where('id', $id)->firstOrFail();
         return response()->json($client->users, 201);        
     }
 }

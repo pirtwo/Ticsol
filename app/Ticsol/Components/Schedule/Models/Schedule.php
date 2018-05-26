@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     protected $table = 'ts_schedules';
-    protected $primaryKey = 'schedule_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,15 +18,16 @@ class Schedule extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'client_id',
+        'user_id',        
         'job_id',
         'creator_id',
-        'schedule_status',
-        'schedule_type',        
-        'schedule_start',
-        'schedule_end',
-        'schedule_offsite',
-        'schedule_breake_length',        
+        'status',
+        'type',        
+        'start',
+        'end',
+        'offsite',
+        'break_length',        
     ];
 
     /**
@@ -40,6 +41,17 @@ class Schedule extends Model
 
     #region Eloquent_Relationships
 
+    /**
+     * Assosiated client to current schedule item.
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    /**
+     * Creator of current schedule item.
+     */
     public function creator()
     {
         return $this->belongsTo(User::class, 'creator_id');

@@ -17,22 +17,28 @@ class CreateTsActivitiesTable extends Migration
         Schema::create('ts_activities', function (Blueprint $table) {
             
             // Keys
-            $table->increments('activity_id');
+            $table->increments('id');
+            $table->unsignedInteger('client_id');
             $table->unsignedInteger('schedule_id');
 
             // Attributes
-            $table->dateTime('activity_from');
-            $table->dateTime('activity_till')
+            $table->dateTime('from');
+            $table->dateTime('till')
                 ->nullable();
-            $table->mediumText('activity_desc');
+            $table->mediumText('desc');
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::table('ts_activities', function (Blueprint $table) {
             
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade');
+
             $table->foreign('schedule_id')
-                ->references('schedule_id')
+                ->references('id')
                 ->on('ts_schedules')
                 ->onDelete('cascade');
         });

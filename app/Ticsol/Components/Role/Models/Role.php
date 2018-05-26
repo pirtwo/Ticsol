@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Role extends Model
 {
     protected $table = 'ts_roles';
-    protected $primaryKey = 'role_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,8 +18,9 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'role_name',
-        'user_id'
+        'client_id',
+        'creator_id',        
+        'name',        
     ];
 
     /**
@@ -34,6 +35,14 @@ class Role extends Model
     #region Eloquent_Relationships
 
     /**
+     * Assosiated client to current role.
+     */
+    public function client()
+    {
+        $this->belongsTo(Client::class, 'client_id');
+    }
+
+    /**
      * Assosiated users to current role.
      */
     public function users()
@@ -44,9 +53,9 @@ class Role extends Model
     /**
      * The creator of current role.
      */
-    public function createdBy()
+    public function creator()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     /**

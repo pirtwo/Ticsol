@@ -28,7 +28,7 @@ class AuthController extends Controller
     {
         try {
 
-            $user = User::where('user_name', $request->json('username'))->first();
+            $user = User::where('name', $request->json('username'))->first();
             if ($user != null) {
                 return $this->proxy('password', [
                     'username' => $request->json('username'),
@@ -83,8 +83,8 @@ class AuthController extends Controller
     public function resetToken(Request $request)
     {
         try {
-            $user = User::where('user_name', $request->json('username'))
-                ->where('user_email', $request->json('email'))
+            $user = User::where('name', $request->json('username'))
+                ->where('email', $request->json('email'))
                 ->first();
             if ($user != null) {
                 // create or update token for user
@@ -104,10 +104,10 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         try {
-            $token = PasswordReset::where('passreset_token', $request->json('token'))
+            $token = PasswordReset::where('token', $request->json('token'))
                 ->first();
             if ($token != null) {
-                $token->user()->update(['user_password', password_hash($request->json('password'))]);
+                $token->user()->update(['password', password_hash($request->json('password'))]);
                 $token->forceDelete();
                 //return success message
             } else {
@@ -133,12 +133,12 @@ class AuthController extends Controller
                 DB::transaction(function () {
                     $user = User::create([
                         'client_id' => $token->user->client_id,
-                        'user_name' => $request->json('username'),
-                        'user_email' => $request->json('email'),
-                        'user_password' => bcrypt($request->json('password')),
-                        'user_isowner' => false,                        
+                        'name' => $request->json('username'),
+                        'email' => $request->json('email'),
+                        'password' => bcrypt($request->json('password')),
+                        'isowner' => false,                        
                     ]);
-                    $role = Role::where('role_name', 'Employee')->firstOrFail();
+                    $role = Role::where('name', 'employee')->firstOrFail();
                     $user->roles->attach($role->role_id);
                 });
                 // return success message

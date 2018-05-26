@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class ACL extends Model
 {
     protected $table = 'ts_acls';
-    protected $primaryKey = 'acl_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,7 +18,7 @@ class ACL extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'creator_id',
         'role_id',
         'client_id',
         'resource_id',
@@ -43,6 +43,14 @@ class ACL extends Model
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    /**
+     * Creator of current ACL rule.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(Client::class, 'creator_id');
     }
 
     /**

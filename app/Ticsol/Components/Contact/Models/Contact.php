@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Contact extends Model
 {    
     protected $table = 'ts_contacts';
-    protected $primaryKey = 'contact_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,12 +18,14 @@ class Contact extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'contact_group',
-        'contact_firstname',
-        'contact_lastname',
-        'contact_telephone',
-        'contact_mobilephone',
+        'client_id',
+        'user_id',        
+        'creator_id',
+        'group',
+        'firstname',
+        'lastname',
+        'telephone',
+        'mobilephone',
     ];
 
     /**
@@ -38,11 +40,27 @@ class Contact extends Model
     #region Eloquent_Relationships
 
     /**
+     * Assosiated client to current contact.
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    /**
      * Owner of current contact.
      */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Creator of current contact.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     /**

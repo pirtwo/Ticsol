@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Address extends Model
 {    
     protected $table = 'ts_Addresses';
-    protected $primaryKey = 'address_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,14 +18,15 @@ class Address extends Model
      * @var array
      */
     protected $fillable = [
+        'client_id',
+        'creator_id',
         'contact_id',
-        'address_id',
-        'address_unit',
-        'address_number',
-        'address_street',
-        'address_suburb',
-        'address_country',
-        'address_postcode',
+        'unit',
+        'number',
+        'street',
+        'suburb',
+        'country',
+        'postcode',
     ];
 
     /**
@@ -38,6 +39,22 @@ class Address extends Model
     ];
 
     #region Eloquent_Relationships
+
+    /**
+     * Associated client to current address.
+     */
+    public function client()
+    {
+        return $this->belongsTo(Contact::class, 'client_id');
+    }
+
+    /**
+     * Creator of current address.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
 
     /**
      * Associated contact to current address.

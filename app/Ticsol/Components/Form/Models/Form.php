@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Form extends Model
 {
     protected $table = 'ts_forms';
-    protected $primaryKey = 'form_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -19,10 +19,10 @@ class Form extends Model
      */
     protected $fillable = [
         'client_id',
-        'user_id',
-        'form_name',
-        'form_body',
-        'form_value',
+        'creator_id',
+        'name',
+        'body',
+        'values',
     ];
 
     /**
@@ -47,9 +47,9 @@ class Form extends Model
     /**
      * Creator of the form.
      */
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     /**

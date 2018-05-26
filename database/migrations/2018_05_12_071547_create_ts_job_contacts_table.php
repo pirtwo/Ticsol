@@ -17,8 +17,8 @@ class CreateTsJobContactsTable extends Migration
         Schema::create('ts_job_contacts', function (Blueprint $table) {
             
             // Keys
-            $table->unsignedInteger('contact_id');
             $table->unsignedInteger('job_id');
+            $table->unsignedInteger('contact_id');            
 
             // Attributes
             $table->softDeletes();
@@ -27,15 +27,15 @@ class CreateTsJobContactsTable extends Migration
         
         Schema::table('ts_job_contacts', function (Blueprint $table) {
             
-            $table->foreign('contact_id')
-                ->references('contact_id')
-                ->on('ts_contacts')
-                ->onDelete('cascade');
-
             $table->foreign('job_id')
-                ->references('job_id')
+                ->references('id')
                 ->on('ts_jobs')
                 ->onDelete('cascade');
+
+            $table->foreign('contact_id')
+                ->references('id')
+                ->on('ts_contacts')
+                ->onDelete('cascade');            
         });
     }
 

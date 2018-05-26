@@ -27,6 +27,7 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     // Route: Get
     
     Route::get('user/list', 'UserController@get');
+    Route::get('user/client/{id}', 'UserController@client');
     
     Route::get('jobs/list', 'JobController@get');
     

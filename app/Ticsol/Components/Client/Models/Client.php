@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Client extends Model
 {
     protected $table = 'ts_clients';
-    protected $primaryKey = 'client_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,8 +18,8 @@ class Client extends Model
      * @var array
      */
     protected $fillable = [
-        'client_name',
-        'client_licences',
+        'name',
+        'licences',
     ];
 
     /**
@@ -38,8 +38,16 @@ class Client extends Model
      */
     public function users()
     {
-        return $this->hasMany(User::class, 'client_id', 'client_id');
+        return $this->hasMany(User::class);
     }
+
+    /**
+     * Associated roles to current client.
+     */
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }    
 
     /**
      * Client created forms.
@@ -55,6 +63,62 @@ class Client extends Model
     public function ACLs()
     {
         return $this->hasMany(ACL::class);
+    }
+
+    /**
+     * Associated requests to current client.
+     */
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
+
+    /**
+     * Associated jobs to current client.
+     */
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
+
+    /**
+     * Associated contacts to current client.
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * Associated addresses to current client.
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Associated banks to current client.
+     */
+    public function banks()
+    {
+        return $this->hasMany(Bank::class);
+    }
+
+    /**
+     * Associated schedules to current client.
+     */
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
+    /**
+     * Associated activities to current client.
+     */
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
     }
 
     #endregion

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import {store} from './store/store.js';
+import { store } from './store/store.js';
 
 Vue.use(VueRouter);
 
@@ -12,91 +12,123 @@ export const router = new VueRouter({
             path: '/',
             name: 'auth',
             redirect: { name: 'login' },
-            meta: {requireAuth: false},
-            component: require('./components/pages/auth/Auth.vue'),            
+            meta: { requireAuth: false },
+            component: require('./components/pages/auth/Auth.vue'),
             children: [
                 {
                     path: 'login',
                     name: 'login',
-                    meta: {requireAuth: false},
+                    meta: { requireAuth: false },
                     component: require('./components/pages/auth/Login.vue')
                 },
                 {
                     path: 'logout',
                     name: 'logout',
-                    meta: {requireAuth: false},
+                    meta: { requireAuth: false },
                     component: require('./components/pages/auth/Logout.vue')
                 },
                 {
                     path: 'register',
                     name: 'register',
-                    meta: {requireAuth: false},
+                    meta: { requireAuth: false },
                     component: require('./components/pages/auth/Register.vue')
                 },
                 {
                     path: 'resetpassword',
                     name: 'resetpassword',
-                    meta: {requireAuth: false},
+                    meta: { requireAuth: false },
                     component: require('./components/pages/auth/ResetPassword.vue')
                 },
             ]
         },
         {
-            path: '/home',
-            name: 'home',
-            meta: {requireAuth: true},
-            component: require('./components/pages/home/Home.vue')
-        },
-        {
             path: '/dash',
             name: 'dash',
-            meta: {requireAuth: true},
+            meta: { requireAuth: true },
+            redirect: { name: 'home' },
             component: require('./components/pages/dashboard/Dashboard.vue'),
             children: [
                 {
-                    path: 'inbox',
+                    path: '/home',
+                    name: 'home',
+                    meta: { requireAuth: true },
+                    component: require('./components/pages/dashboard/Home.vue')
+                },
+                {
+                    path: '/inbox',
                     name: 'inbox',
-                    meta: {requireAuth: true},
+                    meta: { requireAuth: true },
                     component: require('./components/pages/dashboard/Inbox.vue')
                 },
                 {
-                    path: 'hr',
+                    path: '/hr',
                     name: 'hr',
-                    meta: {requireAuth: true},
-                    component: require('./components/pages/dashboard/HR.vue')
+                    meta: { requireAuth: true },
+                    component: require('./components/pages/dashboard/HRs/HRs.vue'),
+                    children: [
+
+                    ]
                 },
                 {
-                    path: 'requests',
+                    path: '/requests',
                     name: 'requests',
-                    meta: {requireAuth: true},
-                    component: require('./components/pages/dashboard/Requests.vue')
+                    meta: { requireAuth: true },
+                    component: require('./components/pages/dashboard/requests/Requests.vue'),
+                    children: [
+
+                    ]
                 },
                 {
-                    path: 'schedule',
+                    path: '/schedules',
                     name: 'schedule',
-                    meta: {requireAuth: true},
-                    component: require('./components/pages/dashboard/Schedule.vue')
+                    meta: { requireAuth: true },
+                    redirect: { name: 'scheduler' },
+                    component: require('./components/pages/dashboard/schedules/Schedules.vue'),
+                    children: [
+                        {
+                            path: '/scheduler',
+                            name: 'scheduler',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/schedules/Scheduler.vue'),
+                        }
+                    ]
                 },
                 {
-                    path: 'timesheets',
+                    path: '/timesheets',
                     name: 'timesheets',
-                    meta: {requireAuth: true},
-                    component: require('./components/pages/dashboard/TimeSheets.vue')
+                    meta: { requireAuth: true },
+                    component: require('./components/pages/dashboard/timesheets/TimeSheets.vue'),
+                    children: [
+
+                    ]
+                },
+                {
+                    path: '/jobs',
+                    name: 'jobs',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'jobList' },
+                    component: require('./components/pages/dashboard/jobs/jobs.vue'),
+                    children: [
+                        {
+                            path: 'list',
+                            name: 'jobList',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/jobs/JobList.vue'),
+                        }
+                    ]
                 }
             ]
-        }
+        },
+
     ]
 });
 
 router.beforeEach((to, from, next) => {
-    console.log(`From: ${from.path}`);
-    console.log(`To: ${to.path}`);
-    console.log(`isAuth: ${store.state.user.isAuth}`);
-    
     var user = store.state.user;
-    if (to.meta.requireAuth === true && user.isAuth === false ) {
+    if (to.meta.requireAuth === true && user.isAuth === false) {
         next('/');
     } else {
         next();
     }
+    next();
 });

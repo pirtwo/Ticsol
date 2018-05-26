@@ -15,7 +15,7 @@ class AddFormsForeignKeyToRequests extends Migration
     {
         Schema::table('ts_requests', function (Blueprint $table) {
             $table->foreign('form_id')
-                ->references('form_id')
+                ->references('id')
                 ->on('ts_forms');
         });
     }

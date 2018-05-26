@@ -17,19 +17,19 @@ class CreateTsPasswordResetTable extends Migration
         Schema::create('ts_password_reset', function (Blueprint $table) {
             
             // Keys
-            $table->increments('passreset_id');
+            $table->increments('id');
             $table->unsignedInteger('user_id');
             
             // Attributes
-            $table->string('passreset_email')->unique();
-            $table->string('passreset_token');
+            $table->string('email')->unique();
+            $table->string('token');
             $table->timestamps();
         });
         
         Schema::table('ts_password_reset', function (Blueprint $table) {
             
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
         });

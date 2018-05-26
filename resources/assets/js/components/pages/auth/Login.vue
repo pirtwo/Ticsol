@@ -22,10 +22,9 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Login",
-  ...mapActions(["user/login"]),
   data() {
     return {
       username: "",
@@ -33,9 +32,18 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$store);
+    // console.log(this.$store);
+    // console.log(this.path);
+    // console.log(this.$store.state.user.isAuth);
+    // console.log(this.$store.state.user.counter);
+    // console.log(this.userIsAuth);
+    // console.log(this.userToken);
+  },
+  computed: {
+    ...mapGetters({ isAuth : 'user/userIsAuth', path: 'user/routePath'}),
   },
   methods: {
+    ...mapActions(["user/login"]),
     onSubmit() {
       this.$store
         .dispatch("user/login", {
@@ -43,7 +51,7 @@ export default {
           password: this.password
         })
         .then(fulfilled => {
-          console.log(fulfilled);
+          this.$router.push('/home');
         })
         .catch(reason => {
           console.log(reason);

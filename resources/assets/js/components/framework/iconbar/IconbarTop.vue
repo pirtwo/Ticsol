@@ -1,25 +1,34 @@
 <template>
-    <ul class="t-menu open horizontal compact right float-right iconbar-top">
-        <li>
-            <router-link to="settings" class="shortcut button" role="button">
-                <span class="mif-cog mif-2x"></span>
-                <span class="tag"></span>
-                <span class="caption">Settings</span>
-            </router-link>           
-        </li>
-        <li>
-            <router-link to="user" class="shortcut button" role="button">
-                <span class="mif-user mif-2x"></span>
-                <span class="tag"></span>
+    <div class="toolbar-top">
+        <div class="dropdown-button place-right">
+            <button class="button shortcut">                
                 <span class="caption">User</span>
-            </router-link>           
-        </li>
-    </ul>
+                <span class="mif-user mif-2x"></span>
+            </button>
+            <ul class="d-menu place-right" data-role="dropdown">
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Change Password</a></li>                
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+        <div class="dropdown-button place-right">
+            <button class="button shortcut">                
+                <span class="caption">Settings</span>
+                <span class="tag">3000</span>
+                <span class="mif-cog mif-2x"></span>
+            </button>
+            <ul class="d-menu place-right" data-role="dropdown">
+                <li><a href="#">Reply</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </div>
 </template>
 <script>
-    export default {
-
-    };
+export default {
+  name: "IconbarTop"
+};
 </script>
 <style scoped>
 </style>

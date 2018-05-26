@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     protected $table = 'ts_permissions';
-    protected $primaryKey = 'permission_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,7 +18,7 @@ class Permission extends Model
      * @var array
      */
     protected $fillable = [
-        'permission_name',
+        'name',
     ];
 
     /**

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Resource extends Model
 {
     protected $table = 'ts_resources';
-    protected $primaryKey = 'resource_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,7 +18,7 @@ class Resource extends Model
      * @var array
      */
     protected $fillable = [
-        'resource_name',
+        'name',
     ];
 
     /**

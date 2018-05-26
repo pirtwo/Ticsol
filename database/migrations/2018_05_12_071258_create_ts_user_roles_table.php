@@ -28,12 +28,12 @@ class CreateTsUserRolesTable extends Migration
         Schema::table('ts_user_roles', function (Blueprint $table) {
 
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
 
             $table->foreign('role_id')
-                ->references('role_id')
+                ->references('id')
                 ->on('ts_roles')
                 ->onDelete('cascade');
         });

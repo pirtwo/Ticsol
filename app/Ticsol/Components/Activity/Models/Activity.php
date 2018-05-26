@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Activity extends Model
 {
     protected $table = 'ts_activities';
-    protected $primaryKey = 'activity_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,10 +18,11 @@ class Activity extends Model
      * @var array
      */
     protected $fillable = [
-        'activity_from',
-        'activity-till',
-        'activity_desc',
+        'client_id',
         'schedule_id',
+        'from',
+        'till',
+        'desc',        
     ];
 
     /**
@@ -34,6 +35,14 @@ class Activity extends Model
     ];    
 
     #region Eloquent_Relationships
+
+    /**
+     * Associated client to current activity.
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
 
     /**
      * Associated schedule to current activity.

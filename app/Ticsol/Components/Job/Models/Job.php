@@ -9,7 +9,7 @@ use App\Ticsol\Components\Models;
 class Job extends Model
 {    
     protected $table = 'ts_jobs';
-    protected $primaryKey = 'job_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -18,12 +18,14 @@ class Job extends Model
      * @var array
      */
     protected $fillable = [
+        'client_id',
+        'creator_id',
         'parent_id',
         'form_id',
-        'job_title',
-        'job_code',
-        'job_isactive', 
-        'job_meta',       
+        'title',
+        'code',
+        'isactive', 
+        'meta',       
     ];
 
     /**
@@ -39,9 +41,25 @@ class Job extends Model
     #region Eloquent_Relationships
 
     /**
+     * Assosiated client to current job.
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    /**
+     * Creator of current job.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    /**
      * Assosiated requests to current job.
      */
-    public function Requests()
+    public function requests()
     {
         return $this->hasMany(Request::class);
     }

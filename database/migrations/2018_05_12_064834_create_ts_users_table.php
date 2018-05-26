@@ -17,16 +17,16 @@ class CreateTsUsersTable extends Migration
         Schema::create('ts_users', function (Blueprint $table) {
             
             // Keys
-            $table->increments('user_id');
+            $table->increments('id');
             $table->unsignedInteger('client_id');
 
             // Attributes
-            $table->string('user_name');
-            $table->string('user_email')
+            $table->string('name');
+            $table->string('email')
                 ->unique();
-            $table->string('user_password');
-            $table->boolean('user_isowner');
-            $table->json('user_settings')
+            $table->string('password');
+            $table->boolean('isowner');
+            $table->json('settings')
                 ->nullable();            
             $table->softDeletes();
             $table->timestamps();           
@@ -34,8 +34,9 @@ class CreateTsUsersTable extends Migration
         
 
         Schema::table('ts_users', function (Blueprint $table) {
+            
             $table->foreign('client_id')
-                ->references('client_id')
+                ->references('id')
                 ->on('ts_clients')
                 ->onDelete('cascade');
         });

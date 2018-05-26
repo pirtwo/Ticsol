@@ -29,85 +29,97 @@
   </div>
 </template>
 <script>
-import { EventBus } from "../../../event-bus.js";
+import { mapActions } from "vuex";
 import axios from "axios";
 export default {
   props: {
-    dpResources: {
+    dpResource: {
       type: String,
-      default: "Employee",
+      default: "employee",
       validator: function(value) {
-        return ["Employee", "Job"].indexOf(value) !== -1;
+        return ["employee", "job"].indexOf(value) !== -1;
       }
-    },
-    dpType: {
-      type: String,
-      default: "Scheduler",
-      validator: function(value) {
-        return ["Employee", "Job"].indexOf(value) !== -1;
-      }
-    },
-    dpView: {
-      type: String,
-      default: "Day",
-      validator: function(value) {
-        return (
-          ["Minute", "Hour", "Day", "Week", "Month", "Year"].indexOf(value) !==
-          -1
-        );
-      }
-    },
-    dpFrom: {
-      type: String,
-      default: Date.now()
-    },
-    dpDays: {
-      type: Number,
-      default: 30
     }
+    // dpType: {
+    //   type: String,
+    //   default: "Scheduler",
+    //   validator: function(value) {
+    //     return ["Employee", "Job"].indexOf(value) !== -1;
+    //   }
+    // },
+    // dpView: {
+    //   type: String,
+    //   default: "Day",
+    //   validator: function(value) {
+    //     return (
+    //       ["Minute", "Hour", "Day", "Week", "Month", "Year"].indexOf(value) !==
+    //       -1
+    //     );
+    //   }
+    // },
+    // dpFrom: {
+    //   type: String,
+    //   default: Date.now()
+    // },
+    // dpDays: {
+    //   type: Number,
+    //   default: 30
+    // }
   },
   data() {
     return {
       dayPilot: "",
       scale: "",
-      resourcetype: "Job",
-      eventType: "Employee",
+      resourcetype: "employee",
+      eventType: "job",
       dateFrom: "",
       view: "",
       scriptUrl: "https://server.dev/js/daypilot-all.min.js",
       styleUrl: "https://server.dev/css/calendar_white.css",
       urls: {
-        Job: "https://server.dev/api/jobs/list",
-        Employee: "https://server.dev/api/user/list"
+        job: "https://server.dev/api/jobs/list",
+        employee: "https://server.dev/api/user/list"
       }
     };
   },
   created() {
+    this.$store.dispatch("loading", {
+      isLoading: true,
+      message: "Loading..."
+    });
     // append daypilot style to head
     let dpStyleLoaded = new Promise(resolve => {
-      let dpStyle = document.createElement("link");
-      dpStyle.type = "text/css";
-      dpStyle.href = this.styleUrl;
-      dpStyle.rel = "stylesheet";
-      dpStyle.onload = () => {
+      if (window.DayPilot === undefined) {
+        let dpStyle = document.createElement("link");
+        dpStyle.type = "text/css";
+        dpStyle.href = this.styleUrl;
+        dpStyle.rel = "stylesheet";
+        dpStyle.onload = () => {
+          resolve();
+        };
+        document.head.appendChild(dpStyle);
+      } else {
         resolve();
-      };
-      document.head.appendChild(dpStyle);
+      }
     });
 
     // append daypilot script to body
     let dpScriptLoaded = new Promise(resolve => {
-      let dpScript = document.createElement("script");
-      dpScript.type = "text/javascript";
-      dpScript.src = this.scriptUrl;
-      dpScript.async = "true";
-      dpScript.defer = "true";
-      dpScript.onload = () => {
+      if (window.DayPilot === undefined) {
+        let dpScript = document.createElement("script");
+        dpScript.type = "text/javascript";
+        dpScript.src = this.scriptUrl;
+        dpScript.async = "true";
+        dpScript.defer = "true";
+        dpScript.onload = () => {
+          resolve();
+        };
+        document.body.appendChild(dpScript);
+      } else {
         resolve();
-      };
-      document.body.appendChild(dpScript);
+      }
     });
-    
+
     dpScriptLoaded.then(() => {
       this.dayPilot = new window.DayPilot.Scheduler("dp");
       this.dayPilot.width = "100%";
@@ -116,17 +128,24 @@ export default {
       this.dayPilot.heightSpec = "Fixed";
       this.dayPilot.height = 400;
 
-      EventBus.$on("sidebar-updated", this.makeDragable);
-      EventBus.$emit("sidebar-update", this.eventType);
+      this.$emit("listJobs");
       this.fetchResorce().then(() => {
         this.dayPilot.init();
+        this.$store.dispatch("loading", {
+          isLoading: false,
+          message: "Ready..."
+        });
       });
     });
   },
-  mounted() {
-    
+  watch: {
+    dpResource: function() {      
+      this.makeDragable();
+    }
   },
   methods: {
+    ...mapActions(["loading"]),
+
     fetchResorce: function() {
       return new Promise(resolve => {
         axios
@@ -135,35 +154,44 @@ export default {
           })
           .then(respond => {
             let data = Object.values(respond.data).map((item, index) => {
-              if (this.resourcetype === "Job")
+              if (this.resourcetype === "job")
                 return { id: item.id, name: item.title };
               else return { id: item.user_id, name: item.user_name };
             });
             this.dayPilot.resources = data;
+            this.dayPilot.update();
             resolve();
           });
       });
     },
 
     changeType: function(event) {
-      this.resourcetype = event.target.value;
-      this.eventType = event.target.value === "Job" ? "Employee" : "Job";
-      EventBus.$emit("sidebar-update", this.eventType);
+      this.resourcetype = event.target.value.toLowerCase();
+      this.eventType =
+        event.target.value.toLowerCase() === "job" ? "employee" : "job";
+      if (this.eventType === "job") {
+        this.$emit("listJobs");
+      } else {
+        this.$emit("listUsers");
+      }
       this.fetchResorce().then(() => {
         this.dayPilot.update();
       });
     },
+
     changeScale: function(event) {
       event.preventDefault();
       this.dayPilot.scale = event.target.value;
       this.dayPilot.update();
     },
+
     changeDate: function(event) {
       event.preventDefault();
       this.dayPilot.startDate = event.target.value + "T00:00:00";
       this.dayPilot.update();
     },
-    makeDragable() {
+    
+    makeDragable() {      
       var parent = document.getElementById("resource");
       var items = parent.getElementsByTagName("li");
       for (var i = 0; i < items.length; i++) {
@@ -177,7 +205,8 @@ export default {
         };
         window.DayPilot.Scheduler.makeDraggable(item);
       }
-      this.dayPilot.update();
+      this.dayPilot.events.list = [];
+      this.dayPilot.update();      
     }
   }
 };

@@ -13,7 +13,7 @@ class User extends Authenticatable
     use Notifiable, HasApiTokens;
 
     protected $table = 'ts_users';
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     /**
@@ -22,11 +22,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user_name',
-        'user_email',
-        'user_password',
-        'user_isowner',
         'client_id',
+        'name',
+        'email',
+        'password',
+        'isowner',        
     ];
 
     /**
@@ -35,13 +35,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'user_password',
+        'password',
     ];
 
-    public function getAuthPassword()
-    {
-        return $this->user_password;
-    }
+    // public function getAuthPassword()
+    // {
+    //     return $this->user_password;
+    // }
 
     public function findForPassport($username) {
         return $this->where('user_name', $username)->first();
@@ -71,7 +71,15 @@ class User extends Authenticatable
      */
     public function createdRoles()
     {
-        return $this->hasMany(Role::class);
+        return $this->hasMany(Role::class, 'creator_id');
+    }
+
+    /**
+     * ACL rules created by current user.
+     */
+    public function createdACLs()
+    {
+        return $this->hasMany(ACL::class, 'creator_id');
     }
 
     /**
@@ -79,7 +87,39 @@ class User extends Authenticatable
      */
     public function createdSchedules()
     {
-        return $this->hasMany(Schedule::class, 'creator_id', 'user_id');
+        return $this->hasMany(Schedule::class, 'creator_id');
+    }
+
+    /**
+     * Contacts created by current user.
+     */
+    public function createdContacts()
+    {
+        return $this->hasMany(Contact::class, 'creator_id');
+    }
+
+    /**
+     * Addresses created by current user.
+     */
+    public function createdAddresses()
+    {
+        return $this->hasMany(Address::class, 'creator_id');
+    }
+
+    /**
+     * Banks created by current user.
+     */
+    public function createdBanks()
+    {
+        return $this->hasMany(Bank::class, 'creator_id');
+    }
+
+    /**
+     * Jobs created by current user.
+     */
+    public function createdJobs()
+    {
+        return $this->hasMany(Job::class, 'creator_id');
     }
 
     /**
@@ -87,7 +127,7 @@ class User extends Authenticatable
      */
     public function createdForms()
     {
-        return $this->hasMany(Form::class);
+        return $this->hasMany(Form::class, 'creator_id');
     }
 
     /**
@@ -103,7 +143,7 @@ class User extends Authenticatable
      */
     public function assignedRequests()
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(Request::class, 'assigned_id');
     }
 
     /**
@@ -111,7 +151,7 @@ class User extends Authenticatable
      */
     public function schedules()
     {
-        return $this->hasMany(Schedule::class, 'user_id', 'user_id');
+        return $this->hasMany(Schedule::class);
     }
 
     /**

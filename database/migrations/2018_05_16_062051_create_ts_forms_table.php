@@ -17,26 +17,26 @@ class CreateTsFormsTable extends Migration
         Schema::create('ts_forms', function (Blueprint $table) {
             
             // Keys
-            $table->increments('form_id');
+            $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('creator_id');
 
             // Attributes
-            $table->string('form_name');
-            $table->json('form_body');
-            $table->json('form_values');
+            $table->string('name');
+            $table->json('body');
+            $table->json('values');
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::table('ts_forms', function (Blueprint $table) {
             $table->foreign('client_id')
-                ->references('client_id')
+                ->references('id')
                 ->on('ts_clients')
                 ->onDelete('cascade');
 
-            $table->foreign('user_id')
-                ->references('user_id')
+            $table->foreign('creator_id')
+                ->references('id')
                 ->on('ts_users')
                 ->onDelete('cascade');
         });

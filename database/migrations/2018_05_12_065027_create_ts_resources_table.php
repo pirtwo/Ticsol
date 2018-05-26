@@ -17,10 +17,10 @@ class CreateTsResourcesTable extends Migration
         Schema::create('ts_resources', function (Blueprint $table) {
             
             // Keys
-            $table->increments('resource_id');
+            $table->increments('id');
 
             // Attributes
-            $table->string('resource_name');
+            $table->string('name');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,5 +1,8 @@
 <?php
 
+use App\Ticsol\Components\Models\Client;
+use App\Ticsol\Components\Models\User;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -12,23 +15,22 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Ticsol\Components\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'client_id' => 1,
-        'user_name' => $faker->name,
-        'user_email' => $faker->unique()->safeEmail,
-        'user_password' => $password ?: $password = bcrypt('secret'),
-        'user_isowner' => false,
+        'client_id' => $faker->numberBetween(1,3),
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
+        'isowner' => false,
     ];
 });
 
-$factory->define(App\Ticsol\Components\Models\Client::class, function (Faker\Generator $faker) {
-    static $password;
-
+$factory->define(Client::class, function (Faker\Generator $faker) {
+    
     return [
-        'client_name' => $faker->company,
-        'client_licences' => json_encode(array( 'type' => 'basic')),        
+        'name' => $faker->company,
+        'licences' => json_encode(array( 'type' => 'basic')),        
     ];
 });
