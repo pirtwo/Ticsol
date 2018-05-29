@@ -11,7 +11,7 @@ use App\Ticsol\Components\Models\User;
 use App\Ticsol\Components\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Cookie\CookieJar;
 use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
@@ -61,7 +61,7 @@ class AuthController extends Controller
      * method: POST.
      * @param Request
      */
-    public function logout(Request $request)
+    public function logout(Request $request, CookieJar $cookie)
     {
         try {
             $token = $request->user()->token();
@@ -69,8 +69,8 @@ class AuthController extends Controller
                 ->where('access_token_id', $token->id)
                 ->update(['revoked' => true]);
             $token->revoke();
-            $request->cookie->forget(self::REFRESH_TOKEN);
-            return Response(['success' => true, 'msg' => 'You loggedout successfuly.']);
+            $cookie->queue($cookie->forget(self::REFRESH_TOKEN));                 
+            return response()->json(['code' => '', 'message' => 'successful logout.'], 200);
         } catch (Exception $e) {
             $this->handelError($e);
         }
