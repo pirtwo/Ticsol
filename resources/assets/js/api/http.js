@@ -1,11 +1,12 @@
 
 import axios from 'axios';
+import { store } from '../store/store';
 import * as resources from './resources';
 
 export const auth = {
 
     login(credentials) {
-        console.log("Sending request to:" + resources.LOGIN_URL);
+        console.log("request to:" + resources.LOGIN_URL);
         return axios(
             {
                 method: 'POST',
@@ -19,40 +20,22 @@ export const auth = {
     },
 
     register(credentials) {
-        return axios.post(
-            resources,
-            {
-                headers: {
-                    body: {
-                        username: credentials.username,
-                        email: credentials.email,
-                        password: credentials.password,
-                        confirm: credentials.confirm,
-                        token: credentials.token,
-                    }
-                }
-            });
+
     },
 
     reset(credentials) {
-        return axios.post(
-            resources.PASSWORD_RESET_URL,
-            {
-                headers: {
-                    body: {
-                        username: credentials.username,
-                        email: credentials.email,
-                    }
-                }
-            });
+
     },
 
     logout(credentials) {
-        return axios.post(
-            resources.LOGOUT_URL,
+        console.log("request to:" + resources.LOGOUT_URL);
+        return axios(
             {
+                method: 'POST',
+                url: resources.LOGOUT_URL,
                 headers: {
-                    Authorization: 'Bearer' + credentials.token
+                    Accept: 'application/json',                    
+                    Authorization: `Bearer ${credentials.token}`
                 }
             });
     },
@@ -70,11 +53,31 @@ export const user = {
 }
 
 export const job = {
-    list(){
+    list() {
         return axios({
             method: 'GET',
             url: resources.JOB_LIST_URL,
             config: { headers: { Accept: 'application/json', } }
         })
     }
+}
+
+
+function makeRequest(method, url, isJson = true, isAuth = false, data = null) {
+    let config = {};
+    let token = store.state.auth.token.value;
+
+    config.headers.Accept =
+        (isJson) ? 'application/json' : '';
+    config.headers.Authorization =
+        (isAuth) ? ('Bearer ' + token) : '';
+
+    let req = axios({
+        method: method,
+        url: url,
+        data: data,
+        config: config,
+    });
+
+    return req;
 }

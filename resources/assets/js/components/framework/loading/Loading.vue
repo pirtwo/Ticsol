@@ -17,7 +17,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ isLoading: "isLoading", loadingMsg: "loadingMessage" })
+    ...mapGetters({ isLoading: "loading/isLoading", loadingMsg: "loading/getMessage" })
   }
 };
 </script>

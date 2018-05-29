@@ -4,9 +4,9 @@
             <ul id="resource" class="navview-menu">                
                 <template v-if="this.type === 'employee'">
                     <template v-for="res in this.resource">  
-                        <li :key="res.user_id" v-bind:data-id="res.user_id">
+                        <li :key="res.id" v-bind:data-id="res.id">
                             <a href="#">
-                                <span class="caption">{{ res.user_name }}</span>
+                                <span class="caption">{{ res.name }}</span>
                             </a>                        
                         </li>
                     </template>  

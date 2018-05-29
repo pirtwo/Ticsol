@@ -31,35 +31,26 @@ export default {
       password: ""
     };
   },
-  mounted() {
-    // console.log(this.$store);
-    // console.log(this.path);
-    // console.log(this.$store.state.user.isAuth);
-    // console.log(this.$store.state.user.counter);
-    // console.log(this.userIsAuth);
-    // console.log(this.userToken);
-  },
-  computed: {
-    ...mapGetters({ isAuth : 'user/userIsAuth', path: 'user/routePath'}),
-  },
   methods: {
-    ...mapActions(["user/login"]),
+    ...mapActions(["auth/login", "loading/start", "loading/stop"]),
     onSubmit() {
+      this.$store.dispatch("loading/start", { message: "Login..." });
       this.$store
-        .dispatch("user/login", {
+        .dispatch("auth/login", {
           username: this.username,
           password: this.password
         })
         .then(fulfilled => {
-          this.$router.push('/home');
+          this.$router.push("/dash");
+          this.$store.dispatch("loading/stop", { message: "redirecting..." });
         })
         .catch(reason => {
           console.log(reason);
+          this.$store.dispatch("loading/stop", { message: "error..." });
         });
     }
   }
 };
 </script>
 <style scoped>
-
 </style>

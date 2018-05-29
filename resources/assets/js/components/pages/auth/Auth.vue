@@ -1,21 +1,17 @@
 <template>
-     <div class="row">
-        <header class="cell-sm-12">                      
-        </header>
-        <main class="cell-sm-12 auth">
-            <router-view></router-view>
-        </main>
-        <footer class="cell-sm-12">                        
-        </footer>
-    </div>
+     <page-layout 
+        v-bind:header="false" 
+        v-bind:footer="false">         
+         <router-view></router-view>
+     </page-layout>
 </template>
 <script>
+import PageLayout from "../../framework/PageLayout.vue";
 export default {
-    components:{
-        
-    }
-}
+  components: {
+    "page-layout": PageLayout
+  }
+};
 </script>
 <style scoped>
-
 </style>

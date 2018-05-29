@@ -114,6 +114,12 @@ export const router = new VueRouter({
                             name: 'jobList',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/jobs/JobList.vue'),
+                        },
+                        {
+                            path: 'view',
+                            name: 'jobView',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/jobs/JobView.vue'),
                         }
                     ]
                 }
@@ -124,8 +130,8 @@ export const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    var user = store.state.user;
-    if (to.meta.requireAuth === true && user.isAuth === false) {
+    var state = store.state.auth;
+    if (to.meta.requireAuth === true && state.isAuth === false) {
         next('/');
     } else {
         next();

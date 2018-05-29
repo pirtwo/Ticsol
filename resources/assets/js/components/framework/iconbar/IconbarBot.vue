@@ -3,9 +3,9 @@
         <ul class="t-menu open horizontal compact right float-left">        
             <li>
                 <router-link :to="{ name: 'home' }" class="shortcut button" role="button">
-                    <span class="mif-home mif-2x"></span>
+                    <span class="mif-dashboard mif-2x"></span>
                     <!-- <span class="tag"></span> -->
-                    <span class="caption">Home</span>
+                    <span class="caption">Dashboard</span>
                 </router-link>
             </li>        
             <li>
@@ -44,10 +44,10 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="settings" class="shortcut button" role="button">
-                    <span class="mif-cog mif-2x"></span>
+                <router-link :to="{ name: 'jobs' }" class="shortcut button" role="button">
+                    <span class="mif-location-city mif-2x"></span>
                     <span class="tag">3</span>
-                    <span class="caption">Setting</span>
+                    <span class="caption">Jobs</span>
                 </router-link>
             </li>
         </ul>

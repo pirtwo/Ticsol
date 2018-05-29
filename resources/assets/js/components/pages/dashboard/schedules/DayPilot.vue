@@ -66,6 +66,7 @@ export default {
     //   default: 30
     // }
   },
+
   data() {
     return {
       dayPilot: "",
@@ -82,11 +83,9 @@ export default {
       }
     };
   },
+
   created() {
-    this.$store.dispatch("loading", {
-      isLoading: true,
-      message: "Loading..."
-    });
+    this.$store.dispatch("loading/start", { message: "Loading..." });
     // append daypilot style to head
     let dpStyleLoaded = new Promise(resolve => {
       if (window.DayPilot === undefined) {
@@ -131,20 +130,19 @@ export default {
       this.$emit("listJobs");
       this.fetchResorce().then(() => {
         this.dayPilot.init();
-        this.$store.dispatch("loading", {
-          isLoading: false,
-          message: "Ready..."
-        });
+        this.$store.dispatch("loading/stop", { message: "Ready..." });
       });
     });
   },
+
   watch: {
-    dpResource: function() {      
+    dpResource: function() {
       this.makeDragable();
     }
   },
+  
   methods: {
-    ...mapActions(["loading"]),
+    ...mapActions(["loading/start", "loading/stop"]),
 
     fetchResorce: function() {
       return new Promise(resolve => {
@@ -156,7 +154,7 @@ export default {
             let data = Object.values(respond.data).map((item, index) => {
               if (this.resourcetype === "job")
                 return { id: item.id, name: item.title };
-              else return { id: item.user_id, name: item.user_name };
+              else return { id: item.id, name: item.name };
             });
             this.dayPilot.resources = data;
             this.dayPilot.update();
@@ -190,8 +188,8 @@ export default {
       this.dayPilot.startDate = event.target.value + "T00:00:00";
       this.dayPilot.update();
     },
-    
-    makeDragable() {      
+
+    makeDragable() {
       var parent = document.getElementById("resource");
       var items = parent.getElementsByTagName("li");
       for (var i = 0; i < items.length; i++) {
@@ -206,7 +204,7 @@ export default {
         window.DayPilot.Scheduler.makeDraggable(item);
       }
       this.dayPilot.events.list = [];
-      this.dayPilot.update();      
+      this.dayPilot.update();
     }
   }
 };
