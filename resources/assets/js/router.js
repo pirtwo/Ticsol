@@ -58,7 +58,16 @@ export const router = new VueRouter({
                     path: '/inbox',
                     name: 'inbox',
                     meta: { requireAuth: true },
-                    component: require('./components/pages/dashboard/Inbox.vue')
+                    redirect: { name: 'inboxList' },
+                    component: require('./components/pages/dashboard/inbox/Inbox.vue'),
+                    children: [
+                        {
+                            path: 'list',
+                            name: 'inboxList',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/inbox/inboxList.vue'),
+                        }
+                    ]
                 },
                 {
                     path: '/hr',
@@ -120,6 +129,12 @@ export const router = new VueRouter({
                             name: 'jobView',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/jobs/JobView.vue'),
+                        },
+                        {
+                            path: 'profile',
+                            name: 'jobProfile',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/jobs/JobProfile.vue'),
                         }
                     ]
                 }

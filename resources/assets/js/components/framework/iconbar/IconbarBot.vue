@@ -24,7 +24,7 @@
             </li>
             <li>
                 <router-link :to="{ name: 'requests' }" class="shortcut button" role="button">
-                    <span class="mif-user-plus mif-2x"></span>
+                    <span class="mif-stack2 mif-2x"></span>
                     <span class="tag">5</span>
                     <span class="caption">Requests</span>
                 </router-link>

@@ -70,4 +70,7 @@ export default {
 </script>
 
 <style>
+.navview .content-wrap {
+    overflow-y: hidden !important;
+}
 </style>

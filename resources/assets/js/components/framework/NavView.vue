@@ -74,7 +74,7 @@
             </slot>
         </div>
         <div class="navview-content">
-            <div class="content">
+            <div class="content-wrap">
                 <slot name="content">
                     <router-link ></router-link>
                 </slot>

@@ -91,12 +91,18 @@ footer{
   height: 100%;
 }
 
-.navview .content {
+.navview .content-wrap {
   background-color: rgba(255,255,255,0.5) !important;
-  min-height: 500px !important;
-  margin-left: 10px;
-  margin-right: auto;
+  
   height: 100%;
+  margin-left: 10px;
+  margin-right: auto; 
+
+  min-height: 500px;
+  max-height: 500px;
+    
+  overflow-x: hidden;  
+  overflow-y: scroll;
   position: relative;
 }
 
