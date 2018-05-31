@@ -144,12 +144,12 @@ export const router = new VueRouter({
     ]
 });
 
-router.beforeEach((to, from, next) => {
-    var state = store.state.auth;
-    if (to.meta.requireAuth === true && state.isAuth === false) {
-        next('/');
-    } else {
-        next();
-    }
-    next();
-});
+// router.beforeEach((to, from, next) => {
+//     var state = store.state.auth;
+//     if (to.meta.requireAuth === true && state.isAuth === false) {
+//         next('/');
+//     } else {
+//         next();
+//     }
+//     next();
+// });

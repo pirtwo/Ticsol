@@ -47779,15 +47779,15 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     }]
 });
 
-router.beforeEach(function (to, from, next) {
-    var state = __WEBPACK_IMPORTED_MODULE_2__store_store_js__["a" /* store */].state.auth;
-    if (to.meta.requireAuth === true && state.isAuth === false) {
-        next('/');
-    } else {
-        next();
-    }
-    next();
-});
+// router.beforeEach((to, from, next) => {
+//     var state = store.state.auth;
+//     if (to.meta.requireAuth === true && state.isAuth === false) {
+//         next('/');
+//     } else {
+//         next();
+//     }
+//     next();
+// });
 
 /***/ }),
 /* 61 */
