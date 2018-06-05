@@ -13,24 +13,28 @@ use Illuminate\Http\Request;
 |
  */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\API'], function(){
-    
-    // Route: Post
-    Route::post('/login', 'AuthController@login');
-    Route::post('/refresh', 'AuthController@refresh');
-    
-
-    // Route: Get
-    
+        
+    #region Method: GET
+    // Users
     Route::get('user/list', 'UserController@get');
     Route::get('user/client/{id}', 'UserController@client');
     
-    Route::get('jobs/list', 'JobController@get');
-    
+    // Jobs
+    Route::get('jobs/list', 'JobController@list');
+    Route::get('jobs/view/{id}', 'JobController@view');
+    #endregion
+
+    #region Method: POST
+    // Auth
+    Route::post('/login', 'AuthController@login');
+    Route::post('/refresh', 'AuthController@refresh');
+
+    // Jobs    
+    Route::post('jobs/create', 'JobController@create');
+    Route::post('jobs/update/{id}', 'JobController@update');    
+    #endregion
+
 
     /**
      * Protected api routes

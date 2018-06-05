@@ -2,29 +2,70 @@
 
 namespace App\Ticsol\Components\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Ticsol\Components\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use App\Ticsol\Components\Models\Job;
+use App\Ticsol\Components\Job\Requests;
+use App\Ticsol\Components\Job\Exceptions;
 
-class JobController extends Controller{
+class JobController extends Controller{    
     
-    private $data;
-
-    public function __construct()
+    /**
+     * Method: GET
+     */
+    public function list(Request $req)
     {
-        $this->data = array(
-            ['id' => 1, 'title' => 'Frontend Developer'],
-            ['id' => 2, 'title' => 'Find Requirement'],
-            ['id' => 3, 'title' => 'Css Styling'],
-            ['id' => 4, 'title' => 'Backend Developer'],
-            ['id' => 5, 'title' => 'Testing'],
-            ['id' => 6, 'title' => 'Debugging'],
-            ['id' => 7, 'title' => 'Database Managment'],
-        );
+        try{
+            return Job::all();
+        }catch(Exception $e){            
+            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);            
+        }
     }
-    
-    public function get(){        
-        return response()->json($this->data, 201);        
+
+    /**
+     * Method: GET
+     */
+    public function view(Request $req, $id)
+    {
+        try{
+            return Job::find($id);
+        }catch(Exception $e){
+            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);   
+        }
     }
+
+    /**
+     * Method: POST
+     */
+    public function create(Requests\CreateJob $req)
+    {
+        try{           
+            $job = new Job();
+            $job->client_id = 1;
+            $job->creator_id = 1;
+            $job->fill($req->all());
+            $job->save();
+            return $job;
+        }catch(\Exception $e){
+            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);   
+        }
+    }
+
+    /**
+     * Method: POST
+     */
+    public function update(Requests\UpdateJob $req, $id)
+    {
+        try{
+            $job = Job::find($id);
+            if($job == null)
+                throw new Exceptions\JobNotFound();
+            $job->update($req->all());
+            return $job;
+        }catch(Exception $e){
+            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);   
+        }
+    }
+
 }

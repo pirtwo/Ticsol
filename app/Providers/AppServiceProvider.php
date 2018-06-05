@@ -15,11 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Bind Ticsol custom exception handler.
-        $this->app->bind(
-            ExceptionHandler::class,
-            Handler::class
-        );
+        //
     }
 
     /**

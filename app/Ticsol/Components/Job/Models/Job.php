@@ -17,9 +17,7 @@ class Job extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'client_id',
-        'creator_id',
+    protected $fillable = [        
         'parent_id',
         'form_id',
         'title',
@@ -34,7 +32,8 @@ class Job extends Model
      * @var array
      */
     protected $hidden = [
-        
+        'client_id',
+        'creator_id',        
     ];
 
 
