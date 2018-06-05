@@ -84,7 +84,21 @@ footer{
 }
 
 .navview .navview-pane {
-  background-color: rgba(255,255,255,0.7) !important;
+  background-color: rgba(255,255,255,0.9) !important;
+}
+
+.navview .navview-menu li a{
+  height: 30px !important;
+  line-height: 30px !important;
+}
+
+.navview .navview-menu li a:hover{
+  background-color: #cecece33 !important;
+}
+
+.navview .navview-pane .bg-dark{  
+  font-size: 0.9rem !important;
+  background-color: #1d1d1d1a !important;
 }
 
 .navview .navview-content {
@@ -180,10 +194,10 @@ footer{
 }
 
 .loading-box {
-  background-color: rgba(255,255,255,0.8) !important;
-  color: #684986;
+  background-color: rgba(0,0,0,0.8) !important;
+  color: #f3f3f3;
 
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   right: 10px;
   
@@ -191,12 +205,16 @@ footer{
   transition: all 0.3s;
 }
 .loading-box [class*="mif-"] {
-  color: #684986;
+  color: #f3f3f3;
   font-size: 1em !important;
   width: 40px;
   text-align: center;
   vertical-align: middle;  
   display: inline-block;
+}
+
+.table{
+  background-color: #f3f3f3e6;
 }
 
 .showElement{

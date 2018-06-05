@@ -74,7 +74,7 @@
             </slot>
         </div>
         <div class="navview-content">
-            <div class="content-wrap">
+            <div class="content-wrap" v-bind:class="[scrollbar ? '': 'hide-scrollbar']">
                 <slot name="content">
                     <router-link ></router-link>
                 </slot>
@@ -83,9 +83,18 @@
     </div>
 </template>
 <script>
-    export default {
-        name: 'NavView',
-    };
+export default {
+  name: "NavView",
+  props: {
+    scrollbar: {
+        type: Boolean,
+        default: true
+    }
+  }
+};
 </script>
 <style scoped>
+.hide-scrollbar{
+    overflow-y: hidden !important;
+}
 </style>

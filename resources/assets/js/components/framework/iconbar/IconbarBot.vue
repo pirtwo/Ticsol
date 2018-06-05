@@ -37,7 +37,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link :to="{ name: 'schedule' }" class="shortcut button" role="button">
+                <router-link :to="{ name: 'scheduler' }" class="shortcut button" role="button">
                     <span class="mif-calendar mif-2x"></span>
                     <span class="tag">15</span>
                     <span class="caption">Schedule</span>
@@ -50,6 +50,13 @@
                     <span class="caption">Jobs</span>
                 </router-link>
             </li>
+            <li>
+                <router-link :to="{ name: 'jobs' }" class="shortcut button" role="button">
+                    <span class="mif-more-horiz mif-2x"></span>
+                    <!-- <span class="tag">3</span> -->
+                    <span class="caption">More</span>
+                </router-link>
+            </li>
         </ul>
     </div>
 </template>
@@ -59,4 +66,4 @@ export default {
 };
 </script>
 <style scoped>
-</style>
+</style>more-horiz

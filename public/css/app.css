@@ -53386,7 +53386,7 @@ input[dir=rtl] {
 
 @font-face {
   font-family: metro;
-  src: url(/fonts/metro.ttf?9d2647a188d8d272fe1dcfe028ec165e) format("truetype"), url(/fonts/metro.woff?8ffa95a88136d6b083a10efad8df2fa6) format("woff"), url(/fonts/metro.svg?51a112d67d8820d5f8171384c94d9173) format("svg");
+  src: url(/fonts/metro.ttf?9d2647a188d8d272fe1dcfe028ec165e) format("truetype"), url(/fonts/metro.woff?8ffa95a88136d6b083a10efad8df2fa6) format("woff"), url(/fonts/metro.svg?e05a8c8eba67ba2d8e7ae5948bcf4a3f) format("svg");
   font-weight: 400;
   font-style: normal;
 }
@@ -55751,7 +55751,21 @@ footer {
 }
 
 .navview .navview-pane {
-  background-color: rgba(255, 255, 255, 0.7) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navview .navview-menu li a {
+  height: 30px !important;
+  line-height: 30px !important;
+}
+
+.navview .navview-menu li a:hover {
+  background-color: #cecece33 !important;
+}
+
+.navview .navview-pane .bg-dark {
+  font-size: 0.9rem !important;
+  background-color: #1d1d1d1a !important;
 }
 
 .navview .navview-content {
@@ -55843,9 +55857,9 @@ footer {
 }
 
 .loading-box {
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  color: #684986;
-  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  color: #f3f3f3;
+  position: fixed;
   bottom: 10px;
   right: 10px;
   padding: 5px 7px 5px 0px;
@@ -55854,12 +55868,16 @@ footer {
 }
 
 .loading-box [class*="mif-"] {
-  color: #684986;
+  color: #f3f3f3;
   font-size: 1em !important;
   width: 40px;
   text-align: center;
   vertical-align: middle;
   display: inline-block;
+}
+
+.table {
+  background-color: #f3f3f3e6;
 }
 
 .showElement {

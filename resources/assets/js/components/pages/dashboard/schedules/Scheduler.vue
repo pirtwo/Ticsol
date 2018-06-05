@@ -1,5 +1,5 @@
 <template>
-    <nav-view>
+    <nav-view v-bind:scrollbar="false">
         <template slot="pane">
             <ul id="resource" class="navview-menu">                
                 <template v-if="this.type === 'employee'">
@@ -69,8 +69,5 @@ export default {
 };
 </script>
 
-<style>
-.navview .content-wrap {
-    overflow-y: hidden !important;
-}
+<style scoped>
 </style>
