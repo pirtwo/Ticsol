@@ -1,25 +1,20 @@
 <template>
-    <nav-view>
-        <template slot="pane">
-            <button class="pull-button">
-                <span class="default-icon-menu"></span>
-            </button>
+    <nav-view v-bind:loading-content="tableLoading">
+        <template slot="pane">           
             <ul class="navview-menu">
                 <li class="item-header">Job List</li>
                 <li class="item-separator"></li>
 
                 <li class="item-header bg-dark">Actions</li>                
                 <li>
-                    <a href="#">
-                        <!-- <span class="icon"><span class="mif-list-numbered"></span></span> -->
+                    <router-link :to="{ name: 'jobList' }">
                         <span class="caption">List</span>
-                    </a>
+                    </router-link>
                 </li>
                 <li>
-                    <a href="#">
-                        <!-- <span class="icon"><span class="mif-note-add"></span></span> -->
+                    <router-link :to="{ name: 'jobCreate' }">
                         <span class="caption">New</span>
-                    </a>
+                    </router-link>
                 </li>
                 <li>
                     <a href="#">

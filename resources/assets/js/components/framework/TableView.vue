@@ -14,20 +14,12 @@
                 </template>
             </tr>
         </thead>
-        <tbody>
-            <template v-if="loading">                
-                <div class="table-loading">
-                    <div class="icon" data-role="activity" data-type="square" data-style="color"></div>
-                    <div class="text-light">Loading, Please Wait...</div>
-                </div>               
-            </template>
-            <template v-else>
-                <tr v-for="item in data" :key="item.id" v-bind:class="classRow">
-                    <td v-for="(value, key, index) in item" :key="index">
-                        {{ value }}
-                    </td>
-                </tr>
-            </template>            
+        <tbody>            
+            <tr v-for="item in data" :key="item.id" v-bind:class="classRow">
+                <td v-for="(value, key, index) in item" :key="index">
+                    {{ value }}
+                </td>
+            </tr>                
         </tbody>
     </table>
 </template>
@@ -54,10 +46,6 @@ export default {
     rowClasses: {
       type: Array,
       default: null
-    },
-    loading: {
-      type: Boolean,
-      default: true
     }
   },
   computed: {
@@ -72,18 +60,4 @@ export default {
 </script>
 
 <style scoped>
-.table-loading {
-  top: 40%;
-  left: 40%;
-  width: 20%;
-  padding: 10px; 
-  text-align: center;
-  position: absolute;
-  background-color: aliceblue;
-}
-
-.table-loading .icon {
-  margin-left: auto;
-  margin-right: auto;
-}
 </style>

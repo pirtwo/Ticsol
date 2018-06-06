@@ -125,6 +125,12 @@ export const router = new VueRouter({
                             component: require('./components/pages/dashboard/jobs/JobList.vue'),
                         },
                         {
+                            path: 'create',
+                            name: 'jobCreate',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/jobs/JobCreate.vue'),
+                        },
+                        {
                             path: 'view',
                             name: 'jobView',
                             meta: { requireAuth: true },

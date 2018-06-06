@@ -1,5 +1,5 @@
 <template>
-    <nav-view v-bind:scrollbar="false">
+    <nav-view v-bind:scrollbar="false" v-bind:loading-content="loading">
         <template slot="pane">
             <ul id="resource" class="navview-menu">                
                 <template v-if="this.type === 'employee'">
@@ -43,8 +43,10 @@ export default {
     "day-pilot": DayPilot
   },
   data: function() {
-    return {};
-  },  
+    return {
+      loading: false
+    };
+  },
   computed: {
     ...mapGetters({
       resource: "sidebar/getResource",
@@ -54,15 +56,21 @@ export default {
   methods: {
     ...mapActions(["sidebar/listJobs", "sidebar/listUsers"]),
     listJobsHandler() {
+      this.loading = true;
       this.$store
         .dispatch("sidebar/listJobs")
-        .then(done => {})
+        .then(done => {
+          this.loading = false;
+        })
         .catch(error => {});
     },
     listUsersHandler() {
+      this.loading = true;
       this.$store
         .dispatch("sidebar/listUsers")
-        .then(done => {})
+        .then(done => {
+          this.loading = false;
+        })
         .catch(error => {});
     }
   }
