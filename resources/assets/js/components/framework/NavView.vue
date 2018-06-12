@@ -13,9 +13,11 @@
                     <div class="icon" data-role="activity" data-type="square" data-style="color"></div>
                     <div class="text-light">Loading, Please Wait...</div>
                 </div>
-                <slot name="content" v-show="!loadingContent">
-                    <router-link ></router-link>
-                </slot>
+                <div class="content" v-show="!loadingContent">
+                    <slot name="content">
+                        <router-link ></router-link>
+                    </slot>
+                </div>                
             </div>
         </div>
     </div>
@@ -46,6 +48,10 @@ export default {
 <style scoped>
 .hide-scrollbar {
   overflow-y: hidden !important;
+}
+
+.content{
+    height: 100%;
 }
 
 .content-loading {

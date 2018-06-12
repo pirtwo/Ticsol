@@ -1,5 +1,5 @@
 .container-fluid {
-  font-family: Raleway !important;
+  /* font-family: Raleway !important; */
   background-image: url("/themes/nature_01.jpg");
   height: 100%;
   background-position: center;
@@ -60,8 +60,7 @@ footer{
   background-color: rgba(255,255,255,0.0) !important;
   border-color: rgba(255,255,255,0.1) !important;
   color: #684986 !important;
-  margin: 12px;
-  
+  margin: 12px;  
 }
 
 .main-menu .shortcut:hover{    
@@ -77,6 +76,7 @@ footer{
 
 .main-menu .caption {
   line-height: 5px;
+  padding-top: 7px;
 }
 
 .navview {

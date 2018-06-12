@@ -1,5 +1,5 @@
 <template>
-    <nav-view v-bind:loading-content="tableLoading">
+    <nav-view v-bind:loading-content="tableLoading" v-bind:scrollbar="false">
         <template slot="pane">           
             <ul class="navview-menu">
                 <li class="item-header">Job List</li>
@@ -59,51 +59,70 @@
                 
             </ul>
         </template>
-        <template slot="content">
+        <template slot="content">            
             <table-view
                 v-bind:data="tableData"
                 v-bind:headers="[]"
                 v-bind:table-classes="['table', 'striped', 'row-hover']"
                 v-bind:row-classes="[]"
                 v-bind:loading="tableLoading">
-            </table-view>          
+            </table-view> 
+            <pagination-view 
+                v-bind:base-url="'#'" 
+                v-bind:page-count="pageCount" 
+                v-bind:current-page="page" >
+            </pagination-view>
         </template>
     </nav-view>
 </template>
 
 <script>
-import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/TableView.vue";
+import PaginationView from "../../../framework/PaginationView.vue";
+
 export default {
   name: "JobList",
   components: {
     "nav-view": NavView,
-    "table-view": TableView
+    "table-view": TableView,
+    "pagination-view": PaginationView
   },
   data() {
     return {
       tableData: null,
-      tableLoading: true
+      tableLoading: true,      
+      page: 1,
+      pageCount: 10
     };
   },
   mounted() {
     this.feedTable();
   },
   methods: {
+    ...mapActions({ jobList: "job/list" }),
     feedTable() {
       this.tableLoading = true;
-      axios.get("https://server.dev/api/jobs/list").then(respond => {        
-        this.tableData = respond.data.map(obj => {
+      this.jobList({query : [
+          { key: "page", value: this.page },
+          { key: "count", value: this.pageCount }
+        ]})
+        .then(respond => {
+          this.tableData = respond.data.map(obj => {
             var nObj = {};
             nObj.id = obj.id;
             nObj.title = obj.title;
             nObj.active = obj.isactive;
             nObj.code = obj.code;
             return nObj;
+          });
+          this.pageCount = respond.last_page;
+          this.tableLoading = false;
+        })
+        .catch(error => {
+          console.log(error);
         });
-        this.tableLoading = false;
-      });
     }
   }
 };

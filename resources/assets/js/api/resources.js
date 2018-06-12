@@ -33,11 +33,16 @@ export const PASSWORD_RESET_URL = BASE_URL + '/api/passwordreset';
 /**
  * Method: GET.
  */
-export const JOB_LIST_URL = BASE_URL + '/api/jobs/list';
+export const JOB_LIST_URL = BASE_URL + '/api/job/list';
+
+/**
+ * Method: POST.
+ */
+export const JOB_CREATE_URL = BASE_URL + '/api/job/create';
 
 //#endregion
 
-//#region Jobs
+//#region Users
 
 /**
  * Method: GET.

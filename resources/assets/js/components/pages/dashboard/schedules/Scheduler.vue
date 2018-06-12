@@ -1,7 +1,7 @@
 <template>
     <nav-view v-bind:scrollbar="false" v-bind:loading-content="loading">
         <template slot="pane">
-            <ul id="resource" class="navview-menu">                
+            <ul id="dp-draggable" class="navview-menu">                
                 <template v-if="this.type === 'employee'">
                     <template v-for="res in this.resource">  
                         <li :key="res.id" v-bind:data-id="res.id">
@@ -23,11 +23,34 @@
             </ul>
         </template>
         <template slot="content">
-            <day-pilot 
-                v-on:listJobs="listJobsHandler"
-                v-on:listUsers="listUsersHandler"
-                v-bind:dpResource="this.type"
-            ></day-pilot>
+            <div class="inline-form">
+                <div class="form-group">        
+                    <label class="label">View: </label>
+                    <select class="select" data-role="select" style="display:inline !important;">
+                        <option value="Job" selected>Job</option>
+                        <option value="Employee">Employee</option>
+                    </select>        
+                </div>
+                <!-- <div class="form-group">
+                    <label class="label">Scale: </label>
+                    <select class="select" style="display:inline !important;" v-model="scale" v-on:change="changeScale">
+                    <option value="Minute">Minute</option>
+                    <option value="Hour">Hour</option>
+                    <option value="Day">Day</option>
+                    <option value="Week">Week</option>
+                    <option value="Month">Month</option>
+                    <option value="Year">Year</option>
+                    </select>
+                </div>      -->
+                <div class="form-group">
+                    <label class="label">From: </label>
+                    <input type="date" />
+                </div>
+            </div><!-- Controll end -->
+            <day-pilot                             
+                v-bind:resource="[{'name': 'Resource 1', 'id': 'R1' },{'name': 'Resource 2','id': 'R2' }]"
+                v-bind:events="[{'id': 1,'resource': 'R1',  'start': '2018-06-04T00:00:00', 'end': '2018-06-08T00:00:00',   'text': 'Event 1' },{'id': 2, 'resource': 'R1','start': '2018-06-06T00:00:00','end': '2018-06-11T00:00:00', 'text': 'Event 2'}]">
+            </day-pilot>
         </template>
     </nav-view>
 </template>
@@ -44,7 +67,10 @@ export default {
   },
   data: function() {
     return {
-      loading: false
+      loading: false,
+      startDate: Date.now(),
+      resources: [],
+      events: []
     };
   },
   computed: {
@@ -78,4 +104,34 @@ export default {
 </script>
 
 <style scoped>
+input[type="date"] {
+  font-size: 10px;
+  padding: 5px;
+  height: 25px;
+  border: 1px #d9d9d9 solid;
+  border-radius: 3px;
+}
+
+.select {
+  font-size: 10px !important;
+  padding: 5px !important;
+  height: 25px !important;
+  min-width: 80px !important;
+  border-radius: 3px !important;
+}
+
+.inline-form {
+  vertical-align: bottom !important;
+}
+
+.form-group {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+  padding-left: 7px;
+}
+
+.label {
+  font-size: 15px !important;
+  vertical-align: bottom !important;
+}
 </style>

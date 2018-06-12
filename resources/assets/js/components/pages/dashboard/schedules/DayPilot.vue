@@ -1,97 +1,80 @@
 <template>
-  <div>
-    <div class="inline-form">
-      <div class="form-group">        
-          <label class="label">View: </label>
-          <select class="select" style="display:inline !important;" v-model="view" v-on:change="changeType">
-            <option value="Job" selected>Job</option>
-            <option value="Employee">Employee</option>
-          </select>        
-      </div>
-      <div class="form-group">
-        <label class="label">Scale: </label>
-        <select class="select" style="display:inline !important;" v-model="scale" v-on:change="changeScale">
-          <option value="Minute">Minute</option>
-          <option value="Hour">Hour</option>
-          <option value="Day">Day</option>
-          <option value="Week">Week</option>
-          <option value="Month">Month</option>
-          <option value="Year">Year</option>
-        </select>
-      </div>     
-      <div class="form-group">
-        <label class="label">From: </label>
-        <input type="date" v-model="dateFrom" v-on:change="changeDate" />
-      </div>
-    </div><!-- Controll end -->
-
-    <div id="dp"></div>
-  </div>
+  <div id="dp"></div>  
 </template>
+
 <script>
-import { mapActions } from "vuex";
-import axios from "axios";
 export default {
   props: {
-    dpResource: {
+    type: {
       type: String,
-      default: "employee",
-      validator: function(value) {
-        return ["employee", "job"].indexOf(value) !== -1;
-      }
+      default: "scheduler",
+    },
+    width: {
+      type: String,
+      default: '100%',
+    },
+    height: {
+      type: Number,
+      default: 400,
+    },
+    startDate: {
+      type: Number,
+      default: Date.now(),
+    },
+    days: {
+      type: Number,
+      default: 30
+    },
+    resource: {
+      type: Array,
+      default: null,
+    },
+    events: {
+      type: Array,
+      default: null,
+    },
+    showNonBusiness: {
+      type: Boolean,
+      default: true,
+    },
+    businessBeginHour: {
+      type: Number,
+      default: 6,
+    },
+    businessEndHour: {
+      type: Number,
+      default: 18,
+    },
+    scale: {
+      type: String,
+      default: "Hour",
+    },
+    cellDuration: {
+      type: Number,
+      default: 15,
     }
-    // dpType: {
-    //   type: String,
-    //   default: "Scheduler",
-    //   validator: function(value) {
-    //     return ["Employee", "Job"].indexOf(value) !== -1;
-    //   }
-    // },
-    // dpView: {
-    //   type: String,
-    //   default: "Day",
-    //   validator: function(value) {
-    //     return (
-    //       ["Minute", "Hour", "Day", "Week", "Month", "Year"].indexOf(value) !==
-    //       -1
-    //     );
-    //   }
-    // },
-    // dpFrom: {
-    //   type: String,
-    //   default: Date.now()
-    // },
-    // dpDays: {
-    //   type: Number,
-    //   default: 30
-    // }
   },
 
   data() {
     return {
-      dayPilot: "",
-      scale: "",
-      resourcetype: "employee",
-      eventType: "job",
-      dateFrom: "",
-      view: "",
-      scriptUrl: "https://server.dev/js/daypilot-all.min.js",
-      styleUrl: "https://server.dev/css/calendar_white.css",
-      urls: {
-        job: "https://server.dev/api/jobs/list",
-        employee: "https://server.dev/api/user/list"
-      }
-    };
+      dayPilot: "",      
+    }
   },
 
   created() {
-    this.$store.dispatch("loading/start", { message: "Loading..." });
+
+    console.log(this.type);
+    console.log(this.resource);
+    console.log(this.events);
+    //console.log(this.resource);
+
+
     // append daypilot style to head
     let dpStyleLoaded = new Promise(resolve => {
       if (window.DayPilot === undefined) {
         let dpStyle = document.createElement("link");
         dpStyle.type = "text/css";
-        dpStyle.href = this.styleUrl;
+        dpStyle.href = "https://server.dev/css/calendar_white.css";
         dpStyle.rel = "stylesheet";
         dpStyle.onload = () => {
           resolve();
@@ -105,9 +88,10 @@ export default {
     // append daypilot script to body
     let dpScriptLoaded = new Promise(resolve => {
       if (window.DayPilot === undefined) {
+        console.log("not loaded...");
         let dpScript = document.createElement("script");
         dpScript.type = "text/javascript";
-        dpScript.src = this.scriptUrl;
+        dpScript.src = "https://server.dev/js/daypilot-all.min.js";
         dpScript.async = "true";
         dpScript.defer = "true";
         dpScript.onload = () => {
@@ -115,82 +99,56 @@ export default {
         };
         document.body.appendChild(dpScript);
       } else {
+        console.log("loaded...");
         resolve();
       }
     });
 
     dpScriptLoaded.then(() => {
-      this.dayPilot = new window.DayPilot.Scheduler("dp");
-      this.dayPilot.width = "100%";
-      this.dayPilot.startDate = "2018-04-30T14:30:00";
-      this.dayPilot.days = 30;
-      this.dayPilot.heightSpec = "Fixed";
-      this.dayPilot.height = 400;
-
-      this.$emit("listJobs");
-      this.fetchResorce().then(() => {
+      console.log("resolved...");
+      if(this.type == 'scheduler'){
+        console.log(this.resource);
+        this.dayPilot = new window.DayPilot.Scheduler("dp");
+        this.dayPilot.width = '100%';
+        this.dayPilot.height = 400;
+        this.dayPilot.startDate = this.formatDate(this.startDate) + "T14:30:00";
+        this.dayPilot.days = 30;
+        this.dayPilot.heightSpec = "Fixed"; 
+        this.dayPilot.resources = this.resource; 
+        this.dayPilot.events.list = this.events; 
         this.dayPilot.init();
-        this.$store.dispatch("loading/stop", { message: "Ready..." });
-      });
+        //this.makeDraggable();      
+      }
+      // if(type === 'calendar'){
+
+      // }     
+            
     });
   },
 
   watch: {
-    dpResource: function() {
+    resource: function() {
       this.makeDragable();
+    },
+    events: function(){
+
     }
   },
-  
+
   methods: {
-    ...mapActions(["loading/start", "loading/stop"]),
-
-    fetchResorce: function() {
-      return new Promise(resolve => {
-        axios
-          .get(this.urls[this.resourcetype], {
-            headers: { Accept: "application/json" }
-          })
-          .then(respond => {
-            let data = Object.values(respond.data).map((item, index) => {
-              if (this.resourcetype === "job")
-                return { id: item.id, name: item.title };
-              else return { id: item.id, name: item.name };
-            });
-            this.dayPilot.resources = data;
-            this.dayPilot.update();
-            resolve();
-          });
-      });
+    
+    formatDate(date) {
+      var d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+      return [year, month, day].join("-");
     },
 
-    changeType: function(event) {
-      this.resourcetype = event.target.value.toLowerCase();
-      this.eventType =
-        event.target.value.toLowerCase() === "job" ? "employee" : "job";
-      if (this.eventType === "job") {
-        this.$emit("listJobs");
-      } else {
-        this.$emit("listUsers");
-      }
-      this.fetchResorce().then(() => {
-        this.dayPilot.update();
-      });
-    },
-
-    changeScale: function(event) {
-      event.preventDefault();
-      this.dayPilot.scale = event.target.value;
-      this.dayPilot.update();
-    },
-
-    changeDate: function(event) {
-      event.preventDefault();
-      this.dayPilot.startDate = event.target.value + "T00:00:00";
-      this.dayPilot.update();
-    },
-
-    makeDragable() {
-      var parent = document.getElementById("resource");
+    makeDraggable() {
+      var parent = document.getElementById("dp-draggable");
       var items = parent.getElementsByTagName("li");
       for (var i = 0; i < items.length; i++) {
         var e = items[i];
@@ -203,45 +161,15 @@ export default {
         };
         window.DayPilot.Scheduler.makeDraggable(item);
       }
-      this.dayPilot.events.list = [];
-      this.dayPilot.update();
+      // this.dayPilot.events.list = [];
+      // this.dayPilot.update();
     }
   }
 };
 </script>
+
 <style scoped>
 #dp {
   background-color: white !important;
-}
-
-input[type="date"] {
-  font-size: 10px;
-  padding: 5px;
-  height: 25px;
-  border: 1px #d9d9d9 solid;
-  border-radius: 3px;
-}
-
-.select {
-  font-size: 10px !important;
-  padding: 5px !important;
-  height: 25px !important;
-  min-width: 80px !important;
-  border-radius: 3px !important;
-}
-
-.inline-form {
-  vertical-align: bottom !important;
-}
-
-.form-group {
-  margin-top: 1rem !important;
-  margin-bottom: 1rem !important;
-  padding-left: 7px;
-}
-
-.label {
-  font-size: 15px !important;
-  vertical-align: bottom !important;
 }
 </style>

@@ -16,6 +16,10 @@ export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const USER_OBJECT = 'USER_OBJECT';
 //#endregion
 
+//#region Job_Mutations
+export const JOB_LIST = 'JOB_LIST';
+//#endregion
+
 //#region Sidebar_Mutations
 export const SIDEBAR_RESOURCE = 'SIDEBAR_RESOURCE';
 export const SIDEBAR_RESOURCE_TYPE = 'SIDEBAR_RESOURCE_TYPE';

@@ -34,7 +34,7 @@ export const auth = {
                 method: 'POST',
                 url: resources.LOGOUT_URL,
                 headers: {
-                    Accept: 'application/json',                    
+                    Accept: 'application/json',
                     Authorization: `Bearer ${credentials.token}`
                 }
             });
@@ -53,31 +53,49 @@ export const user = {
 }
 
 export const job = {
-    list() {
-        return axios({
-            method: 'GET',
-            url: resources.JOB_LIST_URL,
-            config: { headers: { Accept: 'application/json', } }
-        })
+    list(query) {
+        return makeRequest('GET', resources.JOB_LIST_URL, query, true, true);
+    },
+    create(data) {
+        return makeRequest('POST', resources.JOB_CREATE_URL, [], true, true, data);
     }
 }
 
-
-function makeRequest(method, url, isJson = true, isAuth = false, data = null) {
-    let config = {};
+/**
+ * 
+ * @param {String}   method   request method
+ * @param {String}   url      base URL
+ * @param {Array}    query    request query string
+ * @param {Boolean}  isJson   is a json request
+ * @param {Boolean}  isAuth   is an authenticated request
+ * @param {object}   data     request data
+ */
+function makeRequest(method, url, query = [], isJson = true, isAuth = false, data = null) {
+    let slug = url;
+    let header = {};
     let token = store.state.auth.token.value;
 
-    config.headers.Accept =
-        (isJson) ? 'application/json' : '';
-    config.headers.Authorization =
-        (isAuth) ? ('Bearer ' + token) : '';
+    if (query.length !== 0) {
+        query.forEach((obj, index) => {
+            if (index == 0)
+                slug += '?' + obj.key + '=' + obj.value;
+            else
+                slug += '&' + obj.key + '=' + obj.value;
+        });
+    }
+    if (isJson) {
+        header.Accept = 'application/json';
+    }
+    if (isAuth) {
+        header.Authorization = `Bearer ${token}`;
+    }
 
     let req = axios({
         method: method,
-        url: url,
+        url: slug,
         data: data,
-        config: config,
+        headers: header
     });
-
+    console.log(slug);
     return req;
 }

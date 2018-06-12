@@ -1,27 +1,29 @@
 <template>
-    <table v-bind:class="classTable">
-        <thead>
-            <tr>
-                <template v-if="headers.length !== 0">
-                    <th v-for="th in headers" :key="th">
-                        {{ th.toUpperCase() }}
-                    </th>
-                </template>
-                <template v-else-if="data != null">
-                    <th v-for="(value, key, index) in data[0]" :key="index">
-                        {{ key.toUpperCase() }}
-                    </th>
-                </template>
-            </tr>
-        </thead>
-        <tbody>            
-            <tr v-for="item in data" :key="item.id" v-bind:class="classRow">
-                <td v-for="(value, key, index) in item" :key="index">
-                    {{ value }}
-                </td>
-            </tr>                
-        </tbody>
-    </table>
+    <div class="wrap-table">
+        <table v-bind:class="classTable">
+            <thead>
+                <tr>
+                    <template v-if="headers.length !== 0">
+                        <th v-for="th in headers" :key="th">
+                            {{ th.toUpperCase() }}
+                        </th>
+                    </template>
+                    <template v-else-if="data != null">
+                        <th v-for="(value, key, index) in data[0]" :key="index">
+                            {{ key.toUpperCase() }}
+                        </th>
+                    </template>
+                </tr>
+            </thead>
+            <tbody>            
+                <tr v-for="item in data" :key="item.id" v-bind:class="classRow">
+                    <td v-for="(value, key, index) in item" :key="index">
+                        {{ value }}
+                    </td>
+                </tr>                
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -60,4 +62,9 @@ export default {
 </script>
 
 <style scoped>
+.wrap-table{
+    width: 100%;
+    max-height: 90%;
+    overflow-y: scroll;
+}
 </style>

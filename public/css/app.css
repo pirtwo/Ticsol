@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);a,
+a,
 abbr,
 acronym,
 address,
@@ -55668,7 +55668,7 @@ input[dir=rtl] {
 }
 
 .container-fluid {
-  font-family: Raleway !important;
+  /* font-family: Raleway !important; */
   background-image: url("/themes/nature_01.jpg");
   height: 100%;
   background-position: center;
@@ -55744,6 +55744,7 @@ footer {
 
 .main-menu .caption {
   line-height: 5px;
+  padding-top: 7px;
 }
 
 .navview {
