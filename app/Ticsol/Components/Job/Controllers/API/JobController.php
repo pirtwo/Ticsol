@@ -17,7 +17,8 @@ class JobController extends Controller{
     public function list(Request $req)
     {
         try{
-            return Job::all();
+            $perPage = $req->query('perPage') ?? 20;
+            return Job::paginate($perPage);
         }catch(Exception $e){            
             return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);            
         }

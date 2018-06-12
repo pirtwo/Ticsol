@@ -21,8 +21,8 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     Route::get('user/client/{id}', 'UserController@client');
     
     // Jobs
-    Route::get('jobs/list', 'JobController@list');
-    Route::get('jobs/view/{id}', 'JobController@view');
+    Route::get('job/list', 'JobController@list');
+    Route::get('job/view/{id}', 'JobController@view');
     #endregion
 
     #region Method: POST
@@ -31,8 +31,8 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     Route::post('/refresh', 'AuthController@refresh');
 
     // Jobs    
-    Route::post('jobs/create', 'JobController@create');
-    Route::post('jobs/update/{id}', 'JobController@update');    
+    Route::post('job/create', 'JobController@create');
+    Route::post('job/update/{id}', 'JobController@update');    
     #endregion
 
 
