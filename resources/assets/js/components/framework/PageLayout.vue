@@ -1,12 +1,12 @@
 <template>
-<div class="row">
-    <header v-if="this.header" class="header cell-sm-12">
+<div class="container">
+    <header v-if="this.header" class="header">
         <slot name="header"></slot>
     </header>    
-    <main class="cell-sm-12 main">
+    <main class="main">
         <slot></slot>
     </main>   
-    <footer v-if="this.footer" class="footer cell-sm-12">
+    <footer v-if="this.footer" class="footer">
         <slot name="footer"></slot>
     </footer>    
 </div>  
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       resizeTimer: {},
-      bounceTime: 1000
+      bounceTime: 250
     };
   },
   mounted() {

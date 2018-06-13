@@ -1,71 +1,85 @@
-<template>
-    <div data-role="navview" data-expanded="lg" data-compact="md">
-        <div class="navview-pane">
-            <button class="pull-button" v-if="pullButton">
-                <span class="default-icon-menu"></span>
-            </button>
-            <slot name="pane">               
-            </slot>
-        </div>
-        <div class="navview-content">
-            <div class="content-wrap" v-bind:class="[scrollbar ? '': 'hide-scrollbar']">
-                <div class="content-loading" v-show="loadingContent">
-                    <div class="icon" data-role="activity" data-type="square" data-style="color"></div>
-                    <div class="text-light">Loading, Please Wait...</div>
+<template>  
+    <md-app>
+
+        <!-- toolbar -->
+        <md-app-toolbar class="md-primary">
+            <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+                <md-icon>menu</md-icon>
+            </md-button>
+            <span class="md-title">{{ menuTitle }}</span>
+            <slot name="menu"></slot>
+        </md-app-toolbar>
+
+        <!-- drawer -->
+        <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
+            <md-toolbar class="md-transparent" md-elevation="0">
+                <span>{{ drawerTitle }}</span>
+
+                <div class="md-toolbar-section-end">
+                <md-button class="md-icon-button md-dense" @click="toggleMenu">
+                    <md-icon>keyboard_arrow_left</md-icon>
+                </md-button>
                 </div>
-                <div class="content" v-show="!loadingContent">
-                    <slot name="content">
-                        <router-link ></router-link>
-                    </slot>
-                </div>                
-            </div>
-        </div>
-    </div>
+            </md-toolbar>
+            <slot name="drawer"></slot>
+        </md-app-drawer>
+
+        <!-- content -->
+        <md-app-content>
+            <slot name="content"></slot>
+        </md-app-content>
+
+    </md-app>
 </template>
+
 <script>
 export default {
   name: "NavView",
   props: {
     scrollbar: {
-      type: Boolean,
-      default: true
+      type: Boolean
     },
-    loadingContent:{
-        type: Boolean,
-        default: false
+    menuTitle: {
+      type: String,
+      default: ""
     },
-    loadingPane:{
-        type: Boolean,
-        default: false
-    },
-    pullButton:{
-        type: Boolean,
-        default: true
+    drawerTitle: {
+      type: String,
+      default: ""
     }
-  }  
+  },
+  data: () => ({
+    menuVisible: false
+  }),
+  methods: {
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    }
+  }
 };
 </script>
-<style scoped>
-.hide-scrollbar {
-  overflow-y: hidden !important;
+
+<style lang="scss" scoped>
+.md-app {
+  height: 100%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8) !important;
 }
 
-.content{
-    height: 100%;
+// Demo purposes only
+.md-drawer {
+  width: 230px;  
+  max-width: calc(100vw - 125px);
+  color: black !important;
+  background-color: rgba(255, 255, 255, 0.0) !important;
 }
 
-.content-loading {
-  top: 40%;
-  left: 40%;
-  width: 20%;
-  padding: 10px; 
-  text-align: center;
-  position: absolute;
-  background-color: aliceblue;
+.md-app-toolbar {  
+  background-color:rgb(148, 0, 195) !important;
 }
 
-.content-loading .icon {
-  margin-left: auto;
-  margin-right: auto;
+.md-content {
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0) !important;
 }
 </style>

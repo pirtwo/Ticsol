@@ -1,19 +1,10 @@
 <template>
-  <div class="container-fluid">
-      <router-view></router-view>
-      <loading-box></loading-box>
-  </div>
+  <router-view></router-view> 
 </template>
 
 <script>
-import Loading from "./framework/loading/Loading.vue";
-export default {
-  components: {
-    "loading-box": Loading
-  }
-};
+export default {};
 </script>
 
 <style scoped>
-
 </style>

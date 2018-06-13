@@ -50,8 +50,9 @@ export const sidebarModule = {
         },
         listJobs({ state, commit }) {
             return new Promise((resolve, reject) => {
-                job.list()
+                job.list([])
                     .then((respond) => {
+                        console.log(respond);
                         if (respond.status === 200 || respond.status === 201) {
                             commit(SIDEBAR_RESOURCE_TYPE, 'job');
                             commit(SIDEBAR_RESOURCE, respond.data);                            

@@ -128,7 +128,7 @@ export default {
 
   watch: {
     resource: function() {
-      this.makeDragable();
+      this.makeDraggable();
     },
     events: function(){
 

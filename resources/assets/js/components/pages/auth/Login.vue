@@ -1,26 +1,27 @@
 <template>
-  <div class="cnt-login border-radius">
-      <img src="/img/app.png" class="app-logo" />
-      <form method="POST" v-on:submit.prevent="onSubmit">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" v-model="username" placeholder="Enter username here..."/>                
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" v-model="password" placeholder="Enter password here..."/>
-                <small class="text-muted">Keep your password secret.</small>
-            </div>
-            <div class="form-group text-center">
-                <router-link :to="{ name : 'register' }">Create account</router-link> <br/>
-                <router-link :to="{ name : 'resetpassword' }">Forgot my password...</router-link>                
-            </div>
-            <div class="form-group text-center">
-                <button class="button success">Login</button>                
-            </div>
-      </form>
+  <div class="wrap-auth md-layout-item">
+    <img src="/img/app.png" class="app-logo" />
+
+    <md-field md-clearable>
+      <label>Username</label>
+      <md-input v-model="username"></md-input>
+    </md-field>
+
+    <md-field>
+      <label>Password</label>
+      <md-input v-model="password" type="password"></md-input>
+    </md-field>
+
+    <div class="md-layout md-alignment-center-center">
+      <md-button href="/ResetPassword">Forgot my password ...</md-button>
+    </div>
+
+    <div class="md-layout md-alignment-center-center">
+      <md-button class="md-raised">Login</md-button>
+    </div>
   </div>
 </template>
+
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -52,5 +53,6 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 </style>

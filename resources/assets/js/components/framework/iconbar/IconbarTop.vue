@@ -1,28 +1,30 @@
 <template>
-    <div class="toolbar-top">
-        <div class="dropdown-button place-right">
-            <button class="button shortcut">                
-                <span class="caption">User</span>
-                <span class="mif-user mif-2x"></span>
-            </button>
-            <ul class="d-menu place-right" data-role="dropdown">
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Change Password</a></li>                
-                <li><a href="#" @click.prevent="logoutHandler">Logout</a></li>
-            </ul>
-        </div>
-        <div class="dropdown-button place-right">
-            <button class="button shortcut">                
+    <div class="toolbar-top md-layout md-alignment-top-right">
+
+        <md-menu md-size="small" md-align-trigger>
+            <md-button class="md-plain" md-menu-trigger>
+                <md-icon>settings</md-icon>
                 <span class="caption">Settings</span>
-                <span class="tag">3000</span>
-                <span class="mif-cog mif-2x"></span>
-            </button>
-            <ul class="d-menu place-right" data-role="dropdown">
-                <li><a href="#">Reply</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </div>
+            </md-button>
+            <md-menu-content>
+                <md-menu-item>My Item 1</md-menu-item>
+                <md-menu-item>My Item 2</md-menu-item>
+                <md-menu-item>My Item 3</md-menu-item>
+            </md-menu-content>
+        </md-menu>
+
+        <md-menu md-size="small" md-align-trigger>
+            <md-button class="md-plain" md-menu-trigger>
+                <md-icon>account_circle</md-icon>
+                <span class="caption">User</span>
+            </md-button>
+            <md-menu-content>
+                <md-menu-item>Profile</md-menu-item>
+                <md-menu-item>Info</md-menu-item>
+                <md-menu-item>Logout</md-menu-item>
+            </md-menu-content>
+        </md-menu>       
+
     </div>
 </template>
 <script>
