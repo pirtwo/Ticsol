@@ -8,8 +8,19 @@ use App\Http\Controllers\Controller;
 use App\Ticsol\Components\Models\Job;
 use App\Ticsol\Components\Job\Requests;
 use App\Ticsol\Components\Job\Exceptions;
+use App\Ticsol\Components\Job\Repository;
 
-class JobController extends Controller{    
+class JobController extends Controller{  
+    
+    /**
+     * @var Repository\JobRepository
+     */
+    protected $repository;
+
+    public function __construct(Repository\JobRepository $rep)
+    {
+        $this->repository = $rep;
+    }
     
     /**
      * Method: GET
@@ -17,11 +28,16 @@ class JobController extends Controller{
     public function list(Request $req)
     {
         try{
-            $page = $req->query('page') ?? null;
-            $perPage = $req->query('perPage') ?? 20;
-            if($page == null)
-                return job::all();
-            return Job::paginate($perPage);
+            $page = 
+                $req->query('page') ?? null;
+            $perPage = 
+                $req->query('perPage') ?? 20;
+                
+            if($page == null){
+                return $this->repository->all();
+            }else{
+                return $this->repository->paginate($perPage);
+            }           
         }catch(Exception $e){            
             return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);            
         }
@@ -46,8 +62,10 @@ class JobController extends Controller{
     {
         try{           
             $job = new Job();
-            $job->client_id = 1;
-            $job->creator_id = 1;
+            $job->client_id = 
+                $req->user()->client_id;
+            $job->creator_id = 
+                $req->user()->id;
             $job->fill($req->all());
             $job->save();
             return $job;

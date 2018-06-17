@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Ticsol\Repository\Base;
+namespace App\Ticsol\Base\Repository;
 
-use App\Ticsol\Repository\Contract\ICriteria;
-use App\Ticsol\Repository\Contract\IRepository;
-use Illuminate\Container\Container as App;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Container\Container as App;
+
+use App\Ticsol\Base\Repository\Contract\ICriteria;
+use App\Ticsol\Base\Repository\Contract\IRepository;
 
 /**
  * Base class for eloquent model repository.
@@ -39,10 +40,10 @@ abstract class Repository implements IRepository, ICriteria
     public function __construct(App $app, Collection $collection)
     {
         $this->app = $app;
-        $this->criteria = $collection;
+        $this->criterias = $collection;
 
         $this->resetScope();
-        $this->makeModel();
+        $this->makeModel();        
     }
 
     /**
@@ -57,7 +58,7 @@ abstract class Repository implements IRepository, ICriteria
      */
     public function makeModel()
     {
-        $model = $app->make($this->model());
+        $model = $this->app->make($this->model());
 
         if (!$model instanceof Model) {
             throw new \Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
@@ -131,12 +132,27 @@ abstract class Repository implements IRepository, ICriteria
     }
 
     /**
-     * @param $id
+     * @param $field
+     * @param $value
      * @return mixed
      */
-    public function delete($id)
+    public function delete($field, $value, $softDelete = true)
     {
-        return $this->model->destroy($id);
+        if($softDelete){
+            return $this->model->where($field, '=', $value)->delete();
+        }else{
+            return $this->model->where($field, '=', $value)->forceDelete();
+        }
+    }
+
+    /**
+     * @param $field
+     * @param $value
+     * @return mixed
+     */
+    public function restore($field, $value)
+    {
+        return $this->model->where($field, '=', $value)->restore();
     }
 
     /**

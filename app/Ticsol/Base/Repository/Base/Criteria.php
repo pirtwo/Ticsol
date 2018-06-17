@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Ticsol\Repository\Base;
+namespace App\Ticsol\Base\Repository;
 
-use App\Ticsol\Repository\Contract\IRepository;
-use App\Ticsol\Repository\base\Repository;
-
+use App\Ticsol\Base\Repository\Repository;
+use App\Ticsol\Base\Repository\Contract\IRepository;
 
 /**
  * Base class for criteria.

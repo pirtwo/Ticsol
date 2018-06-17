@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Ticsol\Repository\Contract;
+namespace App\Ticsol\Base\Repository\Contract;
 
-use App\Ticsol\Repository\Base\Criteria;
+use App\Ticsol\Base\Repository\Criteria;
 
 /**
- * Contrac for criteria.
+ * Base contrac for criteria.
  */
 interface ICriteria{
 

@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Ticsol\Repository\Contract;
+namespace App\Ticsol\Base\Repository\Contract;
 
+/**
+ * Base contract for repository.
+ */
 interface IRepository{
     public function all($columns = array('*'));
     public function find($id, $columns = array('*'));
@@ -9,5 +12,6 @@ interface IRepository{
     public function paginate($perPage = 15, $columns = array('*'));
     public function create(array $data);
     public function update(array $data, $field, $value);
-    public function delete($id);
+    public function delete($field, $value, $softDelete = true);
+    public function restore($field, $value);
 }
