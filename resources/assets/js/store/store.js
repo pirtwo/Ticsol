@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import { localStorage } from '../storage';
 
 import { authModule } from './modules/auth';
-import { userModule } from './modules/user';
+import { userModule } from './modules/app-user';
 import { loadingModule } from './modules/loading';
 import { sidebarModule } from './modules/sidebar';
 import { jobModule } from './modules/res-job';

@@ -13,7 +13,7 @@ export const jobModule = {
     getters: {
         getJobList: (state) => {
             return state.list;
-        },        
+        },
     },
     mutations: {
         [JOB_LIST](state, payload) {
@@ -22,12 +22,42 @@ export const jobModule = {
     },
     actions: {
         list({ state, commit }, { query }) {
-            console.log(query);            
+            console.log(query);
             return new Promise((resolve, reject) => {
                 job.list(query)
                     .then(respond => {
                         if (respond.status == 200) {
                             commit(JOB_LIST, respond.data);
+                            resolve(respond.data);
+                        } else {
+                            reject(respond.data);
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    });
+            });
+        },
+
+        create({ state, commit }, { payload }) {
+            return new Promise((resolve, reject) => {
+                job.create(payload)
+                    .then(respond => {
+                        if (respond.status == 200) {
+                            resolve(respond.data);
+                        } else {
+                            reject(respond.data);
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    });
+            });
+        },
+
+        update({ state, commit }, { payload }) {
+            return new Promise((resolve, reject) => {
+                job.update(payload)
+                    .then(respond => {
+                        if (respond.status == 200) {
                             resolve(respond.data);
                         } else {
                             reject(respond.data);

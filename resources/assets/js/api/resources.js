@@ -2,29 +2,29 @@
 /**
  * API base url
  */
-export const BASE_URL = 'https://server.dev';
+export const BASE_URL = 'https://server.dev/api';
 
 
 //#region Auth
 /**
  * Method: POST
  */
-export const LOGIN_URL = BASE_URL + '/api/login';
+export const AUTH_LOGIN = BASE_URL + '/login';
 
 /**
  * Method: POST
  */
-export const REGISTER_URL = BASE_URL + '/api/register';
+export const AUTH_REGISTER = BASE_URL + '/register';
 
 /**
  * Method: POST
  */
-export const LOGOUT_URL = BASE_URL + '/api/logout';
+export const AUTH_LOGOUT = BASE_URL + '/logout';
 
 /**
  * Method: POST
  */
-export const PASSWORD_RESET_URL = BASE_URL + '/api/passwordreset';
+export const AUTH_PASSWORD_RESET = BASE_URL + '/passwordreset';
 
 //#endregion
 
@@ -33,12 +33,17 @@ export const PASSWORD_RESET_URL = BASE_URL + '/api/passwordreset';
 /**
  * Method: GET.
  */
-export const JOB_LIST_URL = BASE_URL + '/api/job/list';
+export const JOB_LIST = BASE_URL + '/job/list';
 
 /**
  * Method: POST.
  */
-export const JOB_CREATE_URL = BASE_URL + '/api/job/create';
+export const JOB_CREATE = BASE_URL + '/job/create';
+
+/**
+ * Method: POST.
+ */
+export const JOB_UPDATE = BASE_URL + '/job/update';
 
 //#endregion
 
@@ -47,6 +52,12 @@ export const JOB_CREATE_URL = BASE_URL + '/api/job/create';
 /**
  * Method: GET.
  */
-export const USER_LIST_URL = BASE_URL + '/api/user/list';
+export const USER_LIST = BASE_URL + '/user/list';
 
 //#endregion
+
+
+export const SCHEDULE_LIST = BASE_URL + '/schedule/list';
+export const SCHEDULE_CREATE = BASE_URL + '/schedule/create';
+export const SCHEDULE_UPDATE = BASE_URL + '/schedule/update';
+export const SCHEDULE_DELETE = BASE_URL + '/schedule/delete';

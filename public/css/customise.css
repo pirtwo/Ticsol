@@ -30,15 +30,21 @@ footer{
 .toolbar-top .md-icon,
 .toolbar-top .caption,
 .toolbar-bot .md-icon,
-.toolbar-bot .caption{
-  display: flex;
+.toolbar-bot .caption{  
   color: rgba(255,255,255,0.9) !important;
+}
+
+.toolbar-top .md-icon,
+.toolbar-bot .md-icon{
+  display: flex;
 }
 
 .toolbar-top .caption,
 .toolbar-bot .caption{
+  display: block;
   padding-top: 3px;
   font-size: 0.5rem;
+  text-align: center;
 }
 
 .toolbar-top .md-button,
@@ -78,6 +84,48 @@ footer{
   margin-bottom: 20px;
 }
 
+.wrap-dashboard{
+  max-width: 50%;  
+  text-align: center;
+  border-radius: 10px;
+  padding: 100px 50px 100px 50px; 
+  background-color: rgba(255,255,255,0.8); 
+}
+
+.wrap-dashboard .app-logo{
+  display: block;
+  max-width: 140px;
+  margin-left: auto;  
+  margin-right: auto;
+  margin-bottom: 40px;  
+}
+
+.wrap-dashboard .md-button{
+  padding: 6px 8px;  
+  width: 100px !important;
+  height: 100px !important;
+  margin: 0px !important;
+  min-width: 100px !important;  
+}
+
+.wrap-dashboard .md-icon,
+.wrap-dashboard .caption{  
+  color: rgba(101, 40, 152, 0.9) !important;
+}
+
+.wrap-dashboard .md-icon{
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 50px !important;
+}
+
+.wrap-dashboard .caption{
+  display: block;
+  padding-top: 7px;
+  font-size: 0.85rem;   
+  text-align: center; 
+}
 
 
 /* 

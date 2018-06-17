@@ -63,8 +63,18 @@
                 <span class="caption">More</span>
             </md-button>
             <md-menu-content>
-                <md-menu-item>My Item 1</md-menu-item>
-                <md-menu-item>My Item 2</md-menu-item>
+                <md-menu-item>
+                    <md-button class="md-plain" :to="{name : 'jobs'}">
+                        <md-icon>business_center</md-icon>
+                        <span class="caption">Jobs</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button class="md-plain">
+                        <md-icon>event_note</md-icon>
+                        <span class="caption">activity report</span>
+                    </md-button>
+                </md-menu-item>
                 <md-menu-item>My Item 3</md-menu-item>
             </md-menu-content>
         </md-menu>

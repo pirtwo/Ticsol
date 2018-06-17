@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container page-container">
     <header v-if="this.header" class="header">
         <slot name="header"></slot>
     </header>    

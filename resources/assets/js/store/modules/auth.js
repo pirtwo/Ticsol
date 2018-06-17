@@ -66,16 +66,13 @@ export const authModule = {
                     .then(respond => {
                         if (respond.status === 200) {
                             commit(AUTH_TOKEN, respond.data);
-                            commit(AUTH_SUCCESS);
-                            console.log('AUTH_SUCCESS');
+                            commit(AUTH_SUCCESS);                            
                             resolve();
                         } else {
-                            commit(AUTH_FAILED);
-                            console.log('AUTH_FAILED');
+                            commit(AUTH_FAILED);                            
                             reject(respond);
                         }
-                    }).catch(error => {
-                        console.log('error');
+                    }).catch(error => {                        
                         reject(error.response.data);
                     });
             });
@@ -91,8 +88,7 @@ export const authModule = {
                         } else {
                             reject('Logout Failed!!!');
                         }
-                    }).catch(error => {
-                        console.log('error');
+                    }).catch(error => {                        
                         reject(error.response.data);
                     });
             });

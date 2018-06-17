@@ -3,39 +3,36 @@
         <template slot="header">
             <iconbar-top></iconbar-top>
         </template>
-        <div class="main-menu border-radius row">
-            <div class="cell-md-12">
-                <img src="/img/app.png" class="app-logo" />                
-                <router-link :to="{ name:'inbox' }" class="shortcut" role="button">
-                    <span class="tag">14</span>
-                    <span class="caption">INBOX</span>
-                    <span class="mif-envelop mif-5x"></span>
-                </router-link>
-                <router-link :to="{ name: 'hr' }" class="shortcut" role="button">
-                    <span class="tag"></span>
-                    <span class="caption">H.R</span>
-                    <span class="mif-users mif-5x"></span>
-                </router-link>
-                <router-link :to="{ name: 'requests' }" class="shortcut" role="button">
-                    <span class="tag">3</span>
-                    <span class="caption">REQUESTS</span>
-                    <span class="mif-user-plus mif-5x"></span>
-                </router-link>
-                <router-link :to="{ name: 'timesheets' }" class="shortcut" role="button">
-                    <span class="tag"></span>
-                    <span class="caption">TIMESHEETS</span>
-                    <span class="mif-alarm mif-5x"></span>
-                </router-link>
-                <router-link :to="{ name: 'schedule' }" class="shortcut" role="button">
-                    <span class="tag">2</span>
-                    <span class="caption">SCHEDULE</span>
-                    <span class="mif-calendar mif-5x"></span>
-                </router-link>
-                <router-link :to="{ name: 'jobs' }" class="shortcut" role="button">
-                    <span class="mif-location-city mif-5x"></span>
-                    <span class="tag">3</span>
-                    <span class="caption">Jobs</span>
-                </router-link>
+        <div class="md-layout md-alignment-center-center">            
+            <div class="wrap-dashboard md-layout-item">
+
+                <img src="/img/app.png" class="app-logo" />
+
+                <md-button class="md-plain" :to="{ name : 'inbox'}">
+                    <md-icon>inbox</md-icon>
+                    <span class="caption">inbox</span>
+                </md-button>
+
+                <md-button class="md-plain" :to="{ name : 'requests'}">
+                    <md-icon>message</md-icon>
+                    <span class="caption">Requests</span>
+                </md-button>
+
+                <md-button class="md-plain" :to="{ name : 'timesheets'}">
+                    <md-icon>timer</md-icon>
+                    <span class="caption">timesheets</span>
+                </md-button>
+
+                <md-button class="md-plain" :to="{ name : 'scheduler'}">
+                    <md-icon>calendar_today</md-icon>
+                    <span class="caption">schedules</span>
+                </md-button>
+
+                <md-button class="md-plain" :to="{ name : 'jobs'}">
+                    <md-icon>business_center</md-icon>
+                    <span class="caption">jobs</span>
+                </md-button>
+
             </div>
         </div>
     </page-layout>
@@ -53,6 +50,8 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+.md-layout{
+    height: 100% !important;
+}
 </style>
