@@ -31,7 +31,7 @@ class ScheduleController extends Controller
             $req->query('perPage') ?? 15;
 
         if ($page == null) {
-            return $this->repository->all();
+            return $this->repository->all(['user', 'job']);
         } else {
             return $this->repository->paginate($perPage);
         }        
@@ -42,18 +42,21 @@ class ScheduleController extends Controller
         return $this->repository->findBy('id', $id);
     }
 
-    public function create(Requests\CreateSchedule $req)
+    public function create(Request $req)
     {
         $item = new Schedule();
-        $item->client_id = $req->user()->client_id;
-        $item->creator_id = $req->user()->id;
+        $item->client_id = 1;
+        $item->creator_id = 1;
+        $item->type = 'assigned';
+        $item->status = 'unconfirmed';
         $item->fill($req->all());
         $item->save();
+        return Schedule::with(['user', 'job'])->where('id', $item->id)->get();
     }
 
     public function update(Requests\UpdateSchedule $req, $id)
     {
-        $this->repository->update($req->all(), 'id', $id);
+        return $this->repository->update($req->all(), 'id', $id);
     }
 
     public function delete(Request $req, $id)

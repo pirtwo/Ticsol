@@ -71,10 +71,10 @@ abstract class Repository implements IRepository, ICriteria
      * @param array $columns
      * @return mixed
      */
-    public function all($columns = array('*'))
+    public function all($with = [], $columns = array('*'))
     {
         $this->applyCriteria();
-        return $this->model->get($columns);
+        return $this->model->with($with)->get($columns);
     }
 
     /**

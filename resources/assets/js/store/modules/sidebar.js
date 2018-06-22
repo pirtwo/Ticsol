@@ -30,6 +30,7 @@ export const sidebarModule = {
         }
     },
     actions: {
+        
         listUsers({ state, commit }) {
             return new Promise((resolve, reject) => {
                 user.list()
@@ -48,6 +49,7 @@ export const sidebarModule = {
                     });
             });
         },
+
         listJobs({ state, commit }) {
             return new Promise((resolve, reject) => {
                 job.list([])

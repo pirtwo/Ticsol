@@ -22,7 +22,10 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     
     // Jobs
     Route::get('job/list', 'JobController@list');
-    Route::get('job/view/{id}', 'JobController@view');
+    Route::get('job/view/{id}', 'JobController@view');   
+    
+    // Schedule
+    Route::get('schedule/list', 'ScheduleController@list');    
     #endregion
 
     #region Method: POST
@@ -32,7 +35,10 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
 
     // Jobs    
     Route::post('job/create', 'JobController@create');
-    Route::post('job/update/{id}', 'JobController@update');    
+    Route::post('job/update/{id}', 'JobController@update'); 
+    
+    // Schedule
+    Route::post('schedule/create', 'ScheduleController@create');    
     #endregion
 
 

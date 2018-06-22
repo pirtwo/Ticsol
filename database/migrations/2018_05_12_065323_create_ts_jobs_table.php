@@ -27,7 +27,7 @@ class CreateTsJobsTable extends Migration
 
             // Attributes
             $table->string('title');
-            $table->integer('code');
+            $table->string('code');
             $table->boolean('isactive');
             $table->json('meta')
                 ->nullable();

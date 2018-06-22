@@ -6,7 +6,7 @@ namespace App\Ticsol\Base\Repository\Contract;
  * Base contract for repository.
  */
 interface IRepository{
-    public function all($columns = array('*'));
+    public function all($with = [], $columns = array('*'));
     public function find($id, $columns = array('*'));
     public function findBy($field, $value, $columns = array('*'));
     public function paginate($perPage = 15, $columns = array('*'));

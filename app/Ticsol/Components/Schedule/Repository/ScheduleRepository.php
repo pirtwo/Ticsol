@@ -9,6 +9,6 @@ class ScheduleRepository extends Repository{
     
     public function model()
     {
-        return new Schedule();
+        return 'App\Ticsol\Components\Models\Schedule';
     }    
 }

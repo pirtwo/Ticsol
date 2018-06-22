@@ -77,6 +77,7 @@ export default {
 }
 
 .md-app-content {
+  padding: 1px 0px 0px 0px;
   height: auto !important;
   min-height: 100% !important;
   background-color: rgba(255, 255, 255, 0.8) !important;

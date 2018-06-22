@@ -18,6 +18,10 @@ footer{
   margin: 0px;
 }
 
+footer{
+  padding-top: 7px;
+}
+
 
 .toolbar-top{
   padding: 10px 0px 5px 0px;

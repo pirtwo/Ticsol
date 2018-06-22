@@ -17,11 +17,9 @@ class Schedule extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'client_id',
+    protected $fillable = [        
         'user_id',        
-        'job_id',
-        'creator_id',
+        'job_id',        
         'status',
         'type',        
         'start',
@@ -36,7 +34,9 @@ class Schedule extends Model
      * @var array
      */
     protected $hidden = [
-
+        'created_at', 
+        'updated_at',
+        'deleted_at',
     ];
 
     #region Eloquent_Relationships

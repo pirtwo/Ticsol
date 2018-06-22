@@ -28,7 +28,7 @@ export default {
       type: String,
       required: true,
       validator: value => {
-        return ["day", "week", "month", "year"].indexOf(value) !== -1;
+        return ["Day", "Week", "Month", "Year"].indexOf(value) !== -1;
       }
     },
     startDate: {
@@ -43,7 +43,7 @@ export default {
       type: String,
       required: true,
       validator: value => {
-        return ["day", "hour", "CellDuration"].indexOf(value) !== -1;
+        return ["Day", "Hour", "CellDuration"].indexOf(value) !== -1;
       }
     },
     cellDuration: {
@@ -56,16 +56,16 @@ export default {
     },
     timeHeaderFormat: {
       type: String,
-      default: "days/hours/mins",
+      default: "Days/Hours/Mins",
       validator: value => {
         return (
           [
-            "years/months/days",
-            "months/days",
-            "months/days/halfDays",
-            "weeks/days",
-            "days/hours",
-            "days/hours/mins"
+            "Years/Months/Days",
+            "Months/Days",
+            "Months/Days/HalfDays",
+            "Weeks/Days",
+            "Days/Hours",
+            "Days/Hours/Mins"
           ].indexOf(value) !== -1
         );
       }
@@ -90,20 +90,20 @@ export default {
     // Grid
     cellWidth: {
       type: [Number, String],
-      default: "auto"
+      default: "Auto"
     },
     crosshair: {
       type: String,
-      default: "disabled",
+      default: "Disabled",
       validator: value => {
-        return ["disabled", "header", "full"].indexOf(value) !== -1;
+        return ["Disabled", "Header", "Full"].indexOf(value) !== -1;
       }
     },
     autoScroll: {
       type: String,
-      default: "disabled",
+      default: "Disabled",
       validator: value => {
-        return ["disabled", "drag", "always"].indexOf(value) !== -1;
+        return ["Disabled", "Drag", "Always"].indexOf(value) !== -1;
       }
     },
 
@@ -194,20 +194,21 @@ export default {
     });
 
     dpScriptLoaded.then(() => {
-      let dp = (this.dayPilot = new window.DayPilot.Scheduler("dp"));      
+      let dp = (this.dayPilot = new window.DayPilot.Scheduler("dp"));
+
       dp.theme = "scheduler_green";
       dp.width = "100%";
-      dp.height = 400;
+      dp.height = this.height;
       dp.heightSpec = "Fixed";
       dp.resources = this.resource;
       dp.events.list = this.events;
 
       // Time Axies
-      dp.days = this.days || this.getDays;
-      dp.startDate = this.startDate || this.getStartDate;
-      dp.timeHeaders = this.timeHeader || this.getTimeHeader;
+      dp.days = this.days || this.getDays();
+      dp.startDate = this.startDate || this.getStartDate();
+      dp.timeHeaders = this.timeHeader || this.getTimeHeader();
       dp.scale = this.scale;
-      dp.cellDuration = this.cellDuration;
+      if (this.scale === "CellDuration") dp.cellDuration = this.cellDuration;
       dp.showNonBusiness = this.showNonBusiness;
       dp.businessBeginsHour = this.businessBeginHour;
       dp.businessEndsHour = this.businessEndHour;
@@ -232,7 +233,7 @@ export default {
       dp.eventStackingLineHeight = this.eventStackLineHeight;
 
       // Rows
-      dp.treeEnabled =this.treeView;
+      dp.treeEnabled = this.treeView;
 
       // Events
       dp.timeRangeSelectedHandling = "Enabled";
@@ -242,9 +243,9 @@ export default {
       dp.eventClickHandling = "Enabled";
       dp.eventHoverHandling = "Bubble";
 
-      // Event Handlers      
-      dp.onEventMoved = this.eventMoveHandler;    
-      dp.onEventClicked = this.eventClickHandler;  
+      // Event Handlers
+      dp.onEventMoved = this.eventMoveHandler;
+      dp.onEventClicked = this.eventClickHandler;
       dp.onEventResized = this.eventResizeHandler;
       dp.onEventDeleted = this.eventDeleteHandler;
       dp.onTimeRangeSelected = this.eventCreateHandler;
@@ -265,6 +266,7 @@ export default {
         onLoad: function(args) {
           // if event object doesn't specify "bubbleHtml" property
           // this onLoad handler will be called to provide the bubble HTML
+          //console.log(args);
           args.html = "Event details";
         }
       });
@@ -275,84 +277,86 @@ export default {
   },
 
   watch: {
-    resource: function() {
+    resource: function(value) {
+      this.dayPilot.resources = value;
+      this.dayPilot.update();
       this.makeDraggable();
     },
-    events: function() {}
+    events: function(value) {
+      this.dayPilot.events.list = value;
+      this.dayPilot.update();
+    }
   },
 
-  computed: {
-    getDays: () => {
+  methods: {
+    getDays() {
       switch (this.range) {
-        case "day":
+        case "Day":
           return 1;
-        case "week":
+        case "Week":
           return 7;
-        case "month":
+        case "Month":
           return window.DayPilot.Date.today().daysInMonth();
-        case "year":
+        case "Year":
           return window.DayPilot.Date.today().daysInYear();
         default:
-          return 1;
+          throw new Error("Invalid range for dayPilot.");
       }
     },
 
-    getStartDate: () => {
+    getStartDate() {
       switch (this.range) {
-        case "day":
+        case "Day":
           return window.DayPilot.Date.today();
-        case "week":
+        case "Week":
           return window.DayPilot.Date.today().firstDayOfWeek();
-        case "month":
+        case "Month":
           return window.DayPilot.Date.today().firstDayOfMonth();
-        case "year":
+        case "Year":
           return window.DayPilot.Date.today().firstDayOfYear();
         default:
-          return window.DayPilot.Date.today();
+          throw new Error("Invalid range for dayPilot.");
       }
     },
 
-    getTimeHeader: () => {
+    getTimeHeader() {
       switch (this.timeHeaderFormat) {
-        case "years/months/days":
+        case "Years/Months/Days":
           return [
             { groupBy: "Year" },
             { groupBy: "Month" },
             { groupBy: "Day", format: "d" }
           ];
-        case "months/days":
+        case "Months/Days":
           return [{ groupBy: "Month" }, { groupBy: "Day", format: "d" }];
-        case "months/days/halfDays":
+        case "Months/Days/HalfDays":
           return [
             { groupBy: "Month" },
             { groupBy: "Day", format: "d" },
             { groupBy: "Cell", format: "tt" }
           ];
-        case "weeks/days":
-          return [{ groupBy: "Week" }, { groupBy: "Day", format: "d" }];
-        case "days/hours":
+        case "Weeks/Days":
+          return [
+            { groupBy: "Week"}, 
+            { groupBy: "Day", format: "ddd d" }
+          ];
+        case "Days/Hours":
           return [{ groupBy: "Day" }, { groupBy: "Hour" }];
-        case "days/hours/mins":
+        case "Days/Hours/Mins":
           return [
             { groupBy: "Day", format: "dddd, d MMMM yyyy" },
             { groupBy: "Hour" },
             { groupBy: "Cell", format: "mm" }
           ];
         default:
-          return [
-            { groupBy: "Day", format: "dddd, d MMMM yyyy" },
-            { groupBy: "Hour" },
-            { groupBy: "Cell", format: "mm" }
-          ];
+          throw new Error("Invalid time header format for dayPilot.");
       }
     },
 
-    getCellWidthSpec: () => {
-      return this.cellWidth === "auto" ? "Auto" : "Fixed";
-    }
-  },
+    getCellWidthSpec() {
+      return this.cellWidth === "Auto" ? "Auto" : "Fixed";
+    },
 
-  methods: {
     formatDate(date) {
       var d = new Date(date),
         month = "" + (d.getMonth() + 1),
@@ -382,27 +386,57 @@ export default {
     },
 
     eventCreateHandler(arg) {
-      console.log('range selected...');
+      //console.log(arg);
+      this.$emit("range-selected", {
+        resourceId: arg.resource,
+        start: arg.start,
+        end: arg.end
+      });
     },
 
     eventClickHandler(arg) {
-      console.log('click event...');
-    },   
+      //console.log(arg);
+      this.$emit("eventClicked", {
+        eventId: arg.e.id()
+      });
+    },
 
     eventMoveHandler(arg) {
-      console.log('move event...');
+      //console.log(arg);
+      if (arg.external) {
+        this.$emit("eventdraged", {
+          eventId: arg.e.id(),
+          resourceId: arg.newResource,
+          start: arg.newStart,
+          end: arg.newEnd
+        });
+        this.dayPilot.events.remove(arg.e);
+      } else {
+        this.$emit("eventMoved", {
+          eventId: arg.e.id(),
+          resourceId: arg.newResource,
+          newStart: arg.newStart,
+          newEnd: arg.newEnd
+        });
+      }
+      arg.preventDefault();
     },
 
     eventHoverHandler(arg) {
-      console.log('hover event...');
+      //console.log(arg);
+      this.$emit("eventHoverd", {
+        eventId: arg.e.id()
+      });
     },
 
     eventResizeHandler(arg) {
-      console.log('resize event...');
+      console.log(arg);
+      this.$emit("eventResized", {});
     },
 
     eventDeleteHandler(arg) {
-      console.log('delete event...');
+      //console.log("delete event...");
+      this.$emit("eventDeleted", {});
     }
   }
 };

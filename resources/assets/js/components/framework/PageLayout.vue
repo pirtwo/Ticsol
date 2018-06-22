@@ -42,7 +42,7 @@ export default {
     resizeHandler() {
       let head = $(".header").height() | 0;
       let foot = $(".footer").height() | 0;
-      let main = $(window).height() - (head + foot);
+      let main = $(window).height() - (head + foot + 7);
       $(".main").css("height", main);
     }
   }

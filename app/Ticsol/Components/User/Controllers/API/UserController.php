@@ -16,12 +16,12 @@ class UserController extends Controller{
     }
     
     public function get(){        
-        return Response()->json(User::all(), 201);       
+        return Response()->json(User::all(), 200);       
     }
 
     public function client($id)
     {        
         $client = Client::where('id', $id)->firstOrFail();
-        return response()->json($client->users, 201);        
+        return response()->json($client->users, 200);        
     }
 }

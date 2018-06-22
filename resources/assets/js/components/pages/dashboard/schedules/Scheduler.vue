@@ -7,6 +7,12 @@
 
         <template slot="menu">
 
+          <div class="controls md-alignment-right-center">
+             <md-button class="md-primary">
+              <md-icon>fullscreen</md-icon>
+            </md-button>
+          </div>
+         
         </template>
 
         <template slot="drawer">
@@ -34,15 +40,24 @@
 
         <template slot="content">           
             <day-pilot  
-                range="day"
-                scale="CellDuration"                
-                v-bind:days="7"
-                v-bind:cell-duration="10"   
+                v-on:range-selected="selectHandler"
+                v-on:event-draged="dragHandler"
+                v-on:event-moved="moveHandler"
+                range="Week"
+                scale="Hour"                
+                time-header-format="Days/Hours"
+                v-bind:height="500"
                 v-bind:cell-width="40"  
-                v-bind:event-height="40"                      
-                v-bind:resource="[{'name': 'Resource 1', 'id': 'R1' },{'name': 'Resource 3','id': 'R3' },{'name': 'Resource 4','id': 'R4' },{'name': 'Resource 5','id': 'R5' }]"
-                v-bind:events="[{'id': 1,'resource': 'R1',  'start': '2018-06-04T00:00:00', 'end': '2018-06-08T00:00:00',   'text': 'Event 1' },{'id': 2, 'resource': 'R1','start': '2018-06-06T00:00:00','end': '2018-06-11T00:00:00', 'text': 'Event 2'}]">
+                v-bind:event-height="40"  
+                v-bind:events="scheduleEvents"                    
+                v-bind:resource="scheduleResources">
             </day-pilot>
+            <assign-uaser-popup 
+              v-bind:show="assignUserPopup"  
+              v-bind:event="event"            
+              v-on:submit="createEvent"
+              v-on:close="assignUserPopup = false">
+            </assign-uaser-popup>
         </template>
 
     </nav-view>
@@ -51,60 +66,71 @@
 <script>
 import DayPilot from "../schedules/DayPilot.vue";
 import NavView from "../../../framework/NavView.vue";
+import AssignUserPopup from "../schedules/AssignUserPopup.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Scheduler",
   components: {
     "nav-view": NavView,
-    "day-pilot": DayPilot
+    "day-pilot": DayPilot,
+    "assign-uaser-popup": AssignUserPopup
   },
+
   data: function() {
     return {
-      events: [],
-      resources: [],
-      startDate: Date.now(),
+      height: 500,
       loading: false,
+      event: null,
+      assignUserPopup: false
     };
   },
+
   mounted() {
-    this.listJobsHandler();
-    this.listUsersHandler();
+    this.loading = true;
+    this.sidebarListUsers().then(() => {
+      this.scheduleInti({ resource: "job" }).then(() => {
+        this.loading = false;
+      });
+    });
   },
+
   computed: {
     ...mapGetters({
+      type: "sidebar/getResourceType",
       resource: "sidebar/getResource",
-      type: "sidebar/getResourceType"
+      scheduleEvents: "schedule/getEvents",
+      scheduleResources: "schedule/getResources"
     })
   },
+
   methods: {
-    ...mapActions(["sidebar/listJobs", "sidebar/listUsers"]),
-    listJobsHandler() {
-      this.loading = true;
-      this.$store
-        .dispatch("sidebar/listJobs")
-        .then(done => {
-          this.loading = false;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    ...mapActions({
+      scheduleInti: "schedule/initi",
+      scheduleCreate: "schedule/create",
+      sidebarListJobs: "sidebar/listJobs",
+      sidebarListUsers: "sidebar/listUsers"
+    }),
+
+    selectHandler(event) {      
+      this.event = event;
+      this.assignUserPopup = true;
     },
-    listUsersHandler() {
-      this.loading = true;
-      this.$store
-        .dispatch("sidebar/listUsers")
-        .then(done => {
-          this.loading = false;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+
+    dragHandler(event) {},
+
+    moveHandler(event) {},
+
+    createEvent(data) {
+      this.scheduleCreate({ data: data });
     }
   }
 };
 </script>
 
 <style scoped>
-
+.controls {
+  margin-left: auto;
+  margin-right: 10px;
+}
 </style>
