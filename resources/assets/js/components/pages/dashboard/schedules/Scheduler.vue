@@ -43,9 +43,9 @@
                 v-on:range-selected="selectHandler"
                 v-on:event-draged="dragHandler"
                 v-on:event-moved="moveHandler"
-                range="Week"
-                scale="Hour"                
-                time-header-format="Days/Hours"
+                range="Month"
+                scale="Day"                
+                time-header-format="Weeks/Days"
                 v-bind:height="500"
                 v-bind:cell-width="40"  
                 v-bind:event-height="40"  
@@ -89,7 +89,7 @@ export default {
   mounted() {
     this.loading = true;
     this.sidebarListUsers().then(() => {
-      this.scheduleInti({ resource: "job" }).then(() => {
+      this.scheduleInti({ resource: "user" }).then(() => {
         this.loading = false;
       });
     });

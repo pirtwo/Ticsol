@@ -271,6 +271,25 @@ export default {
         }
       });
 
+      dp.onBeforeTimeHeaderRender = function(args) {
+        if (args.header.level === 0) {
+          //console.log(args.header.start.getDayOfWeek());
+          //console.log(args.header.end.getDayOfWeek());
+          if (args.header.start.getDayOfWeek() == 0) {
+            args.header.html =
+              args.header.start.getDay() +
+              " - " +
+              args.header.start.addDays(6).toString("d") +
+              " " +
+              args.header.start.toString("MMM yyyy") +
+              "  w" +
+              args.header.start.weekNumber();
+          } else {
+            args.header.html = "";
+          }
+        }
+      };
+
       dp.init();
       this.makeDraggable();
     });
@@ -336,10 +355,7 @@ export default {
             { groupBy: "Cell", format: "tt" }
           ];
         case "Weeks/Days":
-          return [
-            { groupBy: "Week"}, 
-            { groupBy: "Day", format: "ddd d" }
-          ];
+          return [{ groupBy: "Week" }, { groupBy: "Day", format: "ddd d" }];
         case "Days/Hours":
           return [{ groupBy: "Day" }, { groupBy: "Hour" }];
         case "Days/Hours/Mins":

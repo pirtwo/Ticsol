@@ -9,7 +9,7 @@
 }  
 
 .main{  
-  min-height: 600px;
+  min-height: 400px;
 }
   
 header,
@@ -114,7 +114,7 @@ footer{
 
 .wrap-dashboard .md-icon,
 .wrap-dashboard .caption{  
-  color: rgba(101, 40, 152, 0.9) !important;
+  color: rgb(132, 80, 168) !important;
 }
 
 .wrap-dashboard .md-icon{

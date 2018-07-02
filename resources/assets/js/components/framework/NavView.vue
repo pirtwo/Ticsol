@@ -99,6 +99,8 @@ export default {
 
 .md-drawer.close{
   width: 0px !important;
+  margin-right: 0px !important;
+  overflow: hidden;
 }
 
 .md-app-toolbar {

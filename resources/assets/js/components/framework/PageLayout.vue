@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 export default {
   name: "PageLayout",
   props: {
@@ -33,16 +34,14 @@ export default {
   },
   mounted() {
     this.$nextTick(this.resizeHandler);
-    $(window).resize(() => {
-      clearTimeout(this.resizeTimer);
-      this.resizeTimer = setTimeout(this.resizeHandler, this.bounceTime);
-    });
+    this.debounceResize = _.debounce(this.resizeHandler, 500);
+    $(window).resize(this.debounceResize);
   },
   methods: {
     resizeHandler() {
-      let head = $(".header").height() | 0;
-      let foot = $(".footer").height() | 0;
-      let main = $(window).height() - (head + foot + 7);
+      let head = $(".header").outerHeight() | 0;
+      let foot = $(".footer").outerHeight() | 0;
+      let main = $(window).height() - (head + foot);
       $(".main").css("height", main);
     }
   }
