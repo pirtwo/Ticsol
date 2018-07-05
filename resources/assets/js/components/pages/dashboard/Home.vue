@@ -3,35 +3,35 @@
         <template slot="header">
             <iconbar-top></iconbar-top>
         </template>
-        <div class="md-layout md-alignment-center-center">            
-            <div class="wrap-dashboard md-layout-item">
+        <div class="wrap-dashboard d-flex justify-content-center align-items-center">            
+            <div class="dashboard shadow-sm">
 
                 <img src="/img/app.png" class="app-logo" />
 
-                <md-button class="md-plain" :to="{ name : 'inbox'}">
-                    <md-icon>inbox</md-icon>
-                    <span class="caption">inbox</span>
-                </md-button>
-
-                <md-button class="md-plain" :to="{ name : 'requests'}">
-                    <md-icon>message</md-icon>
-                    <span class="caption">Requests</span>
-                </md-button>
-
-                <md-button class="md-plain" :to="{ name : 'timesheets'}">
-                    <md-icon>timer</md-icon>
-                    <span class="caption">timesheets</span>
-                </md-button>
-
-                <md-button class="md-plain" :to="{ name : 'scheduler'}">
-                    <md-icon>calendar_today</md-icon>
-                    <span class="caption">schedules</span>
-                </md-button>
-
-                <md-button class="md-plain" :to="{ name : 'jobs'}">
-                    <md-icon>business_center</md-icon>
-                    <span class="caption">jobs</span>
-                </md-button>
+                <router-link :to="{ name : 'inbox'}" class="btn btn-light" role="button" >
+                    <i class="icon material-icons">
+                        inbox
+                    </i>
+                    <span class="caption">INBOX</span>
+                </router-link>
+                <router-link :to="{ name : 'requests'}" class="btn btn-light" role="button" >
+                    <i class="icon material-icons">
+                        message
+                    </i>
+                    <span class="caption">REQUESTS</span>
+                </router-link>
+                <router-link :to="{ name : 'timesheets'}" class="btn btn-light" role="button" >
+                    <i class="icon material-icons">
+                        timer
+                    </i>
+                    <span class="caption">TIMESHEETS</span>
+                </router-link>
+                <router-link :to="{ name : 'schedule'}" class="btn btn-light" role="button" >
+                    <i class="icon material-icons">
+                        calendar_today
+                    </i>
+                    <span class="caption">SCHEDULE</span>
+                </router-link>
 
             </div>
         </div>
@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style scoped>
-.md-layout{
-    height: 100% !important;
+.wrap-dashboard{
+    height: 80%;
 }
 </style>

@@ -1,49 +1,49 @@
 <template>  
-    <md-app md-mode="fixed">
-
-        <!-- toolbar -->
-        <md-app-toolbar class="md-primary">
-            <md-button class="md-icon-button" @click="toggleMenu">
-                <md-icon>menu</md-icon>
-            </md-button>
-            <span class="md-title">{{ menuTitle }}</span>
-            <slot name="menu"></slot>
-        </md-app-toolbar>
+    <div class="wrap-drawer">      
 
         <!-- drawer -->
-        <md-app-drawer v-bind:class="[menuVisible? 'open' : 'close']" md-permanent="full">
-            <md-toolbar class="md-transparent" md-elevation="0">
-                <span>{{ drawerTitle }}</span>                
-            </md-toolbar>
+        <div class="drawer" v-bind:class="[menuVisible? 'open' : 'close']">
+            <span>{{ drawerTitle }}</span>  
             <slot name="drawer"></slot>
-        </md-app-drawer>
+        </div>
 
         <!-- content -->
-        <md-app-content>
+        <div class="wrap-content">
+
+            <!-- loadingbox -->
             <div class="wrap-loading" v-show="loading">
-              <div class="loading-box">
-                <md-progress-spinner class="md-accent"
-                  :md-stroke="7" 
-                  :md-diameter="30"                
-                  md-mode="indeterminate">
-                </md-progress-spinner>
+              <div class="loading-box">                
                 <span class="caption">Loading, Please wait...</span>
               </div>
             </div>
-            <div class="wrap-content" v-show="!loading">
+
+            <!-- toolbar -->
+            <nav class="navbar navbar-light bg-light">                
+              <button class="navbar-toggler ml-auto" type="button" v-on:click="toggleMenu">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <span class="navbar-brand">{{ menuTitle }}</span>
+              <slot name="toolbar"></slot>
+            </nav>
+
+            <div class="content" v-bind:class="[scrollbar? 'scrollbar-show' : 'scrollbar-hide']" v-show="!loading">
               <slot name="content"></slot>
             </div>            
-        </md-app-content>
+        </div>
 
-    </md-app>
+    </div>
 </template>
 
 <script>
+import _ from "lodash";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "NavView",
+
   props: {
     scrollbar: {
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     menuTitle: {
       type: String,
@@ -58,53 +58,82 @@ export default {
       default: false
     }
   },
-  data: () => ({
-    menuVisible: true
-  }),
+
+  data() {
+    return {
+      menuVisible: true
+    };
+  },
+
+  computed: {
+    ...mapGetters({
+      contentHeight: "appUI/getContentHeight"
+    })
+  },
+
+  watch: {
+    contentHeight: function(value) {
+      $(".content").height(value);
+    }
+  },
+
   methods: {
-    toggleMenu() {
+    toggleMenu(e) {
       this.menuVisible = !this.menuVisible;
+      e.preventDefault();
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.md-app {
+<style scoped>
+.wrap-drawer {
   height: 100%;
-  border: none;
-  background-color: rgba(255, 255, 255, 0) !important;
+  display: flex;
+  position: relative;
 }
 
-.md-app-content {
-  padding: 1px 0px 0px 0px;
-  height: auto !important;
-  min-height: 100% !important;
-  background-color: rgba(255, 255, 255, 0.8) !important;
+.wrap-content {
+  width: 100%;
+  max-height: 100%;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
-.md-drawer {
+.content {  
+  position: relative;
+}
+
+.scrollbar-show{
+  overflow-y: auto;
+}
+
+.scrollbar-hide{
+  overflow-y: hidden;
+}
+
+.drawer {
   width: 230px;
+  height: 100%;
+  overflow-y: auto;
   margin-right: 8px;
-  max-width: calc(100vw - 125px);
-
-  transition: all 0.3s !important;
-  color: black !important;
-  background-color: rgba(255, 255, 255, 0.8) !important;
+  transition: all 0.3s;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
-.md-drawer.open{
-  width: 230px !important;
+.navbar {
+  height: 70px;
+  display: -webkit-box !important;
 }
 
-.md-drawer.close{
-  width: 0px !important;
-  margin-right: 0px !important;
+.drawer.open {
+  width: 270px;
+}
+
+.drawer.close {
+  width: 0px;
   overflow: hidden;
-}
-
-.md-app-toolbar {
-  background-color: rgb(148, 0, 195) !important;
+  margin-right: 0px;
 }
 
 .wrap-loading {

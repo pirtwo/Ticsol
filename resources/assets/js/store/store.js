@@ -8,6 +8,7 @@ import { loadingModule } from './modules/loading';
 import { sidebarModule } from './modules/sidebar';
 import { jobModule } from './modules/res-job';
 import { scheduleModule } from './modules/res-schedule';
+import { UIModule } from './modules/app-ui';
 
 Vue.use(Vuex);
 
@@ -18,7 +19,8 @@ export const store = new Vuex.Store({
         loading: loadingModule,
         sidebar: sidebarModule,
         schedule: scheduleModule,
-        job: jobModule,         
+        job: jobModule, 
+        appUI: UIModule        
     },
     plugins: [localStorage.plugin],
 });

@@ -11,7 +11,7 @@ try {
     window.$ = window.jQuery = require('jquery');
     //require('jquery-ui');
     require('jquery-ui-sortable-npm');
-    //require('bootstrap-sass');
+    require('bootstrap');
     window.fb = require('formBuilder');
 } catch (e) {}
 

@@ -1,30 +1,17 @@
 <template>
-    <div class="toolbar-top md-layout md-alignment-top-right">
-
-        <md-menu md-size="small" md-align-trigger>
-            <md-button class="md-plain" md-menu-trigger>
-                <md-icon>settings</md-icon>
-                <span class="caption">Settings</span>
-            </md-button>
-            <md-menu-content>
-                <md-menu-item>My Item 1</md-menu-item>
-                <md-menu-item>My Item 2</md-menu-item>
-                <md-menu-item>My Item 3</md-menu-item>
-            </md-menu-content>
-        </md-menu>
-
-        <md-menu md-size="small" md-align-trigger>
-            <md-button class="md-plain" md-menu-trigger>
-                <md-icon>account_circle</md-icon>
-                <span class="caption">User</span>
-            </md-button>
-            <md-menu-content>
-                <md-menu-item>Profile</md-menu-item>
-                <md-menu-item>Info</md-menu-item>
-                <md-menu-item>Logout</md-menu-item>
-            </md-menu-content>
-        </md-menu>       
-
+    <div class="toolbar-top">
+        <a href="" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                settings
+            </i>
+            <span class="caption">SETTINGS</span>
+        </a>
+        <a href="" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                account_circle
+            </i>
+            <span class="caption">USER</span>
+        </a>        
     </div>
 </template>
 <script>

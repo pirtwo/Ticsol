@@ -16,10 +16,12 @@ export default {
     },
     resource: {
       type: Array,
+      default: [],
       required: true
     },
     events: {
       type: Array,
+      default: [],
       required: true
     },
 
@@ -53,6 +55,14 @@ export default {
     timeHeader: {
       type: Array,
       default: null
+    },
+    timeHeaderAutoFit: {
+      type: Boolean,
+      default: true
+    },
+    timeHeaderHeight: {
+      type: Number,
+      default: 30
     },
     timeHeaderFormat: {
       type: String,
@@ -198,15 +208,20 @@ export default {
 
       dp.theme = "scheduler_green";
       dp.width = "100%";
-      dp.height = this.height;
+      dp.height = this.height - this.timeHeaderHeight * 2 - 4;
       dp.heightSpec = "Fixed";
       dp.resources = this.resource;
       dp.events.list = this.events;
+
+      dp.durationBarVisible = true;
+      dp.durationBarMode = "PercentComplete";
 
       // Time Axies
       dp.days = this.days || this.getDays();
       dp.startDate = this.startDate || this.getStartDate();
       dp.timeHeaders = this.timeHeader || this.getTimeHeader();
+      dp.headerHeightAutoFit = this.timeHeaderAutoFit;
+      if (!this.timeHeaderAutoFit) dp.headerHeight = this.timeHeaderHeight;
       dp.scale = this.scale;
       if (this.scale === "CellDuration") dp.cellDuration = this.cellDuration;
       dp.showNonBusiness = this.showNonBusiness;
@@ -273,21 +288,51 @@ export default {
 
       dp.onBeforeTimeHeaderRender = function(args) {
         if (args.header.level === 0) {
-          //console.log(args.header.start.getDayOfWeek());
-          //console.log(args.header.end.getDayOfWeek());
           if (args.header.start.getDayOfWeek() == 0) {
             args.header.html =
+              "<span class='header_weekDay_weekRange'>" +
               args.header.start.getDay() +
-              " - " +
+              "-" +
               args.header.start.addDays(6).toString("d") +
               " " +
               args.header.start.toString("MMM yyyy") +
-              "  w" +
-              args.header.start.weekNumber();
+              "</span>  <span class='header_weekDay_weekNumber'>w" +
+              args.header.start.weekNumber() +
+              "</span>";
           } else {
             args.header.html = "";
           }
         }
+
+        if (args.header.level === 1) {
+          args.header.html =
+            "<span class='header_weekDay_dayTxt'>" +
+            args.header.start.toString("ddd") +
+            "</span><br/><span class='header_weekDay_dayNumber'>" +
+            args.header.start.getDay() +
+            "</span>";
+        }
+      };
+
+      dp.onBeforeResHeaderRender = function(args) {
+        let avatar = "",
+          name = "",
+          id = args.resource.id - 1;
+        if (dp.resources[id] !== undefined) {
+          name = dp.resources[id].name;
+          avatar = dp.resources[id].avatar;
+        }
+        args.resource.html =
+          `<img class='res_user_avatar' src=${avatar} />` +
+          `<span class='res_user_name'> ${name} </span>`;
+
+        args.resource.minHeight = 70;
+      };
+
+      dp.onBeforeEventRender = function(args) {        
+        args.data.html =
+          `<span class='event_title'>${args.data.text}</span><br/>` +
+          `<span>Progress: %${args.data.complete}</span>`;
       };
 
       dp.init();
@@ -296,11 +341,19 @@ export default {
   },
 
   watch: {
+    height: function(value) {
+      if (this.dayPilot.height !== undefined) {
+        this.dayPilot.height = value - this.timeHeaderHeight * 2 - 4;
+        this.dayPilot.update();
+      }
+    },
+
     resource: function(value) {
       this.dayPilot.resources = value;
       this.dayPilot.update();
       this.makeDraggable();
     },
+
     events: function(value) {
       this.dayPilot.events.list = value;
       this.dayPilot.update();

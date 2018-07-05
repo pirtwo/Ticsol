@@ -1,5 +1,5 @@
 <template>
-<div class="container page-container">
+<div class="container-fluid">
     <header v-if="this.header" class="header">
         <slot name="header"></slot>
     </header>    
@@ -14,6 +14,8 @@
 
 <script>
 import _ from "lodash";
+import { mapActions } from "vuex";
+
 export default {
   name: "PageLayout",
   props: {
@@ -27,10 +29,7 @@ export default {
     }
   },
   data() {
-    return {
-      resizeTimer: {},
-      bounceTime: 250
-    };
+    return {};
   },
   mounted() {
     this.$nextTick(this.resizeHandler);
@@ -38,15 +37,22 @@ export default {
     $(window).resize(this.debounceResize);
   },
   methods: {
+    ...mapActions({
+      mainHeight: "appUI/setMainHeight"
+    }),
+
     resizeHandler() {
       let head = $(".header").outerHeight() | 0;
       let foot = $(".footer").outerHeight() | 0;
       let main = $(window).height() - (head + foot);
       $(".main").css("height", main);
+      this.mainHeight({ height: main });
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+
 </style>
+

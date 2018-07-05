@@ -36,7 +36,8 @@ export const scheduleModule = {
                             resource: obj.job_id,
                             start: obj.start,
                             end: obj.end,
-                            text: obj.user.name
+                            text: obj.user.name,
+                            complete: 30
                         };
                     });
                     break;
@@ -47,7 +48,8 @@ export const scheduleModule = {
                             resource: obj.user_id,
                             start: obj.start,
                             end: obj.end,
-                            text: obj.job.title
+                            text: obj.job.title,
+                            complete: 30
                         };
                     });
                     break;
@@ -56,8 +58,7 @@ export const scheduleModule = {
             }
         },
 
-        [SCHEDULE_EVENTS_ADD](state, payload) {
-            console.log(payload);
+        [SCHEDULE_EVENTS_ADD](state, payload) {            
             var obj = payload[0];
             switch (state.resourceType) {
                 case 'job':
@@ -75,7 +76,7 @@ export const scheduleModule = {
                         resource: obj.user_id,
                         start: obj.start,
                         end: obj.end,
-                        text: obj.job.name
+                        text: obj.job.title
                     });
                     break;
                 default:
@@ -83,8 +84,7 @@ export const scheduleModule = {
             }
         },
 
-        [SCHEDULE_RESOURCE](state, payload) {
-            console.log(payload);
+        [SCHEDULE_RESOURCE](state, payload) {               
             switch (state.resourceType) {
                 case 'job':
                     state.resources = payload.data.map(obj => {
@@ -93,7 +93,8 @@ export const scheduleModule = {
                     break;
                 case 'user':
                     state.resources = payload.data.map(obj => {
-                        return { id: obj.id, name: obj.name };
+                        let meta = JSON.parse(obj.meta);                        
+                        return { id: obj.id, name: obj.name, avatar: meta.avatar };
                     });
                     break;
                 default:
@@ -139,8 +140,7 @@ export const scheduleModule = {
         fetchResource({ state, commit }) {
             return new Promise((resolve, reject) => {                
                 api.list(state.resourceUrl)
-                    .then(respond => {
-                        console.log(respond.data);
+                    .then(respond => {                    
                         if (respond.status === 200) {                            
                             commit(SCHEDULE_RESOURCE, { data: respond.data });                            
                             resolve();
@@ -154,8 +154,7 @@ export const scheduleModule = {
         fetchEvents({ commit }) {
             return new Promise((resolve, reject) => {
                 api.list(URL.SCHEDULE_LIST)
-                    .then(respond => {
-                        console.log(respond.data);
+                    .then(respond => {                
                         if (respond.status === 200) {
                             commit(SCHEDULE_EVENTS, { data: respond.data });
                             resolve();
@@ -167,19 +166,19 @@ export const scheduleModule = {
 
         create({ state, commit }, { data }) {
             return new Promise((resolve, reject) => {
-                let userId = state.resourceType == 'user' ? data.resourceId : data.userId;
-                let jobId = state.resourceType == 'job' ? data.resourceId : data.userId;
+                //let userId = state.resourceType == 'user' ? data.userId : data.resourceId;
+                //let jobId = state.resourceType == 'job' ? data.resourceId : data.userId;
                 api.create(URL.SCHEDULE_CREATE, {
-                    user_id: userId,
-                    job_id: jobId,
+                    user_id:  data.userId,
+                    job_id: data.resourceId,
                     start: data.start,
                     end: data.end,
-                    offsite: false,
+                    offsite: data.offsite,
                     break_length: 0
                 }).then(respond => {
                     if (respond.status === 200) {
-                        commit(SCHEDULE_EVENTS_ADD, respond.data);
-                        resolve();
+                        commit(SCHEDULE_EVENTS_ADD, respond.data);                        
+                        resolve(true);
                     }
                     else reject(respond);
                 });

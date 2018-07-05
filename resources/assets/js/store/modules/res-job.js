@@ -21,8 +21,7 @@ export const jobModule = {
         }
     },
     actions: {
-        list({ state, commit }, { query }) {
-            console.log(query);
+        list({ state, commit }, { query }) {            
             return new Promise((resolve, reject) => {
                 job.list(query)
                     .then(respond => {

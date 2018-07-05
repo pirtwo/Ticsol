@@ -3,7 +3,7 @@
         v-bind:header="false" 
         v-bind:footer="false">   
 
-        <div class="md-layout md-alignment-center-center">      
+        <div class="wrap-content d-flex justify-content-center align-items-center">      
           <router-view></router-view>
         </div>
      </page-layout>
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style scoped>
-.md-layout{
+.wrap-content{
   height: 100%;
 }
 </style>

@@ -1,85 +1,41 @@
 <template>
     <div class="toolbar-bot">
-
-       <md-menu md-size="small" md-align-trigger>
-            <md-button class="md-plain" md-menu-trigger :to="{name : 'home'}">
-                <md-icon>dashboard</md-icon>
-                <span class="caption">Dashboard</span>
-            </md-button>
-            <md-menu-content>
-                <md-menu-item>My Item 1</md-menu-item>
-                <md-menu-item>My Item 2</md-menu-item>
-                <md-menu-item>My Item 3</md-menu-item>
-            </md-menu-content>
-        </md-menu>
-
-        <md-menu md-size="small" md-align-trigger>
-            <md-button class="md-plain" md-menu-trigger :to="{name : 'inboxList'}">
-                <md-icon>inbox</md-icon>
-                <span class="caption">Inbox</span>
-            </md-button>
-            <md-menu-content>
-                <md-menu-item>My Item 1</md-menu-item>
-                <md-menu-item>My Item 2</md-menu-item>
-                <md-menu-item>My Item 3</md-menu-item>
-            </md-menu-content>
-        </md-menu>
-
-        <md-menu md-size="small" md-align-trigger>
-            <md-button class="md-plain" md-menu-trigger :to="{name : 'requests'}">
-                <md-icon>message</md-icon>
-                <span class="caption">Requests</span>
-            </md-button>
-            <md-menu-content>
-                <md-menu-item>My Item 1</md-menu-item>
-                <md-menu-item>My Item 2</md-menu-item>
-                <md-menu-item>My Item 3</md-menu-item>
-            </md-menu-content>
-        </md-menu>
-
-        <md-menu md-size="small" md-align-trigger>
-            <md-button class="md-plain" md-menu-trigger>
-                <md-icon>timer</md-icon>
-                <span class="caption">TimeSheets</span>
-            </md-button>
-            <md-menu-content>
-                <md-menu-item>My Item 1</md-menu-item>
-                <md-menu-item>My Item 2</md-menu-item>
-                <md-menu-item>My Item 3</md-menu-item>
-            </md-menu-content>
-        </md-menu>
-
-        
-        <md-button class="md-plain" :to="{name : 'scheduler'}">
-            <md-icon>calendar_today</md-icon>
-            <span class="caption">Schedules</span>
-        </md-button>
-            
-        
-
-        <md-menu md-size="small" md-align-trigger>
-            <md-button class="md-plain" md-menu-trigger>
-                <md-icon>more_horiz</md-icon>
-                <span class="caption">More</span>
-            </md-button>
-            <md-menu-content>
-                <md-menu-item>
-                    <md-button class="md-plain" :to="{name : 'jobs'}">
-                        <md-icon>business_center</md-icon>
-                        <span class="caption">Jobs</span>
-                    </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button class="md-plain">
-                        <md-icon>event_note</md-icon>
-                        <span class="caption">activity report</span>
-                    </md-button>
-                </md-menu-item>
-                <md-menu-item>My Item 3</md-menu-item>
-            </md-menu-content>
-        </md-menu>
-
-
+        <router-link :to="{ name : 'dash' }" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                dashboard
+            </i>
+            <span class="caption">HOME</span>
+        </router-link>
+        <router-link :to="{ name : 'inbox' }" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                inbox
+            </i>
+            <span class="caption">INBOX</span>
+        </router-link>
+        <router-link :to="{ name : 'requests' }" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                message
+            </i>
+            <span class="caption">REQUESTS</span>
+        </router-link>
+        <router-link :to="{ name : 'timesheets' }" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                timer
+            </i>
+            <span class="caption">TIMESHEETS</span>
+        </router-link>
+        <router-link :to="{ name : 'scheduler' }" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                calendar_today
+            </i>
+            <span class="caption">SCHEDULE</span>
+        </router-link>
+        <router-link to="jobs" class="btn btn-light" role="button" >
+            <i class="icon material-icons">
+                more_horiz
+            </i>
+            <span class="caption">MORE</span>
+        </router-link>
     </div>
 </template>
 <script>

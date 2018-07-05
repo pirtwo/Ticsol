@@ -1,34 +1,62 @@
 <template>
-    <div class="wrap-auth md-layout-item">
+    <div class="wrap-auth shadow-sm">
         <img src="/img/app.png" class="app-logo" />
 
-        <md-field md-clearable>
-            <label>Username</label>
-            <md-input v-model="username"></md-input>          
-        </md-field>
+        <form>
+            <div class="form-group row">
+                <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                    <i class="icon material-icons">account_circle</i>
+                    </div>
+                </div>
+                <input  type="text" class="form-control" id="username" placeholder="Enter your username">
+                </div>
+            </div>
 
-        <md-field md-clearable>
-            <label>Email</label>
-            <md-input v-model="username"></md-input>          
-        </md-field> 
+            <div class="form-group row">
+                <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                    <i class="icon material-icons">email</i>
+                    </div>
+                </div>
+                <input  type="email" class="form-control" id="email" placeholder="Enter your email">
+                </div>
+            </div> 
 
-        <md-field>
-            <label>Password</label>
-            <md-input v-model="password" type="password"></md-input>
-        </md-field>
+            <div class="form-group row">
+                <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                    <i class="icon material-icons">lock</i>
+                    </div>
+                </div>
+                <input  type="password" class="form-control" id="password" placeholder="Enter your password">
+                </div>
+            </div> 
 
-        <md-field>
-            <label>Confirm Password</label>
-            <md-input v-model="password" type="password"></md-input>
-        </md-field>                                  
+            <div class="form-group row">
+                <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                    <i class="icon material-icons">lock</i>
+                    </div>
+                </div>
+                <input  type="password" class="form-control" id="confirm" placeholder="Confirm your password">
+                </div>
+            </div>                                 
 
-        <div class="md-layout md-alignment-center-center">
-            <captcha></captcha>
-        </div>
 
-        <div class="md-layout md-alignment-center-center">          
-            <md-button class="md-raised">register</md-button>
-        </div>
+            <div class="form-group">
+                <captcha></captcha>
+            </div>
+
+            <button class="btn btn-primary btn-block">
+                <i class="icon material-icons">done</i>  
+                <span>REGISTER</span>
+            </button> 
+        </form>   
 
     </div>
 </template>
@@ -43,4 +71,14 @@ export default {
 </script>
 
 <style scoped>
+.btn span{
+  font-size: 1.5rem;
+  line-height: 1.3;
+  vertical-align: top;
+}
+
+.btn i{
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
 </style>

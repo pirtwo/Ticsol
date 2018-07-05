@@ -1,18 +1,12 @@
 <template>
     <nav-view 
-        v-bind:scrollbar="true" 
+        v-bind:scrollbar="false" 
         v-bind:loading="loading"
         menu-title="Scheduler" 
         drawer-title="Actions"> 
 
-        <template slot="menu">
-
-          <div class="controls md-alignment-right-center">
-             <md-button class="md-primary">
-              <md-icon>fullscreen</md-icon>
-            </md-button>
-          </div>
-         
+        <template slot="toolbar">
+                             
         </template>
 
         <template slot="drawer">
@@ -44,20 +38,21 @@
                 v-on:event-draged="dragHandler"
                 v-on:event-moved="moveHandler"
                 range="Month"
-                scale="Day"                
+                scale="Day"
                 time-header-format="Weeks/Days"
-                v-bind:height="500"
+                crosshair="Header"
+                v-bind:time-header-auto-fit="false"
+                v-bind:time-header-height="30"
+                v-bind:height="height"
                 v-bind:cell-width="40"  
-                v-bind:event-height="40"  
+                v-bind:event-height="60"  
                 v-bind:events="scheduleEvents"                    
                 v-bind:resource="scheduleResources">
-            </day-pilot>
-            <assign-uaser-popup 
-              v-bind:show="assignUserPopup"  
-              v-bind:event="event"            
-              v-on:submit="createEvent"
-              v-on:close="assignUserPopup = false">
-            </assign-uaser-popup>
+            </day-pilot>   
+            <assign-user-modal
+              v-model="assignUserPopup"
+              v-bind:event="event"
+            ></assign-user-modal>         
         </template>
 
     </nav-view>
@@ -66,20 +61,20 @@
 <script>
 import DayPilot from "../schedules/DayPilot.vue";
 import NavView from "../../../framework/NavView.vue";
-import AssignUserPopup from "../schedules/AssignUserPopup.vue";
+import AssignUserModal from '../schedules/AssignUserModal.vue';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Scheduler",
+
   components: {
     "nav-view": NavView,
     "day-pilot": DayPilot,
-    "assign-uaser-popup": AssignUserPopup
+    "assign-user-modal": AssignUserModal
   },
 
   data: function() {
-    return {
-      height: 500,
+    return {      
       loading: false,
       event: null,
       assignUserPopup: false
@@ -98,6 +93,7 @@ export default {
   computed: {
     ...mapGetters({
       type: "sidebar/getResourceType",
+      height: "appUI/getContentHeight",
       resource: "sidebar/getResource",
       scheduleEvents: "schedule/getEvents",
       scheduleResources: "schedule/getResources"
@@ -112,7 +108,8 @@ export default {
       sidebarListUsers: "sidebar/listUsers"
     }),
 
-    selectHandler(event) {      
+    selectHandler(event) {
+      event.userName = this.resource[event.resourceId - 1].name;
       this.event = event;
       this.assignUserPopup = true;
     },

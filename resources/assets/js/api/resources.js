@@ -2,7 +2,7 @@
 /**
  * API base url
  */
-export const BASE_URL = 'https://server.dev/api';
+export const BASE_URL = '/api';
 
 
 //#region Auth

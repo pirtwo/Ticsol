@@ -6,10 +6,7 @@
 //@import "variables";
 
 // Bootstrap
-//@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-
-// Metro4
-//@import "public/css/metro-all.min";
+@import "node_modules/bootstrap/scss/bootstrap";
 
 // Customise
 @import "public/css/customise"
