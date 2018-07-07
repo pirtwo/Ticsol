@@ -139,7 +139,7 @@ footer{
   text-align: center; 
 }
 
-
+/* 
 body::-webkit-scrollbar {
   width: 20px !important;
 }
@@ -159,4 +159,4 @@ body::-webkit-scrollbar-thumb {
 
 body::-webkit-scrollbar-thumb:hover {
   background: #b30000 !important;
-} 
+}  */
