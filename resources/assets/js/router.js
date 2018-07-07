@@ -65,7 +65,7 @@ export const router = new VueRouter({
                             path: 'list',
                             name: 'inboxList',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/inbox/inboxList.vue'),
+                            component: require('./components/pages/dashboard/inbox/InboxList.vue'),
                         }
                     ]
                 },
@@ -116,7 +116,7 @@ export const router = new VueRouter({
                     name: 'jobs',
                     meta: { requireAuth: true },
                     redirect: { name: 'jobList' },
-                    component: require('./components/pages/dashboard/jobs/jobs.vue'),
+                    component: require('./components/pages/dashboard/jobs/Jobs.vue'),
                     children: [
                         {
                             path: 'list',
