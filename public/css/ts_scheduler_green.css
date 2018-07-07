@@ -128,19 +128,13 @@
 	padding-top: 2px;
 
 	color: black;
-	background-color: rgba(255,255,255,1);
-	/* text-shadow:
-		0px -1px 1px rgba(000,000,000,0.2),
-		0px 1px 0px rgba(255,255,255,0.3); */
+	background-color: rgba(255,255,255,1);	
 }
 
 .scheduler_green_rowheader 
 {
 	color: black;
-	background-color: rgba(255,255,255,1);
-	/* text-shadow:
-		0px -1px 1px rgba(000,000,000,0.2),
-		0px 1px 0px rgba(255,255,255,0.3); */
+	background-color: rgba(255,255,255,1);	
 }
 
 .scheduler_green_rowheader_inner{
@@ -185,7 +179,7 @@
 
 .scheduler_green_matrix_vertical_line 
 {
-	background-color: rgba(0, 0, 0, 0.04);
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .scheduler_green_matrix_vertical_break 
@@ -194,7 +188,7 @@
 }
 .scheduler_green_matrix_horizontal_line 
 {
-	background-color: rgba(0, 0, 0, 0.04);
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .scheduler_green_resourcedivider 
