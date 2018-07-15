@@ -31,7 +31,7 @@
             <!-- toolbar -->
             <nav class="navbar navbar-light bg-light">                
               <button class="btn btn-light btn-sm ml-auto" type="button" @click="toggleMenu">
-                <i class="material-icons">close</i>
+                <i class="material-icons">{{ menuVisible ? "close" : "menu" }}</i>
               </button>
               <button class="btn btn-light btn-sm ml-auto" type="button" @click="clickBack">
                 <i class="material-icons">arrow_back</i>
@@ -40,7 +40,7 @@
                 <i class="material-icons">arrow_forward</i>
               </button>
               <button class="btn btn-light btn-sm ml-auto" type="button" @click="toggleFullscreen">
-                <i class="material-icons">fullscreen</i>
+                <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
               </button>
 
               <span class="navbar-brand">{{ menuTitle }}</span>
@@ -115,22 +115,13 @@ export default {
 
   methods: {
     toggleMenu(e) {
-      var icon = $(e.target).find("i");
       this.menuVisible = !this.menuVisible;
-      if (this.menuVisible) {
-        $(icon).text("close");
-      } else {
-        $(icon).text("menu");
-      }
       e.preventDefault();
     },
 
     toggleFullscreen(e) {
       var element = document.documentElement;
-      var icon = $(e.target).find("i");
-
       if (!this.fullscreen) {
-        $(icon).text("fullscreen_exit");
         if (element.requestFullScreen) {
           element.requestFullScreen();
           this.fullscreen = true;
@@ -145,7 +136,6 @@ export default {
           this.fullscreen = true;
         }
       } else {
-        $(icon).text("fullscreen");
         if (document.exitFullscreen) {
           document.exitFullscreen();
           this.fullscreen = false;
@@ -170,7 +160,7 @@ export default {
       this.$router.go(-1);
     },
 
-    setContentHeight(){
+    setContentHeight() {
       $(".content").outerHeight(this.contentHeight);
     }
   }
@@ -252,7 +242,7 @@ i.material-icons {
 .loading-box {
   left: -50%;
   top: -50%;
-  padding: 10px;  
+  padding: 10px;
   color: white;
   position: relative;
   border-radius: 5px;

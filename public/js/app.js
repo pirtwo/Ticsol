@@ -60049,7 +60049,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.wrap-drawer[data-v-9f1b21ba] {\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  position: relative;\r\n  -webkit-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.wrap-content[data-v-9f1b21ba] {\r\n  width: 100%;\r\n  max-height: 100%;\r\n  position: relative;\r\n  overflow-y: hidden;\r\n  background-color: rgba(255, 255, 255, 0.8);\n}\n.content[data-v-9f1b21ba] {\r\n  position: relative;\n}\n.scrollbar-show[data-v-9f1b21ba] {\r\n  overflow-y: scroll !important;\n}\n.drawer[data-v-9f1b21ba] {\r\n  width: 230px;\r\n  min-height: 100%;\r\n  overflow-y: auto;\r\n  margin-right: 8px;\r\n  -webkit-transition: all 0.3s;\r\n  transition: all 0.3s;\r\n  background-color: rgba(255, 255, 255, 0.95);\n}\n.navbar[data-v-9f1b21ba] {\r\n  height: 70px;\r\n  display: -webkit-box !important;\n}\n.navbar .btn[data-v-9f1b21ba],\r\n.navbar .btn i[data-v-9f1b21ba] {\r\n  line-height: 1.2;\n}\ni.material-icons[data-v-9f1b21ba] {\r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.navbar-brand[data-v-9f1b21ba] {\r\n  font-size: 1.2rem;\r\n  line-height: 1.2;\n}\n.drawer[data-v-9f1b21ba] {\r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.drawer.open[data-v-9f1b21ba] {\r\n  width: 270px;\n}\n.drawer.close[data-v-9f1b21ba] {\r\n  width: 0px;\r\n  overflow: hidden;\r\n  margin-right: 0px;\n}\n.wrap-loading[data-v-9f1b21ba] {\r\n  top: 50%;\r\n  left: 50%;\r\n  position: absolute;\n}\n.loading-box[data-v-9f1b21ba] {\r\n  left: -50%;\r\n  top: -50%;\r\n  padding: 10px;  \r\n  color: white;\r\n  position: relative;\r\n  border-radius: 5px;\r\n  background-color: rgba(72, 72, 72, 0.8);\n}\n.wrap-loading .md-progress-spinner[data-v-9f1b21ba] {\r\n  margin-left: 40%;\r\n  margin-right: auto;\n}\n.wrap-loading .caption[data-v-9f1b21ba] {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\n}\r\n", ""]);
+exports.push([module.i, "\n.wrap-drawer[data-v-9f1b21ba] {\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  position: relative;\r\n  -webkit-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.wrap-content[data-v-9f1b21ba] {\r\n  width: 100%;\r\n  max-height: 100%;\r\n  position: relative;\r\n  overflow-y: hidden;\r\n  background-color: rgba(255, 255, 255, 0.8);\n}\n.content[data-v-9f1b21ba] {\r\n  position: relative;\n}\n.scrollbar-show[data-v-9f1b21ba] {\r\n  overflow-y: scroll !important;\n}\n.drawer[data-v-9f1b21ba] {\r\n  width: 230px;\r\n  min-height: 100%;\r\n  overflow-y: auto;\r\n  margin-right: 8px;\r\n  -webkit-transition: all 0.3s;\r\n  transition: all 0.3s;\r\n  background-color: rgba(255, 255, 255, 0.95);\n}\n.navbar[data-v-9f1b21ba] {\r\n  height: 70px;\r\n  display: -webkit-box !important;\n}\n.navbar .btn[data-v-9f1b21ba],\r\n.navbar .btn i[data-v-9f1b21ba] {\r\n  line-height: 1.2;\n}\ni.material-icons[data-v-9f1b21ba] {\r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.navbar-brand[data-v-9f1b21ba] {\r\n  font-size: 1.2rem;\r\n  line-height: 1.2;\n}\n.drawer[data-v-9f1b21ba] {\r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.drawer.open[data-v-9f1b21ba] {\r\n  width: 270px;\n}\n.drawer.close[data-v-9f1b21ba] {\r\n  width: 0px;\r\n  overflow: hidden;\r\n  margin-right: 0px;\n}\n.wrap-loading[data-v-9f1b21ba] {\r\n  top: 50%;\r\n  left: 50%;\r\n  position: absolute;\n}\n.loading-box[data-v-9f1b21ba] {\r\n  left: -50%;\r\n  top: -50%;\r\n  padding: 10px;\r\n  color: white;\r\n  position: relative;\r\n  border-radius: 5px;\r\n  background-color: rgba(72, 72, 72, 0.8);\n}\n.wrap-loading .md-progress-spinner[data-v-9f1b21ba] {\r\n  margin-left: 40%;\r\n  margin-right: auto;\n}\n.wrap-loading .caption[data-v-9f1b21ba] {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\n}\r\n", ""]);
 
 // exports
 
@@ -60183,21 +60183,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
   methods: {
     toggleMenu: function toggleMenu(e) {
-      var icon = $(e.target).find("i");
       this.menuVisible = !this.menuVisible;
-      if (this.menuVisible) {
-        $(icon).text("close");
-      } else {
-        $(icon).text("menu");
-      }
       e.preventDefault();
     },
     toggleFullscreen: function toggleFullscreen(e) {
       var element = document.documentElement;
-      var icon = $(e.target).find("i");
-
       if (!this.fullscreen) {
-        $(icon).text("fullscreen_exit");
         if (element.requestFullScreen) {
           element.requestFullScreen();
           this.fullscreen = true;
@@ -60212,7 +60203,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           this.fullscreen = true;
         }
       } else {
-        $(icon).text("fullscreen");
         if (document.exitFullscreen) {
           document.exitFullscreen();
           this.fullscreen = false;
@@ -60288,7 +60278,11 @@ var render = function() {
               attrs: { type: "button" },
               on: { click: _vm.toggleMenu }
             },
-            [_c("i", { staticClass: "material-icons" }, [_vm._v("close")])]
+            [
+              _c("i", { staticClass: "material-icons" }, [
+                _vm._v(_vm._s(_vm.menuVisible ? "close" : "menu"))
+              ])
+            ]
           ),
           _vm._v(" "),
           _c(
@@ -60322,7 +60316,13 @@ var render = function() {
               attrs: { type: "button" },
               on: { click: _vm.toggleFullscreen }
             },
-            [_c("i", { staticClass: "material-icons" }, [_vm._v("fullscreen")])]
+            [
+              _c("i", { staticClass: "material-icons" }, [
+                _vm._v(
+                  _vm._s(_vm.fullscreen ? "fullscreen_exit" : "fullscreen")
+                )
+              ])
+            ]
           ),
           _vm._v(" "),
           _c("span", { staticClass: "navbar-brand" }, [
