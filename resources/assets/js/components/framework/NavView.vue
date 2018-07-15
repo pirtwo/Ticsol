@@ -2,7 +2,7 @@
     <div class="wrap-drawer">      
 
         <!-- drawer -->
-        <div class="drawer" v-bind:class="[menuVisible? 'open' : 'close']">
+        <div class="drawer" :class="[menuVisible? 'open' : 'close']">
             <span>{{ drawerTitle }}</span>  
             <slot name="drawer"></slot>
         </div>
@@ -12,21 +12,44 @@
 
             <!-- loadingbox -->
             <div class="wrap-loading" v-show="loading">
-              <div class="loading-box">                
+              <div class="loading-box shadow-sm"> 
+                <div class="sk-cube-grid">
+                  <div class="sk-cube sk-cube1"></div>
+                  <div class="sk-cube sk-cube2"></div>
+                  <div class="sk-cube sk-cube3"></div>
+                  <div class="sk-cube sk-cube4"></div>
+                  <div class="sk-cube sk-cube5"></div>
+                  <div class="sk-cube sk-cube6"></div>
+                  <div class="sk-cube sk-cube7"></div>
+                  <div class="sk-cube sk-cube8"></div>
+                  <div class="sk-cube sk-cube9"></div>
+                </div>               
                 <span class="caption">Loading, Please wait...</span>
               </div>
             </div>
 
             <!-- toolbar -->
             <nav class="navbar navbar-light bg-light">                
-              <button class="navbar-toggler ml-auto" type="button" v-on:click="toggleMenu">
-                <span class="navbar-toggler-icon"></span>
+              <button class="btn btn-light btn-sm ml-auto" type="button" @click="toggleMenu">
+                <i class="material-icons">close</i>
               </button>
+              <button class="btn btn-light btn-sm ml-auto" type="button" @click="clickBack">
+                <i class="material-icons">arrow_back</i>
+              </button>
+              <button class="btn btn-light btn-sm ml-auto" type="button" @click="clickForward">
+                <i class="material-icons">arrow_forward</i>
+              </button>
+              <button class="btn btn-light btn-sm ml-auto" type="button" @click="toggleFullscreen">
+                <i class="material-icons">fullscreen</i>
+              </button>
+
               <span class="navbar-brand">{{ menuTitle }}</span>
               <slot name="toolbar"></slot>
             </nav>
 
-            <div class="content" v-bind:class="[scrollbar? 'scrollbar-show' : 'scrollbar-hide']" v-show="!loading">
+            <div class="content" 
+              :class="[{ 'scrollbar-show' : scrollbar}, padding]"              
+              v-show="!loading">
               <slot name="content"></slot>
             </div>            
         </div>
@@ -53,6 +76,10 @@ export default {
       type: String,
       default: ""
     },
+    padding: {
+      type: String,
+      default: ""
+    },
     loading: {
       type: Boolean,
       default: false
@@ -61,26 +88,90 @@ export default {
 
   data() {
     return {
-      menuVisible: true
+      menuVisible: true,
+      fullscreen: false
     };
   },
 
   computed: {
     ...mapGetters({
       contentHeight: "appUI/getContentHeight"
-    })
+    }),
+
+    enablePadding: function() {
+      return this.padding !== "";
+    }
   },
 
   watch: {
     contentHeight: function(value) {
-      $(".content").height(value);
+      $(".content").outerHeight(value);
     }
+  },
+
+  mounted() {
+    this.$nextTick(this.setContentHeight);
   },
 
   methods: {
     toggleMenu(e) {
+      var icon = $(e.target).find("i");
       this.menuVisible = !this.menuVisible;
+      if (this.menuVisible) {
+        $(icon).text("close");
+      } else {
+        $(icon).text("menu");
+      }
       e.preventDefault();
+    },
+
+    toggleFullscreen(e) {
+      var element = document.documentElement;
+      var icon = $(e.target).find("i");
+
+      if (!this.fullscreen) {
+        $(icon).text("fullscreen_exit");
+        if (element.requestFullScreen) {
+          element.requestFullScreen();
+          this.fullscreen = true;
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+          this.fullscreen = true;
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+          this.fullscreen = true;
+        } else if (element.msRequestFullscreen) {
+          element.msRequestFullscreen();
+          this.fullscreen = true;
+        }
+      } else {
+        $(icon).text("fullscreen");
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+          this.fullscreen = false;
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+          this.fullscreen = false;
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+          this.fullscreen = false;
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+          this.fullscreen = false;
+        }
+      }
+    },
+
+    clickForward(e) {
+      this.$router.go(1);
+    },
+
+    clickBack(e) {
+      this.$router.go(-1);
+    },
+
+    setContentHeight(){
+      $(".content").outerHeight(this.contentHeight);
     }
   }
 };
@@ -91,39 +182,55 @@ export default {
   height: 100%;
   display: flex;
   position: relative;
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .wrap-content {
   width: 100%;
   max-height: 100%;
   position: relative;
+  overflow-y: hidden;
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.content {  
+.content {
   position: relative;
 }
 
-.scrollbar-show{
-  overflow-y: auto;
-}
-
-.scrollbar-hide{
-  overflow-y: hidden;
+.scrollbar-show {
+  overflow-y: scroll !important;
 }
 
 .drawer {
   width: 230px;
-  height: 100%;
+  min-height: 100%;
   overflow-y: auto;
   margin-right: 8px;
   transition: all 0.3s;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .navbar {
   height: 70px;
   display: -webkit-box !important;
+}
+
+.navbar .btn,
+.navbar .btn i {
+  line-height: 1.2;
+}
+
+i.material-icons {
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.navbar-brand {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.drawer {
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .drawer.open {
@@ -145,9 +252,11 @@ export default {
 .loading-box {
   left: -50%;
   top: -50%;
-  padding: 10px;
+  padding: 10px;  
+  color: white;
   position: relative;
-  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  background-color: rgba(72, 72, 72, 0.8);
 }
 
 .wrap-loading .md-progress-spinner {

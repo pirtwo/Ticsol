@@ -1,8 +1,7 @@
 <template>
     <nav-view 
-        v-bind:scrollbar="false" 
-        v-bind:loading="loading"
-        menu-title="Scheduler" 
+        :scrollbar="false" 
+        :loading="loading"        
         drawer-title="Actions"> 
 
         <template slot="toolbar">
@@ -34,24 +33,28 @@
 
         <template slot="content">           
             <day-pilot  
-                v-on:range-selected="selectHandler"
-                v-on:event-draged="dragHandler"
-                v-on:event-moved="moveHandler"
+                @range-selected="rangeSelectHandler"
+                @event-clicked="clickHandler"
+                @event-dragged="draggHandler"
+                @event-moved="moveHandler"
+                @event-hoverd="hoverHandler"
+                @event-resized="resizeHandler"
                 range="Month"
                 scale="Day"
                 time-header-format="Weeks/Days"
                 crosshair="Header"
-                v-bind:time-header-auto-fit="false"
-                v-bind:time-header-height="30"
-                v-bind:height="height"
-                v-bind:cell-width="40"  
-                v-bind:event-height="60"  
-                v-bind:events="scheduleEvents"                    
-                v-bind:resource="scheduleResources">
+                cell-width="Auto"
+                :message="message"
+                :time-header-auto-fit="false"
+                :time-header-height="35"
+                :height="height"                 
+                :event-height="45"  
+                :events="scheduleEvents"                    
+                :resource="scheduleResources">
             </day-pilot>   
             <assign-user-modal
               v-model="assignUserPopup"
-              v-bind:event="event"
+              :event="event"
             ></assign-user-modal>         
         </template>
 
@@ -61,7 +64,7 @@
 <script>
 import DayPilot from "../schedules/DayPilot.vue";
 import NavView from "../../../framework/NavView.vue";
-import AssignUserModal from '../schedules/AssignUserModal.vue';
+import AssignUserModal from "../schedules/AssignUserModal.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -74,8 +77,9 @@ export default {
   },
 
   data: function() {
-    return {      
+    return {
       loading: false,
+      message: "",
       event: null,
       assignUserPopup: false
     };
@@ -104,22 +108,60 @@ export default {
     ...mapActions({
       scheduleInti: "schedule/initi",
       scheduleCreate: "schedule/create",
+      scheduleUpdate: "schedule/update",
       sidebarListJobs: "sidebar/listJobs",
       sidebarListUsers: "sidebar/listUsers"
     }),
 
-    selectHandler(event) {
+    rangeSelectHandler(event) {
       event.userName = this.resource[event.resourceId - 1].name;
       this.event = event;
       this.assignUserPopup = true;
     },
 
-    dragHandler(event) {},
+    clickHandler(event) {
+      console.log("click");
+      console.log(event);
+    },
 
-    moveHandler(event) {},
+    hoverHandler(event) {
+      console.log("hover");
+      console.log(event);
+    },
 
-    createEvent(data) {
-      this.scheduleCreate({ data: data });
+    draggHandler(event) {
+      console.log("drag");
+      console.log(event);
+    },
+
+    moveHandler(event) {
+      console.log("move");
+      console.log(event);
+
+      this.message = "updating...";
+      this.scheduleUpdate({
+        id: event.eventId,
+        data: {
+          user_id: event.resourceId,
+          start: event.newStart,
+          end: event.newEnd
+        }
+      }).then(() => {
+        this.message = "event updated successfuly";
+      });
+    },
+
+    resizeHandler(event) {
+      this.message = "resizing...";
+      this.scheduleUpdate({
+        id: event.eventId,
+        data: {          
+          start: event.newStart,
+          end: event.newEnd
+        }
+      }).then(() => {
+        this.message = "event resized successfuly";
+      });
     }
   }
 };

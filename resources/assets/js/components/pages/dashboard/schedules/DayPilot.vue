@@ -24,6 +24,10 @@ export default {
       default: [],
       required: true
     },
+    message: {
+      type: String,
+      default: ""
+    },
 
     // Time Axies
     range: {
@@ -231,7 +235,7 @@ export default {
 
       // Grid
       dp.cellWidthSpec = this.getCellWidthSpec;
-      if (this.cellWidthSpec != "auto") dp.cellWidth = this.cellWidth;
+      if (this.cellWidth !== "Auto") dp.cellWidth = this.cellWidth;
       dp.crosshairType = this.crosshair;
       dp.autoScroll = this.autoScroll;
 
@@ -329,13 +333,13 @@ export default {
         args.resource.minHeight = 70;
       };
 
-      dp.onBeforeEventRender = function(args) {        
+      dp.onBeforeEventRender = function(args) {
         args.data.html =
           `<span class='event_title'>${args.data.text}</span><br/>` +
           `<span>Progress: %${args.data.complete}</span>`;
       };
 
-      dp.init();
+      dp.init();      
       this.makeDraggable();
     });
   },
@@ -357,6 +361,10 @@ export default {
     events: function(value) {
       this.dayPilot.events.list = value;
       this.dayPilot.update();
+    },
+
+    message: function(value) {
+      this.dayPilot.message(value);      
     }
   },
 
@@ -426,16 +434,6 @@ export default {
       return this.cellWidth === "Auto" ? "Auto" : "Fixed";
     },
 
-    formatDate(date) {
-      var d = new Date(date),
-        month = "" + (d.getMonth() + 1),
-        day = "" + d.getDate(),
-        year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-      return [year, month, day].join("-");
-    },
-
     makeDraggable() {
       var parent = document.getElementById("dp-draggable");
       var items = parent.getElementsByTagName("li");
@@ -449,9 +447,7 @@ export default {
           duration: e.getAttribute("data-duration")
         };
         window.DayPilot.Scheduler.makeDraggable(item);
-      }
-      // this.dayPilot.events.list = [];
-      // this.dayPilot.update();
+      }     
     },
 
     eventCreateHandler(arg) {
@@ -464,16 +460,18 @@ export default {
     },
 
     eventClickHandler(arg) {
-      //console.log(arg);
-      this.$emit("eventClicked", {
-        eventId: arg.e.id()
-      });
+      console.log(arg);
+      if (arg.e.isEvent) {
+        this.$emit("event-clicked", {
+          eventId: arg.e.id()
+        });
+      }
     },
 
     eventMoveHandler(arg) {
       //console.log(arg);
       if (arg.external) {
-        this.$emit("eventdraged", {
+        this.$emit("event-dragged", {
           eventId: arg.e.id(),
           resourceId: arg.newResource,
           start: arg.newStart,
@@ -481,7 +479,7 @@ export default {
         });
         this.dayPilot.events.remove(arg.e);
       } else {
-        this.$emit("eventMoved", {
+        this.$emit("event-moved", {
           eventId: arg.e.id(),
           resourceId: arg.newResource,
           newStart: arg.newStart,
@@ -492,27 +490,28 @@ export default {
     },
 
     eventHoverHandler(arg) {
-      //console.log(arg);
-      this.$emit("eventHoverd", {
+      console.log(arg);
+      this.$emit("event-hoverd", {
         eventId: arg.e.id()
       });
     },
 
     eventResizeHandler(arg) {
       console.log(arg);
-      this.$emit("eventResized", {});
+      this.$emit("event-resized", {
+        eventId: arg.e.id(),
+        newStart: arg.newStart,
+        newEnd: arg.newEnd
+      });
     },
 
     eventDeleteHandler(arg) {
       //console.log("delete event...");
-      this.$emit("eventDeleted", {});
+      this.$emit("event-deleted", {});
     }
   }
 };
 </script>
 
 <style scoped>
-#dp {
-  background-color: white !important;
-}
 </style>

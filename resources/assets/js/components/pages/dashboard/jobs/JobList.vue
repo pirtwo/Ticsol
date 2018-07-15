@@ -1,5 +1,5 @@
 <template>
-    <nav-view v-bind:scrollbar="true" v-bind:loading="this.loading" menu-title="Jobs" drawer-title="">
+    <nav-view :scrollbar="true" :loading="loading" menu-title="Jobs" drawer-title="">
 
         <template slot="menu"></template>
 
@@ -7,17 +7,18 @@
 
         <template slot="content">
 
-            <md-table v-model="jobs" md-sort="id" md-sort-order="asc" md-card>
-                <md-table-toolbar>
-                    
-                </md-table-toolbar>
-                <md-table-row slot="md-table-row" slot-scope="{ item }">
-                    <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-                    <md-table-cell md-label="Title" md-sort-by="title">{{ item.title }}</md-table-cell>
-                    <md-table-cell md-label="Code" md-sort-by="code">{{ item.code }}</md-table-cell>
-                    <md-table-cell md-label="Active" md-sort-by="isactive">{{ item.active ? 'Yes' : 'No' }}</md-table-cell>                    
-                </md-table-row>
-            </md-table>
+            <table-view class="table table-striped" 
+            v-model="selects" :data="jobs" :header="header" :selection="true" order-by="title" order="asc">
+               <template slot="header" slot-scope="{item}">
+                 <div :data-orderBy="item.orderBy">{{ item.value }}</div>
+               </template>
+               <template slot="body" slot-scope="{item}">
+                 <td>{{ item.id }}</td>
+                 <td>{{ item.title }}</td>
+                 <td>{{ item.code }}</td>
+                 <td>{{ item.active ? "Yes" : "No" }}</td>
+               </template> 
+            </table-view>
 
         </template>
     </nav-view>
@@ -26,7 +27,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/TableView.vue";
+import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/PaginationView.vue";
 
 export default {
@@ -38,10 +39,18 @@ export default {
   },
   data() {
     return {
-      jobs: [],          
+      jobs: [],
       page: 1,
       pageCount: 10,
-      loading: true,  
+      loading: true,
+      selects: [],
+      header: [
+        { value: "ID", orderBy: "id" },
+        { value: "Title", orderBy: "title" },
+        { value: "Code", orderBy: "code" },
+        { value: "Active", orderBy: "active" }
+      ],
+      order: "asc"
     };
   },
   mounted() {
@@ -51,10 +60,12 @@ export default {
     ...mapActions({ jobList: "job/list" }),
     feedTable() {
       this.loading = true;
-      this.jobList({query : [
+      this.jobList({
+        query: [
           { key: "page", value: this.page },
           { key: "count", value: this.pageCount }
-        ]})
+        ]
+      })
         .then(respond => {
           this.jobs = respond.data.map(obj => {
             var nObj = {};
@@ -63,7 +74,7 @@ export default {
             nObj.active = obj.isactive;
             nObj.code = obj.code;
             return nObj;
-          });          
+          });
           this.pageCount = respond.last_page;
           this.loading = false;
         })

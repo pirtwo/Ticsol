@@ -1,7 +1,7 @@
 <template>
      <page-layout 
-        v-bind:header="false" 
-        v-bind:footer="false">   
+        :header="false" 
+        :footer="false">   
 
         <div class="wrap-content d-flex justify-content-center align-items-center">      
           <router-view></router-view>

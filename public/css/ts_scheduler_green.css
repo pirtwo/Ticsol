@@ -5,7 +5,8 @@
 {
     border: 1px solid rgba(000,000,000,0.1);
     font-size: 10px;
-	font-family: 'Roboto Mono' !important;	
+	font-family: 'Roboto Mono' !important;
+	background-color: rgba(255,255,255,0.7);		
 }
 
 .scheduler_green_event_inner  
@@ -90,11 +91,12 @@
 }
 
 .scheduler_green_timeheader_float_inner{
-	color: white;
-	text-align: left;
-	/* font-size: 0.9rem; */
-	padding: 5px;
+	color: black;
+	text-align: center;	
+	padding-top: 5px;
+	padding-left: 5px;		
 }
+
 
 .scheduler_green_timeheadergroup_inner
 {
@@ -103,13 +105,13 @@
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	text-align: left;
+	text-align: center;
 	padding: 5px;
 	
 	border-right: 1px solid rgba(000,000,000,0.1);
 
 	color: #ffffff;
-	background-color: rgba(255,255,255,0.5);
+	background-color: rgba(255,255,255,0.1);
 	/* text-shadow:
 		0px -1px 1px rgba(000,000,000,0.2),
 		0px 1px 0px rgba(255,255,255,0.3); */
@@ -125,16 +127,16 @@
 	text-align: center;
 	border-right: 1px solid rgba(000,000,000,0.1);
 	border-top: 1px solid rgba(000,000,000,0.1);
-	padding-top: 2px;
+	padding: 5px;
 
 	color: black;
-	background-color: rgba(255,255,255,1);	
+	background-color: rgba(255,255,255,0.1);	
 }
 
 .scheduler_green_rowheader 
 {
 	color: black;
-	background-color: rgba(255,255,255,1);	
+	background-color: rgba(255,255,255,0.1);	
 }
 
 .scheduler_green_rowheader_inner{
@@ -144,7 +146,7 @@
 .scheduler_green_corner
 {
 	color: black;
-	background-color: rgba(255,255,255,1);
+	background-color: rgba(255,255,255,0.1);
 	text-shadow:
 		0px -1px 1px rgba(000,000,000,0.2),
 		0px 1px 0px rgba(255,255,255,0.3);
@@ -174,12 +176,12 @@
 
 .scheduler_green_divider_horizontal
 {
-	background-color: rgba(000,000,000,0.1);
+	background-color: rgba(0, 0, 0, 0.05);
 }
 
 .scheduler_green_matrix_vertical_line 
 {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.05);
 }
 
 .scheduler_green_matrix_vertical_break 
@@ -188,7 +190,7 @@
 }
 .scheduler_green_matrix_horizontal_line 
 {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.05);
 }
 
 .scheduler_green_resourcedivider 
@@ -246,5 +248,6 @@
 }
 
 .res_user_name{
-	margin: 2px;
+	font-size: 8px;
+	vertical-align: baseline;	
 }

@@ -143,7 +143,24 @@ export const router = new VueRouter({
                             component: require('./components/pages/dashboard/jobs/JobProfile.vue'),
                         }
                     ]
-                }
+                },
+                {
+                    path: '/activity',
+                    name: 'activity',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'activityCreate' },
+                    component: require('./components/pages/dashboard/activities/Activity.vue'),
+                    children: [                        
+                        {
+                            path: 'create',
+                            name: 'activityCreate',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/activities/ActivityCreate.vue'),
+                        }                        
+                    ]
+                },
+
+
             ]
         },
 

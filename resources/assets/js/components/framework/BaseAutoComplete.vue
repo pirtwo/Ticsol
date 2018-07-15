@@ -2,18 +2,18 @@
     <div class="wrap">
         <input 
           v-model="input"       
-          v-on:input="debounceOnInput" 
-          v-on:change="debounceOnChange"
-          v-on:focus="showList = true" 
-          v-on:blur="debounceOnBlur"         
+          @input="debounceOnInput" 
+          @change="debounceOnChange"
+          @focus="showList = true" 
+          @blur="debounceOnBlur"         
           class="form-control" 
           type="text" 
           name="" 
-          v-bind:placeholder="placeHolder"/>
+          :placeholder="placeHolder"/>
         <ul class="results" v-show="showList">
             <li class="result" 
                 v-for="item in results" :key="item.key"
-                v-on:click="onSelect(item.key, item.value)">
+                @click="onSelect(item.key, item.value)">
                 {{ item.value }}
             </li>
         </ul>
@@ -64,8 +64,8 @@ export default {
       this.results = value;
     },
 
-    value: function(value){
-      if(value===-1){
+    value: function(value) {
+      if (value === null) {
         this.input = "";
       }
     }
@@ -91,6 +91,8 @@ export default {
           "input",
           this.data[this.data.indexOf(event.target.value)].key
         );
+      } else if(this.input === "") {
+        this.$emit("input", null);
       }
     },
 
@@ -104,7 +106,7 @@ export default {
     onBlur() {
       if ($(".wrap ul:focus").length === 0) {
         this.showList = false;
-      } 
+      }
     }
   }
 };
@@ -137,7 +139,7 @@ ul {
   -webkit-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
-  z-index: 99999;
+  z-index: 10;
 }
 
 ul li:hover {

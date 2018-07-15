@@ -1,6 +1,9 @@
 <template>
     <nav-view>
-        <template slot="pane">
+        <template slot="drawer">
+
+        </template>
+        <template slot="toolbar">
 
         </template>
         <template slot="content">

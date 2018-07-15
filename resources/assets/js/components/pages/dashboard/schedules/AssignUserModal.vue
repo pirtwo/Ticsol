@@ -6,7 +6,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="title">Assign Job</h5>
-          <button v-on:click="onClose" type="button" class="close" aria-label="Close">
+          <button @click="onClose" type="button" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -28,7 +28,7 @@
                 <div class="col">
                   <auto-complete
                     v-model="form.resourceId"
-                    v-bind:data="options"
+                    :data="options"
                     name="job"
                     place-holder="select job ..."
                   ></auto-complete>
@@ -71,8 +71,8 @@
 
         </div>
         <div class="modal-footer">
-          <button v-on:click="onSubmit" type="button" class="btn btn-success">Assign</button>
-          <button v-on:click="onClose" type="button" class="btn btn-secondary">Close</button>          
+          <button @click="onSubmit" type="button" class="btn btn-success">Assign</button>
+          <button @click="onClose" type="button" class="btn btn-secondary">Close</button>          
         </div>
       </div>
     </div>
@@ -197,8 +197,7 @@ export default {
       event.start = this.form.start + "T" + this.form.startTime + ":00";
       event.end = this.form.end + "T" + this.form.endTime + ":00";
       event.offsite = this.form.offsite;
-
-      console.log(e.target);
+      
       e.target.innerHTML = "Creating...";
       e.target.disabled = true;
 
@@ -210,9 +209,7 @@ export default {
           this.clearForm();
           this.$emit("input", false);
         })
-        .catch(error => {
-          console.log("Error !!!");
-
+        .catch(error => {          
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
           this.clearForm();
@@ -223,7 +220,7 @@ export default {
     clearForm() {
       this.form.userName = "";
       this.form.userId = null;
-      this.form.resourceId = -1;
+      this.form.resourceId = null;
       this.form.startTime = "";
       this.form.endTime = "";
       this.form.start = "";

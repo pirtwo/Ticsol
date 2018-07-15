@@ -1,5 +1,5 @@
 
-import axios from 'axios';
+//import axios from 'axios';
 import { store } from '../store/store';
 import * as resources from './resources';
 
@@ -107,10 +107,15 @@ function makeRequest(method, url, query = [], isJson = true, isAuth = false, dat
         });
     }
     if (isJson) {
-        header.Accept = 'application/json';
+        header['Accept'] = 'application/json';        
     }
+    
+    if(isJson && method === "POST"){
+        header['Content-Type'] = 'application/json';
+    }
+
     if (isAuth) {
-        header.Authorization = `Bearer ${token}`;
+        header['Authorization'] = `Bearer ${token}`;
     }
 
     let req = axios({
@@ -119,5 +124,6 @@ function makeRequest(method, url, query = [], isJson = true, isAuth = false, dat
         data: data,
         headers: header
     });
+    
     return req;
 }

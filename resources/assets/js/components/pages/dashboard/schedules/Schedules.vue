@@ -1,5 +1,5 @@
 <template>
- <page-layout v-bind:header="true" v-bind:footer="true">
+ <page-layout :header="true" :footer="true">
    <template slot="header">
      <iconbar-top></iconbar-top>
    </template>

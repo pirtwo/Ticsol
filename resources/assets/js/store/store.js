@@ -19,8 +19,8 @@ export const store = new Vuex.Store({
         loading: loadingModule,
         sidebar: sidebarModule,
         schedule: scheduleModule,
-        job: jobModule, 
-        appUI: UIModule        
+        job: jobModule,
+        appUI: UIModule
     },
     plugins: [localStorage.plugin],
 });
