@@ -76,17 +76,16 @@ export const scheduleModule = {
             state.events = payload.data;
         },
 
-        [SCHEDULE_EVENTS_ADD](state, payload) {
+        [SCHEDULE_EVENTS_ADD](state, payload) {            
             state.events.push(payload[0]);
         },
 
-        [SCHEDULE_EVENTS_UPDATE](state, { id, payload }) {
-
+        [SCHEDULE_EVENTS_UPDATE](state, { id, payload }) {            
             let index = state.events.findIndex((el) => {
                 return el.id === id;
             });
 
-            state.events[index] = payload;
+            state.events[index] = payload[0];            
         },
 
         [SCHEDULE_EVENTS_DELETE](state, { id, payload }) {
@@ -188,7 +187,7 @@ export const scheduleModule = {
                 api.update(`${URL.SCHEDULE_UPDATE}/${id}`, data)
                     .then(respond => {
                         if (respond.status === 200) {
-                            commit(SCHEDULE_EVENTS_UPDATE, { id: id, payload: data });
+                            commit(SCHEDULE_EVENTS_UPDATE, { id: id, payload: respond.data });
                             resolve(true);
                         }
                         else reject(respond);

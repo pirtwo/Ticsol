@@ -54561,12 +54561,11 @@ var scheduleModule = {
         var id = _ref.id,
             payload = _ref.payload;
 
-
         var index = state.events.findIndex(function (el) {
             return el.id === id;
         });
 
-        state.events[index] = payload;
+        state.events[index] = payload[0];
     }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["l" /* SCHEDULE_EVENTS_DELETE */], function (state, _ref2) {
         var id = _ref2.id,
             payload = _ref2.payload;
@@ -54664,7 +54663,7 @@ var scheduleModule = {
             return new Promise(function (resolve, reject) {
                 __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].update(__WEBPACK_IMPORTED_MODULE_1__api_resources__["i" /* SCHEDULE_UPDATE */] + '/' + id, data).then(function (respond) {
                     if (respond.status === 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["m" /* SCHEDULE_EVENTS_UPDATE */], { id: id, payload: data });
+                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["m" /* SCHEDULE_EVENTS_UPDATE */], { id: id, payload: respond.data });
                         resolve(true);
                     } else reject(respond);
                 }).catch(function (error) {

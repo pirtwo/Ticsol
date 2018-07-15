@@ -56,7 +56,8 @@ class ScheduleController extends Controller
 
     public function update(Requests\UpdateSchedule $req, $id)
     {
-        return $this->repository->update($req->all(), 'id', $id);
+        $this->repository->update($req->all(), 'id', $id);
+        return Schedule::with(['user', 'job'])->where('id', $id)->get();
     }
 
     public function delete(Request $req, $id)
