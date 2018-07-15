@@ -38,7 +38,8 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     Route::post('job/update/{id}', 'JobController@update'); 
     
     // Schedule
-    Route::post('schedule/create', 'ScheduleController@create');    
+    Route::post('schedule/create', 'ScheduleController@create');  
+    Route::post('schedule/update/{id}', 'ScheduleController@update');   
     #endregion
 
 

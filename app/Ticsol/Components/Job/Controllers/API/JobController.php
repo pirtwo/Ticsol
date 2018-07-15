@@ -62,10 +62,12 @@ class JobController extends Controller{
     {
         try{           
             $job = new Job();
-            $job->client_id = 
-                $req->user()->client_id;
-            $job->creator_id = 
-                $req->user()->id;
+            // $job->client_id = 
+            //     $req->user()->client_id;
+            // $job->creator_id = 
+            //     $req->user()->id;
+            $job->client_id = 1;
+            $job->creator_id = 1;
             $job->fill($req->all());
             $job->save();
             return $job;
