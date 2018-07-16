@@ -1,5 +1,5 @@
 <template>
-    <nav-view :scrollbar="true" :loading="loading" menu-title="Jobs" drawer-title="">
+    <nav-view :scrollbar="true" :loading="loading" menu-title="Jobs" drawer-title="" padding="p-2">
 
         <template slot="menu"></template>
 

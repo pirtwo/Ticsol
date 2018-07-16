@@ -127,6 +127,7 @@ export default {
     }),
 
     options: function() {
+      if (!this.jobList.map) return [];
       return this.jobList.map(obj => {
         let newObj = {};
         newObj.key = obj.id;
@@ -197,7 +198,7 @@ export default {
       event.start = this.form.start + "T" + this.form.startTime + ":00";
       event.end = this.form.end + "T" + this.form.endTime + ":00";
       event.offsite = this.form.offsite;
-      
+
       e.target.innerHTML = "Creating...";
       e.target.disabled = true;
 
@@ -209,7 +210,7 @@ export default {
           this.clearForm();
           this.$emit("input", false);
         })
-        .catch(error => {          
+        .catch(error => {
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
           this.clearForm();

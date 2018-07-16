@@ -6,7 +6,7 @@
 
       </slot>
       <th v-if="selection">
-        <input type="checkbox" @click="onSelectAll(index, $event)">
+        <input type="checkbox" @click.self="onSelectAll">
       </th>
 
       <th v-for="(value, index) in header" :key="index" @click="toggleOrder(index, $event)">
@@ -103,10 +103,21 @@ export default {
       this.$emit("input", this.selects);
     },
 
-    onSelectAll() {},
+    onSelectAll(e) {
+      if ($(e.target).prop("checked")) {
+        $("input[type='checkbox']").prop("checked", true);
+        this.selects = [];
+        this.data.forEach(el => {
+          this.selects.push(el);
+        });
+      } else {
+        $("input[type='checkbox']").prop("checked", false);
+        this.selects = [];
+      }
+      this.$emit("input", this.selects);
+    },
 
     toggleOrder(index, e) {
-
       let orderby = "";
 
       if (e.target.tagName === "TH") {
@@ -119,7 +130,7 @@ export default {
           .find("[data-orderBy]")
           .data().orderby;
       }
-      
+
       if (this.colOrder === "asc") {
         this.colOrder = "des";
       } else {

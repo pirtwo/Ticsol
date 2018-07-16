@@ -339,7 +339,7 @@ export default {
           `<span>Progress: %${args.data.complete}</span>`;
       };
 
-      dp.init();      
+      dp.init();
       this.makeDraggable();
     });
   },
@@ -353,18 +353,22 @@ export default {
     },
 
     resource: function(value) {
-      this.dayPilot.resources = value;
-      this.dayPilot.update();
-      this.makeDraggable();
+      if (this.dayPilot.resources !== undefined) {
+        this.dayPilot.resources = value;
+        this.dayPilot.update();
+        this.makeDraggable();
+      }
     },
 
     events: function(value) {
-      this.dayPilot.events.list = value;
-      this.dayPilot.update();
+      if (this.dayPilot.events !== undefined) {
+        this.dayPilot.events.list = value;
+        this.dayPilot.update();
+      }
     },
 
     message: function(value) {
-      this.dayPilot.message(value);      
+      this.dayPilot.message(value);
     }
   },
 
@@ -447,7 +451,7 @@ export default {
           duration: e.getAttribute("data-duration")
         };
         window.DayPilot.Scheduler.makeDraggable(item);
-      }     
+      }
     },
 
     eventCreateHandler(arg) {
