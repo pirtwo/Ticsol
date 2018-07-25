@@ -153,6 +153,7 @@ th div {
 }
 
 th i {
+  font-size: 0.9;
   vertical-align: bottom;
 }
 </style>

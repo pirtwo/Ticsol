@@ -159,6 +159,21 @@ export const router = new VueRouter({
                         }                        
                     ]
                 },
+                {
+                    path: '/contact',
+                    name: 'contact',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'contactCreate' },
+                    component: require('./components/pages/dashboard/contacts/Contacts.vue'),
+                    children: [                        
+                        {
+                            path: 'create',
+                            name: 'contactCreate',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/contacts/ContactCreate.vue'),
+                        }                        
+                    ]
+                },
 
 
             ]

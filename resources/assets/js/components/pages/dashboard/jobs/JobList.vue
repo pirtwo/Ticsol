@@ -1,14 +1,16 @@
 <template>
-    <nav-view :scrollbar="true" :loading="loading" menu-title="Jobs" drawer-title="" padding="p-2">
+    <nav-view :scrollbar="true" :loading="loading" drawer-title="" padding="p-2">
 
-        <template slot="menu"></template>
+        <template slot="toolbar">
+          <pagination-view v-model="page" :page-count="pageCount"></pagination-view>
+        </template>
 
         <template slot="drawer"></template>
 
         <template slot="content">
 
             <table-view class="table table-striped" 
-            v-model="selects" :data="jobs" :header="header" :selection="true" order-by="title" order="asc">
+            v-model="selects" :data="jobs" :header="header" :selection="true" order-by="id" order="asc">
                <template slot="header" slot-scope="{item}">
                  <div :data-orderBy="item.orderBy">{{ item.value }}</div>
                </template>
@@ -28,15 +30,17 @@
 import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
-import PaginationView from "../../../framework/PaginationView.vue";
+import PaginationView from "../../../framework/BasePagination.vue";
 
 export default {
   name: "JobList",
+
   components: {
     "nav-view": NavView,
     "table-view": TableView,
     "pagination-view": PaginationView
   },
+
   data() {
     return {
       jobs: [],
@@ -53,11 +57,20 @@ export default {
       order: "asc"
     };
   },
+
+  watch:{
+    page: function(value){
+      this.feedTable();
+    }
+  },
+
   mounted() {
     this.feedTable();
   },
+
   methods: {
     ...mapActions({ jobList: "job/list" }),
+
     feedTable() {
       this.loading = true;
       this.jobList({
@@ -83,6 +96,7 @@ export default {
           this.loading = false;
         });
     }
+
   }
 };
 </script>

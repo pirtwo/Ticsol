@@ -5,30 +5,49 @@
         drawer-title="Actions"> 
 
         <template slot="toolbar">
-                             
+
+          <div class="dp-ctrl form-row ml-auto">
+            <div class="col">
+              <input type="text" class="form-control form-control-sm" placeholder="filter...">
+            </div>
+            <div class="col">
+              <select class="form-control form-control-sm">
+                <option value="">Employee</option>
+                <option value="">Job</option>
+              </select>   
+            </div>                    
+          </div>   
+
         </template>
 
         <template slot="drawer">
-            <ul id="dp-draggable" class="navview-menu">                
-            <template v-if="this.type === 'employee'">
-                <template v-for="res in this.resource">  
-                    <li :key="res.id" v-bind:data-id="res.id">
-                        <a href="#">
-                            <span class="caption">{{ res.name }}</span>
-                        </a>                        
-                    </li>
-                </template>  
-            </template>  
-            <template v-else>
-                <template v-for="res in this.resource">  
-                    <li :key="res.id" v-bind:data-id="res.id">
-                        <a href="#">
-                            <span class="caption">{{ res.title }}</span>
-                        </a>                        
-                    </li>
-                </template>  
-            </template>                 
+
+            <div class="p-2">
+              <input type="text" class="form-control form-control-sm">
+            </div>
+            
+            <ul id="dp-draggable" class="res-menu">                
+              <template v-if="this.type === 'employee'">
+                  <template v-for="res in this.resource">  
+                      <li :key="res.id" :data-id="res.id" class="res-user">
+                          <a href="#">
+                              <img :src="avatar(res.meta)" class="rounded">                              
+                              <span class="caption">{{ res.name }}</span>
+                          </a>                        
+                      </li>
+                  </template>  
+              </template>  
+              <template v-else>
+                  <template v-for="res in this.resource">  
+                      <li :key="res.id" :data-id="res.id" class="res-job">
+                          <a href="#">
+                              <span class="caption">{{ res.title }}</span>
+                          </a>                        
+                      </li>
+                  </template>  
+              </template>                 
             </ul>
+
         </template>
 
         <template slot="content">           
@@ -88,6 +107,7 @@ export default {
   mounted() {
     this.loading = true;
     this.sidebarListUsers().then(() => {
+      console.log(JSON.parse(this.resource[0].meta).avatar);
       this.scheduleInti({ resource: "user" }).then(() => {
         this.loading = false;
       });
@@ -101,7 +121,9 @@ export default {
       resource: "sidebar/getResource",
       scheduleEvents: "schedule/getEvents",
       scheduleResources: "schedule/getResources"
-    })
+    }),
+
+    
   },
 
   methods: {
@@ -112,6 +134,11 @@ export default {
       sidebarListJobs: "sidebar/listJobs",
       sidebarListUsers: "sidebar/listUsers"
     }),
+
+    avatar(json) {
+      console.log(json);
+      return JSON.parse(json).avatar;
+    },
 
     rangeSelectHandler(event) {
       event.userName = this.resource[event.resourceId - 1].name;
@@ -155,7 +182,7 @@ export default {
       this.message = "resizing...";
       this.scheduleUpdate({
         id: event.eventId,
-        data: {          
+        data: {
           start: event.newStart,
           end: event.newEnd
         }
@@ -168,8 +195,37 @@ export default {
 </script>
 
 <style scoped>
-.controls {
-  margin-left: auto;
-  margin-right: 10px;
+.dp-ctrl input {
+  max-width: 100px;
+}
+
+.res-menu {
+  list-style: none;
+  padding: 3px;
+}
+
+.res-menu li {
+  padding: 5px;
+  cursor: move;
+  margin-bottom: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.res-menu li a {
+  cursor: move;
+  color: black;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.res-menu li img {
+  margin-right: 7px;
+  width: 40px;
+  height: 40px;  
+  background-color: transparent;
+  /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
+  box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75); */
 }
 </style>

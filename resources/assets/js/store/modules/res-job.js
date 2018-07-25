@@ -24,6 +24,7 @@ export const jobModule = {
         },
 
         getErrors: (state) => {
+            console.log(state.error.errors);
             return state.error.errors;
         },
 

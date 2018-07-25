@@ -31,22 +31,13 @@
 
         <template slot="content">
 
-            <form>
-                <div class="col-sm-12">
-                    <template v-for="item in getErrors">
-                        <div v-for="(value, index) in item" :key="value + index" 
-                            class="alert alert-danger alert-dismissible fade show" 
-                            role="alert">
-                            {{ value }}                            
-                        </div>
-                    </template>                    
-                </div>
-
+            <form class="needs-validation" novalidate>
+                
                 <div class="form-group">
                     <div class="form-row">
                         <label class="col-sm-2 col-form-lable">Title</label>
                         <div class="col-sm-10">
-                            <input v-model="form.title" type="text" class="form-control" placeholder="job title"/>
+                            <input v-model="form.title" id="title" type="text" class="form-control" placeholder="job title"/>
                         </div>
                     </div>
                 </div>
@@ -55,7 +46,7 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-lable">Code</label>
                         <div class="col-sm-10">
-                            <input v-model="form.code" type="text" class="form-control" placeholder="display code"/>
+                            <input v-model="form.code" id="code" type="text" class="form-control" placeholder="display code"/>
                         </div>
                     </div>
                 </div>
@@ -67,6 +58,7 @@
                             <auto-complete
                                 v-model="form.parent_id"
                                 :data="jobs"
+                                id="parent_id"
                                 name="jobParent"
                                 place-holder="click to select parent..."
                             ></auto-complete>
@@ -81,6 +73,7 @@
                             <auto-complete
                                 v-model="form.form_id"
                                 :data="profileList"
+                                id="form_id"
                                 name="jobProfile"
                                 place-holder="click to select profile..."
                             ></auto-complete>
@@ -132,9 +125,15 @@ export default {
         form_id: null
       },
       jobList: [],
-      profileList: [],      
+      profileList: [],
       loading: false
     };
+  },
+
+  watch:{
+      getErrors: function(value){
+          this.$formFeedback(value);
+      }
   },
 
   computed: {
@@ -175,14 +174,17 @@ export default {
       console.log(this.form.isactive);
       console.log(this.form.parent_id);
       console.log(this.form.form_id);
+
       this.createJob({ payload: this.form })
         .then(respond => {
-          e.target.disable = false;
+          e.target.disable = false;          
           console.log("job created successfuly");
         })
         .catch(error => {
           e.target.disable = false;
+          console.log("error...");
         });
+      
       e.preventDefault();
     },
 

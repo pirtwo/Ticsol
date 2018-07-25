@@ -3,7 +3,10 @@
 
         <!-- drawer -->
         <div class="drawer" :class="[menuVisible? 'open' : 'close']">
-            <span>{{ drawerTitle }}</span>  
+            <div class="drawer-toolbar">
+              <div class="title text-center" v-if="drawerTitle !== '' ">{{ drawerTitle }}</div> 
+              <slot name="drawer-toolbar"></slot>
+            </div>             
             <slot name="drawer"></slot>
         </div>
 
@@ -198,6 +201,23 @@ export default {
   margin-right: 8px;
   transition: all 0.3s;
   background-color: rgba(255, 255, 255, 0.95);
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.drawer.open {
+  width: 270px;
+}
+
+.drawer.close {
+  width: 0px;
+  overflow: hidden;
+  margin-right: 0px;
+}
+
+.drawer .title{
+  width: 100%;
+  padding: 5px;  
+  color: rgba(0, 0, 0, 0.3);  
 }
 
 .navbar {
@@ -217,20 +237,6 @@ i.material-icons {
 .navbar-brand {
   font-size: 1.2rem;
   line-height: 1.2;
-}
-
-.drawer {
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
-
-.drawer.open {
-  width: 270px;
-}
-
-.drawer.close {
-  width: 0px;
-  overflow: hidden;
-  margin-right: 0px;
 }
 
 .wrap-loading {

@@ -7,8 +7,9 @@
           @focus="showList = true" 
           @blur="debounceOnBlur"         
           class="form-control" 
-          type="text" 
-          name="" 
+          type="text"
+          :id="id" 
+          :name="name" 
           :placeholder="placeHolder"/>
         <ul class="results" v-show="showList">
             <li class="result" 
@@ -30,6 +31,10 @@ export default {
       type: Array,
       required: true,
       default: []
+    },
+    id: {
+      type: String,
+      default: ""
     },
     name: {
       type: String,
@@ -91,7 +96,7 @@ export default {
           "input",
           this.data[this.data.indexOf(event.target.value)].key
         );
-      } else if(this.input === "") {
+      } else if (this.input === "") {
         this.$emit("input", null);
       }
     },
