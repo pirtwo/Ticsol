@@ -60076,7 +60076,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.wrap-drawer[data-v-9f1b21ba] {\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  position: relative;\r\n  -webkit-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.wrap-content[data-v-9f1b21ba] {\r\n  width: 100%;\r\n  max-height: 100%;\r\n  position: relative;\r\n  overflow-y: hidden;\r\n  background-color: rgba(255, 255, 255, 0.8);\n}\n.content[data-v-9f1b21ba] {\r\n  position: relative;\n}\n.scrollbar-show[data-v-9f1b21ba] {\r\n  overflow-y: scroll !important;\n}\n.drawer[data-v-9f1b21ba] {\r\n  width: 230px;\r\n  min-height: 100%;\r\n  overflow-y: auto;\r\n  margin-right: 8px;\r\n  -webkit-transition: all 0.3s;\r\n  transition: all 0.3s;\r\n  background-color: rgba(255, 255, 255, 0.95);\r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.drawer.open[data-v-9f1b21ba] {\r\n  width: 270px;\n}\n.drawer.close[data-v-9f1b21ba] {\r\n  width: 0px;\r\n  overflow: hidden;\r\n  margin-right: 0px;\n}\n.drawer .title[data-v-9f1b21ba]{\r\n  width: 100%;\r\n  padding: 5px;  \r\n  color: rgba(0, 0, 0, 0.3);\n}\n.navbar[data-v-9f1b21ba] {\r\n  height: 70px;\r\n  display: -webkit-box !important;\n}\n.navbar .btn[data-v-9f1b21ba],\r\n.navbar .btn i[data-v-9f1b21ba] {\r\n  line-height: 1.2;\n}\ni.material-icons[data-v-9f1b21ba] {\r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.navbar-brand[data-v-9f1b21ba] {\r\n  font-size: 1.2rem;\r\n  line-height: 1.2;\n}\n.wrap-loading[data-v-9f1b21ba] {\r\n  top: 50%;\r\n  left: 50%;\r\n  position: absolute;\n}\n.loading-box[data-v-9f1b21ba] {\r\n  left: -50%;\r\n  top: -50%;\r\n  padding: 10px;\r\n  color: white;\r\n  position: relative;\r\n  border-radius: 5px;\r\n  background-color: rgba(72, 72, 72, 0.8);\n}\n.wrap-loading .md-progress-spinner[data-v-9f1b21ba] {\r\n  margin-left: 40%;\r\n  margin-right: auto;\n}\n.wrap-loading .caption[data-v-9f1b21ba] {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\n}\r\n", ""]);
+exports.push([module.i, "\n.wrap-drawer[data-v-9f1b21ba] {\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  position: relative;\r\n  -webkit-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.wrap-content[data-v-9f1b21ba] {\r\n  width: 100%;\r\n  max-height: 100%;\r\n  position: relative;\r\n  overflow-y: hidden;\r\n  background-color: rgba(255, 255, 255, 0.8);\n}\n.content[data-v-9f1b21ba] {\r\n  position: relative;\n}\n.scrollbar-show[data-v-9f1b21ba] {\r\n  overflow-y: scroll !important;\n}\n.drawer[data-v-9f1b21ba] {\r\n  width: 230px;\r\n  min-height: 100%;\r\n  overflow-y: auto;\r\n  margin-right: 8px;\r\n  -webkit-transition: all 0.3s;\r\n  transition: all 0.3s;\r\n  background-color: rgba(255, 255, 255, 0.95);\r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.drawer.open[data-v-9f1b21ba] {\r\n  width: 270px;\n}\n.drawer.close[data-v-9f1b21ba] {\r\n  width: 0px;\r\n  overflow: hidden;\r\n  margin-right: 0px;\n}\n.drawer .title[data-v-9f1b21ba]{\r\n  width: 100%;\r\n  padding: 5px;  \r\n  color: rgba(0, 0, 0, 0.3);\n}\n.navbar[data-v-9f1b21ba] {\r\n  height: 70px;\r\n  display: -webkit-box !important;\n}\n.navbar .btn[data-v-9f1b21ba],\r\n.navbar .btn i[data-v-9f1b21ba] {\r\n  font-size: 1.2rem;\r\n  line-height: 1.2;\n}\ni.material-icons[data-v-9f1b21ba] {  \r\n  -webkit-transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);  \r\n  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);\n}\n.navbar-brand[data-v-9f1b21ba] {\r\n  font-size: 1.2rem;\r\n  line-height: 1.2;\n}\n.wrap-loading[data-v-9f1b21ba] {\r\n  top: 50%;\r\n  left: 50%;\r\n  position: absolute;\n}\n.loading-box[data-v-9f1b21ba] {\r\n  left: -50%;\r\n  top: -50%;\r\n  padding: 10px;\r\n  color: white;\r\n  position: relative;\r\n  border-radius: 5px;\r\n  background-color: rgba(72, 72, 72, 0.8);\n}\n.wrap-loading .md-progress-spinner[data-v-9f1b21ba] {\r\n  margin-left: 40%;\r\n  margin-right: auto;\n}\n.wrap-loading .caption[data-v-9f1b21ba] {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\n}\r\n", ""]);
 
 // exports
 
@@ -61734,7 +61734,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.dp-ctrl input[data-v-006767d8] {\r\n  max-width: 100px;\n}\n.res-menu[data-v-006767d8] {\r\n  list-style: none;\r\n  padding: 3px;\n}\n.res-menu li[data-v-006767d8] {\r\n  padding: 5px;\r\n  cursor: move;\r\n  margin-bottom: 5px;\r\n  border: 1px solid rgba(0, 0, 0, 0.1);\r\n  background-color: rgba(255, 255, 255, 0.05);\n}\n.res-menu li a[data-v-006767d8] {\r\n  cursor: move;\r\n  color: black;\r\n  font-size: 12px;\r\n  text-decoration: none;\n}\n.res-menu li img[data-v-006767d8] {\r\n  margin-right: 7px;\r\n  width: 40px;\r\n  height: 40px;  \r\n  background-color: transparent;\r\n  /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);\r\n  -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);\r\n  box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75); */\n}\r\n", ""]);
+exports.push([module.i, "\n.dp-ctrl input[data-v-006767d8],\r\n.dp-ctrl select[data-v-006767d8] {\r\n  font-size: 10px;\r\n  max-width: 100px;\n}\n.dp-ctrl .btn[data-v-006767d8] {\r\n  font-size: 1rem;\r\n  line-height: 1rem !important;\n}\n.dp-ctrl i[data-v-006767d8] {\r\n  font-size: inherit;\r\n  line-height: 1rem !important;\n}\n.res-menu[data-v-006767d8] {\r\n  list-style: none;\r\n  padding: 3px;\n}\n.res-menu li[data-v-006767d8] {\r\n  padding: 5px;\r\n  cursor: move;\r\n  margin-bottom: 5px;\r\n  border: 1px solid rgba(0, 0, 0, 0.1);\r\n  background-color: rgba(255, 255, 255, 0.05);\n}\n.res-menu li a[data-v-006767d8] {\r\n  cursor: move;\r\n  color: black;\r\n  font-size: 12px;\r\n  text-decoration: none;\n}\n.res-menu li img[data-v-006767d8] {\r\n  margin-right: 7px;\r\n  width: 40px;\r\n  height: 40px;\r\n  background-color: transparent;\r\n  /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);\r\n  -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);\r\n  box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75); */\n}\r\n", ""]);
 
 // exports
 
@@ -61754,6 +61754,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(4);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -63193,19 +63198,38 @@ var render = function() {
     [
       _c("template", { slot: "toolbar" }, [
         _c("div", { staticClass: "dp-ctrl form-row ml-auto" }, [
-          _c("div", { staticClass: "col" }, [
+          _c("div", { staticClass: "input-group input-group-sm col" }, [
             _c("input", {
               staticClass: "form-control form-control-sm",
               attrs: { type: "text", placeholder: "filter..." }
-            })
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-secondary",
+                  attrs: { type: "button", id: "button-addon1" }
+                },
+                [
+                  _c("i", { staticClass: "material-icons" }, [
+                    _vm._v("filter_list")
+                  ])
+                ]
+              )
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col" }, [
-            _c("select", { staticClass: "form-control form-control-sm" }, [
-              _c("option", { attrs: { value: "" } }, [_vm._v("Employee")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "" } }, [_vm._v("Job")])
-            ])
+            _c(
+              "select",
+              { staticClass: "form-control form-control-sm custom-select" },
+              [
+                _c("option", { attrs: { value: "" } }, [_vm._v("Employee")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Job")])
+              ]
+            )
           ])
         ])
       ]),

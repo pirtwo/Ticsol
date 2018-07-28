@@ -7,11 +7,16 @@
         <template slot="toolbar">
 
           <div class="dp-ctrl form-row ml-auto">
-            <div class="col">
+            <div class="input-group input-group-sm col">
               <input type="text" class="form-control form-control-sm" placeholder="filter...">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon1">
+                  <i class="material-icons">filter_list</i>
+                </button>
+              </div>
             </div>
             <div class="col">
-              <select class="form-control form-control-sm">
+              <select class="form-control form-control-sm custom-select">
                 <option value="">Employee</option>
                 <option value="">Job</option>
               </select>   
@@ -121,8 +126,7 @@ export default {
       resource: "sidebar/getResource",
       scheduleEvents: "schedule/getEvents",
       scheduleResources: "schedule/getResources"
-    }),
-    
+    })
   },
 
   methods: {
@@ -134,7 +138,7 @@ export default {
       sidebarListUsers: "sidebar/listUsers"
     }),
 
-    avatar(json) {      
+    avatar(json) {
       return JSON.parse(json).avatar;
     },
 
@@ -193,8 +197,20 @@ export default {
 </script>
 
 <style scoped>
-.dp-ctrl input {
+.dp-ctrl input,
+.dp-ctrl select {
+  font-size: 10px;
   max-width: 100px;
+}
+
+.dp-ctrl .btn {
+  font-size: 1rem;
+  line-height: 1rem !important;
+}
+
+.dp-ctrl i {
+  font-size: inherit;
+  line-height: 1rem !important;
 }
 
 .res-menu {
@@ -220,7 +236,7 @@ export default {
 .res-menu li img {
   margin-right: 7px;
   width: 40px;
-  height: 40px;  
+  height: 40px;
   background-color: transparent;
   /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);

@@ -227,10 +227,11 @@ export default {
 
 .navbar .btn,
 .navbar .btn i {
+  font-size: 1.2rem;
   line-height: 1.2;
 }
 
-i.material-icons {
+i.material-icons {  
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
