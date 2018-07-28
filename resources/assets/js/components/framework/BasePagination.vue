@@ -32,14 +32,12 @@ export default {
   },
 
   methods: {
-    onForward() {
-      console.log("forw");
+    onForward() {      
       this.page = this.page < this.pageCount ? this.page + 1 : this.page;
       this.$emit("input", this.page);
     },
 
-    onBack() {
-      console.log("back");
+    onBack() {      
       this.page = this.page > 1 ? this.page - 1 : this.page;
       this.$emit("input", this.page);
     }
@@ -48,8 +46,6 @@ export default {
 </script>
 
 <style scoped>
-.wrap {
-}
 
 .btn {
   line-height: 1;  

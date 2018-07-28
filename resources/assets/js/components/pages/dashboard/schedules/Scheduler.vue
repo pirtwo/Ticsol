@@ -73,8 +73,8 @@
             </day-pilot>   
             <assign-user-modal
               v-model="assignUserPopup"
-              :event="event"
-            ></assign-user-modal>         
+              :event="event">
+            </assign-user-modal>         
         </template>
 
     </nav-view>
@@ -122,7 +122,6 @@ export default {
       scheduleEvents: "schedule/getEvents",
       scheduleResources: "schedule/getResources"
     }),
-
     
   },
 
@@ -135,8 +134,7 @@ export default {
       sidebarListUsers: "sidebar/listUsers"
     }),
 
-    avatar(json) {
-      console.log(json);
+    avatar(json) {      
       return JSON.parse(json).avatar;
     },
 
