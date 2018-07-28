@@ -2,9 +2,10 @@
 
     <div class="wrap" ref="BaseSelectBox">
 
-        <input type="text" name="" class="select-value form-control"
+        <input type="text" class="select-value form-control"
             v-model="text"
             @focus="onFocus"
+            :name="name" 
             :placeholder="placeholder" 
             readonly>
 
@@ -20,11 +21,12 @@
                     :placeholder="searchPlaceholder">
             
             <ul class="select-options">            
-                <li class="select-option" v-for="item in options" 
+                <li v-for="item in options" 
                     :key="item.key" 
+                    :class="[{'selected' : isSelected(item)}, 'select-option']"
                     @click="onSelect(item, $event)">
 
-                    <input type="checkbox" v-if="multiSelect"> 
+                    <input type="checkbox" v-if="multiSelect" :checked="isSelected(item)"> 
                     {{ item.value }}
                 </li>
             </ul>
@@ -45,6 +47,11 @@ export default {
       type: Array,
       required: true,
       default: []
+    },
+    name: {
+      type: String,
+      required: true,
+      default: ""
     },
     placeholder: {
       type: String,
@@ -77,13 +84,22 @@ export default {
     document.addEventListener("click", this.onDocumentClick);
   },
 
+  mounted() {
+    this.debounceOnFocus = _.debounce(this.searchFocus, 200);
+  },
+
   destroyed() {
     document.removeEventListener("click", this.onDocumentClick);
   },
 
   watch: {
     showList: function(value) {
-      if (value) this.debounceOnFocus();
+      if (value) {
+        this.debounceOnFocus();
+        $(".select-value").addClass("list-open");
+      } else {
+        $(".select-value").removeClass("list-open");
+      }
     }
   },
 
@@ -93,10 +109,6 @@ export default {
         item => item.value.toLowerCase().indexOf(this.query.toLowerCase()) > -1
       );
     }
-  },
-
-  mounted() {
-    this.debounceOnFocus = _.debounce(this.searchFocus, 200);
   },
 
   methods: {
@@ -128,8 +140,10 @@ export default {
             this.selects.findIndex(el => el.key === item.key),
             1
           );
+          $(e.target).removeClass("selected");
         } else {
           this.selects.push(item);
+          $(e.target).addClass("selected");
         }
 
         $(checkbox).prop("checked", !status);
@@ -141,6 +155,14 @@ export default {
         this.selects.push(item);
         this.$emit("input", this.selects[0]);
       }
+    },
+
+    isSelected(item) {
+      return (
+        this.selects.find(
+          el => el.key === item.key && el.value === item.value
+        ) !== undefined
+      );
     },
 
     onDocumentClick(e) {
@@ -163,23 +185,29 @@ export default {
   background-color: white;
 }
 
+.list-open {
+  border-bottom: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
 .wrap-list {
   display: block;
+  overflow: show;
   position: absolute;
   top: 100%;
   left: 0px;
   width: 100%;
-  margin-top: 3px;
   z-index: 10;
-  padding: 10px;
+  padding: 3px 10px 10px 10px;
+  margin-top: 0px;
   background-color: white;
+  border: 1px solid #ced4da;
+  border-top: 0px;
   border-radius: 0px 0px 5px 5px;
-  box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
+  /* box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
-}
-
-.select-query {
+  -webkit-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75); */
 }
 
 button {
@@ -193,14 +221,29 @@ button i {
 }
 
 ul {
+  margin-top: 10px;
   padding-left: 0px;
-  margin-top: 5px;
-  margin-bottom: 0px;
+  max-height: 150px;
+  margin-bottom: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
   list-style-type: none;
 }
 
 ul li {
+  margin: 0px 5px;
+  padding: 3px 10px;
   cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+ul li:last-child {
+  margin-bottom: 5px;
+}
+
+ul li.selected {
+  background-color: yellow;
 }
 
 ul li::selection {
@@ -208,6 +251,8 @@ ul li::selection {
 }
 
 ul li:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  color: white;
+  box-shadow: 0px 3px 5px -2px rgba(0, 0, 0, 0.75);
+  background-color: rgba(41, 62, 129, 0.671);
 }
 </style>

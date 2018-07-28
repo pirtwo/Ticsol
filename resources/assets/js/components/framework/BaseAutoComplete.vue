@@ -1,23 +1,23 @@
 <template>
-    <div class="wrap">
+    <div class="wrap" ref="BaseAutoComplete">
         <input 
-          v-model="input"       
-          @input="debounceOnInput" 
+          v-model="input"          
           @change="debounceOnChange"
-          @focus="showList = true" 
-          @blur="debounceOnBlur"         
-          class="form-control" 
+          @focus="showList = true"         
           type="text"
+          :class="[{ 'list-open' : showList }, 'form-control']"
           :id="id" 
           :name="name" 
           :placeholder="placeHolder"/>
-        <ul class="results" v-show="showList">
+        <div class="wrap-results" v-show="showList">
+          <ul class="results">
             <li class="result" 
-                v-for="item in results" :key="item.key"
+                v-for="item in options" :key="item.key"
                 @click="onSelect(item.key, item.value)">
                 {{ item.value }}
             </li>
-        </ul>
+          </ul>
+        </div>        
     </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
       default: ""
     },
     value: {
-      type: Number,
+      type: [Number, Object],
       default: null
     }
   },
@@ -58,17 +58,21 @@ export default {
   data() {
     return {
       input: "",
-      results: this.data,
       selectedIndex: -1,
       showList: false
     };
   },
 
-  watch: {
-    data: function(value) {
-      this.results = value;
-    },
+  created() {
+    this.debounceOnChange = _.debounce(this.onChange, 1000);
+    document.addEventListener("click", this.onDocumentClick);
+  },
 
+  destroyed() {
+    document.removeEventListener("click", this.onDocumentClick);
+  },
+
+  watch: {
     value: function(value) {
       if (value === null) {
         this.input = "";
@@ -76,20 +80,15 @@ export default {
     }
   },
 
-  created() {
-    this.debounceOnBlur = _.debounce(this.onBlur, 200);
-    this.debounceOnInput = _.debounce(this.onInput, 1000);
-    this.debounceOnChange = _.debounce(this.onChange, 1000);
+  computed: {
+    options: function() {
+      return this.data.filter(
+        item => item.value.toLowerCase().indexOf(this.input.toLowerCase()) > -1
+      );
+    }
   },
 
   methods: {
-    onInput() {
-      this.showList = true;
-      this.results = this.data.filter(
-        item => item.value.toLowerCase().indexOf(this.input.toLowerCase()) > -1
-      );
-    },
-
     onChange(event) {
       if (this.data.indexOf(event.target.value) !== -1) {
         this.$emit(
@@ -108,8 +107,10 @@ export default {
       this.showList = false;
     },
 
-    onBlur() {
-      if ($(".wrap ul:focus").length === 0) {
+    onDocumentClick(e) {
+      let el = this.$refs.BaseAutoComplete;
+      let target = e.target;
+      if (el !== target && !el.contains(target)) {
         this.showList = false;
       }
     }
@@ -126,25 +127,37 @@ input[type="text"] {
   width: 100%;
 }
 
-ul {
-  position: absolute;
+input[type="text"]:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+.wrap-results {  
   top: 100%;
   left: 0px;
   width: 100%;
+  z-index: 10;
+  padding: 5px;
+  margin-top: 0px;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ced4da;
+  border-radius: 0px 0px 0.25rem 0.25rem;      
+}
+
+.list-open {
+  border-bottom: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+ul {
   margin: 0px;
   padding: 5px;
-  max-height: 100px;
   list-style: none;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
-  background-color: white;
-  border-left: 2px solid rgba(60, 79, 247, 0.5);
-  border-right: 2px solid rgba(60, 79, 247, 0.5);
-  border-bottom: 2px solid rgba(60, 79, 247, 0.5);
-  -webkit-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
-  z-index: 10;
+  max-height: 100px;
 }
 
 ul li:hover {
