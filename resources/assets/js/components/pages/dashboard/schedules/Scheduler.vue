@@ -6,7 +6,7 @@
 
         <template slot="toolbar">
 
-          <div class="dp-ctrl form-row ml-auto">
+          <div class="dp-ctrl form-row">
             <div class="input-group input-group-sm col">
               <input type="text" class="form-control form-control-sm" placeholder="filter...">
               <div class="input-group-append">

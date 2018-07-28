@@ -61128,7 +61128,7 @@ var render = function() {
           _c("select-box", {
             attrs: {
               data: _vm.options,
-              "multi-select": false,
+              "multi-select": true,
               name: "selectJob"
             },
             model: {
@@ -63197,7 +63197,7 @@ var render = function() {
     },
     [
       _c("template", { slot: "toolbar" }, [
-        _c("div", { staticClass: "dp-ctrl form-row ml-auto" }, [
+        _c("div", { staticClass: "dp-ctrl form-row" }, [
           _c("div", { staticClass: "input-group input-group-sm col" }, [
             _c("input", {
               staticClass: "form-control form-control-sm",
@@ -64318,7 +64318,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.btn[data-v-29694240] {\r\n  line-height: 1;  \r\n  display: inline-block;\r\n  padding: 0.25rem 0.25rem;\n}\n.btn i[data-v-29694240] {\r\n  font-size: 1.2rem;\n}\ndiv[data-v-29694240] {\r\n  padding: 2px;\r\n  font-size: 12px;\r\n  display: inline-block;\n}\r\n", ""]);
+exports.push([module.i, "\n.btn[data-v-29694240] {\r\n  line-height: 1;  \r\n  display: -webkit-box;  \r\n  display: -ms-flexbox;  \r\n  display: flex;\r\n  padding: 0.25rem 0.25rem;\n}\n.btn i[data-v-29694240] {\r\n  font-size: 1.2rem;\n}\ndiv[data-v-29694240] {\r\n  padding: 2px 4px;\r\n  font-size: 12px;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  line-height: 1.8;\n}\r\n", ""]);
 
 // exports
 
@@ -64383,7 +64383,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "wrap float-right" }, [
+  return _c("div", { staticClass: "wrap" }, [
     _c(
       "button",
       { staticClass: "btn btn-sm btn-light", on: { click: _vm.onBack } },

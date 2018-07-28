@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap float-right">
+    <div class="wrap">
         <button @click="onBack" class="btn btn-sm btn-light">
           <i class="material-icons">keyboard_arrow_left</i>
         </button>
@@ -49,7 +49,7 @@ export default {
 
 .btn {
   line-height: 1;  
-  display: inline-block;
+  display: flex;
   padding: 0.25rem 0.25rem;
 }
 
@@ -58,8 +58,9 @@ export default {
 }
 
 div {
-  padding: 2px;
+  padding: 2px 4px;
   font-size: 12px;
-  display: inline-block;
+  display: flex;
+  line-height: 1.8;
 }
 </style>

@@ -12,7 +12,7 @@
 
         </template>
         <template slot="content">
-            <select-box v-model="value" :data="options" :multi-select="false" name="selectJob"></select-box>
+            <select-box v-model="value" :data="options" :multi-select="true" name="selectJob"></select-box>
 
             <br>
             <br>
