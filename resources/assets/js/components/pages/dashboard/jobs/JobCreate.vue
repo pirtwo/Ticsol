@@ -130,24 +130,14 @@ export default {
     };
   },
 
-  watch:{
-      getErrors: function(value){
-          this.$formFeedback(value);
-      }
-  },
-
   computed: {
     ...mapGetters({
-      getJobsList: "job/getJobList",
-      getErrors: "job/getErrors"
+      getList: "resource/getResource"
     }),
 
     jobs: function() {
-      return this.getJobsList.map(obj => {
-        let newObj = {};
-        newObj.key = obj.id;
-        newObj.value = obj.title;
-        return newObj;
+      return this.getList("job").map(item => {
+        return { key: item.id, value: item.title };
       });
     },
 
@@ -156,35 +146,39 @@ export default {
 
   mounted() {
     this.loading = true;
-    this.fetchJobs({ query: "" }).then(respond => {
-      this.loading = false;
-    });
+    this.fetch({ resource: "job" })
+      .then(() => {
+        this.loading = false;
+      })
+      .catch(error => {
+          console.log(error);
+      });
   },
 
   methods: {
     ...mapActions({
-      fetchJobs: "job/list",
-      createJob: "job/create"
+      fetch: "resource/list",
+      create: "resource/create"
     }),
 
     onSubmit(e) {
-      e.target.disable = true;
+      e.target.disabled = true;
       console.log(this.form.title);
       console.log(this.form.code);
       console.log(this.form.isactive);
       console.log(this.form.parent_id);
       console.log(this.form.form_id);
 
-      this.createJob({ payload: this.form })
+      this.create({ resource: "job", data: this.form })
         .then(respond => {
-          e.target.disable = false;          
+          e.target.disabled = false;
           console.log("job created successfuly");
         })
         .catch(error => {
-          e.target.disable = false;
-          console.log("error...");
+          e.target.disabled = false;
+          this.$formFeedback(error.response.data.errors);
         });
-      
+
       e.preventDefault();
     },
 

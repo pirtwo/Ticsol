@@ -27,8 +27,8 @@
             </div>
             
             <ul id="dp-draggable" class="res-menu">                
-              <template v-if="this.type === 'employee'">
-                  <template v-for="res in this.resource">  
+              <template v-if="true">
+                  <template v-for="res in this.sidebarResources">  
                       <li :key="res.id" :data-id="res.id" class="res-user">
                           <a href="#">
                               <img :src="avatar(res.meta)" class="rounded">                              
@@ -38,7 +38,7 @@
                   </template>  
               </template>  
               <template v-else>
-                  <template v-for="res in this.resource">  
+                  <template v-for="res in this.sidebarResources">  
                       <li :key="res.id" :data-id="res.id" class="res-job">
                           <a href="#">
                               <span class="caption">{{ res.title }}</span>
@@ -106,42 +106,47 @@ export default {
 
   mounted() {
     this.loading = true;
-    this.sidebarListUsers().then(() => {
-      console.log(JSON.parse(this.resource[0].meta).avatar);
-      this.scheduleInti({ resource: "user" }).then(() => {
-        this.loading = false;
-      });
+    this.fetch({ resource: "user" }).then(()=>{
+      console.log(this.sidebarResources);
+    });
+    this.scheduleInit("user").then(() => {
+      this.loading = false;
     });
   },
 
   computed: {
     ...mapGetters({
-      type: "sidebar/getResourceType",
       height: "appUI/getContentHeight",
-      resource: "sidebar/getResource",
-      scheduleEvents: "schedule/getEvents",
-      scheduleResources: "schedule/getResources"
+      getList: "resource/getList",
+      events: "resource/getScheduleEvents",
+      resources: "resource/getScheduleResources"
     }),
 
-    
+    sidebarResources: function() {
+      return this.getList("user");
+    },
+
+    scheduleEvents: function() {
+      return this.events();
+    },
+
+    scheduleResources: function() {
+      return this.resources();
+    }
   },
 
   methods: {
     ...mapActions({
-      scheduleInti: "schedule/initi",
-      scheduleCreate: "schedule/create",
-      scheduleUpdate: "schedule/update",
-      sidebarListJobs: "sidebar/listJobs",
-      sidebarListUsers: "sidebar/listUsers"
+      fetch: "resource/list",
+      scheduleInit: "resource/scheduleInit"
     }),
 
-    avatar(json) {
-      console.log(json);
+    avatar(json) {      
       return JSON.parse(json).avatar;
     },
 
     rangeSelectHandler(event) {
-      event.userName = this.resource[event.resourceId - 1].name;
+      event.userName = this.scheduleResources[event.resourceId - 1].name;
       this.event = event;
       this.assignUserPopup = true;
     },
@@ -222,7 +227,7 @@ export default {
 .res-menu li img {
   margin-right: 7px;
   width: 40px;
-  height: 40px;  
+  height: 40px;
   background-color: transparent;
   /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);

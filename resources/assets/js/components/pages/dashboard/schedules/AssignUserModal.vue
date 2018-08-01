@@ -27,7 +27,7 @@
                 <label class="col-form-label col-sm-12">Select Job</label>
                 <div class="col">
                   <auto-complete
-                    v-model="form.resourceId"
+                    v-model="form.jobId"
                     :data="options"
                     name="job"
                     place-holder="select job ..."
@@ -111,7 +111,7 @@ export default {
       form: {
         userName: "",
         userId: null,
-        resourceId: null,
+        jobId: null,
         startTime: "",
         endTime: "",
         start: "",
@@ -123,22 +123,19 @@ export default {
 
   computed: {
     ...mapGetters({
-      jobList: "job/getJobList"
+      getList: "resource/getList"
     }),
 
     options: function() {
-      if (!this.jobList.map) return [];
-      return this.jobList.map(obj => {
-        let newObj = {};
-        newObj.key = obj.id;
-        newObj.value = obj.title;
-        return newObj;
+      if (!this.getList("job").map) return [];
+      return this.getList("job").map(obj => {
+        return { key: obj.id, value: obj.title };
       });
     }
   },
 
   created() {
-    this.fetchJobList({ query: "" });
+    this.fetch({ resource: "job" });
   },
 
   mounted() {
@@ -182,8 +179,8 @@ export default {
 
   methods: {
     ...mapActions({
-      fetchJobList: "job/list",
-      createEvent: "schedule/create"
+      fetch: "resource/list",
+      create: "resource/create"
     }),
 
     onClose() {
@@ -193,16 +190,17 @@ export default {
 
     onSubmit(e) {
       let event = {};
-      event.userId = this.form.userId;
-      event.resourceId = this.form.resourceId;
+      event.user_id = this.form.userId;
+      event.job_id = this.form.jobId;
       event.start = this.form.start + "T" + this.form.startTime + ":00";
       event.end = this.form.end + "T" + this.form.endTime + ":00";
       event.offsite = this.form.offsite;
+      event.break_length = 0;
 
       e.target.innerHTML = "Creating...";
       e.target.disabled = true;
 
-      this.createEvent({ data: event })
+      this.create({ resource: "schedule", data: event })
         .then(respond => {
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
@@ -211,6 +209,7 @@ export default {
           this.$emit("input", false);
         })
         .catch(error => {
+          console.log(error);
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
           this.clearForm();
@@ -221,7 +220,7 @@ export default {
     clearForm() {
       this.form.userName = "";
       this.form.userId = null;
-      this.form.resourceId = null;
+      this.form.jobId = null;
       this.form.startTime = "";
       this.form.endTime = "";
       this.form.start = "";

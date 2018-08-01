@@ -58,8 +58,8 @@ export default {
     };
   },
 
-  watch:{
-    page: function(value){
+  watch: {
+    page: function(value) {
       this.feedTable();
     }
   },
@@ -69,11 +69,12 @@ export default {
   },
 
   methods: {
-    ...mapActions({ jobList: "job/list" }),
+    ...mapActions({ fetch: "resource/list" }),
 
     feedTable() {
       this.loading = true;
-      this.jobList({
+      this.fetch({
+        resource: "job",
         query: [
           { key: "page", value: this.page },
           { key: "count", value: this.pageCount }
@@ -81,12 +82,12 @@ export default {
       })
         .then(respond => {
           this.jobs = respond.data.map(obj => {
-            var nObj = {};
-            nObj.id = obj.id;
-            nObj.title = obj.title;
-            nObj.active = obj.isactive;
-            nObj.code = obj.code;
-            return nObj;
+            return {
+              id: obj.id,
+              title: obj.title,
+              active: obj.isactive,
+              code: obj.code
+            };
           });
           this.pageCount = respond.last_page;
           this.loading = false;
@@ -96,7 +97,6 @@ export default {
           this.loading = false;
         });
     }
-
   }
 };
 </script>

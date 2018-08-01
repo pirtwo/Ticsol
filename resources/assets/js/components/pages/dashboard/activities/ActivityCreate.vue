@@ -114,41 +114,39 @@ export default {
 
   computed: {
     ...mapGetters({
-      getEvents: "schedule/getEvents"
+      getList: "resource/getList"
     }),
 
     scheduleItems: function() {
-      return this.getEvents.map(obj => {
-        let newObj = {};
-        newObj.key = obj.id;
-        newObj.value =
-          new Date(obj.start.slice(0, 10)).toLocaleString("en-US", {
-            month: "short",
-            day: "2-digit"
-          }) +
-          " - " +
-          obj.job.title;
-        return newObj;
+      return this.getList("schedule").map(obj => {
+        return {
+          key: obj.id,
+          value:
+            new Date(obj.start.slice(0, 10)).toLocaleString("en-US", {
+              month: "short",
+              day: "2-digit"
+            }) +
+            " - " +
+            obj.job.title
+        };
       });
     }
   },
 
   mounted() {
     this.loading = true;
-    this.fetchEvents()
-      .then(() => {
-        console.log("done");
+    this.fetch({ resource: "schedule" })
+      .then(() => {        
         this.loading = false;
       })
-      .catch(error => {
-        console.log("error");
+      .catch(error => {        
         this.loading = false;
       });
   },
 
   methods: {
     ...mapActions({
-      fetchEvents: "schedule/fetchEvents"
+      fetch: "resource/list"
     }),
 
     onSubmit(e) {
