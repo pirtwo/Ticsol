@@ -1,5 +1,5 @@
 
-//import axios from 'axios';
+import axios from 'axios';
 import { store } from '../store/store';
 import * as resources from './resources';
 
@@ -106,6 +106,7 @@ function makeRequest(method, url, query = [], isJson = true, isAuth = false, dat
                 slug += '&' + obj.key + '=' + obj.value;
         });
     }
+    
     if (isJson) {
         header['Accept'] = 'application/json';        
     }

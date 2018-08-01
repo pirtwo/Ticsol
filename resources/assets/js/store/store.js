@@ -9,6 +9,7 @@ import { sidebarModule } from './modules/sidebar';
 import { jobModule } from './modules/res-job';
 import { scheduleModule } from './modules/res-schedule';
 import { UIModule } from './modules/app-ui';
+import { resourceModule} from './modules/resource';
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export const store = new Vuex.Store({
         sidebar: sidebarModule,
         schedule: scheduleModule,
         job: jobModule,
-        appUI: UIModule
+        appUI: UIModule,
+        resource: resourceModule
     },
     plugins: [localStorage.plugin],
 });

@@ -44,6 +44,7 @@ export const JOB_CREATE = BASE_URL + '/job/create';
  * Method: POST.
  */
 export const JOB_UPDATE = BASE_URL + '/job/update';
+export const JOB_DELETE = BASE_URL + '/job/delete';
 
 //#endregion
 
