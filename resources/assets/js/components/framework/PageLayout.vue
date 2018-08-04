@@ -38,21 +38,21 @@ export default {
   },
   methods: {
     ...mapActions({
-      mainHeight: "appUI/setMainHeight"
+      setDocumentDim: "core/documentDimension",
+      setContentDim: "core/contentDimension"
     }),
 
     resizeHandler() {
       let head = $(".header").outerHeight() | 0;
       let foot = $(".footer").outerHeight() | 0;
       let main = $(window).height() - (head + foot);
-      $(".main").css("height", main);
-      this.mainHeight({ height: main });
+      this.setContentDim({ width: $(".wrap-content").outerWidth(), height: main });
+      $(".main").css("height", main);      
     }
   }
 };
 </script>
 
 <style scoped>
-
 </style>
 

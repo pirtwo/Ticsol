@@ -21,8 +21,8 @@
                 <option value="">Job</option>
               </select>   
             </div>                    
-          </div>   
-
+          </div> 
+          
         </template>
 
         <template slot="drawer">
@@ -32,8 +32,8 @@
             </div>
             
             <ul id="dp-draggable" class="res-menu">                
-              <template v-if="this.type === 'employee'">
-                  <template v-for="res in this.resource">  
+              <template v-if="true">
+                  <template v-for="res in this.sidebarResources">  
                       <li :key="res.id" :data-id="res.id" class="res-user">
                           <a href="#">
                               <img :src="avatar(res.meta)" class="rounded">                              
@@ -43,7 +43,7 @@
                   </template>  
               </template>  
               <template v-else>
-                  <template v-for="res in this.resource">  
+                  <template v-for="res in this.sidebarResources">  
                       <li :key="res.id" :data-id="res.id" class="res-job">
                           <a href="#">
                               <span class="caption">{{ res.title }}</span>
@@ -78,18 +78,21 @@
             </day-pilot>   
             <assign-user-modal
               v-model="assignUserPopup"
-              :event="event">
-            </assign-user-modal>         
+              :event="event"
+            ></assign-user-modal>   
+            <div class="popover">This is a popover</div>      
         </template>
 
     </nav-view>
 </template>
 
 <script>
+import popper from "popper.js";
 import DayPilot from "../schedules/DayPilot.vue";
 import NavView from "../../../framework/NavView.vue";
 import AssignUserModal from "../schedules/AssignUserModal.vue";
 import { mapGetters, mapActions } from "vuex";
+import Popper from "popper.js";
 
 export default {
   name: "Scheduler",
@@ -109,33 +112,42 @@ export default {
     };
   },
 
+  created() {},
+
   mounted() {
+    console.log($(".scheduler_default_scrollable"));
     this.loading = true;
-    this.sidebarListUsers().then(() => {
-      console.log(JSON.parse(this.resource[0].meta).avatar);
-      this.scheduleInti({ resource: "user" }).then(() => {
-        this.loading = false;
-      });
+    this.fetch({ resource: "user" });
+    this.scheduleInit("user").then(() => {
+      this.loading = false;
     });
   },
 
   computed: {
     ...mapGetters({
-      type: "sidebar/getResourceType",
-      height: "appUI/getContentHeight",
-      resource: "sidebar/getResource",
-      scheduleEvents: "schedule/getEvents",
-      scheduleResources: "schedule/getResources"
-    })
+      height: "core/getUiContentHeight",
+      getList: "resource/getList",
+      events: "resource/getScheduleEvents",
+      resources: "resource/getScheduleResources"
+    }),
+
+    sidebarResources: function() {
+      return this.getList("user");
+    },
+
+    scheduleEvents: function() {
+      return this.events();
+    },
+
+    scheduleResources: function() {
+      return this.resources();
+    }
   },
 
   methods: {
     ...mapActions({
-      scheduleInti: "schedule/initi",
-      scheduleCreate: "schedule/create",
-      scheduleUpdate: "schedule/update",
-      sidebarListJobs: "sidebar/listJobs",
-      sidebarListUsers: "sidebar/listUsers"
+      fetch: "resource/list",
+      scheduleInit: "resource/scheduleInit"
     }),
 
     avatar(json) {
@@ -143,7 +155,7 @@ export default {
     },
 
     rangeSelectHandler(event) {
-      event.userName = this.resource[event.resourceId - 1].name;
+      event.userName = this.scheduleResources[event.resourceId - 1].name;
       this.event = event;
       this.assignUserPopup = true;
     },
@@ -151,6 +163,11 @@ export default {
     clickHandler(event) {
       console.log("click");
       console.log(event);
+      
+      var ref = $(event.div);
+      var popover = $(".popover");
+      popover.show();
+      var popper = new Popper(ref, popover, { placement: "top" });
     },
 
     hoverHandler(event) {
@@ -197,9 +214,13 @@ export default {
 </script>
 
 <style scoped>
-.dp-ctrl input,
-.dp-ctrl select {
-  font-size: 10px;
+.popover{
+  display: none;
+  background-color: yellow;
+  padding: 10px;
+}
+
+.dp-ctrl input {
   max-width: 100px;
 }
 
@@ -238,8 +259,5 @@ export default {
   width: 40px;
   height: 40px;
   background-color: transparent;
-  /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
-  box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75); */
 }
 </style>

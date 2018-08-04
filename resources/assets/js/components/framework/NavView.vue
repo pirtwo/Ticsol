@@ -98,7 +98,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      contentHeight: "appUI/getContentHeight"
+      contentHeight: "core/getUiContentHeight"
     }),
 
     enablePadding: function() {
