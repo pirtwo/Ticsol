@@ -66,8 +66,7 @@ export const userModule = {
             state.auth.token.expire = "";
             state.user = {};
             state.settings = {};
-        },
-
+        }
 
     },
 
@@ -76,14 +75,9 @@ export const userModule = {
             return new Promise((resolve, reject) => {
                 api.post(URLs.AUTH_LOGIN, payload, null, true, false)
                     .then(respond => {
-                        if (respond.status === 200) {
-                            commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
-                            commit(MUTATIONS.USER_AUTH_SUCCESS);
-                            resolve("Success");
-                        } else {
-                            commit(MUTATIONS.USER_AUTH_FAILE);
-                            reject(respond);
-                        }
+                        commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
+                        commit(MUTATIONS.USER_AUTH_SUCCESS);
+                        resolve("Success");
                     }).catch(error => {
                         commit(MUTATIONS.USER_AUTH_FAILE);
                         reject(error);
@@ -94,14 +88,10 @@ export const userModule = {
         logout({ commit }) {
             return new Promise((resolve, reject) => {
                 api.post(URLs.AUTH_LOGOUT, null)
-                    .then(respond => {
-                        if (respond.status === 200) {                            
-                            commit(MUTATIONS.USER_AUTH_LOGOUT);
-                            resolve("Success");
-                        } else {                            
-                            reject(respond);
-                        }
-                    }).catch(error => {                        
+                    .then(() => {
+                        commit(MUTATIONS.USER_AUTH_LOGOUT);
+                        resolve("Success");
+                    }).catch(error => {
                         reject(error);
                     });
             });

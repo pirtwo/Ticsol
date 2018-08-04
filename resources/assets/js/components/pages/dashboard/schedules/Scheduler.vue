@@ -16,8 +16,8 @@
                 <option value="">Job</option>
               </select>   
             </div>                    
-          </div>   
-
+          </div> 
+          
         </template>
 
         <template slot="drawer">
@@ -74,17 +74,20 @@
             <assign-user-modal
               v-model="assignUserPopup"
               :event="event"
-            ></assign-user-modal>         
+            ></assign-user-modal>   
+            <div class="popover">This is a popover</div>      
         </template>
 
     </nav-view>
 </template>
 
 <script>
+import popper from "popper.js";
 import DayPilot from "../schedules/DayPilot.vue";
 import NavView from "../../../framework/NavView.vue";
 import AssignUserModal from "../schedules/AssignUserModal.vue";
 import { mapGetters, mapActions } from "vuex";
+import Popper from "popper.js";
 
 export default {
   name: "Scheduler",
@@ -104,11 +107,12 @@ export default {
     };
   },
 
+  created() {},
+
   mounted() {
+    console.log($(".scheduler_default_scrollable"));
     this.loading = true;
-    this.fetch({ resource: "user" }).then(()=>{
-      console.log(this.sidebarResources);
-    });
+    this.fetch({ resource: "user" });
     this.scheduleInit("user").then(() => {
       this.loading = false;
     });
@@ -116,7 +120,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      height: "appUI/getContentHeight",
+      height: "core/getUiContentHeight",
       getList: "resource/getList",
       events: "resource/getScheduleEvents",
       resources: "resource/getScheduleResources"
@@ -141,7 +145,7 @@ export default {
       scheduleInit: "resource/scheduleInit"
     }),
 
-    avatar(json) {      
+    avatar(json) {
       return JSON.parse(json).avatar;
     },
 
@@ -154,6 +158,11 @@ export default {
     clickHandler(event) {
       console.log("click");
       console.log(event);
+      
+      var ref = $(event.div);
+      var popover = $(".popover");
+      popover.show();
+      var popper = new Popper(ref, popover, { placement: "top" });
     },
 
     hoverHandler(event) {
@@ -200,6 +209,12 @@ export default {
 </script>
 
 <style scoped>
+.popover{
+  display: none;
+  background-color: yellow;
+  padding: 10px;
+}
+
 .dp-ctrl input {
   max-width: 100px;
 }
@@ -229,8 +244,5 @@ export default {
   width: 40px;
   height: 40px;
   background-color: transparent;
-  /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);
-  box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75); */
 }
 </style>

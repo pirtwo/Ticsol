@@ -52,7 +52,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["auth/login", "loading/start", "loading/stop"]),
+    ...mapActions({
+      login: "user/login"
+    }),
     onSubmit() {
       this.$store.dispatch("loading/start", { message: "Login..." });
       this.$store

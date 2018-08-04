@@ -1844,53 +1844,53 @@ module.exports = Component.exports
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return LOADING_START; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return LOADING_STOP; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOADING_MESSAGE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return AUTH_TOKEN; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_FAILED; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return AUTH_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return AUTH_LOGOUT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return USER_OBJECT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return JOB_LIST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return JOB_ERRORS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return SIDEBAR_RESOURCE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return SIDEBAR_RESOURCE_TYPE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return SCHEDULE_EVENTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return SCHEDULE_EVENTS_ADD; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return SCHEDULE_EVENTS_UPDATE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return SCHEDULE_EVENTS_DELETE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return SCHEDULE_RESOURCE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return SCHEDULE_RESOURCE_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return SCHEDULE_RESOURCE_TYPE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return UI_MAIN_HEIGHT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return UI_WINDOW_HEIGHT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return UI_TOOLBAR_HEIGHT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return UI_CONTENT_HEIGHT; });
-/* unused harmony export APP_ERRORS_PUSH */
-/* unused harmony export APP_ERRORS_CLEAR */
-/* unused harmony export APP_MESSAGES_PUSH */
-/* unused harmony export APP_MESSAGES_CLEAR */
-/* unused harmony export APP_LOADING */
-/* unused harmony export APP_DRAWER */
-/* unused harmony export APP_TOOLBAR */
-/* unused harmony export APP_STATUSBAR */
-/* unused harmony export APP_HEADER */
-/* unused harmony export APP_FOOTER */
-/* unused harmony export APP_FULLSCREEN */
-/* unused harmony export APP_CONTENT_DIMENSION */
-/* unused harmony export APP_DOCUMENT_DIMENSION */
-/* unused harmony export USER_INFO */
+/* unused harmony export LOADING_START */
+/* unused harmony export LOADING_STOP */
+/* unused harmony export LOADING_MESSAGE */
+/* unused harmony export AUTH_TOKEN */
+/* unused harmony export AUTH_FAILED */
+/* unused harmony export AUTH_SUCCESS */
+/* unused harmony export AUTH_LOGOUT */
+/* unused harmony export USER_OBJECT */
+/* unused harmony export JOB_LIST */
+/* unused harmony export JOB_ERRORS */
+/* unused harmony export SIDEBAR_RESOURCE */
+/* unused harmony export SIDEBAR_RESOURCE_TYPE */
+/* unused harmony export SCHEDULE_EVENTS */
+/* unused harmony export SCHEDULE_EVENTS_ADD */
+/* unused harmony export SCHEDULE_EVENTS_UPDATE */
+/* unused harmony export SCHEDULE_EVENTS_DELETE */
+/* unused harmony export SCHEDULE_RESOURCE */
+/* unused harmony export SCHEDULE_RESOURCE_URL */
+/* unused harmony export SCHEDULE_RESOURCE_TYPE */
+/* unused harmony export UI_MAIN_HEIGHT */
+/* unused harmony export UI_WINDOW_HEIGHT */
+/* unused harmony export UI_TOOLBAR_HEIGHT */
+/* unused harmony export UI_CONTENT_HEIGHT */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return APP_ERRORS_PUSH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return APP_ERRORS_CLEAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return APP_MESSAGES_PUSH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return APP_MESSAGES_CLEAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return APP_LOADING; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return APP_DRAWER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return APP_TOOLBAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return APP_STATUSBAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return APP_HEADER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return APP_FOOTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return APP_FULLSCREEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return APP_CONTENT_DIMENSION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return APP_DOCUMENT_DIMENSION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return USER_INFO; });
 /* unused harmony export USER_SETTINGS */
-/* unused harmony export USER_AUTH_SUCCESS */
-/* unused harmony export USER_AUTH_FAILE */
-/* unused harmony export USER_AUTH_TOKEN */
-/* unused harmony export USER_AUTH_LOGOUT */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return RESOURCE_LIST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return RESOURCE_CREATE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return RESOURCE_UPDATE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return RESOURCE_DELETE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return RESOURCE_SCHEDULE_VIEW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return USER_AUTH_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return USER_AUTH_FAILE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return USER_AUTH_TOKEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return USER_AUTH_LOGOUT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return RESOURCE_LIST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return RESOURCE_CREATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return RESOURCE_UPDATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return RESOURCE_DELETE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return RESOURCE_SCHEDULE_VIEW; });
 
 //#region Loading_Mutations
 var LOADING_START = 'LOADING_START';
@@ -2099,66 +2099,13 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return auth; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return user; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return job; });
-/* unused harmony export schedule */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return api; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resources__ = __webpack_require__(13);
 
 
 
-
-
-var auth = {
-    login: function login(credentials) {
-        return makeRequest('POST', __WEBPACK_IMPORTED_MODULE_2__resources__["a" /* AUTH_LOGIN */], [], true, false, { username: credentials.username, password: credentials.password });
-    },
-    register: function register(credentials) {},
-    reset: function reset(credentials) {},
-    logout: function logout(credentials) {
-        return makeRequest('POST', __WEBPACK_IMPORTED_MODULE_2__resources__["b" /* AUTH_LOGOUT */], [], true, true);
-    }
-};
-
-var user = {
-    list: function list() {
-        var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-        return makeRequest('GET', __WEBPACK_IMPORTED_MODULE_2__resources__["k" /* USER_LIST */], query, true, true);
-    }
-};
-
-var job = {
-    list: function list() {
-        var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-        return makeRequest('GET', __WEBPACK_IMPORTED_MODULE_2__resources__["e" /* JOB_LIST */], query, true, true);
-    },
-    create: function create(data) {
-        return makeRequest('POST', __WEBPACK_IMPORTED_MODULE_2__resources__["c" /* JOB_CREATE */], [], true, true, data);
-    },
-    update: function update(data) {
-        return makeRequest('POST', __WEBPACK_IMPORTED_MODULE_2__resources__["f" /* JOB_UPDATE */], [], true, true, data);
-    }
-};
-
-var schedule = {
-    list: function list() {
-        var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-        return makeRequest('GET', __WEBPACK_IMPORTED_MODULE_2__resources__["i" /* SCHEDULE_LIST */], query, true, true);
-    },
-    create: function create(data) {
-        return makeRequest('POST', __WEBPACK_IMPORTED_MODULE_2__resources__["g" /* SCHEDULE_CREATE */], [], true, true, data);
-    },
-    update: function update(data) {
-        return makeRequest('POST', __WEBPACK_IMPORTED_MODULE_2__resources__["j" /* SCHEDULE_UPDATE */], [], true, true, data);
-    }
-};
 
 var api = {
     get: function get(url) {
@@ -2232,7 +2179,7 @@ function makeRequest(method, url) {
 
     var slug = url;
     var header = {};
-    var token = __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].state.auth.token.value;
+    var token = __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].state.user.auth.token.value;
 
     if (query.length !== 0) {
         query.forEach(function (obj, index) {
@@ -40956,19 +40903,9 @@ module.exports = Vue;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__storage__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_auth__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_app_user__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_loading__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_sidebar__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_res_job__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_res_schedule__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modules_app_ui__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__modules_resource__ = __webpack_require__(67);
-
-
-
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_core__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_user__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_resource__ = __webpack_require__(67);
 
 
 
@@ -40981,14 +40918,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     modules: {
-        auth: __WEBPACK_IMPORTED_MODULE_3__modules_auth__["a" /* authModule */],
-        user: __WEBPACK_IMPORTED_MODULE_4__modules_app_user__["a" /* userModule */],
-        loading: __WEBPACK_IMPORTED_MODULE_5__modules_loading__["a" /* loadingModule */],
-        sidebar: __WEBPACK_IMPORTED_MODULE_6__modules_sidebar__["a" /* sidebarModule */],
-        schedule: __WEBPACK_IMPORTED_MODULE_8__modules_res_schedule__["a" /* scheduleModule */],
-        job: __WEBPACK_IMPORTED_MODULE_7__modules_res_job__["a" /* jobModule */],
-        appUI: __WEBPACK_IMPORTED_MODULE_9__modules_app_ui__["a" /* UIModule */],
-        resource: __WEBPACK_IMPORTED_MODULE_10__modules_resource__["a" /* resourceModule */]
+        core: __WEBPACK_IMPORTED_MODULE_3__modules_core__["a" /* coreModule */],
+        user: __WEBPACK_IMPORTED_MODULE_4__modules_user__["a" /* userModule */],
+        resource: __WEBPACK_IMPORTED_MODULE_5__modules_resource__["a" /* resourceModule */]
     },
     plugins: [__WEBPACK_IMPORTED_MODULE_2__storage__["a" /* localStorage */].plugin]
 });
@@ -41596,7 +41528,7 @@ window._ = __webpack_require__(12);
 
 try {
   window.$ = window.jQuery = __webpack_require__(15);
-  //require('jquery-ui');
+  __webpack_require__(250);
   __webpack_require__(31);
   __webpack_require__(32);
   window.fb = __webpack_require__(34);
@@ -51691,7 +51623,7 @@ function cloneRoute (to, from) {
 var localStorage = new __WEBPACK_IMPORTED_MODULE_0_vuex_persist___default.a({
     key: 'Vuex',
     storage: window.localStorage,
-    modules: ['user', 'auth']
+    modules: ['user']
 });
 
 /***/ }),
@@ -54142,694 +54074,13 @@ module.exports = merge;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(19)(module)))
 
 /***/ }),
-/* 60 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return authModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mutation_types__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_http__ = __webpack_require__(11);
-var _mutations;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-var authModule = {
-    namespaced: true,
-    state: {
-        isAuth: false,
-        token: {
-            value: '',
-            expires_in: '',
-            scope: '',
-            issued: ''
-        }
-    },
-    getters: {
-        getIsAuth: function getIsAuth(state) {
-            return state.isAuth;
-        },
-        getToken: function getToken(state) {
-            return state.token;
-        },
-        getTokenValue: function getTokenValue(state) {
-            return state.token.value;
-        },
-        getTokenExpire: function getTokenExpire(state) {
-            return state.token.expires_in;
-        },
-        getTokenScope: function getTokenScope(state) {
-            return state.token.scope;
-        },
-        getTokenIssue: function getTokenIssue(state) {
-            return state.token.issued;
-        }
-    },
-    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["d" /* AUTH_TOKEN */], function (state, payload) {
-        state.token.value = payload.access_token;
-        state.token.scope = payload.scope;
-        state.token.expires_in = payload.expires_in;
-        state.token.issued = Date.now();
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTH_FAILED */], function (state) {
-        state.isAuth = false;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["c" /* AUTH_SUCCESS */], function (state) {
-        state.isAuth = true;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* AUTH_LOGOUT */], function (state) {
-        state.token.value = '';
-        state.token.scope = '';
-        state.token.issued = '';
-        state.token.expires_in = '';
-        state.isAuth = false;
-    }), _mutations),
-    actions: {
-        login: function login(_ref, payload) {
-            var state = _ref.state,
-                commit = _ref.commit;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_1__api_http__["b" /* auth */].login(payload).then(function (respond) {
-                    if (respond.status === 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["d" /* AUTH_TOKEN */], respond.data);
-                        commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["c" /* AUTH_SUCCESS */]);
-                        resolve();
-                    } else {
-                        commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTH_FAILED */]);
-                        reject(respond);
-                    }
-                }).catch(function (error) {
-                    reject(error.response.data);
-                });
-            });
-        },
-        logout: function logout(_ref2) {
-            var state = _ref2.state,
-                commit = _ref2.commit;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_1__api_http__["b" /* auth */].logout({ token: state.token.value }).then(function (respond) {
-                    if (respond.status === 200 || respond.status === 201) {
-                        commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* AUTH_LOGOUT */]);
-                        resolve("Logged out successfuly");
-                    } else {
-                        reject('Logout Failed!!!');
-                    }
-                }).catch(function (error) {
-                    reject(error.response.data);
-                });
-            });
-        }
-    }
-};
-
-/***/ }),
-/* 61 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_http__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutation_types__ = __webpack_require__(7);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-var userModule = {
-    namespaced: true,
-    state: {
-        id: '',
-        name: '',
-        role: '',
-        avatar: ''
-    },
-    getters: {
-        getUserName: function getUserName(state) {
-            return state.name;
-        },
-        getUserRole: function getUserRole(state) {
-            return state.role;
-        },
-        getUserAvatar: function getUserAvatar(state) {
-            return state.avatar;
-        }
-    },
-    mutations: _defineProperty({}, __WEBPACK_IMPORTED_MODULE_1__mutation_types__["B" /* USER_OBJECT */], function (state, payload) {
-        state.id = payload.id;
-        state.name = payload.username;
-        state.role = payload.role;
-        state.avatar = payload.avatar;
-    }),
-    actions: {}
-};
-
-/***/ }),
-/* 62 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return loadingModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mutation_types__ = __webpack_require__(7);
-var _mutations;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var loadingModule = {
-    namespaced: true,
-    state: {
-        isLoading: false,
-        message: ''
-    },
-    getters: {
-        isLoading: function isLoading(state) {
-            return state.isLoading;
-        },
-        getMessage: function getMessage(state) {
-            return state.message;
-        }
-    },
-    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["h" /* LOADING_START */], function (state) {
-        state.isLoading = true;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["i" /* LOADING_STOP */], function (state) {
-        state.isLoading = false;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["g" /* LOADING_MESSAGE */], function (state, _ref) {
-        var message = _ref.message;
-
-        state.message = message;
-    }), _mutations),
-    actions: {
-        state: function state(_ref2, _ref3) {
-            var state = _ref2.state,
-                commit = _ref2.commit;
-            var isLoading = _ref3.isLoading,
-                message = _ref3.message;
-
-            if (isLoading) commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["h" /* LOADING_START */]);else commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["i" /* LOADING_STOP */]);
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["g" /* LOADING_MESSAGE */], { message: message });
-        },
-        start: function start(_ref4, _ref5) {
-            var state = _ref4.state,
-                commit = _ref4.commit;
-            var message = _ref5.message;
-
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["h" /* LOADING_START */]);
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["g" /* LOADING_MESSAGE */], { message: message });
-        },
-        stop: function stop(_ref6, _ref7) {
-            var state = _ref6.state,
-                commit = _ref6.commit;
-            var message = _ref7.message;
-
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["i" /* LOADING_STOP */]);
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["g" /* LOADING_MESSAGE */], { message: message });
-        },
-        message: function message(_ref8, _ref9) {
-            var state = _ref8.state,
-                commit = _ref8.commit;
-            var message = _ref9.message;
-
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["g" /* LOADING_MESSAGE */], { message: message });
-        }
-    }
-};
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return sidebarModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_http__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutation_types__ = __webpack_require__(7);
-var _mutations;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-var sidebarModule = {
-    namespaced: true,
-    state: {
-        resource: {},
-        resourceType: ''
-    },
-    getters: {
-        getResource: function getResource(state) {
-            return state.resource;
-        },
-        getResourceType: function getResourceType(state) {
-            return state.resourceType;
-        }
-    },
-    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_1__mutation_types__["v" /* SIDEBAR_RESOURCE */], function (state, payload) {
-        state.resource = payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_1__mutation_types__["w" /* SIDEBAR_RESOURCE_TYPE */], function (state, payload) {
-        state.resourceType = payload;
-    }), _mutations),
-    actions: {
-        listUsers: function listUsers(_ref) {
-            var state = _ref.state,
-                commit = _ref.commit;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["d" /* user */].list().then(function (respond) {
-                    if (respond.status === 200 || respond.status === 201) {
-                        commit(__WEBPACK_IMPORTED_MODULE_1__mutation_types__["w" /* SIDEBAR_RESOURCE_TYPE */], 'employee');
-                        commit(__WEBPACK_IMPORTED_MODULE_1__mutation_types__["v" /* SIDEBAR_RESOURCE */], respond.data);
-                        resolve();
-                    } else {
-                        reject(respond);
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                    reject(error);
-                });
-            });
-        },
-        listJobs: function listJobs(_ref2) {
-            var state = _ref2.state,
-                commit = _ref2.commit;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["c" /* job */].list([]).then(function (respond) {
-                    if (respond.status === 200 || respond.status === 201) {
-                        commit(__WEBPACK_IMPORTED_MODULE_1__mutation_types__["w" /* SIDEBAR_RESOURCE_TYPE */], 'job');
-                        commit(__WEBPACK_IMPORTED_MODULE_1__mutation_types__["v" /* SIDEBAR_RESOURCE */], respond.data);
-                        resolve();
-                    } else {
-                        reject(respond);
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                    reject(error);
-                });
-            });
-        }
-    }
-};
-
-/***/ }),
-/* 64 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return jobModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_http__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_resources__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mutation_types__ = __webpack_require__(7);
-var _mutations;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-var jobModule = {
-    namespaced: true,
-
-    state: {
-        list: [],
-        selected: [],
-        error: {
-            message: '',
-            errors: []
-        }
-    },
-
-    getters: {
-        getJobList: function getJobList(state) {
-            return state.list;
-        },
-
-        getErrors: function getErrors(state) {
-            console.log(state.error.errors);
-            return state.error.errors;
-        },
-
-        getErrorMessage: function getErrorMessage(state) {
-            return state.error.message;
-        }
-    },
-
-    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["f" /* JOB_LIST */], function (state, payload) {
-        state.list = payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["e" /* JOB_ERRORS */], function (state, payload) {
-        state.error.message = payload.response.data.message;
-        state.error.errors = payload.response.data.errors;
-    }), _mutations),
-
-    actions: {
-        list: function list(_ref, _ref2) {
-            var state = _ref.state,
-                commit = _ref.commit;
-            var query = _ref2.query;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].list(__WEBPACK_IMPORTED_MODULE_1__api_resources__["e" /* JOB_LIST */], query).then(function (respond) {
-                    if (respond.status == 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["f" /* JOB_LIST */], respond.data);
-                        resolve(respond.data);
-                    } else {
-                        reject(respond.data);
-                    }
-                }).catch(function (error) {
-                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["e" /* JOB_ERRORS */], error);
-                    console.log(error.response);
-                });
-            });
-        },
-        create: function create(_ref3, _ref4) {
-            var state = _ref3.state,
-                commit = _ref3.commit;
-            var payload = _ref4.payload;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].create(__WEBPACK_IMPORTED_MODULE_1__api_resources__["c" /* JOB_CREATE */], payload).then(function (respond) {
-                    if (respond.status === 200 || respond.status === 201) {
-                        resolve(respond.data);
-                    } else {
-                        reject(respond.data);
-                    }
-                }).catch(function (error) {
-                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["e" /* JOB_ERRORS */], error);
-                    console.log(error.response);
-                    //console.log(error.request);
-                    //console.log(error.message);
-                    //console.log(error.config);
-                });
-            });
-        },
-        update: function update(_ref5, _ref6) {
-            var state = _ref5.state,
-                commit = _ref5.commit;
-            var payload = _ref6.payload;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].update(__WEBPACK_IMPORTED_MODULE_1__api_resources__["f" /* JOB_UPDATE */], payload).then(function (respond) {
-                    if (respond.status == 200) {
-                        resolve(respond.data);
-                    } else {
-                        reject(respond.data);
-                    }
-                }).catch(function (error) {
-                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["e" /* JOB_ERRORS */], error);
-                    console.log(error.response);
-                });
-            });
-        }
-    }
-};
-
-/***/ }),
-/* 65 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return scheduleModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_http__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_resources__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mutation_types__ = __webpack_require__(7);
-var _mutations;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-var scheduleModule = {
-    namespaced: true,
-
-    state: {
-        events: [],
-        resources: [],
-        resourceType: '',
-        resourceUrl: ''
-    },
-
-    getters: {
-        getEvents: function getEvents(state) {
-            if (state.events.length == 0 || state.resourceType === '') return state.events;
-            switch (state.resourceType) {
-                case 'job':
-                    return state.events.map(function (obj) {
-                        return {
-                            id: obj.id,
-                            resource: obj.job_id,
-                            start: obj.start,
-                            end: obj.end,
-                            text: obj.user.name,
-                            complete: 30
-                        };
-                    });
-                case 'user':
-                    return state.events.map(function (obj) {
-                        return {
-                            id: obj.id,
-                            resource: obj.user_id,
-                            start: obj.start,
-                            end: obj.end,
-                            text: obj.job.title,
-                            complete: 30
-                        };
-                    });
-                default:
-                    throw new Error('Invalid resource type.');
-            }
-        },
-
-        getResources: function getResources(state) {
-            if (state.resources.length == 0) return state.resources;
-            switch (state.resourceType) {
-                case 'job':
-                    return state.resources.data.map(function (obj) {
-                        return { id: obj.id, name: obj.title };
-                    });
-                case 'user':
-                    return state.resources.data.map(function (obj) {
-                        var meta = JSON.parse(obj.meta);
-                        return { id: obj.id, name: obj.name, avatar: meta.avatar };
-                    });
-                default:
-                    throw new Error('Invalid resource type.');
-            }
-        }
-    },
-
-    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["o" /* SCHEDULE_EVENTS */], function (state, payload) {
-        state.events = payload.data;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["p" /* SCHEDULE_EVENTS_ADD */], function (state, payload) {
-        state.events.push(payload[0]);
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["r" /* SCHEDULE_EVENTS_UPDATE */], function (state, _ref) {
-        var id = _ref.id,
-            payload = _ref.payload;
-
-        var index = state.events.findIndex(function (el) {
-            return el.id === id;
-        });
-
-        state.events[index] = payload[0];
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["q" /* SCHEDULE_EVENTS_DELETE */], function (state, _ref2) {
-        var id = _ref2.id,
-            payload = _ref2.payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["s" /* SCHEDULE_RESOURCE */], function (state, payload) {
-        state.resources = payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["t" /* SCHEDULE_RESOURCE_TYPE */], function (state, payload) {
-        if (['job', 'user'].indexOf(payload) == -1) throw new Error('Invalid resource type.');
-        state.resourceType = payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["u" /* SCHEDULE_RESOURCE_URL */], function (state, payload) {
-        switch (payload) {
-            case 'job':
-                state.resourceUrl = __WEBPACK_IMPORTED_MODULE_1__api_resources__["e" /* JOB_LIST */];
-                break;
-            case 'user':
-                state.resourceUrl = __WEBPACK_IMPORTED_MODULE_1__api_resources__["k" /* USER_LIST */];
-                break;
-            default:
-                throw new Error('Invalid resource type.');
-        }
-    }), _mutations),
-
-    actions: {
-        initi: function initi(_ref3, _ref4) {
-            var commit = _ref3.commit,
-                dispatch = _ref3.dispatch;
-            var resource = _ref4.resource;
-
-            return new Promise(function (resolve) {
-                commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["t" /* SCHEDULE_RESOURCE_TYPE */], resource);
-                commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["u" /* SCHEDULE_RESOURCE_URL */], resource);
-                dispatch('fetchResource').then(function () {
-                    dispatch('fetchEvents').then(function () {
-                        resolve();
-                    });
-                });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        fetchResource: function fetchResource(_ref5) {
-            var state = _ref5.state,
-                commit = _ref5.commit;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].list(state.resourceUrl).then(function (respond) {
-                    if (respond.status === 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["s" /* SCHEDULE_RESOURCE */], { data: respond.data });
-                        resolve();
-                    } else reject(respond);
-                });
-            });
-        },
-        fetchEvents: function fetchEvents(_ref6) {
-            var commit = _ref6.commit;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].list(__WEBPACK_IMPORTED_MODULE_1__api_resources__["i" /* SCHEDULE_LIST */]).then(function (respond) {
-                    if (respond.status === 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["o" /* SCHEDULE_EVENTS */], { data: respond.data });
-                        resolve(respond.data);
-                    } else reject(respond);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            });
-        },
-        create: function create(_ref7, _ref8) {
-            var state = _ref7.state,
-                commit = _ref7.commit;
-            var data = _ref8.data;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].create(__WEBPACK_IMPORTED_MODULE_1__api_resources__["g" /* SCHEDULE_CREATE */], {
-                    user_id: data.userId,
-                    job_id: data.resourceId,
-                    start: data.start,
-                    end: data.end,
-                    offsite: data.offsite,
-                    break_length: 0
-                }).then(function (respond) {
-                    if (respond.status === 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["p" /* SCHEDULE_EVENTS_ADD */], respond.data);
-                        resolve(true);
-                    } else reject(respond);
-                });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        update: function update(_ref9, _ref10) {
-            var commit = _ref9.commit;
-            var id = _ref10.id,
-                data = _ref10.data;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].update(__WEBPACK_IMPORTED_MODULE_1__api_resources__["j" /* SCHEDULE_UPDATE */] + '/' + id, data).then(function (respond) {
-                    if (respond.status === 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["r" /* SCHEDULE_EVENTS_UPDATE */], { id: id, payload: respond.data });
-                        resolve(true);
-                    } else reject(respond);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            });
-        },
-        delete: function _delete(_ref11, _ref12) {
-            var commit = _ref11.commit;
-            var id = _ref12.id;
-
-            return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].update(__WEBPACK_IMPORTED_MODULE_1__api_resources__["h" /* SCHEDULE_DELETE */] + '/' + id).then(function (respond) {
-                    if (respond.status === 200) {
-                        commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["r" /* SCHEDULE_EVENTS_UPDATE */], { id: id });
-                        resolve(true);
-                    } else reject(respond);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            });
-        }
-    }
-};
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UIModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mutation_types__ = __webpack_require__(7);
-var _mutations;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var UIModule = {
-    namespaced: true,
-    state: {
-        mainHeight: 0,
-        windowHeight: 0,
-        toolbarHeight: 70,
-        contentHeight: 0
-    },
-    getters: {
-        getWindowHeight: function getWindowHeight(state) {
-            return state.windowHeight;
-        },
-        getMainHeight: function getMainHeight(state) {
-            return state.mainHeight;
-        },
-        getToolbarHeight: function getToolbarHeight(state) {
-            return state.toolbarHeight;
-        },
-        getContentHeight: function getContentHeight(state) {
-            return state.mainHeight - state.toolbarHeight;
-        }
-    },
-    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["y" /* UI_MAIN_HEIGHT */], function (state, payload) {
-        state.mainHeight = payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["A" /* UI_WINDOW_HEIGHT */], function (state, payload) {
-        state.windowHeight = payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["z" /* UI_TOOLBAR_HEIGHT */], function (state, payload) {
-        state.toolbarHeight = payload;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["x" /* UI_CONTENT_HEIGHT */], function (state, payload) {
-        state.contentHeight = payload;
-    }), _mutations),
-    actions: {
-        setWindowHeight: function setWindowHeight(_ref, _ref2) {
-            var commit = _ref.commit;
-            var height = _ref2.height;
-
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["A" /* UI_WINDOW_HEIGHT */], height);
-        },
-        setMainHeight: function setMainHeight(_ref3, _ref4) {
-            var commit = _ref3.commit;
-            var height = _ref4.height;
-
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["y" /* UI_MAIN_HEIGHT */], height);
-        },
-        setToolbarHeight: function setToolbarHeight(_ref5, _ref6) {
-            var commit = _ref5.commit;
-            var height = _ref6.height;
-
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["z" /* UI_TOOLBAR_HEIGHT */], height);
-        },
-        setContentHight: function setContentHight(_ref7, _ref8) {
-            var commit = _ref7.commit;
-            var height = _ref8.height;
-
-            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["x" /* UI_CONTENT_HEIGHT */], height);
-        }
-    }
-};
-
-/***/ }),
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
 /* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -54998,21 +54249,21 @@ var resourceModule = {
         }
     },
 
-    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["l" /* RESOURCE_LIST */], function (state, payload) {
+    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["p" /* RESOURCE_LIST */], function (state, payload) {
         state[payload.resource].list = payload.data;
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["j" /* RESOURCE_CREATE */], function (state, payload) {
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["n" /* RESOURCE_CREATE */], function (state, payload) {
         if (Array.isArray(payload.data)) state[payload.resource].list.push(payload.data[0]);else state[payload.resource].list.push(payload.data);
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["n" /* RESOURCE_UPDATE */], function (state, payload) {
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["r" /* RESOURCE_UPDATE */], function (state, payload) {
         var index = state[payload.resource].list.findIndex(function (el) {
             return el.id === payload.id;
         });
         state[payload.resource].list[index] = Object.assign(state[payload.resource].list[index], payload.data);
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["k" /* RESOURCE_DELETE */], function (state, payload) {
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["o" /* RESOURCE_DELETE */], function (state, payload) {
         var index = state[payload.resource].list.findIndex(function (el) {
             return el.id === payload.id;
         });
         state[payload.resource].list.splice(index, 1);
-    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["m" /* RESOURCE_SCHEDULE_VIEW */], function (state, payload) {
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["q" /* RESOURCE_SCHEDULE_VIEW */], function (state, payload) {
         if (["user", "job"].indexOf(payload) === -1) throw new Error("Invalid schedule view.");
         state.schedule.view = payload;
     }), _mutations),
@@ -55028,7 +54279,7 @@ var resourceModule = {
             dispatch("checkResource", resource);
             return new Promise(function (resolve, reject) {
                 __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].get(state[resource].listURL, query).then(function (respond) {
-                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["l" /* RESOURCE_LIST */], { resource: resource, data: respond.data });
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["p" /* RESOURCE_LIST */], { resource: resource, data: respond.data });
                     resolve(respond.data);
                 }).catch(function (error) {
                     reject(error);
@@ -55045,7 +54296,7 @@ var resourceModule = {
             dispatch("checkResource", resource);
             return new Promise(function (resolve, reject) {
                 __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].post(state[resource].createURL, data).then(function (respond) {
-                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["j" /* RESOURCE_CREATE */], { resource: resource, data: respond.data });
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["n" /* RESOURCE_CREATE */], { resource: resource, data: respond.data });
                     resolve(respond.data);
                 }).catch(function (error) {
                     reject(error);
@@ -55063,7 +54314,7 @@ var resourceModule = {
             dispatch("checkResource", resource);
             return new Promise(function (resolve, reject) {
                 __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].post(state[resource].updateURL + "/" + id, data).then(function (respond) {
-                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["n" /* RESOURCE_UPDATE */], { resource: resource, id: id, data: respond.data });
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["r" /* RESOURCE_UPDATE */], { resource: resource, id: id, data: respond.data });
                     resolve(respond.data);
                 }).catch(function (error) {
                     reject(error);
@@ -55080,7 +54331,7 @@ var resourceModule = {
             dispatch("checkResource", resource);
             return new Promise(function (resolve, reject) {
                 __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].post(state[resource].deleteURL + "/" + id).then(function (respond) {
-                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["k" /* RESOURCE_DELETE */], { resource: resource, id: id });
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["o" /* RESOURCE_DELETE */], { resource: resource, id: id });
                     resolve(respond.data);
                 }).catch(function (error) {
                     reject(error);
@@ -55092,7 +54343,7 @@ var resourceModule = {
                 dispatch = _ref9.dispatch;
 
             return new Promise(function (resolve, reject) {
-                commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["m" /* RESOURCE_SCHEDULE_VIEW */], view);
+                commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["q" /* RESOURCE_SCHEDULE_VIEW */], view);
                 dispatch("list", { resource: "schedule" }).then(function () {
                     dispatch("list", { resource: view }).then(function () {
                         resolve();
@@ -58147,14 +57398,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   },
 
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapActions */])({
-    mainHeight: "appUI/setMainHeight"
+    setDocumentDim: "core/documentDimension",
+    setContentDim: "core/contentDimension"
   }), {
     resizeHandler: function resizeHandler() {
       var head = $(".header").outerHeight() | 0;
       var foot = $(".footer").outerHeight() | 0;
       var main = $(window).height() - (head + foot);
+      this.setContentDim({ width: $(".wrap-content").outerWidth(), height: main });
       $(".main").css("height", main);
-      this.mainHeight({ height: main });
     }
   })
 });
@@ -58373,7 +57625,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     };
   },
 
-  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(["auth/login", "loading/start", "loading/stop"]), {
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])({
+    login: "user/login"
+  }), {
     onSubmit: function onSubmit() {
       var _this = this;
 
@@ -60556,7 +59810,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapGetters */])({
-    contentHeight: "appUI/getContentHeight"
+    contentHeight: "core/getUiContentHeight"
   }), {
 
     enablePadding: function enablePadding() {
@@ -62058,7 +61312,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.dp-ctrl input[data-v-006767d8] {\r\n  max-width: 100px;\n}\n.res-menu[data-v-006767d8] {\r\n  list-style: none;\r\n  padding: 3px;\n}\n.res-menu li[data-v-006767d8] {\r\n  padding: 5px;\r\n  cursor: move;\r\n  margin-bottom: 5px;\r\n  border: 1px solid rgba(0, 0, 0, 0.1);\r\n  background-color: rgba(255, 255, 255, 0.05);\n}\n.res-menu li a[data-v-006767d8] {\r\n  cursor: move;\r\n  color: black;\r\n  font-size: 12px;\r\n  text-decoration: none;\n}\n.res-menu li img[data-v-006767d8] {\r\n  margin-right: 7px;\r\n  width: 40px;\r\n  height: 40px;\r\n  background-color: transparent;\r\n  /* -webkit-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);\r\n  -moz-box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75);\r\n  box-shadow: 3px 3px 8px -3px rgba(0, 0, 0, 0.75); */\n}\r\n", ""]);
+exports.push([module.i, "\n.popover[data-v-006767d8]{\r\n  display: none;\r\n  background-color: yellow;\r\n  padding: 10px;\n}\n.dp-ctrl input[data-v-006767d8] {\r\n  max-width: 100px;\n}\n.res-menu[data-v-006767d8] {\r\n  list-style: none;\r\n  padding: 3px;\n}\n.res-menu li[data-v-006767d8] {\r\n  padding: 5px;\r\n  cursor: move;\r\n  margin-bottom: 5px;\r\n  border: 1px solid rgba(0, 0, 0, 0.1);\r\n  background-color: rgba(255, 255, 255, 0.05);\n}\n.res-menu li a[data-v-006767d8] {\r\n  cursor: move;\r\n  color: black;\r\n  font-size: 12px;\r\n  text-decoration: none;\n}\n.res-menu li img[data-v-006767d8] {\r\n  margin-right: 7px;\r\n  width: 40px;\r\n  height: 40px;\r\n  background-color: transparent;\n}\r\n", ""]);
 
 // exports
 
@@ -62069,13 +61323,14 @@ exports.push([module.i, "\n.dp-ctrl input[data-v-006767d8] {\r\n  max-width: 100
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__schedules_DayPilot_vue__ = __webpack_require__(164);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__schedules_DayPilot_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__schedules_DayPilot_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__schedules_AssignUserModal_vue__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__schedules_AssignUserModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__schedules_AssignUserModal_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schedules_DayPilot_vue__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schedules_DayPilot_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__schedules_DayPilot_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__framework_NavView_vue__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__framework_NavView_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__framework_NavView_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__schedules_AssignUserModal_vue__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__schedules_AssignUserModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__schedules_AssignUserModal_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuex__ = __webpack_require__(4);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -62160,6 +61415,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+
+
 
 
 
@@ -62170,9 +61428,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   name: "Scheduler",
 
   components: {
-    "nav-view": __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default.a,
-    "day-pilot": __WEBPACK_IMPORTED_MODULE_0__schedules_DayPilot_vue___default.a,
-    "assign-user-modal": __WEBPACK_IMPORTED_MODULE_2__schedules_AssignUserModal_vue___default.a
+    "nav-view": __WEBPACK_IMPORTED_MODULE_2__framework_NavView_vue___default.a,
+    "day-pilot": __WEBPACK_IMPORTED_MODULE_1__schedules_DayPilot_vue___default.a,
+    "assign-user-modal": __WEBPACK_IMPORTED_MODULE_3__schedules_AssignUserModal_vue___default.a
   },
 
   data: function data() {
@@ -62184,21 +61442,21 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     };
   },
 
+  created: function created() {},
   mounted: function mounted() {
     var _this = this;
 
+    console.log($(".scheduler_default_scrollable"));
     this.loading = true;
-    this.fetch({ resource: "user" }).then(function () {
-      console.log(_this.sidebarResources);
-    });
+    this.fetch({ resource: "user" });
     this.scheduleInit("user").then(function () {
       _this.loading = false;
     });
   },
 
 
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["c" /* mapGetters */])({
-    height: "appUI/getContentHeight",
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["c" /* mapGetters */])({
+    height: "core/getUiContentHeight",
     getList: "resource/getList",
     events: "resource/getScheduleEvents",
     resources: "resource/getScheduleResources"
@@ -62217,7 +61475,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     }
   }),
 
-  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["b" /* mapActions */])({
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["b" /* mapActions */])({
     fetch: "resource/list",
     scheduleInit: "resource/scheduleInit"
   }), {
@@ -62232,6 +61490,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     clickHandler: function clickHandler(event) {
       console.log("click");
       console.log(event);
+
+      var ref = $(event.div);
+      var popover = $(".popover");
+      popover.show();
+      var popper = new __WEBPACK_IMPORTED_MODULE_0_popper_js__["default"](ref, popover, { placement: "top" });
     },
     hoverHandler: function hoverHandler(event) {
       console.log("hover");
@@ -62362,7 +61625,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -62577,7 +61840,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     dpScriptLoaded.then(function () {
       var dp = _this.dayPilot = new window.DayPilot.Scheduler("dp");
 
-      dp.theme = "scheduler_green";
+      //dp.theme = "scheduler_green";
       dp.width = "100%";
       dp.height = _this.height - _this.timeHeaderHeight * 2 - 4;
       dp.heightSpec = "Fixed";
@@ -62625,9 +61888,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       dp.timeRangeSelectedHandling = "Enabled";
       dp.eventMoveHandling = "Update";
       dp.eventResizeHandling = "Update";
-      dp.eventDeleteHandling = "Update";
-      dp.eventClickHandling = "Enabled";
-      dp.eventHoverHandling = "Bubble";
+      dp.eventDeleteHandling = "Disabled";
+      dp.eventClickHandling = "Update";
+      dp.eventHoverHandling = "Disabled";
 
       // Event Handlers
       dp.onEventMoved = _this.eventMoveHandler;
@@ -62684,6 +61947,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       dp.onBeforeEventRender = function (args) {
         args.data.html = "<span class='event_title'>" + args.data.text + "</span><br/>" + ("<span>Progress: %" + args.data.complete + "</span>");
+        args.data.cssClass = "has-popover";
       };
 
       dp.init();
@@ -62797,7 +62061,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       console.log(arg);
       if (arg.e.isEvent) {
         this.$emit("event-clicked", {
-          eventId: arg.e.id()
+          eventId: arg.e.id(),
+          div: arg.div
         });
       }
     },
@@ -62836,7 +62101,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     eventDeleteHandler: function eventDeleteHandler(arg) {
-      //console.log("delete event...");
+      console.log("delete event...");
       this.$emit("event-deleted", {});
     }
   }
@@ -63645,7 +62910,9 @@ var render = function() {
               },
               expression: "assignUserPopup"
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "popover" }, [_vm._v("This is a popover")])
         ],
         1
       )
@@ -67723,6 +66990,1148 @@ var formFeedback = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * jQuery UI Widget 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Widget
+//>>group: Core
+//>>description: Provides a factory for creating stateful widgets with a common API.
+//>>docs: http://api.jqueryui.com/jQuery.widget/
+//>>demos: http://jqueryui.com/widget/
+
+( function( factory ) {
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(15), __webpack_require__(251) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+var widgetUuid = 0;
+var widgetSlice = Array.prototype.slice;
+
+$.cleanData = ( function( orig ) {
+	return function( elems ) {
+		var events, elem, i;
+		for ( i = 0; ( elem = elems[ i ] ) != null; i++ ) {
+			try {
+
+				// Only trigger remove when necessary to save time
+				events = $._data( elem, "events" );
+				if ( events && events.remove ) {
+					$( elem ).triggerHandler( "remove" );
+				}
+
+			// Http://bugs.jquery.com/ticket/8235
+			} catch ( e ) {}
+		}
+		orig( elems );
+	};
+} )( $.cleanData );
+
+$.widget = function( name, base, prototype ) {
+	var existingConstructor, constructor, basePrototype;
+
+	// ProxiedPrototype allows the provided prototype to remain unmodified
+	// so that it can be used as a mixin for multiple widgets (#8876)
+	var proxiedPrototype = {};
+
+	var namespace = name.split( "." )[ 0 ];
+	name = name.split( "." )[ 1 ];
+	var fullName = namespace + "-" + name;
+
+	if ( !prototype ) {
+		prototype = base;
+		base = $.Widget;
+	}
+
+	if ( $.isArray( prototype ) ) {
+		prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
+	}
+
+	// Create selector for plugin
+	$.expr[ ":" ][ fullName.toLowerCase() ] = function( elem ) {
+		return !!$.data( elem, fullName );
+	};
+
+	$[ namespace ] = $[ namespace ] || {};
+	existingConstructor = $[ namespace ][ name ];
+	constructor = $[ namespace ][ name ] = function( options, element ) {
+
+		// Allow instantiation without "new" keyword
+		if ( !this._createWidget ) {
+			return new constructor( options, element );
+		}
+
+		// Allow instantiation without initializing for simple inheritance
+		// must use "new" keyword (the code above always passes args)
+		if ( arguments.length ) {
+			this._createWidget( options, element );
+		}
+	};
+
+	// Extend with the existing constructor to carry over any static properties
+	$.extend( constructor, existingConstructor, {
+		version: prototype.version,
+
+		// Copy the object used to create the prototype in case we need to
+		// redefine the widget later
+		_proto: $.extend( {}, prototype ),
+
+		// Track widgets that inherit from this widget in case this widget is
+		// redefined after a widget inherits from it
+		_childConstructors: []
+	} );
+
+	basePrototype = new base();
+
+	// We need to make the options hash a property directly on the new instance
+	// otherwise we'll modify the options hash on the prototype that we're
+	// inheriting from
+	basePrototype.options = $.widget.extend( {}, basePrototype.options );
+	$.each( prototype, function( prop, value ) {
+		if ( !$.isFunction( value ) ) {
+			proxiedPrototype[ prop ] = value;
+			return;
+		}
+		proxiedPrototype[ prop ] = ( function() {
+			function _super() {
+				return base.prototype[ prop ].apply( this, arguments );
+			}
+
+			function _superApply( args ) {
+				return base.prototype[ prop ].apply( this, args );
+			}
+
+			return function() {
+				var __super = this._super;
+				var __superApply = this._superApply;
+				var returnValue;
+
+				this._super = _super;
+				this._superApply = _superApply;
+
+				returnValue = value.apply( this, arguments );
+
+				this._super = __super;
+				this._superApply = __superApply;
+
+				return returnValue;
+			};
+		} )();
+	} );
+	constructor.prototype = $.widget.extend( basePrototype, {
+
+		// TODO: remove support for widgetEventPrefix
+		// always use the name + a colon as the prefix, e.g., draggable:start
+		// don't prefix for widgets that aren't DOM-based
+		widgetEventPrefix: existingConstructor ? ( basePrototype.widgetEventPrefix || name ) : name
+	}, proxiedPrototype, {
+		constructor: constructor,
+		namespace: namespace,
+		widgetName: name,
+		widgetFullName: fullName
+	} );
+
+	// If this widget is being redefined then we need to find all widgets that
+	// are inheriting from it and redefine all of them so that they inherit from
+	// the new version of this widget. We're essentially trying to replace one
+	// level in the prototype chain.
+	if ( existingConstructor ) {
+		$.each( existingConstructor._childConstructors, function( i, child ) {
+			var childPrototype = child.prototype;
+
+			// Redefine the child widget using the same prototype that was
+			// originally used, but inherit from the new version of the base
+			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor,
+				child._proto );
+		} );
+
+		// Remove the list of existing child constructors from the old constructor
+		// so the old child constructors can be garbage collected
+		delete existingConstructor._childConstructors;
+	} else {
+		base._childConstructors.push( constructor );
+	}
+
+	$.widget.bridge( name, constructor );
+
+	return constructor;
+};
+
+$.widget.extend = function( target ) {
+	var input = widgetSlice.call( arguments, 1 );
+	var inputIndex = 0;
+	var inputLength = input.length;
+	var key;
+	var value;
+
+	for ( ; inputIndex < inputLength; inputIndex++ ) {
+		for ( key in input[ inputIndex ] ) {
+			value = input[ inputIndex ][ key ];
+			if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
+
+				// Clone objects
+				if ( $.isPlainObject( value ) ) {
+					target[ key ] = $.isPlainObject( target[ key ] ) ?
+						$.widget.extend( {}, target[ key ], value ) :
+
+						// Don't extend strings, arrays, etc. with objects
+						$.widget.extend( {}, value );
+
+				// Copy everything else by reference
+				} else {
+					target[ key ] = value;
+				}
+			}
+		}
+	}
+	return target;
+};
+
+$.widget.bridge = function( name, object ) {
+	var fullName = object.prototype.widgetFullName || name;
+	$.fn[ name ] = function( options ) {
+		var isMethodCall = typeof options === "string";
+		var args = widgetSlice.call( arguments, 1 );
+		var returnValue = this;
+
+		if ( isMethodCall ) {
+
+			// If this is an empty collection, we need to have the instance method
+			// return undefined instead of the jQuery instance
+			if ( !this.length && options === "instance" ) {
+				returnValue = undefined;
+			} else {
+				this.each( function() {
+					var methodValue;
+					var instance = $.data( this, fullName );
+
+					if ( options === "instance" ) {
+						returnValue = instance;
+						return false;
+					}
+
+					if ( !instance ) {
+						return $.error( "cannot call methods on " + name +
+							" prior to initialization; " +
+							"attempted to call method '" + options + "'" );
+					}
+
+					if ( !$.isFunction( instance[ options ] ) || options.charAt( 0 ) === "_" ) {
+						return $.error( "no such method '" + options + "' for " + name +
+							" widget instance" );
+					}
+
+					methodValue = instance[ options ].apply( instance, args );
+
+					if ( methodValue !== instance && methodValue !== undefined ) {
+						returnValue = methodValue && methodValue.jquery ?
+							returnValue.pushStack( methodValue.get() ) :
+							methodValue;
+						return false;
+					}
+				} );
+			}
+		} else {
+
+			// Allow multiple hashes to be passed on init
+			if ( args.length ) {
+				options = $.widget.extend.apply( null, [ options ].concat( args ) );
+			}
+
+			this.each( function() {
+				var instance = $.data( this, fullName );
+				if ( instance ) {
+					instance.option( options || {} );
+					if ( instance._init ) {
+						instance._init();
+					}
+				} else {
+					$.data( this, fullName, new object( options, this ) );
+				}
+			} );
+		}
+
+		return returnValue;
+	};
+};
+
+$.Widget = function( /* options, element */ ) {};
+$.Widget._childConstructors = [];
+
+$.Widget.prototype = {
+	widgetName: "widget",
+	widgetEventPrefix: "",
+	defaultElement: "<div>",
+
+	options: {
+		classes: {},
+		disabled: false,
+
+		// Callbacks
+		create: null
+	},
+
+	_createWidget: function( options, element ) {
+		element = $( element || this.defaultElement || this )[ 0 ];
+		this.element = $( element );
+		this.uuid = widgetUuid++;
+		this.eventNamespace = "." + this.widgetName + this.uuid;
+
+		this.bindings = $();
+		this.hoverable = $();
+		this.focusable = $();
+		this.classesElementLookup = {};
+
+		if ( element !== this ) {
+			$.data( element, this.widgetFullName, this );
+			this._on( true, this.element, {
+				remove: function( event ) {
+					if ( event.target === element ) {
+						this.destroy();
+					}
+				}
+			} );
+			this.document = $( element.style ?
+
+				// Element within the document
+				element.ownerDocument :
+
+				// Element is window or document
+				element.document || element );
+			this.window = $( this.document[ 0 ].defaultView || this.document[ 0 ].parentWindow );
+		}
+
+		this.options = $.widget.extend( {},
+			this.options,
+			this._getCreateOptions(),
+			options );
+
+		this._create();
+
+		if ( this.options.disabled ) {
+			this._setOptionDisabled( this.options.disabled );
+		}
+
+		this._trigger( "create", null, this._getCreateEventData() );
+		this._init();
+	},
+
+	_getCreateOptions: function() {
+		return {};
+	},
+
+	_getCreateEventData: $.noop,
+
+	_create: $.noop,
+
+	_init: $.noop,
+
+	destroy: function() {
+		var that = this;
+
+		this._destroy();
+		$.each( this.classesElementLookup, function( key, value ) {
+			that._removeClass( value, key );
+		} );
+
+		// We can probably remove the unbind calls in 2.0
+		// all event bindings should go through this._on()
+		this.element
+			.off( this.eventNamespace )
+			.removeData( this.widgetFullName );
+		this.widget()
+			.off( this.eventNamespace )
+			.removeAttr( "aria-disabled" );
+
+		// Clean up events and states
+		this.bindings.off( this.eventNamespace );
+	},
+
+	_destroy: $.noop,
+
+	widget: function() {
+		return this.element;
+	},
+
+	option: function( key, value ) {
+		var options = key;
+		var parts;
+		var curOption;
+		var i;
+
+		if ( arguments.length === 0 ) {
+
+			// Don't return a reference to the internal hash
+			return $.widget.extend( {}, this.options );
+		}
+
+		if ( typeof key === "string" ) {
+
+			// Handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
+			options = {};
+			parts = key.split( "." );
+			key = parts.shift();
+			if ( parts.length ) {
+				curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
+				for ( i = 0; i < parts.length - 1; i++ ) {
+					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
+					curOption = curOption[ parts[ i ] ];
+				}
+				key = parts.pop();
+				if ( arguments.length === 1 ) {
+					return curOption[ key ] === undefined ? null : curOption[ key ];
+				}
+				curOption[ key ] = value;
+			} else {
+				if ( arguments.length === 1 ) {
+					return this.options[ key ] === undefined ? null : this.options[ key ];
+				}
+				options[ key ] = value;
+			}
+		}
+
+		this._setOptions( options );
+
+		return this;
+	},
+
+	_setOptions: function( options ) {
+		var key;
+
+		for ( key in options ) {
+			this._setOption( key, options[ key ] );
+		}
+
+		return this;
+	},
+
+	_setOption: function( key, value ) {
+		if ( key === "classes" ) {
+			this._setOptionClasses( value );
+		}
+
+		this.options[ key ] = value;
+
+		if ( key === "disabled" ) {
+			this._setOptionDisabled( value );
+		}
+
+		return this;
+	},
+
+	_setOptionClasses: function( value ) {
+		var classKey, elements, currentElements;
+
+		for ( classKey in value ) {
+			currentElements = this.classesElementLookup[ classKey ];
+			if ( value[ classKey ] === this.options.classes[ classKey ] ||
+					!currentElements ||
+					!currentElements.length ) {
+				continue;
+			}
+
+			// We are doing this to create a new jQuery object because the _removeClass() call
+			// on the next line is going to destroy the reference to the current elements being
+			// tracked. We need to save a copy of this collection so that we can add the new classes
+			// below.
+			elements = $( currentElements.get() );
+			this._removeClass( currentElements, classKey );
+
+			// We don't use _addClass() here, because that uses this.options.classes
+			// for generating the string of classes. We want to use the value passed in from
+			// _setOption(), this is the new value of the classes option which was passed to
+			// _setOption(). We pass this value directly to _classes().
+			elements.addClass( this._classes( {
+				element: elements,
+				keys: classKey,
+				classes: value,
+				add: true
+			} ) );
+		}
+	},
+
+	_setOptionDisabled: function( value ) {
+		this._toggleClass( this.widget(), this.widgetFullName + "-disabled", null, !!value );
+
+		// If the widget is becoming disabled, then nothing is interactive
+		if ( value ) {
+			this._removeClass( this.hoverable, null, "ui-state-hover" );
+			this._removeClass( this.focusable, null, "ui-state-focus" );
+		}
+	},
+
+	enable: function() {
+		return this._setOptions( { disabled: false } );
+	},
+
+	disable: function() {
+		return this._setOptions( { disabled: true } );
+	},
+
+	_classes: function( options ) {
+		var full = [];
+		var that = this;
+
+		options = $.extend( {
+			element: this.element,
+			classes: this.options.classes || {}
+		}, options );
+
+		function processClassString( classes, checkOption ) {
+			var current, i;
+			for ( i = 0; i < classes.length; i++ ) {
+				current = that.classesElementLookup[ classes[ i ] ] || $();
+				if ( options.add ) {
+					current = $( $.unique( current.get().concat( options.element.get() ) ) );
+				} else {
+					current = $( current.not( options.element ).get() );
+				}
+				that.classesElementLookup[ classes[ i ] ] = current;
+				full.push( classes[ i ] );
+				if ( checkOption && options.classes[ classes[ i ] ] ) {
+					full.push( options.classes[ classes[ i ] ] );
+				}
+			}
+		}
+
+		this._on( options.element, {
+			"remove": "_untrackClassesElement"
+		} );
+
+		if ( options.keys ) {
+			processClassString( options.keys.match( /\S+/g ) || [], true );
+		}
+		if ( options.extra ) {
+			processClassString( options.extra.match( /\S+/g ) || [] );
+		}
+
+		return full.join( " " );
+	},
+
+	_untrackClassesElement: function( event ) {
+		var that = this;
+		$.each( that.classesElementLookup, function( key, value ) {
+			if ( $.inArray( event.target, value ) !== -1 ) {
+				that.classesElementLookup[ key ] = $( value.not( event.target ).get() );
+			}
+		} );
+	},
+
+	_removeClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, false );
+	},
+
+	_addClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, true );
+	},
+
+	_toggleClass: function( element, keys, extra, add ) {
+		add = ( typeof add === "boolean" ) ? add : extra;
+		var shift = ( typeof element === "string" || element === null ),
+			options = {
+				extra: shift ? keys : extra,
+				keys: shift ? element : keys,
+				element: shift ? this.element : element,
+				add: add
+			};
+		options.element.toggleClass( this._classes( options ), add );
+		return this;
+	},
+
+	_on: function( suppressDisabledCheck, element, handlers ) {
+		var delegateElement;
+		var instance = this;
+
+		// No suppressDisabledCheck flag, shuffle arguments
+		if ( typeof suppressDisabledCheck !== "boolean" ) {
+			handlers = element;
+			element = suppressDisabledCheck;
+			suppressDisabledCheck = false;
+		}
+
+		// No element argument, shuffle and use this.element
+		if ( !handlers ) {
+			handlers = element;
+			element = this.element;
+			delegateElement = this.widget();
+		} else {
+			element = delegateElement = $( element );
+			this.bindings = this.bindings.add( element );
+		}
+
+		$.each( handlers, function( event, handler ) {
+			function handlerProxy() {
+
+				// Allow widgets to customize the disabled handling
+				// - disabled as an array instead of boolean
+				// - disabled class as method for disabling individual parts
+				if ( !suppressDisabledCheck &&
+						( instance.options.disabled === true ||
+						$( this ).hasClass( "ui-state-disabled" ) ) ) {
+					return;
+				}
+				return ( typeof handler === "string" ? instance[ handler ] : handler )
+					.apply( instance, arguments );
+			}
+
+			// Copy the guid so direct unbinding works
+			if ( typeof handler !== "string" ) {
+				handlerProxy.guid = handler.guid =
+					handler.guid || handlerProxy.guid || $.guid++;
+			}
+
+			var match = event.match( /^([\w:-]*)\s*(.*)$/ );
+			var eventName = match[ 1 ] + instance.eventNamespace;
+			var selector = match[ 2 ];
+
+			if ( selector ) {
+				delegateElement.on( eventName, selector, handlerProxy );
+			} else {
+				element.on( eventName, handlerProxy );
+			}
+		} );
+	},
+
+	_off: function( element, eventName ) {
+		eventName = ( eventName || "" ).split( " " ).join( this.eventNamespace + " " ) +
+			this.eventNamespace;
+		element.off( eventName ).off( eventName );
+
+		// Clear the stack to avoid memory leaks (#10056)
+		this.bindings = $( this.bindings.not( element ).get() );
+		this.focusable = $( this.focusable.not( element ).get() );
+		this.hoverable = $( this.hoverable.not( element ).get() );
+	},
+
+	_delay: function( handler, delay ) {
+		function handlerProxy() {
+			return ( typeof handler === "string" ? instance[ handler ] : handler )
+				.apply( instance, arguments );
+		}
+		var instance = this;
+		return setTimeout( handlerProxy, delay || 0 );
+	},
+
+	_hoverable: function( element ) {
+		this.hoverable = this.hoverable.add( element );
+		this._on( element, {
+			mouseenter: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-hover" );
+			},
+			mouseleave: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-hover" );
+			}
+		} );
+	},
+
+	_focusable: function( element ) {
+		this.focusable = this.focusable.add( element );
+		this._on( element, {
+			focusin: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-focus" );
+			},
+			focusout: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-focus" );
+			}
+		} );
+	},
+
+	_trigger: function( type, event, data ) {
+		var prop, orig;
+		var callback = this.options[ type ];
+
+		data = data || {};
+		event = $.Event( event );
+		event.type = ( type === this.widgetEventPrefix ?
+			type :
+			this.widgetEventPrefix + type ).toLowerCase();
+
+		// The original event may come from any element
+		// so we need to reset the target on the new event
+		event.target = this.element[ 0 ];
+
+		// Copy original event properties over to the new event
+		orig = event.originalEvent;
+		if ( orig ) {
+			for ( prop in orig ) {
+				if ( !( prop in event ) ) {
+					event[ prop ] = orig[ prop ];
+				}
+			}
+		}
+
+		this.element.trigger( event, data );
+		return !( $.isFunction( callback ) &&
+			callback.apply( this.element[ 0 ], [ event ].concat( data ) ) === false ||
+			event.isDefaultPrevented() );
+	}
+};
+
+$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
+	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
+		if ( typeof options === "string" ) {
+			options = { effect: options };
+		}
+
+		var hasOptions;
+		var effectName = !options ?
+			method :
+			options === true || typeof options === "number" ?
+				defaultEffect :
+				options.effect || defaultEffect;
+
+		options = options || {};
+		if ( typeof options === "number" ) {
+			options = { duration: options };
+		}
+
+		hasOptions = !$.isEmptyObject( options );
+		options.complete = callback;
+
+		if ( options.delay ) {
+			element.delay( options.delay );
+		}
+
+		if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
+			element[ method ]( options );
+		} else if ( effectName !== method && element[ effectName ] ) {
+			element[ effectName ]( options.duration, options.easing, callback );
+		} else {
+			element.queue( function( next ) {
+				$( this )[ method ]();
+				if ( callback ) {
+					callback.call( element[ 0 ] );
+				}
+				next();
+			} );
+		}
+	};
+} );
+
+return $.widget;
+
+} ) );
+
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;( function( factory ) {
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(15) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+
+$.ui = $.ui || {};
+
+return $.ui.version = "1.12.1";
+
+} ) );
+
+
+/***/ }),
+/* 252 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return coreModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mutation_types__ = __webpack_require__(7);
+var _mutations;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var coreModule = {
+
+    namespaced: true,
+
+    state: {
+        app: {
+            errors: [],
+            messages: []
+        },
+        ui: {
+            fullscreen: false,
+            contentWidth: 0,
+            contentHeight: 0,
+            documentWidth: 0,
+            documentHeight: 0
+        },
+        drawer: {
+            show: true,
+            message: ''
+        },
+        statusbar: {
+            show: false,
+            message: '',
+            icon: ''
+        },
+        toolbar: {
+            show: true,
+            height: 0
+        },
+        header: {
+            show: true,
+            height: 0
+        },
+        footer: {
+            show: true,
+            height: 0
+        },
+        loading: {
+            show: false,
+            message: ''
+        }
+
+    },
+
+    getters: {
+
+        getAppError: function getAppError(state) {
+            return function (id) {
+                return state.app.errors[id];
+            };
+        },
+
+        getAppErrors: function getAppErrors(state) {
+            return state.app.errors;
+        },
+
+
+        getAppMessage: function getAppMessage(state) {
+            return function (id) {
+                return state.app.messages[id];
+            };
+        },
+
+        getAppMessages: function getAppMessages(state) {
+            return state.app.messages;
+        },
+        getUiFullscreen: function getUiFullscreen(state) {
+            return state.ui.fullscreen;
+        },
+        getUiContentWidth: function getUiContentWidth(state) {
+            return state.ui.contentWidth;
+        },
+        getUiContentHeight: function getUiContentHeight(state) {
+            return state.ui.contentHeight;
+        },
+        getUiDocWidth: function getUiDocWidth(state) {
+            return state.ui.documentWidth;
+        },
+        getUiDocHeight: function getUiDocHeight(state) {
+            return state.ui.documentHeight;
+        },
+        getDrawerStatus: function getDrawerStatus(state) {
+            return state.drawer.show;
+        },
+        getDrawerMessage: function getDrawerMessage(state) {
+            return state.drawer.message;
+        },
+        getStatusbarStatus: function getStatusbarStatus(state) {
+            return state.statusbar.show;
+        },
+        getStatusbarMessage: function getStatusbarMessage(state) {
+            return state.statusbar.message;
+        },
+        getStatusbarIcon: function getStatusbarIcon(state) {
+            return state.statusbar.icon;
+        },
+        getToolbarStatus: function getToolbarStatus(state) {
+            return state.toolbar.show;
+        },
+        getToolbarHeight: function getToolbarHeight(state) {
+            return state.toolbar.height;
+        },
+        getHeaderStatus: function getHeaderStatus(state) {
+            return state.header.show;
+        },
+        getHeaderHeight: function getHeaderHeight(state) {
+            return state.header.height;
+        },
+        getFooterStatus: function getFooterStatus(state) {
+            return state.footer.show;
+        },
+        getFooterHeight: function getFooterHeight(state) {
+            return state.footer.height;
+        },
+        getLoadingStatus: function getLoadingStatus(state) {
+            return state.loading.show;
+        },
+        getLoadingMessage: function getLoadingMessage(state) {
+            return state.loading.message;
+        }
+    },
+
+    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["e" /* APP_ERRORS_PUSH */], function (state, error) {
+        state.app.errors.push(error);
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["d" /* APP_ERRORS_CLEAR */], function (state) {
+        state.app.errors = [];
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["k" /* APP_MESSAGES_PUSH */], function (state, message) {
+        state.app.messages.push(message);
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["j" /* APP_MESSAGES_CLEAR */], function (state) {
+        state.app.messages = [];
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["i" /* APP_LOADING */], function (state, payload) {
+        state.loading.show = payload.show;
+        state.loading.message = payload.message;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["g" /* APP_FULLSCREEN */], function (state, isFullScreen) {
+        state.ui.fullscreen = isFullScreen;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* APP_DOCUMENT_DIMENSION */], function (state, dimension) {
+        state.ui.documentWidth = dimension.width;
+        state.ui.documentHeight = dimension.height;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* APP_CONTENT_DIMENSION */], function (state, dimension) {
+        state.ui.contentWidth = dimension.width;
+        state.ui.contentHeight = dimension.height;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["c" /* APP_DRAWER */], function (state, payload) {
+        state.drawer.show = payload.show;
+        state.drawer.message = payload.message;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["m" /* APP_TOOLBAR */], function (state, payload) {
+        state.toolbar.show = payload.show;
+        state.toolbar.height = payload.height;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["l" /* APP_STATUSBAR */], function (state, payload) {
+        state.statusbar.show = payload.show;
+        state.statusbar.icon = payload.icon;
+        state.statusbar.message = payload.message;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["h" /* APP_HEADER */], function (state, payload) {
+        state.header.show = payload.show;
+        state.header.height = payload.height;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["f" /* APP_FOOTER */], function (state, payload) {
+        state.footer.show = payload.show;
+        state.footer.height = payload.height;
+    }), _mutations),
+
+    actions: {
+        errorPush: function errorPush(_ref, _ref2) {
+            var commit = _ref.commit;
+            var error = _ref2.error;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["e" /* APP_ERRORS_PUSH */], error);
+        },
+        errorClear: function errorClear(_ref3) {
+            var commit = _ref3.commit;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["d" /* APP_ERRORS_CLEAR */]);
+        },
+        messagePush: function messagePush(_ref4, _ref5) {
+            var commit = _ref4.commit;
+            var message = _ref5.message;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["k" /* APP_MESSAGES_PUSH */], message);
+        },
+        messageClear: function messageClear(_ref6) {
+            var commit = _ref6.commit;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["j" /* APP_MESSAGES_CLEAR */]);
+        },
+        loading: function loading(_ref7, _ref8) {
+            var commit = _ref7.commit;
+            var _ref8$show = _ref8.show,
+                show = _ref8$show === undefined ? true : _ref8$show,
+                _ref8$message = _ref8.message,
+                message = _ref8$message === undefined ? "Loading Please Wait..." : _ref8$message;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["i" /* APP_LOADING */], { show: show, message: message });
+        },
+        fullscreen: function fullscreen(_ref9, _ref10) {
+            var commit = _ref9.commit;
+            var fullscreen = _ref10.fullscreen;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["g" /* APP_FULLSCREEN */], fullscreen);
+        },
+        documentDimension: function documentDimension(_ref11, _ref12) {
+            var commit = _ref11.commit;
+            var width = _ref12.width,
+                height = _ref12.height;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* APP_DOCUMENT_DIMENSION */], { width: width, height: height });
+        },
+        contentDimension: function contentDimension(_ref13, _ref14) {
+            var commit = _ref13.commit;
+            var width = _ref14.width,
+                height = _ref14.height;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* APP_CONTENT_DIMENSION */], { width: width, height: height });
+        },
+        drawer: function drawer(_ref15, _ref16) {
+            var commit = _ref15.commit;
+            var _ref16$show = _ref16.show,
+                show = _ref16$show === undefined ? true : _ref16$show,
+                _ref16$message = _ref16.message,
+                message = _ref16$message === undefined ? "" : _ref16$message;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["c" /* APP_DRAWER */], { show: show, message: message });
+        },
+        toolbar: function toolbar(_ref17, _ref18) {
+            var commit = _ref17.commit;
+            var _ref18$show = _ref18.show,
+                show = _ref18$show === undefined ? true : _ref18$show,
+                height = _ref18.height;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["m" /* APP_TOOLBAR */], { show: show, height: height });
+        },
+        statusbar: function statusbar(_ref19, _ref20) {
+            var commit = _ref19.commit;
+            var show = _ref20.show,
+                message = _ref20.message,
+                _ref20$icon = _ref20.icon,
+                icon = _ref20$icon === undefined ? "" : _ref20$icon;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["l" /* APP_STATUSBAR */], { show: show, message: message, icon: icon });
+        },
+        header: function header(_ref21, _ref22) {
+            var commit = _ref21.commit;
+            var show = _ref22.show,
+                height = _ref22.height;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["h" /* APP_HEADER */], { show: show, height: height });
+        },
+        footer: function footer(_ref23, _ref24) {
+            var commit = _ref23.commit;
+            var show = _ref24.show,
+                height = _ref24.height;
+
+            commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["f" /* APP_FOOTER */], { show: show, height: height });
+        }
+    }
+
+};
+
+/***/ }),
+/* 253 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_http__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_resources__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mutation_types__ = __webpack_require__(7);
+var _mutations;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var userModule = {
+    namespaced: true,
+
+    state: {
+        user: {
+            name: "",
+            roles: []
+        },
+        auth: {
+            isAuth: false,
+            token: {
+                value: "",
+                expire: ""
+            }
+        },
+        settings: {
+            avatar: "",
+            firstName: "",
+            lastName: ""
+        }
+    },
+
+    getters: {
+        getUser: function getUser(state) {
+            return state.user;
+        },
+        getIsAuth: function getIsAuth(state) {
+            return state.auth.isAuth;
+        },
+        getToken: function getToken(state) {
+            return state.auth.token;
+        },
+        getSettings: function getSettings(state) {
+            return state.settings;
+        }
+    },
+
+    mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["w" /* USER_INFO */], function (state, payload) {
+        state.user = payload;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["u" /* USER_AUTH_SUCCESS */], function (state) {
+        state.auth.isAuth = true;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["s" /* USER_AUTH_FAILE */], function (state) {
+        state.auth.isAuth = false;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["v" /* USER_AUTH_TOKEN */], function (state, payload) {
+        state.auth.token.value = payload.value;
+        state.auth.token.expire = payload.expire;
+    }), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_2__mutation_types__["t" /* USER_AUTH_LOGOUT */], function (state) {
+        state.auth.isAuth = false;
+        state.auth.token.value = "";
+        state.auth.token.expire = "";
+        state.user = {};
+        state.settings = {};
+    }), _mutations),
+
+    actions: {
+        login: function login(_ref, payload) {
+            var commit = _ref.commit;
+
+            return new Promise(function (resolve, reject) {
+                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].post(__WEBPACK_IMPORTED_MODULE_1__api_resources__["a" /* AUTH_LOGIN */], payload, null, true, false).then(function (respond) {
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["v" /* USER_AUTH_TOKEN */], respond.data);
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["u" /* USER_AUTH_SUCCESS */]);
+                    resolve("Success");
+                }).catch(function (error) {
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["s" /* USER_AUTH_FAILE */]);
+                    reject(error);
+                });
+            });
+        },
+        logout: function logout(_ref2) {
+            var commit = _ref2.commit;
+
+            return new Promise(function (resolve, reject) {
+                __WEBPACK_IMPORTED_MODULE_0__api_http__["a" /* api */].post(__WEBPACK_IMPORTED_MODULE_1__api_resources__["b" /* AUTH_LOGOUT */], null).then(function () {
+                    commit(__WEBPACK_IMPORTED_MODULE_2__mutation_types__["t" /* USER_AUTH_LOGOUT */]);
+                    resolve("Success");
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        },
+        refresh: function refresh() {},
+        settings: function settings() {}
+    }
+};
 
 /***/ })
 /******/ ]);

@@ -154,7 +154,7 @@ export const coreModule = {
             state.app.messages = [];
         },
 
-        [MUTATIONS.APP_LOADING_STAT](state, payload) {
+        [MUTATIONS.APP_LOADING](state, payload) {
             state.loading.show = payload.show;
             state.loading.message = payload.message;
         },
@@ -223,15 +223,15 @@ export const coreModule = {
         },
 
         fullscreen({ commit }, { fullscreen }) {
-            commit(MUTATIONS.UI_FULLSCREEN, fullscreen);
+            commit(MUTATIONS.APP_FULLSCREEN, fullscreen);
         },
 
         documentDimension({ commit }, { width, height }) {
-            commit(MUTATIONS.UI_DOCUMENT_DIMENSION, { width, height });
+            commit(MUTATIONS.APP_DOCUMENT_DIMENSION, { width, height });
         },
 
         contentDimension({ commit }, { width, height }) {
-            commit(MUTATIONS.UI_CONTENT_DIMENSION, { width, height });
+            commit(MUTATIONS.APP_CONTENT_DIMENSION, { width, height });
         },
 
         drawer({ commit }, { show = true, message = "" }) {

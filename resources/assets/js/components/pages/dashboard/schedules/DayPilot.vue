@@ -210,7 +210,7 @@ export default {
     dpScriptLoaded.then(() => {
       let dp = (this.dayPilot = new window.DayPilot.Scheduler("dp"));
 
-      dp.theme = "scheduler_green";
+      //dp.theme = "scheduler_green";
       dp.width = "100%";
       dp.height = this.height - this.timeHeaderHeight * 2 - 4;
       dp.heightSpec = "Fixed";
@@ -258,9 +258,9 @@ export default {
       dp.timeRangeSelectedHandling = "Enabled";
       dp.eventMoveHandling = "Update";
       dp.eventResizeHandling = "Update";
-      dp.eventDeleteHandling = "Update";
-      dp.eventClickHandling = "Enabled";
-      dp.eventHoverHandling = "Bubble";
+      dp.eventDeleteHandling = "Disabled";
+      dp.eventClickHandling = "Update";
+      dp.eventHoverHandling = "Disabled";
 
       // Event Handlers
       dp.onEventMoved = this.eventMoveHandler;
@@ -333,10 +333,11 @@ export default {
         args.resource.minHeight = 70;
       };
 
-      dp.onBeforeEventRender = function(args) {
+      dp.onBeforeEventRender = function(args) {        
         args.data.html =
           `<span class='event_title'>${args.data.text}</span><br/>` +
           `<span>Progress: %${args.data.complete}</span>`;
+        args.data.cssClass = "has-popover";
       };
 
       dp.init();
@@ -467,7 +468,8 @@ export default {
       console.log(arg);
       if (arg.e.isEvent) {
         this.$emit("event-clicked", {
-          eventId: arg.e.id()
+          eventId: arg.e.id(),
+          div: arg.div
         });
       }
     },
@@ -510,7 +512,7 @@ export default {
     },
 
     eventDeleteHandler(arg) {
-      //console.log("delete event...");
+      console.log("delete event...");
       this.$emit("event-deleted", {});
     }
   }

@@ -9,7 +9,7 @@ window._ = require('lodash');
 
 try {
     window.$ = window.jQuery = require('jquery');
-    //require('jquery-ui');
+    require('jquery-ui');
     require('jquery-ui-sortable-npm');
     require('bootstrap');
     window.fb = require('formBuilder');

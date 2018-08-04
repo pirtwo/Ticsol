@@ -2,26 +2,16 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { localStorage } from '../storage';
 
-import { authModule } from './modules/auth';
-import { userModule } from './modules/app-user';
-import { loadingModule } from './modules/loading';
-import { sidebarModule } from './modules/sidebar';
-import { jobModule } from './modules/res-job';
-import { scheduleModule } from './modules/res-schedule';
-import { UIModule } from './modules/app-ui';
+import { coreModule } from './modules/core';
+import { userModule } from './modules/user';
 import { resourceModule} from './modules/resource';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({    
-    modules: {
-        auth: authModule,
+    modules: {        
+        core: coreModule,
         user: userModule,
-        loading: loadingModule,
-        sidebar: sidebarModule,
-        schedule: scheduleModule,
-        job: jobModule,
-        appUI: UIModule,
         resource: resourceModule
     },
     plugins: [localStorage.plugin],
