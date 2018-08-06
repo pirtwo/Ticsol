@@ -150,7 +150,13 @@ export const router = new VueRouter({
                     meta: { requireAuth: true },
                     redirect: { name: 'activityCreate' },
                     component: require('./components/pages/dashboard/activities/Activity.vue'),
-                    children: [                        
+                    children: [  
+                        {
+                            path: 'list',
+                            name: 'activityList',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/activities/ActivityList.vue'),
+                        },                            
                         {
                             path: 'create',
                             name: 'activityCreate',
