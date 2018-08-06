@@ -73,10 +73,10 @@ export const resourceModule = {
 
         activity: {
             list: [],
-            listURL: URLs.SCHEDULE_LIST,
-            createURL: URLs.SCHEDULE_CREATE,
-            updateURL: URLs.SCHEDULE_UPDATE,
-            deleteURL: URLs.SCHEDULE_DELETE
+            listURL: URLs.ACTIVITY_LIST,
+            createURL: URLs.ACTIVITY_CREATE,
+            updateURL: URLs.ACTIVITY_UPDATE,
+            deleteURL: URLs.ACTIVITY_DELETE
         },
 
         contact: {
@@ -196,6 +196,7 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_LIST, { resource: resource, data: respond.data });
                         resolve(respond.data);
                     }).catch(error => {
+                        console.log(error);
                         reject(error);
                     });
             });
@@ -209,6 +210,7 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_CREATE, { resource: resource, data: respond.data });
                         resolve(respond.data);
                     }).catch(error => {
+                        console.log(error.response);
                         reject(error);
                     });
             });
@@ -222,6 +224,7 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_UPDATE, { resource: resource, id: id, data: respond.data });
                         resolve(respond.data);
                     }).catch(error => {
+                        console.log(error);
                         reject(error);
                     });
             });
@@ -235,6 +238,7 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_DELETE, { resource: resource, id: id });
                         resolve(respond.data);
                     }).catch(error => {
+                        console.log(error);
                         reject(error);
                     });
             });
@@ -243,11 +247,12 @@ export const resourceModule = {
         scheduleInit({ commit, dispatch }, view) {
             return new Promise((resolve, reject) => {
                 commit(MUTATIONS.RESOURCE_SCHEDULE_VIEW, view);
-                dispatch("list", { resource: "schedule" }).then(() => {
-                    dispatch("list", { resource: view }).then(() => {
-                        resolve();
+                dispatch("list", { resource: "schedule", query: { with: "user,job" } })
+                    .then(() => {
+                        dispatch("list", { resource: view }).then(() => {
+                            resolve();
+                        }).catch(error => reject(error));
                     }).catch(error => reject(error));
-                }).catch(error => reject(error));
             });
         },
 

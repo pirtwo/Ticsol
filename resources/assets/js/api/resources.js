@@ -1,64 +1,28 @@
 
-/**
- * API base url
- */
-export const BASE_URL = '/api';
+export const AUTH_LOGIN ='/api/login';
+export const AUTH_LOGOUT = '/api/logout';
+export const AUTH_REGISTER = '/api/register';
+export const AUTH_PASSWORD_RESET = '/api/passwordreset';
 
+export const ACTIVITY_LIST = '/api/activity';
+export const ACTIVITY_SHOW = '/api/activity/show';
+export const ACTIVITY_CREATE = '/api/activity/store';
+export const ACTIVITY_UPDATE = '/api/activity/update';
+export const ACTIVITY_DELETE = '/api/activity/delete';
 
-//#region Auth
-/**
- * Method: POST
- */
-export const AUTH_LOGIN = BASE_URL + '/login';
+export const JOB_LIST = '/api/job';
+export const JOB_SHOW = '/api/job/show';
+export const JOB_CREATE = '/api/job/store';
+export const JOB_UPDATE = '/api/job/update';
+export const JOB_DELETE = '/api/job/delete';
 
-/**
- * Method: POST
- */
-export const AUTH_REGISTER = BASE_URL + '/register';
+export const USER_LIST = '/api/user';
+export const USER_SHOW = '/api/user/show';
+export const USER_UPDATE = '/api/user/update';
+export const USER_DELETE = '/api/user/delete';
 
-/**
- * Method: POST
- */
-export const AUTH_LOGOUT = BASE_URL + '/logout';
-
-/**
- * Method: POST
- */
-export const AUTH_PASSWORD_RESET = BASE_URL + '/passwordreset';
-
-//#endregion
-
-//#region Jobs
-
-/**
- * Method: GET.
- */
-export const JOB_LIST = BASE_URL + '/job/list';
-
-/**
- * Method: POST.
- */
-export const JOB_CREATE = BASE_URL + '/job/create';
-
-/**
- * Method: POST.
- */
-export const JOB_UPDATE = BASE_URL + '/job/update';
-export const JOB_DELETE = BASE_URL + '/job/delete';
-
-//#endregion
-
-//#region Users
-
-/**
- * Method: GET.
- */
-export const USER_LIST = BASE_URL + '/user/list';
-
-//#endregion
-
-
-export const SCHEDULE_LIST = BASE_URL + '/schedule/list';
-export const SCHEDULE_CREATE = BASE_URL + '/schedule/create';
-export const SCHEDULE_UPDATE = BASE_URL + '/schedule/update';
-export const SCHEDULE_DELETE = BASE_URL + '/schedule/delete';
+export const SCHEDULE_LIST = '/api/schedule';
+export const SCHEDULE_SHOW = '/api/schedule/show';
+export const SCHEDULE_CREATE = '/api/schedule/store';
+export const SCHEDULE_UPDATE = '/api/schedule/update';
+export const SCHEDULE_DELETE = '/api/schedule/delete';

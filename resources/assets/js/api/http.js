@@ -3,11 +3,11 @@ import axios from 'axios';
 import { store } from '../store/store';
 
 export const api = {
-    get(url, query = [], data = null, isJson = true, isAuth = true){
+    get(url, query = null, data = null, isJson = true, isAuth = true) {        
         return makeRequest('GET', url, query, isJson, isAuth, data);
     },
 
-    post(url, data = null, query = [], isJson = true, isAuth = true){
+    post(url, data = null, query = [], isJson = true, isAuth = true) {
         return makeRequest('POST', url, query, isJson, isAuth, data);
     },
 
@@ -15,15 +15,15 @@ export const api = {
         return makeRequest(method, url, query, isJson, isAuth, data);
     },
 
-    create(url, data = null, query = [], method = 'POST', isJson = true, isAuth = true){
+    create(url, data = null, query = [], method = 'POST', isJson = true, isAuth = true) {
         return makeRequest(method, url, query, isJson, isAuth, data);
     },
 
-    update(url, data = null, query = [], method = 'POST', isJson = true, isAuth = true){
+    update(url, data = null, query = [], method = 'POST', isJson = true, isAuth = true) {
         return makeRequest(method, url, query, isJson, isAuth, data);
     },
 
-    delete(url, data = null, query = [], method = 'POST', isJson = true, isAuth = true){
+    delete(url, data = null, query = [], method = 'POST', isJson = true, isAuth = true) {
         return makeRequest(method, url, query, isJson, isAuth, data);
     }
 }
@@ -37,25 +37,27 @@ export const api = {
  * @param {Boolean}  isAuth   is an authenticated request
  * @param {object}   data     request data
  */
-function makeRequest(method, url, query = [], isJson = true, isAuth = false, data = null) {
+function makeRequest(method, url, query = null, isJson = true, isAuth = false, data = null) {
     let slug = url;
     let header = {};
     let token = store.state.user.auth.token.value;
 
-    if (query.length !== 0) {
-        query.forEach((obj, index) => {
+    if (query !== null) {
+        Object.keys(query).forEach((key, index) => {
             if (index == 0)
-                slug += '?' + obj.key + '=' + obj.value;
+                slug += '?' + key + '=' + query[key];
             else
-                slug += '&' + obj.key + '=' + obj.value;
+                slug += '&' + key + '=' + query[key];
         });
     }
-    
+
+    console.log(slug);
+
     if (isJson) {
-        header['Accept'] = 'application/json';        
+        header['Accept'] = 'application/json';
     }
-    
-    if(isJson && method === "POST"){
+
+    if (isJson && method === "POST") {
         header['Content-Type'] = 'application/json';
     }
 
@@ -69,6 +71,6 @@ function makeRequest(method, url, query = [], isJson = true, isAuth = false, dat
         data: data,
         headers: header
     });
-    
+
     return req;
 }

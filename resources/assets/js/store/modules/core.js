@@ -71,7 +71,7 @@ export const coreModule = {
         },
 
         getUiContentHeight(state) {
-            return state.ui.contentHeight;
+            return state.ui.contentHeight - state.toolbar.height;
         },
 
         getUiDocWidth(state) {
@@ -179,7 +179,7 @@ export const coreModule = {
         },
 
         [MUTATIONS.APP_TOOLBAR](state, payload) {
-            state.toolbar.show = payload.show;
+            state.toolbar.show = payload.show | state.toolbar.show;
             state.toolbar.height = payload.height;
         },
 
@@ -222,8 +222,8 @@ export const coreModule = {
             commit(MUTATIONS.APP_LOADING, { show, message });
         },
 
-        fullscreen({ commit }, { fullscreen }) {
-            commit(MUTATIONS.APP_FULLSCREEN, fullscreen);
+        fullscreen({ commit }, { enable }) {
+            commit(MUTATIONS.APP_FULLSCREEN, enable);
         },
 
         documentDimension({ commit }, { width, height }) {
@@ -238,7 +238,7 @@ export const coreModule = {
             commit(MUTATIONS.APP_DRAWER, { show, message });
         },
 
-        toolbar({ commit }, { show = true, height }) {
+        toolbar({ commit }, { height, show }) {
             commit(MUTATIONS.APP_TOOLBAR, { show, height });
         },
 
