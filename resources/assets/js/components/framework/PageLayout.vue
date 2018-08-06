@@ -39,15 +39,27 @@ export default {
   methods: {
     ...mapActions({
       setDocumentDim: "core/documentDimension",
-      setContentDim: "core/contentDimension"
+      setContentDim: "core/contentDimension",
+      toolbar: "core/toolbar"
     }),
 
     resizeHandler() {
       let head = $(".header").outerHeight() | 0;
       let foot = $(".footer").outerHeight() | 0;
-      let main = $(window).height() - (head + foot);
-      this.setContentDim({ width: $(".wrap-content").outerWidth(), height: main });
-      $(".main").css("height", main);      
+      let contentHeight = $(window).height() - (head + foot);
+      let toolbarHeight = $(".navbar").outerHeight();
+
+      this.setContentDim({
+        width: $(".main").outerWidth(),
+        height: contentHeight
+      });
+      this.setDocumentDim({
+        width: $("body").outerWidth(),
+        height: $("body").outerHeight()
+      });
+      this.toolbar({ height: toolbarHeight, show: undefined });
+
+      $(".main").css("height", contentHeight);
     }
   }
 };

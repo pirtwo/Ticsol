@@ -112,10 +112,7 @@ export default {
     };
   },
 
-  created() {},
-
   mounted() {
-    console.log($(".scheduler_default_scrollable"));
     this.loading = true;
     this.fetch({ resource: "user" });
     this.scheduleInit("user").then(() => {
@@ -163,11 +160,18 @@ export default {
     clickHandler(event) {
       console.log("click");
       console.log(event);
-      
+
       var ref = $(event.div);
       var popover = $(".popover");
       popover.show();
-      var popper = new Popper(ref, popover, { placement: "top" });
+      var popper = new Popper(ref, popover, {
+        placement: "top",
+        modifiers: {
+          arrow: { enabled: true },
+          preventOverflow: { enabled: true },
+          hide: { enabled: false }
+        }
+      });
     },
 
     hoverHandler(event) {
@@ -214,7 +218,7 @@ export default {
 </script>
 
 <style scoped>
-.popover{
+.popover {
   display: none;
   background-color: yellow;
   padding: 10px;

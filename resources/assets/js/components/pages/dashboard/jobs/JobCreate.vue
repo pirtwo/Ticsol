@@ -132,7 +132,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      getList: "resource/getResource"
+      getList: "resource/getList"
     }),
 
     jobs: function() {

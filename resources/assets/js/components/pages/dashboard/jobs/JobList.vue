@@ -45,6 +45,7 @@ export default {
     return {
       jobs: [],
       page: 1,
+      perPage: 10,
       pageCount: 10,
       loading: true,
       selects: [],
@@ -75,10 +76,7 @@ export default {
       this.loading = true;
       this.fetch({
         resource: "job",
-        query: [
-          { key: "page", value: this.page },
-          { key: "count", value: this.pageCount }
-        ]
+        query: { page: this.page, perPage: this.perPage }
       })
         .then(respond => {
           this.jobs = respond.data.map(obj => {

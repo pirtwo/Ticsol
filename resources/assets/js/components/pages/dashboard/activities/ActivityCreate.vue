@@ -38,9 +38,10 @@
                         <label class="col-sm-2 col-form-lable">Schedule Item</label>
                         <div class="col-sm-10">
                             <auto-complete
-                                v-model="form.schedule_id"
+                                v-model="schedule_id"
                                 :data="scheduleItems"
-                                name="scheduleItems"
+                                
+                                name="schedule_id"
                                 place-holder="click to select item..."
                             ></auto-complete>
                         </div>
@@ -50,11 +51,11 @@
                 <div class="form-group">
                     <div class="form-row">
                         <label class="col-sm-2 col-form-lable">From</label>
-                        <div class="col-sm-5">
-                            <input type="date" class="form-control" />
+                        <div class="col">
+                            <input id="from" v-model="form.fromDate" type="date" class="form-control" />
                         </div>
-                        <div class="col-sm-5">
-                            <input type="time" class="form-control" />
+                        <div class="col">
+                            <input v-model="form.fromTime" type="time" class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -62,11 +63,11 @@
                 <div class="form-group">
                     <div class="form-row">
                         <label class="col-sm-2 col-form-lable">Till</label>                        
-                        <div class="col-sm-5">
-                            <input type="date" class="form-control" />
+                        <div class="col">
+                            <input id="till" v-model="form.tillDate" type="date" class="form-control" />
                         </div>
-                        <div class="col-sm-5">
-                            <input type="time" class="form-control" />
+                        <div class="col">
+                            <input v-model="form.tillTime" type="time" class="form-control" />
                         </div>                        
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-lable">Report</label>                        
                         <div class="col-sm-10">
-                            <textarea class="form-control" placeholder="write your report..." rows="10"></textarea>
+                            <textarea id="desc" v-model="form.desc" class="form-control" placeholder="write your report..." rows="7"></textarea>
                         </div>                      
                     </div>
                 </div>
@@ -102,20 +103,40 @@ export default {
 
   data() {
     return {
+      schedule_id: null,
       form: {
         schedule_id: null,
-        from: null,
-        till: null,
+        fromDate: "",
+        fromTime: "",
+        tillDate: "",
+        tillTime: "",
         desc: null
       },
       loading: false
     };
   },
 
+  watch: {
+    schedule_id: function(value) {
+      this.form.schedule_id = value;
+      if (value !== null && value !== undefined) {
+        let index = this.list.findIndex(item => item.id === value);
+        this.form.fromDate = this.list[index].start.split(" ")[0];
+        this.form.fromTime = this.list[index].start.split(" ")[1];
+        this.form.tillDate = this.list[index].end.split(" ")[0];
+        this.form.tillTime = this.list[index].end.split(" ")[1];
+      }
+    }
+  },
+
   computed: {
     ...mapGetters({
       getList: "resource/getList"
     }),
+
+    list: function() {
+      return this.getList("schedule");
+    },
 
     scheduleItems: function() {
       return this.getList("schedule").map(obj => {
@@ -135,25 +156,43 @@ export default {
 
   mounted() {
     this.loading = true;
-    this.fetch({ resource: "schedule" })
-      .then(() => {        
+    this.fetch({ resource: "schedule", query: { with: "job" } })
+      .then(() => {
         this.loading = false;
       })
-      .catch(error => {        
+      .catch(error => {
         this.loading = false;
       });
   },
 
   methods: {
     ...mapActions({
-      fetch: "resource/list"
+      fetch: "resource/list",
+      create: "resource/create"
     }),
 
     onSubmit(e) {
-      console.log(this.form.item);
-      console.log(this.form.time);
-      console.log(this.form.date);
-      console.log(this.form.report);
+      let form = {};
+      form.schedule_id = this.form.schedule_id;
+      form.from = this.form.fromDate + "T" + this.form.fromTime;
+      form.till = this.form.tillDate + "T" + this.form.tillTime;
+      form.desc = this.form.desc;
+      this.create({ resource: "activity", data: form })
+        .then(() => {
+          console.log("Report Created Successfuly.");
+        })
+        .catch(error => {
+          this.$formFeedback(error.response.data.errors);
+        });
+    },
+
+    clearForm() {
+      this.form.schedule_id = null;
+      this.form.fromDate = "";
+      this.form.fromTime = "";
+      this.form.tillDate = "";
+      this.form.tillTime = "";
+      this.form.desc = "";
     },
 
     onCancel(e) {}

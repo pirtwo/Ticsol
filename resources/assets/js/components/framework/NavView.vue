@@ -2,7 +2,7 @@
     <div class="wrap-drawer">      
 
         <!-- drawer -->
-        <div class="drawer" :class="[menuVisible? 'open' : 'close']">
+        <div class="drawer" :class="[showDrawer? 'open' : 'close']">
             <div class="drawer-toolbar">
               <div class="title text-center" v-if="drawerTitle !== '' ">{{ drawerTitle }}</div> 
               <slot name="drawer-toolbar"></slot>
@@ -33,8 +33,8 @@
 
             <!-- toolbar -->
             <nav class="navbar navbar-light bg-light">                
-              <button class="btn btn-light btn-sm ml-auto" type="button" @click="toggleMenu">
-                <i class="material-icons">{{ menuVisible ? "close" : "menu" }}</i>
+              <button class="btn btn-light btn-sm ml-auto" type="button" @click="onDrawer">
+                <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
               </button>
               <button class="btn btn-light btn-sm ml-auto" type="button" @click="clickBack">
                 <i class="material-icons">arrow_back</i>
@@ -42,7 +42,7 @@
               <button class="btn btn-light btn-sm ml-auto" type="button" @click="clickForward">
                 <i class="material-icons">arrow_forward</i>
               </button>
-              <button class="btn btn-light btn-sm ml-auto" type="button" @click="toggleFullscreen">
+              <button class="btn btn-light btn-sm ml-auto" type="button" @click="onFullscreen">
                 <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
               </button>
 
@@ -90,14 +90,13 @@ export default {
   },
 
   data() {
-    return {
-      menuVisible: true,
-      fullscreen: false
-    };
+    return {};
   },
 
   computed: {
     ...mapGetters({
+      fullscreen: "core/getUiFullscreen",
+      showDrawer: "core/getDrawerStatus",
       contentHeight: "core/getUiContentHeight"
     }),
 
@@ -117,40 +116,45 @@ export default {
   },
 
   methods: {
-    toggleMenu(e) {
-      this.menuVisible = !this.menuVisible;
+    ...mapActions({
+      toggleDrawer: "core/drawer",
+      toggleFullscreen: "core/fullscreen"
+    }),
+
+    onDrawer(e) {
+      this.toggleDrawer({ show: !this.showDrawer });
       e.preventDefault();
     },
 
-    toggleFullscreen(e) {
+    onFullscreen(e) {
       var element = document.documentElement;
       if (!this.fullscreen) {
         if (element.requestFullScreen) {
           element.requestFullScreen();
-          this.fullscreen = true;
+          this.toggleFullscreen({ enable: true });
         } else if (element.webkitRequestFullScreen) {
           element.webkitRequestFullScreen();
-          this.fullscreen = true;
+          this.toggleFullscreen({ enable: true });
         } else if (element.mozRequestFullScreen) {
           element.mozRequestFullScreen();
-          this.fullscreen = true;
+          this.toggleFullscreen({ enable: true });
         } else if (element.msRequestFullscreen) {
           element.msRequestFullscreen();
-          this.fullscreen = true;
+          this.toggleFullscreen({ enable: true });
         }
       } else {
         if (document.exitFullscreen) {
           document.exitFullscreen();
-          this.fullscreen = false;
+          this.toggleFullscreen({ enable: false });
         } else if (document.webkitExitFullscreen) {
           document.webkitExitFullscreen();
-          this.fullscreen = false;
+          this.toggleFullscreen({ enable: false });
         } else if (document.mozCancelFullScreen) {
           document.mozCancelFullScreen();
-          this.fullscreen = false;
+          this.toggleFullscreen({ enable: false });
         } else if (document.msExitFullscreen) {
           document.msExitFullscreen();
-          this.fullscreen = false;
+          this.toggleFullscreen({ enable: false });
         }
       }
     },
@@ -214,14 +218,14 @@ export default {
   margin-right: 0px;
 }
 
-.drawer .title{
+.drawer .title {
   width: 100%;
-  padding: 5px;  
-  color: rgba(0, 0, 0, 0.3);  
+  padding: 5px;
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .navbar {
-  height: 70px;
+  height: 50px;
   display: -webkit-box !important;
 }
 
@@ -231,7 +235,7 @@ export default {
   line-height: 1.2;
 }
 
-i.material-icons {  
+i.material-icons {
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
