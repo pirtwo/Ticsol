@@ -16,5 +16,5 @@ abstract class Criteria{
      * 
      * @return mixed
      */
-    public abstract function aplly($model, IRepository $repository); 
+    public abstract function apply($model, IRepository $repository); 
 }

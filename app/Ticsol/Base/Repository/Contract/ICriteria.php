@@ -7,7 +7,8 @@ use App\Ticsol\Base\Repository\Criteria;
 /**
  * Base contrac for criteria.
  */
-interface ICriteria{
+interface ICriteria
+{
 
     /**
      * @param bool $status
@@ -15,26 +16,22 @@ interface ICriteria{
      */
     public function skipCriteria($status = false);
 
-
     /**
-     * @param Criteria $criteria 
+     * @param Criteria $criteria
      * @return $this
      */
     public function pushCriteria(Criteria $criteria);
 
-
     /**
-     * @param Criteria $criteria 
+     * @param Criteria $criteria
      * @return $this
      */
     public function getByCriteria(Criteria $criteria);
-
 
     /**
      * @return mixed
      */
     public function getCriteria();
-
 
     /**
      * @return $this

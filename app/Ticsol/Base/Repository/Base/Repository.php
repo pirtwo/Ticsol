@@ -105,10 +105,10 @@ abstract class Repository implements IRepository, ICriteria
      * @param array $columns
      * @return mixed
      */
-    public function paginate($perPage = 15, $columns = array('*'))
+    public function paginate($perPage = 15, $with=[], $columns = array('*'))
     {
         $this->applyCriteria();
-        return $this->model->paginate($perPage, $columns);
+        return $this->model->with($with)->paginate($perPage, $columns);
     }
 
     /**
@@ -122,13 +122,12 @@ abstract class Repository implements IRepository, ICriteria
 
     /**
      * @param array $data
-     * @param string $field
-     * @param string $value
+     * @param string $id     
      * @return mixed
      */
-    public function update(array $data, $field, $value)
-    {
-        return $this->model->where($field, '=', $value)->update($data);
+    public function update(array $data, $id)
+    {        
+        return $this->model->find($id)->update($data);        
     }
 
     /**

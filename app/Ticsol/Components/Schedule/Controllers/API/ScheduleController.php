@@ -24,44 +24,98 @@ class ScheduleController extends Controller
         $this->repository = $rep;
     }
 
-    function list(Request $req) {           
-        $page = 
-            $req->query('page') ?? null;
-        $perPage = 
-            $req->query('perPage') ?? 15;
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        try {
+            $page =
+            $request->query('page') ?? null;
+            $perPage =
+            $request->query('perPage') ?? 15;
+            $with =
+            $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
-        if ($page == null) {
-            return $this->repository->all(['user', 'job']);
-        } else {
-            return $this->repository->paginate($perPage);
-        }        
+            if ($page == null) {
+                return $this->repository->all($with);
+            } else {
+                return $this->repository->paginate($perPage, $with);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+        }
     }
 
-    public function view($id)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Requests\CreateSchedule $request)
     {
-        return $this->repository->findBy('id', $id);
+        try {
+            $item = new Schedule();
+            $item->client_id = 1;
+            $item->creator_id = 1;
+            $item->type = 'assigned';
+            $item->status = 'unconfirmed';
+            $item->fill($request->all());
+            $item->save();
+            return Schedule::with(['user', 'job'])->where('id', $item->id)->get();
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+        }
     }
 
-    public function create(Request $req)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        $item = new Schedule();
-        $item->client_id = 1;
-        $item->creator_id = 1;
-        $item->type = 'assigned';
-        $item->status = 'unconfirmed';
-        $item->fill($req->all());
-        $item->save();
-        return Schedule::with(['user', 'job'])->where('id', $item->id)->get();
+        try {
+            return $this->repository->findBy('id', $id);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+        }
     }
 
-    public function update(Requests\UpdateSchedule $req, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Requests\UpdateSchedule $request, $id)
     {
-        $this->repository->update($req->all(), 'id', $id);
-        return Schedule::with(['user', 'job'])->where('id', $id)->get();
+        try {
+            $this->repository->update($request->all(), 'id', $id);
+            return Schedule::with(['user', 'job'])->where('id', $id)->get();
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+        }
     }
 
-    public function delete(Request $req, $id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
-        return $this->repository->delete('id', $id);
+        try {
+            return $this->repository->delete('id', $id);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+        }
     }
 }

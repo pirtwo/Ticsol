@@ -10,9 +10,11 @@ use App\Ticsol\Components\Job\Requests;
 use App\Ticsol\Components\Job\Exceptions;
 use App\Ticsol\Components\Job\Repository;
 
-class JobController extends Controller{  
-    
+class JobController extends Controller
+{
+
     /**
+     * Schedule items repository.
      * @var Repository\JobRepository
      */
     protected $repository;
@@ -21,75 +23,108 @@ class JobController extends Controller{
     {
         $this->repository = $rep;
     }
-    
+
     /**
-     * Method: GET
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
      */
-    public function list(Request $req)
+    public function index(Request $request)
     {
-        try{
-            $page = 
-                $req->query('page') ?? null;
-            $perPage = 
-                $req->query('perPage') ?? 20;
-                
-            if($page == null){
-                return $this->repository->all();
-            }else{
-                return $this->repository->paginate($perPage);
-            }           
-        }catch(Exception $e){            
-            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);            
+        try {
+            $page =
+            $request->query('page') ?? null;
+            $perPage =
+            $request->query('perPage') ?? 20;
+            $with =
+            $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+            if ($page == null) {
+                return $this->repository->all($with);
+            } else {
+                return $this->repository->paginate($perPage, $with);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
+
     }
 
     /**
-     * Method: GET
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function view(Request $req, $id)
+    public function store(Requests\CreateJob $request)
     {
-        try{
-            return Job::find($id);
-        }catch(Exception $e){
-            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);   
-        }
-    }
-
-    /**
-     * Method: POST
-     */
-    public function create(Requests\CreateJob $req)
-    {
-        try{           
+        try {
             $job = new Job();
-            // $job->client_id = 
+            // $job->client_id =
             //     $req->user()->client_id;
-            // $job->creator_id = 
+            // $job->creator_id =
             //     $req->user()->id;
             $job->client_id = 1;
             $job->creator_id = 1;
             $job->fill($req->all());
             $job->save();
             return $job;
-        }catch(\Exception $e){
-            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);   
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+        }
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        try {
+            $job = Job::find($id);
+            if ($job == null) {
+                throw new Exceptions\JobNotFound();
+            }
+            return $job;
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
     }
 
     /**
-     * Method: POST
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function update(Requests\UpdateJob $req, $id)
+    public function update(Requests\UpdateJob $request, $id)
     {
-        try{
-            $job = Job::find($id);
-            if($job == null)
+        try
+        { 
+            $job = $this->repository->findBy('id', $id);
+            if ($job == null) {
                 throw new Exceptions\JobNotFound();
-            $job->update($req->all());
+            }
+
+            $job->update($request->all());
             return $job;
-        }catch(Exception $e){
-            return response()->json(['message'=>'An error ocured while proccessing your request.'], 500);   
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 }

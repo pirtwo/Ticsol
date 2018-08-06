@@ -17,8 +17,7 @@ class Activity extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'client_id',
+    protected $fillable = [        
         'schedule_id',
         'from',
         'till',
@@ -31,7 +30,8 @@ class Activity extends Model
      * @var array
      */
     protected $hidden = [
-
+        'client_id',
+        'creator_id',  
     ];    
 
     #region Eloquent_Relationships
@@ -42,6 +42,14 @@ class Activity extends Model
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    /**
+     * Creator of current activity.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     /**
