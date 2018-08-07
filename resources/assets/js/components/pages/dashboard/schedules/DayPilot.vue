@@ -6,6 +6,10 @@
 export default {
   props: {
     // General Settings
+    view: {
+      type: String,
+      default: ""
+    },
     width: {
       type: [String, Number],
       default: "100%"
@@ -163,7 +167,7 @@ export default {
     // Rows
     treeView: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
 
@@ -210,7 +214,7 @@ export default {
     dpScriptLoaded.then(() => {
       let dp = (this.dayPilot = new window.DayPilot.Scheduler("dp"));
 
-      //dp.theme = "scheduler_green";
+      dp.theme = "scheduler_green";
       dp.width = "100%";
       dp.height = this.height - this.timeHeaderHeight * 2 - 4;
       dp.heightSpec = "Fixed";
@@ -234,7 +238,7 @@ export default {
       dp.businessWeekends = this.businessWeekends;
 
       // Grid
-      dp.cellWidthSpec = this.getCellWidthSpec;
+      dp.cellWidthSpec = this.getCellWidthSpec();
       if (this.cellWidth !== "Auto") dp.cellWidth = this.cellWidth;
       dp.crosshairType = this.crosshair;
       dp.autoScroll = this.autoScroll;
@@ -252,7 +256,13 @@ export default {
       dp.eventStackingLineHeight = this.eventStackLineHeight;
 
       // Rows
+      dp.rowHeaderHideIconEnabled = true;
+      dp.rowHeaderWidth = 120;
+      dp.rowHeaderWidthMarginLeft = 0;
+      dp.rowHeaderWidthMarginRight = 0;
+      dp.rowHeaderWidthAutoFit = false;
       dp.treeEnabled = this.treeView;
+      dp.view = this.view;
 
       // Events
       dp.timeRangeSelectedHandling = "Enabled";
@@ -319,21 +329,21 @@ export default {
       };
 
       dp.onBeforeResHeaderRender = function(args) {
-        let avatar = "",
-          name = "",
-          id = args.resource.id - 1;
-        if (dp.resources[id] !== undefined) {
-          name = dp.resources[id].name;
-          avatar = dp.resources[id].avatar;
+        let item = dp.resources.find(item => item.id == args.resource.id);
+        if (this.view === "user") {
+          args.resource.html =
+            `<img class='res_user_avatar' src=${item.avatar} />` +
+            `<div class='res_user_name'> ${item.name} </div>`;
         }
-        args.resource.html =
-          `<img class='res_user_avatar' src=${avatar} />` +
-          `<span class='res_user_name'> ${name} </span>`;
-
-        args.resource.minHeight = 70;
+        if (this.view === "job") {
+          args.resource.html =
+            `<div class='res_job_name'>${item.name}</div>` +
+            `<div class='res_job_code'>Code: ${item.code}</div>`;
+        }
+        args.resource.minHeight = 90;
       };
 
-      dp.onBeforeEventRender = function(args) {        
+      dp.onBeforeEventRender = function(args) {
         args.data.html =
           `<span class='event_title'>${args.data.text}</span><br/>` +
           `<span>Progress: %${args.data.complete}</span>`;
@@ -370,6 +380,17 @@ export default {
 
     message: function(value) {
       this.dayPilot.message(value);
+    },
+
+    view: function(value) {
+      this.dayPilot.view = value;
+      this.dayPilot.update();
+    },
+
+    range: function(value) {
+      this.dayPilot.days = this.getDays();
+      this.dayPilot.startDate = this.getStartDate();
+      this.dayPilot.update();
     }
   },
 
