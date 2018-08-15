@@ -52,7 +52,12 @@ class ScheduleController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * 
+     * Type         : schedule, timesheet
+     * Status       : tentative, confirmed, submitted
+     * Event_type   : leave, unavailable hours, scheduled, RDO
+     * 
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */

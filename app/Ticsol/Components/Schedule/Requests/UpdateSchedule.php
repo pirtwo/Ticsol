@@ -24,7 +24,14 @@ class UpdateSchedule extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id'       => 'required|numeric',
+            'job_id'        => 'required|numeric',
+            'type'          => 'required|string|in:schedule,timesheet',
+            'status'        => 'required|string|in:tentative,confirmed,submitted',            
+            'start'         => 'required|date',
+            'end'           => 'required|date',
+            'offsite'       => 'nullable|boolean',
+            'break_length'  => 'nullable|numeric'
         ];
     }
 

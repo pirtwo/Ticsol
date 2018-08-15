@@ -12,7 +12,6 @@ use App\Ticsol\Components\Job\Repository;
 
 class JobController extends Controller
 {
-
     /**
      * Schedule items repository.
      * @var Repository\JobRepository
@@ -47,7 +46,6 @@ class JobController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
-
     }
 
     /**
@@ -66,13 +64,12 @@ class JobController extends Controller
             //     $req->user()->id;
             $job->client_id = 1;
             $job->creator_id = 1;
-            $job->fill($req->all());
+            $job->fill($request->all());
             $job->save();
             return $job;
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
-
     }
 
     /**

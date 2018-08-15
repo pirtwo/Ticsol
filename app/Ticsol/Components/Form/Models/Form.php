@@ -17,9 +17,7 @@ class Form extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'client_id',
-        'creator_id',
+    protected $fillable = [        
         'name',
         'body',
         'values',
@@ -31,7 +29,7 @@ class Form extends Model
      * @var array
      */
     protected $hidden = [
-
+        
     ];
 
     #region Eloquent_Relationships
