@@ -83,6 +83,38 @@
 		0px 1px 0px rgba(255,255,255,0.3);
 }
 
+.scheduler_green_header_icon{
+	color: black;
+	background-color: red;
+	position: relative;
+	width: 15px !important;
+	height: 26px !important;
+}
+
+.scheduler_green_header_icon::before{
+	content: "»";
+	position: absolute;
+	font-size: 20px;
+	top: 0px;
+	left: 2px;
+}
+
+.scheduler_green_header_icon_hide{
+	color: black;
+	background-color: red;
+	position: relative;
+	width: 15px !important;
+	height: 26px !important;
+}
+
+.scheduler_green_header_icon_hide::before{
+	content: "«";
+	position: absolute;
+	font-size: 20px;
+	top: 0px;
+	left: 2px;
+}
+
 .scheduler_green_timeheader 
 {
 	cursor: default;
@@ -97,6 +129,9 @@
 	padding-left: 5px;		
 }
 
+.scheduler_green_timeheadergroup{
+	
+}
 
 .scheduler_green_timeheadergroup_inner
 {
@@ -140,7 +175,9 @@
 }
 
 .scheduler_green_rowheader_inner{
-	padding: 5px;
+	padding: 15px 0px;	
+	height: 100%;
+	vertical-align: middle;
 }
 
 .scheduler_green_corner
@@ -160,13 +197,13 @@
 }
 
 .scheduler_green_tree_image_no_children {
-	background-image: url('scheduler_green/tree_nochildren.png');
+	/* background-image: url('scheduler_green/tree_nochildren.png'); */
 }
 .scheduler_green_tree_image_expand {
-	background-image: url('scheduler_green/tree_expand.png');
+	/* background-image: url('scheduler_green/tree_expand.png'); */
 }
 .scheduler_green_tree_image_collapse {
-	background-image: url('scheduler_green/tree_collapse.png');
+	/* background-image: url('scheduler_green/tree_collapse.png'); */
 }
 
 .scheduler_green_divider 
@@ -209,9 +246,20 @@
 	border-radius: 5px;
 }
 
+.scheduler_green_cell
+{
+	
+}
+
 .scheduler_green_cellweekend 
 {
 	background-color: red;
+}
+
+.scheduler_green_crosshair_top,
+.scheduler_green_crosshair_left{
+	background-color: rgba(0, 0, 0, 0.05);
+	transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 
@@ -237,17 +285,36 @@
 	font-size: 10px;
 }
 
+.res_user_name{	
+	width: 100%;
+	line-height: 2;
+	font-size: 8px;
+	text-align: center;		
+	display: inline-block;	
+}
+
 .res_user_avatar{
 	width: 50px;
 	height: 50px;
-	margin: 2px;
+	margin: auto;
 	border-radius: 3px;
-	-webkit-box-shadow: 3px 3px 8px -3px rgba(0,0,0,0.75);
-	-moz-box-shadow: 3px 3px 8px -3px rgba(0,0,0,0.75);
-	box-shadow: 3px 3px 8px -3px rgba(0,0,0,0.75);
+	display: block;	
 }
 
-.res_user_name{
-	font-size: 8px;
-	vertical-align: baseline;	
+.res_job_name,
+.res_job_code{
+	width: 100%;
+	
+	text-align: center;
+	display: inline-block;;
+}
+
+.res_job_name{
+	padding: 0px 5px;
+	font-size: 12px;
+}
+
+.res_job_code{
+	padding: 5px 5px;
+	font-size: 10px;
 }

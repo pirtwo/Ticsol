@@ -18,5 +18,6 @@
         <app></app>
     </div>
 </body>
+<script src="{{ asset('js/daypilot-all.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 </html>

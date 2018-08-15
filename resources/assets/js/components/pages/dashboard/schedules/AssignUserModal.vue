@@ -17,7 +17,7 @@
               <div class="form-row">
                 <label class="col-form-label col-sm-12">User Name</label>
                 <div class="col">
-                  <input v-model="form.userName" class="form-control" type="text" readonly>
+                  <input v-model="form.userName" name="user_id" class="form-control" type="text" readonly>
                 </div>
               </div>              
             </div>
@@ -26,12 +26,30 @@
               <div class="form-row">
                 <label class="col-form-label col-sm-12">Select Job</label>
                 <div class="col">
-                  <auto-complete
-                    v-model="form.jobId"
+                  <selelct-box
+                    v-model="form.job"
                     :data="options"
-                    name="job"
-                    place-holder="select job ..."
-                  ></auto-complete>
+                    :multi-select="false"
+                    name="job_id"                    
+                    placeholder="job..."
+                    search-placeholder="search..."
+                  ></selelct-box>
+                </div>
+              </div>              
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-form-label col-sm-12">Status</label>
+                <div class="col">
+                  <selelct-box
+                    v-model="form.status"
+                    :data="statusOptions"
+                    :multi-select="false"
+                    :enable-searchbox="false"
+                    name="status"                    
+                    placeholder="status..."                    
+                  ></selelct-box>
                 </div>
               </div>              
             </div>
@@ -40,7 +58,7 @@
                <div class="form-row">
                 <label class="col-form-label col-sm-12">Starts</label>
                 <div class="col">
-                  <input v-model="form.start" type="date" class="form-control" />
+                  <input v-model="form.start" name="start" type="date" class="form-control" />
                 </div>
                 <div class="col">
                   <input v-model="form.startTime" type="time" class="form-control" />                  
@@ -52,7 +70,7 @@
               <div class="form-row">
                 <label class="col-form-label col-sm-12">Ends</label>
                 <div class="col">
-                  <input v-model="form.end" type="date" class="form-control" />
+                  <input v-model="form.end" name="end" type="date" class="form-control" />
                 </div>
                 <div class="col">
                   <input v-model="form.endTime" type="time" class="form-control" />
@@ -62,7 +80,7 @@
 
             <div class="form-group">
               <div class="custom-control custom-checkbox">
-                <input v-model="form.offsite" type="checkbox" class="custom-control-input" id="offsite">
+                <input v-model="form.offsite" name="offsite" type="checkbox" class="custom-control-input" id="offsite">
                 <label class="custom-control-label" for="offsite">Work Offsite</label>
               </div>
             </div>
@@ -82,13 +100,13 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import AutoComplete from "../../../framework/BaseAutoComplete.vue";
+import Selectbox from "../../../framework/BaseSelectBox.vue";
 
 export default {
   name: "AssignUserPopup",
 
   components: {
-    "auto-complete": AutoComplete
+    "selelct-box": Selectbox
   },
 
   props: {
@@ -111,13 +129,19 @@ export default {
       form: {
         userName: "",
         userId: null,
-        jobId: null,
+        job: null,
+        status: null,
         startTime: "",
         endTime: "",
         start: "",
         end: "",
         offsite: false
-      }
+      },
+      statusOptions: [
+        { key: 1, value: "Tentative" },
+        { key: 2, value: "Confirmed" },
+        { key: 3, value: "Submitted" }
+      ]
     };
   },
 
@@ -191,11 +215,12 @@ export default {
     onSubmit(e) {
       let event = {};
       event.user_id = this.form.userId;
-      event.job_id = this.form.jobId;
+      event.job_id = this.form.job.key;
+      event.status = this.form.status.value.toLoweCase();
       event.start = this.form.start + "T" + this.form.startTime + ":00";
       event.end = this.form.end + "T" + this.form.endTime + ":00";
       event.offsite = this.form.offsite;
-      event.break_length = 0;
+      event.break_length = null;
 
       e.target.innerHTML = "Creating...";
       e.target.disabled = true;
@@ -212,15 +237,14 @@ export default {
           console.log(error);
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
-          this.clearForm();
-          this.$emit("input", false);
+          this.$formFeedback(error.response.data.errors);
         });
     },
 
     clearForm() {
       this.form.userName = "";
       this.form.userId = null;
-      this.form.jobId = null;
+      this.form.job = null;
       this.form.startTime = "";
       this.form.endTime = "";
       this.form.start = "";

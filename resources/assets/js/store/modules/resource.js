@@ -9,6 +9,7 @@ export const resourceModule = {
         user: {
             list: [],
             listURL: URLs.USER_LIST,
+            showURL: URLs.USER_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
@@ -17,6 +18,7 @@ export const resourceModule = {
         role: {
             list: [],
             listURL: URLs.SCHEDULE_LIST,
+            showURL: URLs.SCHEDULE_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
@@ -25,6 +27,7 @@ export const resourceModule = {
         acl: {
             list: [],
             listURL: URLs.SCHEDULE_LIST,
+            showURL: URLs.SCHEDULE_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
@@ -33,6 +36,7 @@ export const resourceModule = {
         request: {
             list: [],
             listURL: URLs.SCHEDULE_LIST,
+            showURL: URLs.SCHEDULE_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
@@ -41,6 +45,7 @@ export const resourceModule = {
         job: {
             list: [],
             listURL: URLs.JOB_LIST,
+            showURL: URLs.JOB_SHOW,
             createURL: URLs.JOB_CREATE,
             updateURL: URLs.JOB_UPDATE,
             deleteURL: URLs.JOB_DELETE
@@ -50,6 +55,7 @@ export const resourceModule = {
             view: "",
             list: [],
             listURL: URLs.SCHEDULE_LIST,
+            showURL: URLs.SCHEDULE_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
@@ -58,6 +64,7 @@ export const resourceModule = {
         resource: {
             list: [],
             listURL: URLs.SCHEDULE_LIST,
+            showURL: URLs.SCHEDULE_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
@@ -66,6 +73,7 @@ export const resourceModule = {
         permission: {
             list: [],
             listURL: URLs.SCHEDULE_LIST,
+            showURL: URLs.SCHEDULE_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
@@ -74,6 +82,7 @@ export const resourceModule = {
         activity: {
             list: [],
             listURL: URLs.ACTIVITY_LIST,
+            showURL: URLs.ACTIVITY_SHOW,
             createURL: URLs.ACTIVITY_CREATE,
             updateURL: URLs.ACTIVITY_UPDATE,
             deleteURL: URLs.ACTIVITY_DELETE
@@ -82,10 +91,20 @@ export const resourceModule = {
         contact: {
             list: [],
             listURL: URLs.SCHEDULE_LIST,
+            showURL: URLs.SCHEDULE_SHOW,
             createURL: URLs.SCHEDULE_CREATE,
             updateURL: URLs.SCHEDULE_UPDATE,
             deleteURL: URLs.SCHEDULE_DELETE
-        }
+        },
+
+        form: {
+            list: [],
+            listURL: URLs.FORM_LIST,
+            showURL: URLs.FORM_SHOW,
+            createURL: URLs.FORM_CREATE,
+            updateURL: URLs.FORM_UPDATE,
+            deleteURL: URLs.FORM_DELETE
+        },
 
     },
 
@@ -133,7 +152,7 @@ export const resourceModule = {
                     list = callback === undefined ? state.job.list : state.job.list.filter(callback);
                     if (list.length == 0) return [];
                     return list.map(obj => {
-                        return { id: obj.id, name: obj.title };
+                        return { id: obj.id, name: obj.title, code: obj.code };
                     });
                 case 'user':
                     list = callback === undefined ? state.user.list : state.user.list.filter(callback);
@@ -152,6 +171,10 @@ export const resourceModule = {
 
         [MUTATIONS.RESOURCE_LIST](state, payload) {
             state[payload.resource].list = payload.data;
+        },
+
+        [MUTATIONS.RESOURCE_LIST_CLEAR](state, payload) {
+            state[payload].list = [];
         },
 
         [MUTATIONS.RESOURCE_CREATE](state, payload) {
@@ -244,20 +267,26 @@ export const resourceModule = {
             });
         },
 
+        clearList({ commit, dispatch }, resource) {
+            dispatch("checkResource", resource);
+            commit(MUTATIONS.RESOURCE_LIST_CLEAR, resource);
+        },
+
         scheduleInit({ commit, dispatch }, view) {
             return new Promise((resolve, reject) => {
                 commit(MUTATIONS.RESOURCE_SCHEDULE_VIEW, view);
-                dispatch("list", { resource: "schedule", query: { with: "user,job" } })
-                    .then(() => {
-                        dispatch("list", { resource: view }).then(() => {
-                            resolve();
-                        }).catch(error => reject(error));
-                    }).catch(error => reject(error));
+                let events = dispatch("list", { resource: "schedule", query: { with: "user,job" } });
+                let resources = dispatch("list", { resource: view });
+                Promise.all([events, resources]).then(() => resolve()).catch(error => reject(error));
             });
         },
 
+        scheduleView({ commit }, view) {
+            commit(MUTATIONS.RESOURCE_SCHEDULE_VIEW, view);
+        },
+
         checkResource({ state }, payload) {
-            if (["user", "job", "schedule", "request", "activity"].indexOf(payload) === -1)
+            if (["user", "job", "schedule", "request", "activity", "form"].indexOf(payload) === -1)
                 throw new Error("Invalid resource name.");
         }
     }

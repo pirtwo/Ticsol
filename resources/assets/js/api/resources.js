@@ -26,3 +26,9 @@ export const SCHEDULE_SHOW = '/api/schedule/show';
 export const SCHEDULE_CREATE = '/api/schedule/store';
 export const SCHEDULE_UPDATE = '/api/schedule/update';
 export const SCHEDULE_DELETE = '/api/schedule/delete';
+
+export const FORM_LIST = '/api/form';
+export const FORM_SHOW = '/api/form/show';
+export const FORM_CREATE = '/api/form/store';
+export const FORM_UPDATE = '/api/form/update';
+export const FORM_DELETE = '/api/form/delete';

@@ -9,15 +9,16 @@
             :placeholder="placeholder" 
             readonly>
 
-        <button class="btn btn-sm btn-link" @click.stop="showList = !showList">
+        <button type="button" class="btn btn-sm btn-link" @click.stop="showList = !showList">
             <i class="material-icons">
                 {{ showList? "expand_less": "expand_more"}}
             </i>
         </button>
 
         <div class="wrap-list" v-show="showList">
-            <input type="text" name="" class="select-query form-control form-control-sm"
+            <input type="text" name="" class="searchbox form-control form-control-sm"
                     v-model="query" 
+                    v-if="enableSearchbox"
                     :placeholder="searchPlaceholder">
             
             <ul class="select-options">            
@@ -26,8 +27,8 @@
                     :class="[{'selected' : isSelected(item)}, 'select-option']"
                     @click="onSelect(item, $event)">
 
-                    <input type="checkbox" v-if="multiSelect" :checked="isSelected(item)"> 
-                    {{ item.value }}
+                    <input type="checkbox" v-if="multiSelect" :checked="isSelected(item)">                     
+                    {{item.value}}
                 </li>
             </ul>
         </div>     
@@ -57,6 +58,10 @@ export default {
       type: String,
       default: ""
     },
+    enableSearchbox: {
+      type: Boolean,
+      default: true
+    },
     searchPlaceholder: {
       type: String,
       default: ""
@@ -65,8 +70,19 @@ export default {
       type: Boolean,
       default: false
     },
+    outputType: {
+      type: String,
+      default: "key",
+      validator: value => {
+        return ["key", "value", "key-value"].indexOf(value) !== -1;
+      }
+    },
+    default: {
+      type: [Object, Number],
+      default: null
+    },
     value: {
-      type: [Array, Object],
+      type: [Array, Object, Number, String],
       default: null
     }
   },
@@ -100,6 +116,21 @@ export default {
       } else {
         $(".select-value").removeClass("list-open");
       }
+    },
+
+    value: function(value) {
+      if (value === null) {
+        this.text = "";
+        this.query = "";
+        this.selects = [];
+      }
+    },
+
+    default: function(value) {      
+      this.selects = [];
+      let item = this.data.find(item => item.key == value);
+      this.text = item.value;      
+      this.selects.push(item);
     }
   },
 
@@ -119,7 +150,7 @@ export default {
     },
 
     searchFocus() {
-      $(".select-query").focus();
+      $(".searchbox").focus();
     },
 
     onSelect(item, e) {
@@ -148,12 +179,43 @@ export default {
 
         $(checkbox).prop("checked", !status);
         this.text = this.selects.map(el => el.value).join(" | ");
-        this.$emit("input", this.selects);
+        this.update(this.selects);
       } else {
-        this.text = item.value;
-        this.selects = [];
-        this.selects.push(item);
-        this.$emit("input", this.selects[0]);
+        if (this.isSelected(item)) {
+          this.text = "";
+          this.selects = [];
+          this.$emit("input", null);
+        } else {
+          this.text = item.value;
+          this.selects = [];
+          this.selects.push(item);
+          this.update(this.selects[0]);
+        }
+      }
+    },
+
+    update(value) {
+      if (this.outputType === "key")
+        this.$emit(
+          "input",
+          Array.isArray(value)
+            ? value.map(item => {
+                return item.key;
+              })
+            : value.key
+        );
+      if (this.outputType === "value") {
+        this.$emit(
+          "input",
+          Array.isArray(value)
+            ? value.map(item => {
+                return item.value;
+              })
+            : value.value
+        );
+      }
+      if (this.outputType === "key-value") {
+        this.$emit("input", value);
       }
     },
 
@@ -186,7 +248,6 @@ export default {
 }
 
 .list-open {
-  border-bottom: 0px !important;
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
 }
@@ -199,7 +260,7 @@ export default {
   left: 0px;
   width: 100%;
   z-index: 10;
-  padding: 3px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
   margin-top: 0px;
   background-color: white;
   border: 1px solid #ced4da;
@@ -208,6 +269,10 @@ export default {
   /* box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.75); */
+}
+
+.highlight {
+  background-color: yellow;
 }
 
 button {
@@ -232,7 +297,7 @@ ul {
 
 ul li {
   margin: 0px 5px;
-  padding: 3px 10px;
+  padding: 1px 10px;
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -243,7 +308,8 @@ ul li:last-child {
 }
 
 ul li.selected {
-  background-color: yellow;
+  border-radius: 0px;
+  background-color: rgba(000, 000, 000, 0.1);
 }
 
 ul li::selection {
@@ -252,7 +318,6 @@ ul li::selection {
 
 ul li:hover {
   color: white;
-  box-shadow: 0px 3px 5px -2px rgba(0, 0, 0, 0.75);
   background-color: rgba(41, 62, 129, 0.671);
 }
 </style>

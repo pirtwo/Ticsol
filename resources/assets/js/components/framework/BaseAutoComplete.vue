@@ -8,7 +8,7 @@
           :class="[{ 'list-open' : showList }, 'form-control']"
           :id="id" 
           :name="name" 
-          :placeholder="placeHolder"/>
+          :placeholder="placeholder"/>
         <div class="wrap-results" v-show="showList">
           <ul class="results">
             <li class="result" 
@@ -45,7 +45,7 @@ export default {
       type: String,
       default: ""
     },
-    placeHolder: {
+    placeholder: {
       type: String,
       default: ""
     },
@@ -157,11 +157,20 @@ ul {
   list-style: none;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 100px;
+  max-height: 150px;
+}
+
+ul li{
+  margin: 0px 5px;
+  padding: 1px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 ul li:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.05);
+  color: white;  
+  background-color: rgba(41, 62, 129, 0.671);
 }
 </style>

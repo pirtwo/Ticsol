@@ -1,11 +1,13 @@
 <template>
-    <nav-view :scrollbar="true" :loading="loading" drawer-title="" padding="p-2">
+    <nav-view :scrollbar="true" :loading="loading" padding="p-2">
 
         <template slot="toolbar">
           <pagination-view v-model="page" :page-count="pageCount"></pagination-view>
         </template>
 
-        <template slot="drawer"></template>
+        <template slot="drawer">
+
+        </template>
 
         <template slot="content">
 
@@ -16,7 +18,7 @@
                </template>
                <template slot="body" slot-scope="{item}">
                  <td>{{ item.id }}</td>
-                 <td>{{ item.title }}</td>
+                 <td><router-link :to="{ name:'jobDetails', params:{ id : item.id }}">{{ item.title }}</router-link></td>
                  <td>{{ item.code }}</td>
                  <td>{{ item.active ? "Yes" : "No" }}</td>
                </template> 

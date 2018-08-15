@@ -129,19 +129,44 @@ export const router = new VueRouter({
                             name: 'jobCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/jobs/JobCreate.vue'),
+                        },                       
+                        {
+                            path: ':id/details',                            
+                            name: 'jobDetails',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/jobs/JobDetails.vue'),
                         },
                         {
-                            path: 'view',
-                            name: 'jobView',
+                            path: ':id/related-jobs',
+                            name: 'jobChilds',
+                            props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/jobs/JobView.vue'),
                         },
                         {
-                            path: 'profile',
-                            name: 'jobProfile',
+                            path: ':id/contacts',
+                            name: 'jobContacts',
+                            props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/jobs/JobProfile.vue'),
-                        }
+                        },
+                        {
+                            path: ':id/scheduled-items',
+                            name: 'jobItems',
+                            props: true,
+                            meta: { requireAuth: true },
+                        },
+                        {
+                            path: ':id/reports',
+                            name: 'jobReports',
+                            props: true,
+                            meta: { requireAuth: true },
+                        },
+                        {
+                            path: ':id/requests',
+                            name: 'jobRequests',
+                            props: true,
+                            meta: { requireAuth: true },
+                        },
                     ]
                 },
                 {
@@ -177,6 +202,21 @@ export const router = new VueRouter({
                             name: 'contactCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/contacts/ContactCreate.vue'),
+                        }                        
+                    ]
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'profileCreate' },
+                    component: require('./components/pages/dashboard/profiles/Profiles.vue'),
+                    children: [                        
+                        {
+                            path: 'create',
+                            name: 'profileCreate',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/profiles/ProfileCreate.vue'),
                         }                        
                     ]
                 },
