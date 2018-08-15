@@ -19,10 +19,12 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     Route::post('/login', 'AuthController@login');
     Route::post('/refresh', 'AuthController@refresh');
 
-    // Users
+    // User
     Route::get('user', 'UserController@index');
+    Route::get('user/show/{id}', 'UserController@show');
+    Route::post('user/update/{id}', 'UserController@update');    
         
-    // Jobs
+    // Job
     Route::get('job', 'JobController@index');
     Route::get('job/show/{id}', 'JobController@show'); 
     Route::post('job/store', 'JobController@store');
@@ -39,6 +41,12 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     Route::get('activity/show/{id}', 'ActivityController@show');
     Route::post('activity/store', 'ActivityController@store');
     Route::post('activity/update/{id}', 'ActivityController@update');
+
+    // Form
+    Route::get('form', 'FormController@index');
+    Route::get('form/show/{id}', 'FormController@show');
+    Route::post('form/store', 'FormController@store');
+    Route::post('form/update/{id}', 'FormController@update');
     
     /**
      * Protected api routes
