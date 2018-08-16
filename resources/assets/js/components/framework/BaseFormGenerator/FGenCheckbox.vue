@@ -54,6 +54,7 @@ export default {
     },
 
     isChecked(value) {
+      if(this.value === undefined) return false;
       return this.value.indexOf(value) != -1;
     }
   }
