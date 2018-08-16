@@ -40,8 +40,7 @@ export default {
   },
 
   watch:{
-    value: function(value){
-      console.log("update data");
+    value: function(value){      
       this.formData = value;
     }
   },

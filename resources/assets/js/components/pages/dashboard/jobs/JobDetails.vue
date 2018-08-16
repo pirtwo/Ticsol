@@ -178,10 +178,12 @@ export default {
         this.defaultParent = job.parent_id;
         this.defaultProfile = job.form_id;
         this.formData = Object.assign({}, this.formData, JSON.parse(job.meta));
-        this.schema = JSON.parse(
-          this.getList("form", item => item.id == job.form_id)[0].body
-        );
-        Object.assign(this.form, job);            
+        if (job.form_id !== null) {
+          this.schema = JSON.parse(
+            this.getList("form", item => item.id == job.form_id)[0].body
+          );
+        }
+        Object.assign(this.form, job);
         this.loading = false;
       })
       .catch(error => {
