@@ -10,7 +10,7 @@
                 <input class="custom-control-input" type="radio" 
                 :name="name" 
                 :id="name + index"
-                :checked="radio.selected"
+                :checked="radio.value == value"
                 :value="radio.value"            
                 @input="$emit('input', $event.target.value)">
                 <label class="custom-control-label" :for="name + index">{{ radio.label }}</label>

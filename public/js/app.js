@@ -63061,7 +63061,10 @@ var render = function() {
               _c("input", {
                 staticClass: "custom-control-input",
                 attrs: { type: "radio", name: _vm.name, id: _vm.name + index },
-                domProps: { checked: radio.selected, value: radio.value },
+                domProps: {
+                  checked: radio.value == _vm.value,
+                  value: radio.value
+                },
                 on: {
                   input: function($event) {
                     _vm.$emit("input", $event.target.value)
@@ -63521,7 +63524,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -63576,6 +63579,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }), 1);
       }
       this.$emit("input", this.selects);
+    },
+    isChecked: function isChecked(value) {
+      return this.value.indexOf(value) != -1;
     }
   }
 });
@@ -63613,7 +63619,10 @@ var render = function() {
                   name: _vm.name,
                   id: _vm.name + index
                 },
-                domProps: { value: checkbox.value, checked: checkbox.selected },
+                domProps: {
+                  value: checkbox.value,
+                  checked: _vm.isChecked(checkbox.value)
+                },
                 on: {
                   input: function($event) {
                     _vm.update($event)

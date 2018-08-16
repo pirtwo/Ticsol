@@ -11,7 +11,7 @@
                   :name="name" 
                   :id="name + index"
                   :value="checkbox.value" 
-                  :checked="checkbox.selected"
+                  :checked="isChecked(checkbox.value)"
                   @input="update($event)">
               <label class="custom-control-label" :for="name + index">{{ checkbox.label }}</label>
           </div>
@@ -51,6 +51,10 @@ export default {
         );
       }
       this.$emit("input", this.selects);
+    },
+
+    isChecked(value) {
+      return this.value.indexOf(value) != -1;
     }
   }
 };
