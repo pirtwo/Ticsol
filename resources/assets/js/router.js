@@ -187,7 +187,14 @@ export const router = new VueRouter({
                             name: 'activityCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/activities/ActivityCreate.vue'),
-                        }                        
+                        },
+                        {
+                            path: ':id/details',
+                            name: 'activityDetails',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/activities/ActivityDetails.vue'),
+                        }                            
                     ]
                 },
                 {
@@ -213,10 +220,23 @@ export const router = new VueRouter({
                     component: require('./components/pages/dashboard/profiles/Profiles.vue'),
                     children: [                        
                         {
+                            path: 'list',
+                            name: 'profileList',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/profiles/ProfileList.vue'),
+                        },
+                        {
                             path: 'create',
                             name: 'profileCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/profiles/ProfileCreate.vue'),
+                        },
+                        {
+                            path: ':id/details',
+                            name: 'profileDetails',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/profiles/ProfileDetails.vue'),
                         }                        
                     ]
                 },
