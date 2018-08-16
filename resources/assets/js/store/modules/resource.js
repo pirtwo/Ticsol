@@ -186,12 +186,16 @@ export const resourceModule = {
         },
 
         [MUTATIONS.RESOURCE_UPDATE](state, payload) {
+            if (state[payload.resource].list.length === 0)
+                return;
             let index =
                 state[payload.resource].list.findIndex((el) => {
                     return el.id === payload.id;
                 });
-            state[payload.resource].list[index] =
+            if (index !== -1) {
+                state[payload.resource].list[index] =
                 Object.assign(state[payload.resource].list[index], payload.data);
+            }
         },
 
         [MUTATIONS.RESOURCE_DELETE](state, payload) {
@@ -216,7 +220,12 @@ export const resourceModule = {
             return new Promise((resolve, reject) => {
                 api.get(state[resource].listURL, query)
                     .then(respond => {
-                        commit(MUTATIONS.RESOURCE_LIST, { resource: resource, data: respond.data });
+                        let data = null;
+                        if (query !== undefined && query.page !== undefined)
+                            data = respond.data.data;
+                        else
+                            data = respond.data;
+                        commit(MUTATIONS.RESOURCE_LIST, { resource: resource, data: data });
                         resolve(respond.data);
                     }).catch(error => {
                         console.log(error);
@@ -233,7 +242,20 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_CREATE, { resource: resource, data: respond.data });
                         resolve(respond.data);
                     }).catch(error => {
-                        console.log(error.response);
+                        console.log(error);
+                        reject(error);
+                    });
+            });
+        },
+
+        show({ state, dispatch }, { resource, id, query }) {
+            dispatch("checkResource", resource);
+            return new Promise((resolve, reject) => {
+                api.get(`${state[resource].showURL}/${id}`, query)
+                    .then(respond => {
+                        resolve(respond.data);
+                    }).catch(error => {
+                        console.log(error);
                         reject(error);
                     });
             });
@@ -277,7 +299,9 @@ export const resourceModule = {
                 commit(MUTATIONS.RESOURCE_SCHEDULE_VIEW, view);
                 let events = dispatch("list", { resource: "schedule", query: { with: "user,job" } });
                 let resources = dispatch("list", { resource: view });
-                Promise.all([events, resources]).then(() => resolve()).catch(error => reject(error));
+                Promise.all([events, resources])
+                    .then(() => resolve())
+                    .catch(error => { console.log(error); reject(error); });
             });
         },
 

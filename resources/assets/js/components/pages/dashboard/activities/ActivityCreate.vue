@@ -13,18 +13,17 @@
             <ul class="v-menu">
                 <li class="menu-title">Actions</li>
                 <li>
-                    <button class="btn btn-light" @click="onSubmit">
-                        <i class="material-icons">save_alt</i>
+                    <button class="btn btn-light" @click="onSubmit">                        
                         Save
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn-light" @click="onCancel">
-                        <i class="material-icons">cancel</i>
+                    <button class="btn btn-light" @click="onCancel">                        
                         Cancel
                     </button>
                 </li>
                 <li class="menu-title">Links</li>
+                <li><router-link :to="{ name: 'activityList' }">Activity List</router-link></li>
             </ul>
 
         </template>
@@ -37,13 +36,15 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-lable">Schedule Item</label>
                         <div class="col-sm-10">
-                            <auto-complete
+                            <select-box
                                 v-model="schedule_id"
                                 :data="scheduleItems"
-                                
-                                name="schedule_id"
-                                place-holder="click to select item..."
-                            ></auto-complete>
+                                :multi-select="false" 
+                                id="schedule_id"
+                                name="schedule_id"                                                                                                                                              
+                                placeholder="select schedule item..."
+                                search-placeholder="search..."
+                            ></select-box>
                         </div>
                     </div>
                 </div>
@@ -91,14 +92,14 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import NavView from "../../../framework/NavView.vue";
-import AutoComplete from "../../../framework/BaseAutoComplete.vue";
+import Selectbox from "../../../framework/BaseSelectBox.vue";
 
 export default {
   name: "ActivityCreate",
 
   components: {
     "nav-view": NavView,
-    "auto-complete": AutoComplete
+    "select-box": Selectbox
   },
 
   data() {
@@ -121,10 +122,10 @@ export default {
       this.form.schedule_id = value;
       if (value !== null && value !== undefined) {
         let index = this.list.findIndex(item => item.id === value);
-        this.form.fromDate = this.list[index].start.split(" ")[0];
-        this.form.fromTime = this.list[index].start.split(" ")[1];
-        this.form.tillDate = this.list[index].end.split(" ")[0];
-        this.form.tillTime = this.list[index].end.split(" ")[1];
+        this.form.fromDate = this.list[index].start.slice(0, 10);
+        this.form.fromTime = this.list[index].start.slice(11, 16);
+        this.form.tillDate = this.list[index].end.slice(0, 10);
+        this.form.tillTime = this.list[index].end.slice(11, 16);
       }
     }
   },
@@ -143,9 +144,9 @@ export default {
         return {
           key: obj.id,
           value:
-            new Date(obj.start.slice(0, 10)).toLocaleString("en-US", {
-              month: "short",
-              day: "2-digit"
+            new Date(obj.start.slice(0, 10)).toLocaleString("en-AU", {
+              day: "2-digit",
+              month: "short"
             }) +
             " - " +
             obj.job.title
@@ -174,8 +175,14 @@ export default {
     onSubmit(e) {
       let form = {};
       form.schedule_id = this.form.schedule_id;
-      form.from = this.form.fromDate + "T" + this.form.fromTime;
-      form.till = this.form.tillDate + "T" + this.form.tillTime;
+      form.from =
+        this.form.fromDate +
+        "T" +
+        (this.form.fromTime == "" ? "00:00" : this.form.fromTime);
+      form.till =
+        this.form.tillDate +
+        "T" +
+        (this.form.tillTime == "" ? "00:00" : this.form.tillTime);
       form.desc = this.form.desc;
       this.create({ resource: "activity", data: form })
         .then(() => {

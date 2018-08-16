@@ -6,6 +6,7 @@
             v-model="text"
             @focus="onFocus"
             :name="name" 
+            :id="id"
             :placeholder="placeholder" 
             readonly>
 
@@ -52,6 +53,10 @@ export default {
     name: {
       type: String,
       required: true,
+      default: ""
+    },
+    id: {
+      type: String,      
       default: ""
     },
     placeholder: {

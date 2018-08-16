@@ -10,18 +10,17 @@
             <ul class="v-menu">
                 <li class="menu-title">Actions</li>
                 <li>
-                    <button class="btn btn-light" @click="onSubmit">
-                        <i class="material-icons">save_alt</i>
+                    <button class="btn btn-light" @click="onSubmit">                        
                         Save
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn-light" @click="onCancel">
-                        <i class="material-icons">cancel</i>
+                    <button class="btn btn-light" @click="onCancel">                        
                         Cancel
                     </button>
                 </li>
                 <li class="menu-title">Links</li>
+                <li><router-link :to="{ name: 'profileList' }">List</router-link></li>
             </ul>
 
         </template>
@@ -94,13 +93,12 @@ export default {
         });
     },
 
-    onCancel() {}
+    onCancel() {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
 
-<style>
-.cb-wrap {
-  width: 26% !important;
-}
+<style scoped>
 </style>
