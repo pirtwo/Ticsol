@@ -146,6 +146,16 @@ export default {
     };
   },
 
+  watch: {
+    "form.form_id": function(value) {
+      if (value !== null && value !== undefined) {
+        this.schema = JSON.parse(
+          this.getList("form", item => item.id == value)[0].body
+        );
+      }
+    }
+  },
+
   computed: {
     ...mapGetters({
       getList: "resource/getList"
@@ -199,10 +209,7 @@ export default {
     }),
 
     onSave(event) {
-      console.log(this.formData);
       this.form.meta = JSON.stringify(this.formData);
-      console.log(this.form.meta);
-
       this.update({ resource: "job", id: this.id, data: this.form })
         .then(() => {
           console.log("job updated successfuly.");
