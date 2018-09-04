@@ -7,7 +7,7 @@ namespace App\Ticsol\Base\Repository\Contract;
  */
 interface IRepository{
     public function all($with = [], $columns = array('*'));
-    public function find($id, $columns = array('*'));
+    public function find($id, $with = [], $columns = array('*'));
     public function findBy($field, $value, $columns = array('*'));
     public function paginate($perPage = 15, $with=[], $columns = array('*'));
     public function create(array $data);

@@ -82,10 +82,10 @@ abstract class Repository implements IRepository, ICriteria
      * @param array $columns
      * @return mixed
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $with = [], $columns = array('*'))
     {
         $this->applyCriteria();
-        return $this->model->find($id, $columns);
+        return $this->model->with($with)->find($id, $columns);
     }
 
     /**
