@@ -48,12 +48,16 @@ export const router = new VueRouter({
             redirect: { name: 'home' },
             component: require('./components/pages/dashboard/Dashboard.vue'),
             children: [
+
+                // Home
                 {
                     path: '/home',
                     name: 'home',
                     meta: { requireAuth: true },
                     component: require('./components/pages/dashboard/Home.vue')
                 },
+
+                // Inbox
                 {
                     path: '/inbox',
                     name: 'inbox',
@@ -69,6 +73,8 @@ export const router = new VueRouter({
                         }
                     ]
                 },
+
+                // HR
                 {
                     path: '/hr',
                     name: 'hr',
@@ -78,17 +84,21 @@ export const router = new VueRouter({
 
                     ]
                 },
+
+                // Requests
                 {
-                    path: '/requests',
-                    name: 'requests',
+                    path: '/request',
+                    name: 'request',
                     meta: { requireAuth: true },
                     component: require('./components/pages/dashboard/requests/Requests.vue'),
                     children: [
 
                     ]
                 },
+
+                // Schedule
                 {
-                    path: '/schedules',
+                    path: '/schedule',
                     name: 'schedule',
                     meta: { requireAuth: true },
                     redirect: { name: 'scheduler' },
@@ -102,18 +112,28 @@ export const router = new VueRouter({
                         }
                     ]
                 },
-                {
-                    path: '/timesheets',
-                    name: 'timesheets',
-                    meta: { requireAuth: true },
-                    component: require('./components/pages/dashboard/timesheets/TimeSheets.vue'),
-                    children: [
 
+                // Timesheets
+                {
+                    path: '/timesheet',
+                    name: 'timesheet',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'timesheetCreate' },
+                    component: require('./components/pages/dashboard/timesheets/TimeSheets.vue'),
+                    children: [                        
+                        {
+                            path: 'create',
+                            name: 'timesheetCreate',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/timesheets/TimesheetCreate.vue'),
+                        },
                     ]
                 },
+
+                // Jobs
                 {
-                    path: '/jobs',
-                    name: 'jobs',
+                    path: '/job',
+                    name: 'job',
                     meta: { requireAuth: true },
                     redirect: { name: 'jobList' },
                     component: require('./components/pages/dashboard/jobs/Jobs.vue'),
@@ -169,11 +189,13 @@ export const router = new VueRouter({
                         },
                     ]
                 },
+
+                // Activities
                 {
                     path: '/activity',
                     name: 'activity',
                     meta: { requireAuth: true },
-                    redirect: { name: 'activityCreate' },
+                    redirect: { name: 'activityList' },
                     component: require('./components/pages/dashboard/activities/Activity.vue'),
                     children: [  
                         {
@@ -197,26 +219,43 @@ export const router = new VueRouter({
                         }                            
                     ]
                 },
+
+                // Contacts
                 {
                     path: '/contact',
                     name: 'contact',
                     meta: { requireAuth: true },
-                    redirect: { name: 'contactCreate' },
+                    redirect: { name: 'contactList' },
                     component: require('./components/pages/dashboard/contacts/Contacts.vue'),
-                    children: [                        
+                    children: [  
+                        {
+                            path: 'list',
+                            name: 'contactList',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/contacts/ContactList.vue'),
+                        },                       
                         {
                             path: 'create',
                             name: 'contactCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/contacts/ContactCreate.vue'),
-                        }                        
+                        },   
+                        {
+                            path: ':id/details',
+                            name: 'contactDetails',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/contacts/ContactDetails.vue'),
+                        }                      
                     ]
                 },
+
+                // Job Profiles
                 {
                     path: '/profile',
                     name: 'profile',
                     meta: { requireAuth: true },
-                    redirect: { name: 'profileCreate' },
+                    redirect: { name: 'profileList' },
                     component: require('./components/pages/dashboard/profiles/Profiles.vue'),
                     children: [                        
                         {
@@ -238,6 +277,28 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/profiles/ProfileDetails.vue'),
                         }                        
+                    ]
+                },
+
+                // Test Page
+                {
+                    path: '/test',
+                    name: 'test',
+                    meta: { requireAuth: true },                    
+                    component: require('./components/pages/dashboard/test/test.vue'),
+                    children: [                        
+                        {
+                            path: 'test01',
+                            name: 'test01',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/test/test01.vue'),
+                        },
+                        {
+                            path: 'test02',
+                            name: 'test02',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/test/test02.vue'),
+                        }                
                     ]
                 },
 
