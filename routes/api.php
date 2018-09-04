@@ -47,6 +47,12 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     Route::get('form/show/{id}', 'FormController@show');
     Route::post('form/store', 'FormController@store');
     Route::post('form/update/{id}', 'FormController@update');
+
+    // Contact
+    Route::get('contact', 'ContactController@index');
+    Route::get('contact/show/{id}', 'ContactController@show');
+    Route::post('contact/store', 'ContactController@store');
+    Route::post('contact/update/{id}', 'ContactController@update');
     
     /**
      * Protected api routes
