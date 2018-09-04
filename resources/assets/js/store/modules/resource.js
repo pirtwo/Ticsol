@@ -90,11 +90,11 @@ export const resourceModule = {
 
         contact: {
             list: [],
-            listURL: URLs.SCHEDULE_LIST,
-            showURL: URLs.SCHEDULE_SHOW,
-            createURL: URLs.SCHEDULE_CREATE,
-            updateURL: URLs.SCHEDULE_UPDATE,
-            deleteURL: URLs.SCHEDULE_DELETE
+            listURL: URLs.CONTACT_LIST,
+            showURL: URLs.CONTACT_SHOW,
+            createURL: URLs.CONTACT_CREATE,
+            updateURL: URLs.CONTACT_UPDATE,
+            deleteURL: URLs.CONTACT_DELETE
         },
 
         form: {
@@ -194,7 +194,7 @@ export const resourceModule = {
                 });
             if (index !== -1) {
                 state[payload.resource].list[index] =
-                Object.assign(state[payload.resource].list[index], payload.data);
+                    Object.assign(state[payload.resource].list[index], payload.data);
             }
         },
 
@@ -310,7 +310,7 @@ export const resourceModule = {
         },
 
         checkResource({ state }, payload) {
-            if (["user", "job", "schedule", "request", "activity", "form"].indexOf(payload) === -1)
+            if (["user", "job", "schedule", "request", "activity", "form", "contact"].indexOf(payload) === -1)
                 throw new Error("Invalid resource name.");
         }
     }

@@ -10997,6 +10997,10 @@ footer {
   height: auto !important;
 }
 
+td .invalid-feedback {
+  display: block !important;
+}
+
 .sk-cube-grid {
   width: 40px;
   height: 40px;

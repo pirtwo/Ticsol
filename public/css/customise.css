@@ -304,6 +304,12 @@ footer{
 
 
 
+td .invalid-feedback{
+  display: block !important;
+}
+
+
+
 
 .sk-cube-grid {
   width: 40px;

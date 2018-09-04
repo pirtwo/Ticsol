@@ -32,3 +32,9 @@ export const FORM_SHOW = '/api/form/show';
 export const FORM_CREATE = '/api/form/store';
 export const FORM_UPDATE = '/api/form/update';
 export const FORM_DELETE = '/api/form/delete';
+
+export const CONTACT_LIST = '/api/contact';
+export const CONTACT_SHOW = '/api/contact/show';
+export const CONTACT_CREATE = '/api/contact/store';
+export const CONTACT_UPDATE = '/api/contact/update';
+export const CONTACT_DELETE = '/api/contact/delete';
