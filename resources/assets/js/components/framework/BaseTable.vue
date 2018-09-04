@@ -76,7 +76,7 @@ export default {
   },
 
   computed: {
-    list: function() {
+    list: function() {      
       return this.data.sort((a, b) => {
         if (this.colOrder === "asc") {
           if (a[this.sortBy] < b[this.sortBy]) return -1;

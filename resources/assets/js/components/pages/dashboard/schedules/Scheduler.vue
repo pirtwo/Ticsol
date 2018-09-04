@@ -106,7 +106,7 @@ export default {
     "assign-user-modal": AssignUserModal,
     "date-picker": DatePicker
   },
-  
+
   data: function() {
     return {
       loading: false,
@@ -124,8 +124,10 @@ export default {
     this.clear("user");
   },
 
-  mounted() {    
-    this.start = DayPilot.Date.today().firstDayOfMonth().toString("yyyy-MM-dd");
+  mounted() {
+    this.start = DayPilot.Date.today()
+      .firstDayOfMonth()
+      .toString("yyyy-MM-dd");
     this.loading = true;
     this.fetch({ resource: "job" });
     this.scheduleInit("user").then(() => {
@@ -138,9 +140,7 @@ export default {
       this.scheduleView(value ? "user" : "job");
     },
 
-    start: function(value){
-
-    }
+    start: function(value) {}
   },
 
   computed: {
@@ -169,6 +169,7 @@ export default {
     ...mapActions({
       fetch: "resource/list",
       clear: "resource/clearList",
+      update: "resource/update",
       scheduleInit: "resource/scheduleInit",
       scheduleView: "resource/scheduleView"
     }),
@@ -216,7 +217,8 @@ export default {
       console.log(event);
 
       this.message = "updating...";
-      this.scheduleUpdate({
+      this.update({
+        resource: "schedule",
         id: event.eventId,
         data: {
           user_id: event.resourceId,
@@ -229,15 +231,16 @@ export default {
     },
 
     resizeHandler(event) {
-      this.message = "resizing...";
-      this.scheduleUpdate({
+      this.message = "updating...";
+      this.update({
+        resource: "schedule",
         id: event.eventId,
         data: {
           start: event.newStart,
           end: event.newEnd
         }
       }).then(() => {
-        this.message = "event resized successfuly";
+        this.message = "event updated successfuly";
       });
     }
   }

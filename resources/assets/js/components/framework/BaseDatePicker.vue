@@ -1,7 +1,7 @@
 <template>
-    <div class="datepicker">
-        <div class="wrap">
-            <button @click="onBack" type="button" class="btn btn-sm btn-light">
+    <div class="wrap-datepicker d-flex align-items-center">
+        <div>
+            <button @click="onBack" type="button" class="btn btn-sm btn-light btn-left">
                 <i class="material-icons">keyboard_arrow_left</i>
             </button>
             <div class="datepicker-body">
@@ -10,7 +10,7 @@
                 </button>
                 <div>{{ todayToText }}</div>
             </div>
-            <button @click="onNext" type="button" class="btn btn-sm btn-light">
+            <button @click="onNext" type="button" class="btn btn-sm btn-light btn-right">
                 <i class="material-icons">keyboard_arrow_right</i>
             </button>
         </div>        
@@ -43,8 +43,8 @@ export default {
   computed: {
     todayToText: function() {
       return this.range === "Month"
-        ? this.today.toString("yyyy/MMM")
-        : this.today.toString("yyyy") + "/W" + this.today.weekNumber();
+        ? this.today.toString("MMM yyyy")
+        : `W${this.today.weekNumber()} ${this.today.toString("yyyy")}`;
     }
   },
 
@@ -84,21 +84,14 @@ export default {
 </script>
 
 <style scoped>
-.datepicker {
-  padding: 3px;
+.wrap-datepicker {
+  border: 1px solid black;
   overflow: hidden;
-  border-radius: 18px;
-  display: inline-block;  
-  background: linear-gradient(to bottom, #eeeeee, #ffffff 25px);
-  background-image: -webkit-linear-gradient(top, #eeeeee, #ffffff 25px);
-  box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-.wrap {
-  background-color: #f8f9fa;
-  border-radius: 18px;
-  overflow: hidden;
-  /* box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15); */
+.wrap-datepicker div {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .datepicker-body {
@@ -110,23 +103,25 @@ export default {
 
 .datepicker-body .btn {
   font-size: 0.8rem;
-  line-height: 1;
+  padding: 6px;
   margin-right: 3px;
-}
-
-.datepicker div {
-  display: inline-block;
-  vertical-align: middle;
 }
 
 .btn {
   font-size: 1rem;
-  line-height: 1;
   display: inline-block;
 }
 
 .btn i {
   font-size: 1rem;
   line-height: 1;
+}
+
+.btn-left {
+  border-right: 1px solid black;
+}
+
+.btn-right {
+  border-left: 1px solid black;
 }
 </style>

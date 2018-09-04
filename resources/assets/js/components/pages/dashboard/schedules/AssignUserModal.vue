@@ -27,7 +27,7 @@
                 <label class="col-form-label col-sm-12">Select Job</label>
                 <div class="col">
                   <selelct-box
-                    v-model="form.job"
+                    v-model="form.job_id"
                     :data="options"
                     :multi-select="false"
                     name="job_id"                    
@@ -45,8 +45,9 @@
                   <selelct-box
                     v-model="form.status"
                     :data="statusOptions"
-                    :multi-select="false"
+                    :multi-select="false"                    
                     :enable-searchbox="false"
+                    output-type="value"
                     name="status"                    
                     placeholder="status..."                    
                   ></selelct-box>
@@ -128,8 +129,8 @@ export default {
     return {
       form: {
         userName: "",
-        userId: null,
-        job: null,
+        user_id: null,
+        job_id: null,
         status: null,
         startTime: "",
         endTime: "",
@@ -177,7 +178,7 @@ export default {
 
     event: function(value) {
       this.form.userName = value.userName;
-      this.form.userId = value.resourceId;
+      this.form.user_id = value.resourceId;
       this.form.start = value.start
         .toDate()
         .toISOString()
@@ -212,15 +213,16 @@ export default {
       this.$emit("input", false);
     },
 
-    onSubmit(e) {
+    onSubmit(e) {      
       let event = {};
-      event.user_id = this.form.userId;
-      event.job_id = this.form.job.key;
-      event.status = this.form.status.value.toLoweCase();
+      event.user_id = this.form.user_id;
+      event.job_id = this.form.job_id;
+      event.status = this.form.status.toLowerCase();
+      event.type = "schedule";
       event.start = this.form.start + "T" + this.form.startTime + ":00";
       event.end = this.form.end + "T" + this.form.endTime + ":00";
       event.offsite = this.form.offsite;
-      event.break_length = null;
+      event.break_length = 0;
 
       e.target.innerHTML = "Creating...";
       e.target.disabled = true;
@@ -229,22 +231,21 @@ export default {
         .then(respond => {
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
-
           this.clearForm();
           this.$emit("input", false);
         })
-        .catch(error => {
-          console.log(error);
+        .catch(error => {          
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
+          console.log(error.response);
           this.$formFeedback(error.response.data.errors);
         });
     },
 
     clearForm() {
       this.form.userName = "";
-      this.form.userId = null;
-      this.form.job = null;
+      this.form.user_id = null;
+      this.form.job_id = null;
       this.form.startTime = "";
       this.form.endTime = "";
       this.form.start = "";
