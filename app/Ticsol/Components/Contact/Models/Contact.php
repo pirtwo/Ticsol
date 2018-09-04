@@ -64,6 +64,22 @@ class Contact extends Model
     }
 
     /**
+     * Assosiated addresses to current contact.
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'contact_id');
+    }
+
+    /**
+     * Assosiated banks to current contact.
+     */
+    public function banks()
+    {
+        return $this->hasMany(Bank::class, 'bank_id');
+    }
+
+    /**
      * Assosiated jobs to current contact.
      */
     public function jobs()

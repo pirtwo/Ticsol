@@ -17,9 +17,7 @@ class Address extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'client_id',
-        'creator_id',
+    protected $fillable = [        
         'contact_id',
         'unit',
         'number',

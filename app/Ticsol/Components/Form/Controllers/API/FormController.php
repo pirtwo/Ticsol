@@ -13,7 +13,7 @@ use App\Ticsol\Components\Form\Repository;
 class FormController extends Controller
 {
     /**
-     * Schedule items repository.
+     * Forms repository.
      * @var Repository\FormRepository
      */
     protected $repository;
