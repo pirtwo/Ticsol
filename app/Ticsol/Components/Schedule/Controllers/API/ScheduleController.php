@@ -9,6 +9,7 @@ use App\Ticsol\Components\Models\Schedule;
 use App\Ticsol\Components\Schedule\Requests;
 use App\Ticsol\Components\Schedule\Exceptions;
 use App\Ticsol\Components\Schedule\Repository;
+use App\Ticsol\Components\Schedule\Criterias\ScheduleCriteria;
 
 class ScheduleController extends Controller
 {
@@ -34,11 +35,13 @@ class ScheduleController extends Controller
     {
         try {
             $page =
-            $request->query('page') ?? null;
+                $request->query('page') ?? null;
             $perPage =
-            $request->query('perPage') ?? 15;
+                $request->query('perPage') ?? 15;
             $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
+                $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+            $this->repository->pushCriteria(new ScheduleCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -61,14 +64,12 @@ class ScheduleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\CreateSchedule $request)
+    public function store(Requests\ScheduleCreate $request)
     {
         try {
             $item = new Schedule();
             $item->client_id = 1;
-            $item->creator_id = 1;
-            $item->type = 'assigned';
-            $item->status = 'unconfirmed';
+            $item->creator_id = 1;            
             $item->fill($request->all());
             $item->save();
             return Schedule::with(['user', 'job'])->where('id', $item->id)->get();
@@ -86,7 +87,11 @@ class ScheduleController extends Controller
     public function show($id)
     {
         try {
-            return $this->repository->findBy('id', $id);
+            $schedule = Job::find($id);
+            if ($schedule == null) {
+                throw new Exceptions\JobNotFound();
+            }
+            return $schedule;
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
@@ -99,10 +104,15 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\UpdateSchedule $request, $id)
+    public function update(Requests\ScheduleUpdate $request, $id)
     {
         try {
-            $this->repository->update($request->all(), 'id', $id);
+            $schedule = $this->repository->findBy('id', $id);
+            if ($schedule == null) {
+                throw new Exceptions\JobNotFound();
+            }
+            
+            $schedule->update($request->all());
             return Schedule::with(['user', 'job'])->where('id', $id)->get();
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
