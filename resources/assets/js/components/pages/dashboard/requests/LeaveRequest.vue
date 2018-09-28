@@ -54,15 +54,13 @@
                         <div class="col-sm-10">
                             <select name="leave_type" class="custom-select">
                                 <option selected>please select leave type</option>
-                                <option value="3">Public holidays</option>
-                                <option value="1">Vacation days</option>
-                                <option value="3">Voting</option>                                
-                                <option value="3">Childbirth</option>
-                                <option value="3">Bereavement</option>    
-                                <option value="3">Personal leave</option>                            
-                                <option value="3">Administrative leave</option>
-                                <option value="2">Temporary disability leave</option>
-                                <option value="3"></option>
+                                <option value="3">Annual</option>
+                                <option value="1">Longs Service</option>
+                                <option value="3">Sick</option>                                
+                                <option value="3">Bereavement</option>
+                                <option value="3">Maternity/Paternity</option>    
+                                <option value="3">Study</option>                            
+                                <option value="3">Other</option>                                
                             </select>
                         </div>
                     </div>

@@ -61099,7 +61099,7 @@ var render = function() {
                 staticClass: "dropdown-item",
                 attrs: { to: { name: "jobList" } }
               },
-              [_vm._v("\n                Job List\n            ")]
+              [_vm._v("\n                Jobs\n            ")]
             ),
             _vm._v(" "),
             _c(
@@ -61108,7 +61108,7 @@ var render = function() {
                 staticClass: "dropdown-item",
                 attrs: { to: { name: "profileList" } }
               },
-              [_vm._v("\n                Profiles List\n            ")]
+              [_vm._v("\n                Job Profile\n            ")]
             ),
             _vm._v(" "),
             _c(
@@ -61117,7 +61117,7 @@ var render = function() {
                 staticClass: "dropdown-item",
                 attrs: { to: { name: "contactList" } }
               },
-              [_vm._v("\n                Contacts List\n            ")]
+              [_vm._v("\n                Contacts\n            ")]
             ),
             _vm._v(" "),
             _c(
@@ -61126,7 +61126,7 @@ var render = function() {
                 staticClass: "dropdown-item",
                 attrs: { to: { name: "activityList" } }
               },
-              [_vm._v("\n                Activities List\n            ")]
+              [_vm._v("\n                Activities\n            ")]
             )
           ],
           1
@@ -62208,7 +62208,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -62226,8 +62226,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__framework_BaseSelectBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__framework_BaseSelectBox_vue__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-//
-//
 //
 //
 //
@@ -62979,37 +62977,25 @@ var render = function() {
                       _vm._v("please select leave type")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "3" } }, [
-                      _vm._v("Public holidays")
-                    ]),
+                    _c("option", { attrs: { value: "3" } }, [_vm._v("Annual")]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "1" } }, [
-                      _vm._v("Vacation days")
+                      _vm._v("Longs Service")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "3" } }, [_vm._v("Voting")]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "3" } }, [
-                      _vm._v("Childbirth")
-                    ]),
+                    _c("option", { attrs: { value: "3" } }, [_vm._v("Sick")]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "3" } }, [
                       _vm._v("Bereavement")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "3" } }, [
-                      _vm._v("Personal leave")
+                      _vm._v("Maternity/Paternity")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "3" } }, [
-                      _vm._v("Administrative leave")
-                    ]),
+                    _c("option", { attrs: { value: "3" } }, [_vm._v("Study")]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "2" } }, [
-                      _vm._v("Temporary disability leave")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "3" } })
+                    _c("option", { attrs: { value: "3" } }, [_vm._v("Other")])
                   ]
                 )
               ])
@@ -66384,32 +66370,38 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.$emit("input", false);
     },
     onSubmit: function onSubmit(e) {
-      var _this = this;
+      // let event = {};
+      // event.user_id =
+      //   this.view == "user" ? this.form.resource_id : this.form.event_id;
+      // event.job_id =
+      //   this.view == "job" ? this.form.resource_id : this.form.event_id;
+      // event.status = 
+      //   this.form.status.toLowerCase();      
+      // event.start = 
+      //   this.form.start + "T" + this.form.startTime + ":00";
+      // event.end = 
+      //   this.form.end + "T" + this.form.endTime + ":00";
+      // event.offsite = 
+      //   this.form.offsite;
+      // event.break_length = 0;
+      // event.type = "schedule";
 
-      var event = {};
-      event.user_id = this.view == "user" ? this.form.resource_id : this.form.event_id;
-      event.job_id = this.view == "job" ? this.form.resource_id : this.form.event_id;
-      event.status = this.form.status.toLowerCase();
-      event.start = this.form.start + "T" + this.form.startTime + ":00";
-      event.end = this.form.end + "T" + this.form.endTime + ":00";
-      event.offsite = this.form.offsite;
-      event.break_length = 0;
-      event.type = "schedule";
+      // e.target.innerHTML = "Creating...";
+      // e.target.disabled = true;
 
-      e.target.innerHTML = "Creating...";
-      e.target.disabled = true;
-
-      this.create({ resource: "schedule", data: event }).then(function (respond) {
-        e.target.innerHTML = "Assign";
-        e.target.disabled = false;
-        _this.clearForm();
-        _this.$emit("input", false);
-      }).catch(function (error) {
-        e.target.innerHTML = "Assign";
-        e.target.disabled = false;
-        console.log(error.response);
-        _this.$formFeedback(error.response.data.errors);
-      });
+      // this.create({ resource: "schedule", data: event })
+      //   .then(respond => {
+      //     e.target.innerHTML = "Assign";
+      //     e.target.disabled = false;
+      //     this.clearForm();
+      //     this.$emit("input", false);
+      //   })
+      //   .catch(error => {
+      //     e.target.innerHTML = "Assign";
+      //     e.target.disabled = false;
+      //     console.log(error.response);
+      //     this.$formFeedback(error.response.data.errors);
+      //   });
     },
     onDelete: function onDelete(event) {},
     fillForm: function fillForm() {
@@ -73790,7 +73782,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.loading = true;
       this.fetch({
         resource: "contact",
-        query: { page: this.pager, perPage: this.pager.perPage }
+        query: { page: this.pager.page, perPage: this.pager.perPage }
       }).then(function (respond) {
         _this.contacts = respond.data.map(function (obj) {
           return {

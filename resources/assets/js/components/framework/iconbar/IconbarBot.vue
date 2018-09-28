@@ -49,16 +49,16 @@
             </button>
             <div class="dropdown-menu">                
                 <router-link :to="{ name : 'jobList'}" class="dropdown-item">
-                    Job List
+                    Jobs
                 </router-link>               
                 <router-link :to="{ name : 'profileList'}" class="dropdown-item">
-                    Profiles List
+                    Job Profile
                 </router-link>  
                  <router-link :to="{ name : 'contactList'}" class="dropdown-item">
-                    Contacts List
+                    Contacts
                 </router-link>      
                  <router-link :to="{ name : 'activityList'}" class="dropdown-item">
-                    Activities List
+                    Activities
                 </router-link>           
             </div>
         </div>        

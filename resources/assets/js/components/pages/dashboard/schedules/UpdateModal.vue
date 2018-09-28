@@ -287,38 +287,38 @@ export default {
     },
 
     onSubmit(e) {
-      let event = {};
-      event.user_id =
-        this.view == "user" ? this.form.resource_id : this.form.event_id;
-      event.job_id =
-        this.view == "job" ? this.form.resource_id : this.form.event_id;
-      event.status = 
-        this.form.status.toLowerCase();      
-      event.start = 
-        this.form.start + "T" + this.form.startTime + ":00";
-      event.end = 
-        this.form.end + "T" + this.form.endTime + ":00";
-      event.offsite = 
-        this.form.offsite;
-      event.break_length = 0;
-      event.type = "schedule";
+      // let event = {};
+      // event.user_id =
+      //   this.view == "user" ? this.form.resource_id : this.form.event_id;
+      // event.job_id =
+      //   this.view == "job" ? this.form.resource_id : this.form.event_id;
+      // event.status = 
+      //   this.form.status.toLowerCase();      
+      // event.start = 
+      //   this.form.start + "T" + this.form.startTime + ":00";
+      // event.end = 
+      //   this.form.end + "T" + this.form.endTime + ":00";
+      // event.offsite = 
+      //   this.form.offsite;
+      // event.break_length = 0;
+      // event.type = "schedule";
 
-      e.target.innerHTML = "Creating...";
-      e.target.disabled = true;
+      // e.target.innerHTML = "Creating...";
+      // e.target.disabled = true;
 
-      this.create({ resource: "schedule", data: event })
-        .then(respond => {
-          e.target.innerHTML = "Assign";
-          e.target.disabled = false;
-          this.clearForm();
-          this.$emit("input", false);
-        })
-        .catch(error => {
-          e.target.innerHTML = "Assign";
-          e.target.disabled = false;
-          console.log(error.response);
-          this.$formFeedback(error.response.data.errors);
-        });
+      // this.create({ resource: "schedule", data: event })
+      //   .then(respond => {
+      //     e.target.innerHTML = "Assign";
+      //     e.target.disabled = false;
+      //     this.clearForm();
+      //     this.$emit("input", false);
+      //   })
+      //   .catch(error => {
+      //     e.target.innerHTML = "Assign";
+      //     e.target.disabled = false;
+      //     console.log(error.response);
+      //     this.$formFeedback(error.response.data.errors);
+      //   });
     },
 
     onDelete(event){

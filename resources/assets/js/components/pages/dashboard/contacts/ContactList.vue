@@ -86,7 +86,7 @@ export default {
       this.loading = true;
       this.fetch({
         resource: "contact",
-        query: { page: this.pager, perPage: this.pager.perPage }
+        query: { page: this.pager.page, perPage: this.pager.perPage }
       })
         .then(respond => {
           this.contacts = respond.data.map(obj => {
