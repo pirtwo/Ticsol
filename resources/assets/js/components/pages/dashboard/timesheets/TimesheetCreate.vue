@@ -37,7 +37,8 @@
             <div class="table-responsive">
                 <table class="table table-hover table-light">
                     <thead>
-                        <tr>                        
+                        <tr>         
+                            <th></th>               
                         <th scope="col">Day</th>
                         <th scope="col">Link</th>
                         <th scope="col">Job</th>
@@ -49,17 +50,54 @@
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in timesheet" :key="index">
-                            <td>{{ item.day }}</td>
+                            <td>
+                                <button v-show="!item.editMode" 
+                                    @click="item.editMode = true"
+                                    type="button" class="btn btn-sm btn-light">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button v-show="item.editMode" 
+                                    @click="item.editMode = false"
+                                    type="button" class="btn btn-sm btn-light">
+                                    <i class="material-icons">save</i>
+                                </button>                                
+                            </td>
+                            <td>                                
+                                {{ item.day }}
+                            </td>
                             <td></td>
                             <td>{{ item.job.title }}</td>
-                            <td>{{ item.start }}</td>
-                            <td>{{ item.end }}</td>
-                            <td></td>
-                            <td></td>
+                            <td>
+                                <input type="time" 
+                                    @change="totalTime(item)"
+                                    v-model="item.startTime" 
+                                    v-show="item.editMode"> 
+                                <span v-show="!item.editMode">{{ item.startTime }}</span>
+                            </td>
+                            <td>
+                                <input type="time" 
+                                    @change="totalTime(item)"
+                                    v-model="item.endTime" 
+                                    v-show="item.editMode"> 
+                                <span v-show="!item.editMode">{{ item.endTime }}</span>
+                            </td>
+                            <td>
+                                <input type="text"   
+                                    @change="totalTime(item)"                              
+                                    v-model="item.break_length" 
+                                    v-show="item.editMode"> 
+                                <span v-show="!item.editMode">{{ item.break_length }}</span>
+                            </td>
+                            <td>
+                              {{ item.total }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
+            <div>TOTAL: {{ this.showTotalTime }}</div>
+            <div>STATUS: </div>
            
         </template>
     </nav-view>
@@ -68,6 +106,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import NavView from "../../../framework/NavView.vue";
+import TableView from "../../../framework/BaseTable.vue";
 import DatePicker from "../../../framework/BaseDatePicker.vue";
 
 export default {
@@ -75,12 +114,14 @@ export default {
 
   components: {
     "nav-view": NavView,
+    "table-view": TableView,
     "date-picker": DatePicker
   },
 
   data() {
     return {
       loading: false,
+      selects: [],
       scheduleItems: [],
       timesheetItems: [],
       weekStart: "",
@@ -106,12 +147,29 @@ export default {
         this.scheduleItems.forEach(item => {
           if (item.start <= day && item.end >= day) {
             item.day = day.toString("ddd dd MMM");
+            item.startDate = item.start.slice(0, 10);
+            item.startTime = item.start.slice(11, 16);
+            item.endDate = item.start.slice(0, 10);
+            item.endTime = item.start.slice(11, 16);
+            item.editMode = false;
+            item.total = this.subTime(
+              this.subTime(item.endTime, item.startTime),
+              item.break_length
+            );
             this.timesheetItems.push(Object.assign({}, item));
           }
         });
         day = day.addDays(1);
       }
       return this.timesheetItems;
+    },
+
+    showTotalTime: function() {
+      let total = "00:00:00";
+      this.timesheetItems.forEach(item => {
+        total = this.addTime(total, item.total);
+      });
+      return total;
     }
   },
 
@@ -132,6 +190,7 @@ export default {
 
     fetchItems() {
       this.loading = true;
+
       this.fetch({
         resource: "schedule",
         query: {
@@ -151,12 +210,104 @@ export default {
         });
     },
 
-    onSubmit(event) {},
+    totalTime(item) {
+      let workHour = this.subTime(item.endTime, item.startTime);
+      item.total = this.subTime(workHour, item.break_length);
+    },
+
+    onSubmit(event) {
+      console.log(
+        this.timesheetItems.map(item => {
+          return {
+            job_id: item.job_id,
+            type: item.type,
+            status: item.status,
+            break_length: item.break_length,
+            start: item.startDate + "T" + item.startTime,
+            end: item.endDate + "T" + item.endTime
+          };
+        })
+      );
+    },
 
     onSave(event) {},
 
     onCancel() {
       this.$router.go(-1);
+    },
+
+    subTime(a, b) {
+      let time1 = {},
+        time2 = {};
+      let hour, min, sec;
+
+      time1.raw = a.split(":");
+      time2.raw = b.split(":");
+
+      time1.hour = parseInt(time1.raw[0]);
+      time1.min = parseInt(time1.raw[1]);
+      time1.sec = parseInt(time1.raw[2] | "0");
+
+      time2.hour = parseInt(time2.raw[0]);
+      time2.min = parseInt(time2.raw[1]);
+      time2.sec = parseInt(time2.raw[2] | "0");
+
+      hour = time1.hour - time2.hour;
+      min = time1.min - time2.min;
+      sec = time1.sec - time2.sec;
+
+      if (sec < 0) {
+        sec = 60 - (time2.sec - time1.sec);
+        min--;
+      }
+
+      if (min < 0) {
+        min = 60 - (time2.min - time1.min);
+        hour--;
+      }
+
+      if (hour < 0) {
+        return "00:00:00";
+      }
+
+      return `${hour < 10 ? "0" + hour : hour}:${min < 10 ? "0" + min : min}:${
+        sec < 10 ? "0" + sec : sec
+      }`;
+    },
+
+    addTime(a, b) {
+      let time1 = {},
+        time2 = {};
+      let hour, min, sec;
+
+      time1.raw = a.split(":");
+      time2.raw = b.split(":");
+
+      time1.hour = parseInt(time1.raw[0]);
+      time1.min = parseInt(time1.raw[1]);
+      time1.sec = parseInt(time1.raw[2] | "0");
+
+      time2.hour = parseInt(time2.raw[0]);
+      time2.min = parseInt(time2.raw[1]);
+      time2.sec = parseInt(time2.raw[2] | "0");
+
+      hour = time1.hour + time2.hour;
+      min = time1.min + time2.min;
+      sec = time1.sec + time2.sec;
+
+      if (sec >= 60) {
+        sec = sec % 60;
+        min++;
+      }
+
+      if (min >= 60) {
+        min = min % 60;
+        hour++;
+      }
+
+      return `${hour < 10 ? "0" + hour : hour}:${min < 10 ? "0" + min : min}:${
+        sec < 10 ? "0" + sec : sec
+      }`;
     }
   }
 };

@@ -4,12 +4,12 @@
           &nbsp; &nbsp; Go to: &nbsp;
           <input ref="pageInput" class="pag-input pag-text" @input="dbInput" type="text" maxlength="3"> : {{ pageCount }}
           &nbsp; &nbsp; Rows: &nbsp;
-          <select class="pag-input pag-select">
-            <option value="10">10</option>
-            <option value="10">20</option>
-            <option value="10">50</option>
-            <option value="10">100</option>
-            <option value="10">200</option>
+          <select v-model="perPage" @change="perPageChange" class="pag-input pag-select">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
           </select>         
         </div>
         <button @click="dbBack" class="btn btn-sm btn-light">
@@ -29,7 +29,8 @@ export default {
 
   data() {
     return {
-      page: this.value
+      page: this.value.page,
+      perPage: this.value.perPage
     };
   },
 
@@ -39,8 +40,8 @@ export default {
       default: 5
     },
     value: {
-      type: Number,
-      default: 1
+      type: Object,
+      default: { page: 1, perPage: 10, pageCount: 1 }
     }
   },
 
@@ -59,23 +60,50 @@ export default {
       let value = parseInt(event.target.value);
       if (Number.isInteger(value) && value > 0 && value <= this.pageCount) {
         this.page = value;
-        this.$emit("input", this.page);
+        this.$emit("input", {
+          page: this.page,
+          perPage: this.perPage,
+          pageCount: this.pageCount
+        });
       } else {
         event.target.value = this.page.toString();
-        this.$emit("input", this.page);
+        this.$emit("input", {
+          page: this.page,
+          perPage: this.perPage,
+          pageCount: this.pageCount
+        });
       }
     },
 
     onForward() {
       this.page = this.page < this.pageCount ? this.page + 1 : this.page;
       this.$refs.pageInput.value = this.page.toString();
-      this.$emit("input", this.page);
+      this.$emit("input", {
+        page: this.page,
+        perPage: this.perPage,
+        pageCount: this.pageCount
+      });
     },
 
     onBack() {
       this.page = this.page > 1 ? this.page - 1 : this.page;
       this.$refs.pageInput.value = this.page.toString();
-      this.$emit("input", this.page);
+      this.$emit("input", {
+        page: this.page,
+        perPage: this.perPage,
+        pageCount: this.pageCount
+      });
+    },
+
+    perPageChange() {
+      console.log(this.perPage);
+      this.page = 1;
+      this.$refs.pageInput.value = this.page.toString();
+      this.$emit("input", {
+        page: this.page,
+        perPage: this.perPage,
+        pageCount: this.pageCount
+      });
     }
   }
 };
@@ -83,8 +111,9 @@ export default {
 
 <style scoped>
 .btn {
-  line-height: 1;
   display: flex;
+  line-height: 1;
+  margin-right: 5px;
   padding: 0.25rem 0.25rem;
 }
 
@@ -93,10 +122,10 @@ export default {
 }
 
 div {
-  padding: 2px 4px;
-  font-size: 12px;
   display: flex;
-  line-height: 1.8;
+  font-size: 12px;
+  line-height: 1.8;  
+  padding: 2px 4px;  
 }
 
 .pag-input {

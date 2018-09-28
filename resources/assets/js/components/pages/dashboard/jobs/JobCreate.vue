@@ -33,7 +33,7 @@
                 
                 <div class="form-group">
                     <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">Title</label>
+                        <label class="col-sm-2 col-form-label">Title</label>
                         <div class="col-sm-10">
                             <input v-model="form.title" id="title" type="text" class="form-control" placeholder="job title"/>
                         </div>
@@ -42,7 +42,7 @@
 
                 <div class="form-group">
                     <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">Code</label>
+                        <label class="col-sm-2 col-form-label">Code</label>
                         <div class="col-sm-10">
                             <input v-model="form.code" id="code" type="text" class="form-control" placeholder="display code"/>
                         </div>
@@ -51,7 +51,7 @@
 
                 <div class="form-group">
                     <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">Parent</label>
+                        <label class="col-sm-2 col-form-label">Parent</label>
                         <div class="col-sm-10">
                             <select-box
                                 v-model="form.parent_id"
@@ -68,7 +68,7 @@
 
                 <div class="form-group">
                     <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">Profile</label>
+                        <label class="col-sm-2 col-form-label">Profile</label>
                         <div class="col-sm-10">
                             <select-box
                                 v-model="form.form_id"
@@ -85,7 +85,7 @@
 
                 <div class="form-group">
                     <div class="form-row">
-                        <label class="col-sm-12 col-form-lable">Status</label>
+                        <label class="col-sm-12 col-form-label">Status</label>
 
                         <div class="custom-control custom-radio custom-control-inline">
                             <input v-model="form.isactive" type="radio" id="jobEnable" name="status" value="1" class="custom-control-input" checked>

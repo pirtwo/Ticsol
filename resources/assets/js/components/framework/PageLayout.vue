@@ -44,18 +44,18 @@ export default {
     }),
 
     resizeHandler() {
-      let head = $(".header").outerHeight() | 0;
-      let foot = $(".footer").outerHeight() | 0;
+      let head = $(".header").outerHeight(true) | 0;
+      let foot = $(".footer").outerHeight(true) | 0;
       let contentHeight = $(window).height() - (head + foot);
-      let toolbarHeight = $(".navbar").outerHeight();
+      let toolbarHeight = $(".navbar").outerHeight(true);
 
       this.setContentDim({
-        width: $(".main").outerWidth(),
+        width: $(".main").outerWidth(true),
         height: contentHeight
       });
       this.setDocumentDim({
-        width: $("body").outerWidth(),
-        height: $("body").outerHeight()
+        width: $("body").outerWidth(true),
+        height: $("body").outerHeight(true)
       });
       this.toolbar({ height: toolbarHeight, show: undefined });
 

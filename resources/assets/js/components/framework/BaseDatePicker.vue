@@ -36,13 +36,24 @@ export default {
 
   data() {
     return {
-      today: DayPilot.Date.today()
+      today: this.getToday()
     };
+  },
+
+  watch: {
+    range: function(value) {
+      this.today = this.getToday();
+      this.$emit("input", this.today);
+    },
+
+    // today: function(value) {
+    //   console.log(value);
+    // }
   },
 
   computed: {
     todayToText: function() {
-      return this.range === "Month"
+      return this.range == "Month"
         ? this.today.toString("MMM yyyy")
         : `W${this.today.weekNumber()} ${this.today.toString("yyyy")}`;
     }
@@ -54,7 +65,7 @@ export default {
 
   methods: {
     getToday() {
-      return this.range === "Month"
+      return this.range == "Month"
         ? DayPilot.Date.today().firstDayOfMonth()
         : DayPilot.Date.today().firstDayOfWeek();
     },
@@ -66,7 +77,7 @@ export default {
 
     onNext() {
       this.today =
-        this.range === "Month"
+        this.range == "Month"
           ? this.today.addMonths(1)
           : this.today.addDays(7);
       this.$emit("input", this.today);
@@ -74,7 +85,7 @@ export default {
 
     onBack() {
       this.today =
-        this.range === "Month"
+        this.range == "Month"
           ? this.today.addMonths(-1)
           : this.today.addDays(-7);
       this.$emit("input", this.today);

@@ -186,7 +186,7 @@ export default {
     dp.heightSpec = "Fixed";
     dp.resources = this.resource;
     dp.events.list = this.events;
-    
+
     dp.durationBarVisible = true;
     dp.durationBarMode = "PercentComplete";
 
@@ -244,6 +244,12 @@ export default {
     dp.onEventResized = this.eventResizeHandler;
     dp.onEventDeleted = this.eventDeleteHandler;
     dp.onTimeRangeSelected = this.eventCreateHandler;
+
+    // dp.onEventMove = this.eventMoveHandler;
+    // dp.onEventClicke = this.eventClickHandler;
+    // dp.onEventResize = this.eventResizeHandler;
+    // dp.onEventDelete = this.eventDeleteHandler;
+    // dp.onTimeRangeSelect = this.eventCreateHandler;
 
     dp.contextMenu = new window.DayPilot.Menu({
       items: [
@@ -358,7 +364,7 @@ export default {
       this.dayPilot.update();
     },
 
-    startDate:function(value){
+    startDate: function(value) {
       this.dayPilot.startDate = value;
       this.dayPilot.update();
     }
@@ -460,6 +466,9 @@ export default {
       if (arg.e.isEvent) {
         this.$emit("event-clicked", {
           eventId: arg.e.id(),
+          resourceId: arg.e.resource(),
+          start: arg.e.start(),
+          end: arg.e.end(),
           div: arg.div
         });
       }
@@ -479,8 +488,10 @@ export default {
         this.$emit("event-moved", {
           eventId: arg.e.id(),
           resourceId: arg.newResource,
-          newStart: arg.newStart,
-          newEnd: arg.newEnd
+          newStart:
+            arg.newStart.value.slice(0, 10) + arg.e.start().value.slice(11, 16),
+          newEnd:
+            arg.newEnd.value.slice(0, 10) + arg.e.end().value.slice(11, 16)
         });
       }
       arg.preventDefault();
@@ -494,7 +505,18 @@ export default {
     },
 
     eventResizeHandler(arg) {
-      console.log(arg);
+      // console.log(arg.e.data.start);
+      // console.log(arg.e.data.end);
+      // let startTime =
+      //   typeof arg.e.data.start == "string"
+      //     ? 'T' + arg.e.data.start.slice(11, 19)
+      //     : 'T' + arg.e.data.start.value.slice(11, 19);
+      // let endTime =
+      //   typeof arg.e.data.end == "string"
+      //     ? 'T' + arg.e.data.end.slice(11, 19)
+      //     : 'T' + arg.e.data.end.value.slice(11, 19);
+      // arg.newStart = new DayPilot.Date(arg.newStart.value.slice(0, 10) + startTime);
+      // arg.newEnd = new DayPilot.Date(arg.newEnd.value.slice(0, 10) + endTime);
       this.$emit("event-resized", {
         eventId: arg.e.id(),
         newStart: arg.newStart,

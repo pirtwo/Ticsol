@@ -7,7 +7,7 @@
         <template slot="toolbar">
           <div class="dp-ctrl d-flex justify-content-end"> 
 
-            <date-picker v-model="start" range="Month"></date-picker>
+            <date-picker v-model="start" :range="dpRange"></date-picker>
 
             <label class="switch">
               <input v-model="range" class="switch-input" type="checkbox" />
@@ -64,13 +64,13 @@
                 @event-moved="moveHandler"
                 @event-hoverd="hoverHandler"
                 @event-resized="resizeHandler"                
-                scale="Day"
-                :start-date="start"
-                :range="range ? 'Week' : 'Month'"                
+                scale="Day"                 
                 time-header-format="Weeks/Days"
                 crosshair="Header"
                 cell-width="Auto"
-                :view="view ? 'user' : 'job'"
+                :start-date="start"
+                :view="dpView"
+                :range="dpRange"                 
                 :message="message"
                 :time-header-auto-fit="false"
                 :time-header-height="35"
@@ -78,24 +78,31 @@
                 :event-height="45"  
                 :events="scheduleEvents"                    
                 :resource="scheduleResources">
-            </day-pilot>   
-            <assign-user-modal
-              v-model="assignUserPopup"
-              :event="event">
-            </assign-user-modal>   
-            <div class="popover">This is a popover</div>      
+            </day-pilot> 
+           
+            <assign-modal
+              v-model="assignModal"
+              :event="event"
+              :view="dpView">
+            </assign-modal> 
+            <update-modal
+              v-model="updateModal"
+              :event="event"
+              :view="dpView">
+            </update-modal>   
+
         </template>
 
     </nav-view>
 </template>
 
 <script>
-import Popper from "popper.js";
-import BaseDayPilot from "../schedules/BaseDayPilot.vue";
-import NavView from "../../../framework/NavView.vue";
-import AssignUserModal from "../schedules/AssignUserModal.vue";
-import DatePicker from "../../../framework/BaseDatePicker.vue";
 import { mapGetters, mapActions } from "vuex";
+import NavView from "../../../framework/NavView.vue";
+import DatePicker from "../../../framework/BaseDatePicker.vue";
+import BaseDayPilot from "../schedules/BaseDayPilot.vue";
+import AssignModal from "../schedules/AssignModal.vue";
+import UpdateModal from "../schedules/UpdateModal.vue";
 
 export default {
   name: "Scheduler",
@@ -103,8 +110,9 @@ export default {
   components: {
     "nav-view": NavView,
     "day-pilot": BaseDayPilot,
-    "assign-user-modal": AssignUserModal,
-    "date-picker": DatePicker
+    "date-picker": DatePicker,
+    "assign-modal": AssignModal,
+    "update-modal": UpdateModal
   },
 
   data: function() {
@@ -115,8 +123,47 @@ export default {
       view: true,
       range: true,
       start: DayPilot.Date.today().firstDayOfMonth(),
-      assignUserPopup: false
+      assignModal: false,
+      updateModal: false
     };
+  },
+
+  computed: {
+    ...mapGetters({
+      height: "core/getUiContentHeight",
+      events: "resource/getScheduleEvents",
+      getList: "resource/getList",
+      resources: "resource/getScheduleResources"
+    }),
+
+    dpView: function() {
+      return this.view ? "user" : "job";
+    },
+
+    dpRange: function() {
+      return this.range ? "Month" : "Week";
+    },
+
+    sidebarResources: function() {
+      if (this.view) return this.getList("job");
+      else return this.getList("user");
+    },
+
+    scheduleEvents: function() {
+      return this.events();
+    },
+
+    scheduleResources: function() {
+      return this.resources();
+    }
+  },
+
+  watch: {
+    view: function(value) {
+      this.scheduleView(value ? "user" : "job");
+    },
+
+    start: function(value) {}
   },
 
   created() {
@@ -135,36 +182,6 @@ export default {
     });
   },
 
-  watch: {
-    view: function(value) {
-      this.scheduleView(value ? "user" : "job");
-    },
-
-    start: function(value) {}
-  },
-
-  computed: {
-    ...mapGetters({
-      height: "core/getUiContentHeight",
-      events: "resource/getScheduleEvents",
-      getList: "resource/getList",
-      resources: "resource/getScheduleResources"
-    }),
-
-    sidebarResources: function() {
-      if (this.view) return this.getList("job");
-      else return this.getList("user");
-    },
-
-    scheduleEvents: function() {
-      return this.events();
-    },
-
-    scheduleResources: function() {
-      return this.resources();
-    }
-  },
-
   methods: {
     ...mapActions({
       fetch: "resource/list",
@@ -180,26 +197,17 @@ export default {
 
     // DP Handlers
     rangeSelectHandler(event) {
-      event.userName = this.scheduleResources[event.resourceId - 1].name;
+      event.name = this.scheduleResources[event.resourceId - 1].name;
       this.event = event;
-      this.assignUserPopup = true;
+      this.assignModal = true;
     },
 
     clickHandler(event) {
-      console.log("click");
-      console.log(event);
-
-      var ref = $(event.div);
-      var popover = $(".popover");
-      popover.show();
-      var popper = new Popper(ref, popover, {
-        placement: "top",
-        modifiers: {
-          arrow: { enabled: true },
-          preventOverflow: { enabled: true },
-          hide: { enabled: false }
-        }
-      });
+      this.event = this.getList("schedule", item => item.id == event.eventId)[0];
+      this.event.name = this.scheduleResources[event.resourceId - 1].name;
+      this.event.start = event.start;
+      this.event.end = event.end;       
+      this.updateModal = true;
     },
 
     hoverHandler(event) {

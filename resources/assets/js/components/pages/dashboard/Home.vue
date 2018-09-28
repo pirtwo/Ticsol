@@ -14,13 +14,13 @@
                     </i>
                     <span class="caption">INBOX</span>
                 </router-link>
-                <router-link :to="{ name : 'requests'}" class="btn btn-light" role="button" >
+                <router-link :to="{ name : 'request'}" class="btn btn-light" role="button" >
                     <i class="icon material-icons">
                         message
                     </i>
                     <span class="caption">REQUESTS</span>
                 </router-link>
-                <router-link :to="{ name : 'timesheets'}" class="btn btn-light" role="button" >
+                <router-link :to="{ name : 'timesheet'}" class="btn btn-light" role="button" >
                     <i class="icon material-icons">
                         timer
                     </i>

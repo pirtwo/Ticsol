@@ -27,12 +27,12 @@
                   <div class="sk-cube sk-cube8"></div>
                   <div class="sk-cube sk-cube9"></div>
                 </div>               
-                <span class="caption">Loading, Please wait...</span>
+                <div class="caption">Loading, Please wait...</div>
               </div>
             </div>
 
             <!-- toolbar -->
-            <nav class="navbar navbar-light bg-light">                
+            <nav class="navbar navbar-light">                
               <button class="btn btn-light btn-sm ml-auto" type="button" @click="onDrawer">
                 <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
               </button>
@@ -187,11 +187,11 @@ export default {
   max-height: 100%;
   position: relative;
   overflow-y: hidden;
-  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .content {
   position: relative;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .scrollbar-show {
@@ -226,7 +226,9 @@ export default {
 
 .navbar {
   height: 50px;
+  margin-bottom: 5px;
   display: -webkit-box !important;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .navbar .btn,
@@ -245,18 +247,23 @@ i.material-icons {
 }
 
 .wrap-loading {
-  top: 50%;
-  left: 50%;
+  margin-top: 55px;
+  width: 100%;
+  height: 100%;
   position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .loading-box {
-  left: -50%;
-  top: -50%;
+  left: 50%;
+  top: 50%;
+  width: 200px;
+  height: auto;
   padding: 10px;
   color: white;
   position: relative;
   border-radius: 5px;
+  transform: translate(-50%, -80%);
   background-color: rgba(72, 72, 72, 0.8);
 }
 
@@ -266,6 +273,8 @@ i.material-icons {
 }
 
 .wrap-loading .caption {
-  display: flex;
+  width: 100%;
+  display: block;
+  text-align: center;
 }
 </style>

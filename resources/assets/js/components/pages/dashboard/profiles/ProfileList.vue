@@ -2,7 +2,7 @@
     <nav-view :scrollbar="true" :loading="loading" padding="p-2">
 
         <template slot="toolbar">
-          <pagination-view v-model="page" :page-count="pageCount"></pagination-view>
+          <pagination-view v-model="pager" :page-count="pager.pageCount"></pagination-view>
         </template>
 
         <template slot="drawer">
@@ -50,9 +50,11 @@ export default {
   data() {
     return {
       profiles: [],
-      page: 1,
-      perPage: 10,
-      pageCount: 10,
+      pager: {
+        page: 1,
+        perPage: 10,
+        pageCount: 10,
+      },      
       loading: true,
       selects: [],
       header: [
@@ -66,7 +68,7 @@ export default {
   },
 
   watch: {
-    page: function(value) {
+    pager: function(value) {
       this.feedTable();
     }
   },
@@ -82,7 +84,7 @@ export default {
       this.loading = true;
       this.fetch({
         resource: "form",
-        query: { page: this.page, perPage: this.perPage }
+        query: { page: this.pager.page, perPage: this.pager.perPage }
       })
         .then(respond => {
           this.profiles = respond.data.map(obj => {
@@ -93,7 +95,7 @@ export default {
               update: obj.updated_at
             };
           });
-          this.pageCount = respond.last_page;
+          this.pager.pageCount = respond.last_page;
           this.loading = false;
         })
         .catch(error => {
