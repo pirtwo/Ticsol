@@ -90,9 +90,21 @@ export const router = new VueRouter({
                     path: '/request',
                     name: 'request',
                     meta: { requireAuth: true },
+                    redirect:{name: 'reqLeave'},
                     component: require('./components/pages/dashboard/requests/Requests.vue'),
                     children: [
-
+                        {
+                            path: 'leave',
+                            name: 'reqLeave',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/requests/LeaveRequest.vue'),
+                        },
+                        {
+                            path: 'reimbursement',
+                            name: 'reqReimb',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/requests/ReimbRequest.vue'),
+                        }                        
                     ]
                 },
 
