@@ -27,7 +27,7 @@ class ScheduleCreate extends FormRequest
             'user_id'       => 'required|numeric',
             'job_id'        => 'required|numeric',
             'type'          => 'required|string|in:schedule,timesheet',
-            'status'        => 'required|string|in:tentative,confirmed,submitted',            
+            'status'        => 'required|string|in:tentative,confirmed',            
             'start'         => 'required|date',
             'end'           => 'required|date',
             'offsite'       => 'nullable|boolean',
