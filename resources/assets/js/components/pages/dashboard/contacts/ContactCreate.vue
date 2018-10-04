@@ -16,6 +16,7 @@
                     </button>
                 </li>
                 <li class="menu-title">Links</li>
+                <li><router-link :to="{ name: 'contactList' }">Contacts</router-link></li>
             </ul>
         </template>
         

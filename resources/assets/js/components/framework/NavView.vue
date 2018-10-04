@@ -6,8 +6,10 @@
             <div class="drawer-toolbar">
               <div class="title text-center" v-if="drawerTitle !== '' ">{{ drawerTitle }}</div> 
               <slot name="drawer-toolbar"></slot>
-            </div>             
-            <slot name="drawer"></slot>
+            </div>     
+            <div class="drawer-body">
+              <slot name="drawer"></slot>
+            </div> 
         </div>
 
         <!-- content -->
@@ -174,7 +176,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrap-drawer {
   height: 100%;
   display: flex;
@@ -199,12 +201,13 @@ export default {
 }
 
 .drawer {
+  display: flex;
+  flex-flow: column;
   width: 230px;
-  min-height: 100%;
-  overflow-y: auto;
+  height: 100%;
+  overflow: hidden;
   margin-right: 8px;
-  transition: all 0.3s;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: transparent;
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -216,6 +219,18 @@ export default {
   width: 0px;
   overflow: hidden;
   margin-right: 0px;
+}
+
+.drawer-toolbar {
+  flex: 0 1 auto;
+  margin-bottom: 0px;
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.drawer-body {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .drawer .title {

@@ -44,8 +44,12 @@
                     :multi-select="false"
                     :name="view == 'user' ? 'job_id' : 'user_id'"                    
                     :placeholder="view == 'user' ? 'please select job' : 'please select user'"
-                    search-placeholder="search..."
-                  ></selelct-box>
+                    search-placeholder="search...">
+                    <template slot="default-options" v-if="view == 'user'">
+                      <li @click="onCreateJob"><i>-- create new job --</i></li>
+                      <li><i>-- create new contact --</i></li>
+                    </template>  
+                  </selelct-box>
                 </div>
               </div>              
             </div>           
@@ -110,6 +114,7 @@
           <button @click="onDelete" type="button" class="btn btn-danger">Delete</button>
           <button @click="onHide" type="button" class="btn btn-secondary">Cancel</button>          
         </div><!-- End Footer -->
+        <job-modal v-model="jobModal"></job-modal> 
 
       </div><!-- End Content  -->
     </div><!-- End Modal -->
@@ -120,12 +125,14 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Selectbox from "../../../framework/BaseSelectBox.vue";
+import CreateJobModal from "../schedules/CreateJobModal.vue";
 
 export default {
   name: "AssignJobModal",
 
   components: {
-    "selelct-box": Selectbox
+    "selelct-box": Selectbox,
+    "job-modal": CreateJobModal
   },
 
   props: {
@@ -163,7 +170,8 @@ export default {
       statusOptions: [
         { key: 1, value: "Tentative" },
         { key: 2, value: "Confirmed" }
-      ]
+      ],
+      jobModal: false
     };
   },
 
@@ -369,6 +377,10 @@ export default {
       // this.form.start = "";
       // this.form.end = "";
       // this.form.offsite = false;
+    },
+
+    onCreateJob() {      
+      this.jobModal = true;
     }
   }
 };

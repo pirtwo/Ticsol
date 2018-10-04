@@ -20,7 +20,7 @@
                     </button>
                 </li>
                 <li class="menu-title">Links</li>
-                <li><router-link :to="{ name: 'profileList' }">List</router-link></li>
+                <li><router-link :to="{ name: 'profileList' }">Profiles</router-link></li>
             </ul>
 
         </template>

@@ -16,16 +16,19 @@
         <template slot="content">
 
             <table-view class="table table-striped" 
-            v-model="selects" :data="reports" :header="header" :selection="true" order-by="id" order="asc">
+            v-model="selects" :data="reports" :header="header" :selection="false" order-by="id" order="asc">
                <template slot="header" slot-scope="{item}">
                  <div :data-orderBy="item.orderBy">{{ item.value }}</div>
                </template>
                <template slot="body" slot-scope="{item}">
-                 <td>{{ item.id }}</td>
+                 <td>
+                   <router-link class="btn btn-sm btn-light" :to="{ name : 'activityDetails', params : { id: item.id } }">
+                     <i class="material-icons">visibility</i>
+                   </router-link>                   
+                 </td>
                  <td>{{ item.from }}</td>
                  <td>{{ item.till }}</td>
-                 <td>{{ item.report.slice(0,10) + "..." }}</td>
-                 <td><router-link :to="{ name : 'activityDetails', params : { id: item.id } }">Details</router-link></td>
+                 <td>{{ item.report.slice(0,10) + "..." }}</td>                 
                </template> 
             </table-view>
 
@@ -59,11 +62,10 @@ export default {
       loading: true,
       selects: [],
       header: [
-        { value: "ID", orderBy: "id" },
+        { value: "", orderBy: "" },
         { value: "From", orderBy: "from" },
         { value: "Till", orderBy: "till" },
-        { value: "Report", orderBy: "report" },
-        { value: "Details", orderBy: "" }
+        { value: "Report", orderBy: "report" }
       ],
       order: "asc"
     };

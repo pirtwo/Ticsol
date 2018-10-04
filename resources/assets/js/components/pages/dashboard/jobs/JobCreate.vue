@@ -23,6 +23,7 @@
                     </button>
                 </li>
                 <li class="menu-title">Links</li>
+                <li><router-link :to="{ name: 'jobList' }">Jobs</router-link></li>
             </ul>
 
         </template>

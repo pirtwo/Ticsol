@@ -16,13 +16,17 @@
         <template slot="content">
 
             <table-view class="table table-striped" 
-            v-model="selects" :data="profiles" :header="header" :selection="true" order-by="id" order="asc">
+            v-model="selects" :data="profiles" :header="header" :selection="false" order-by="id" order="asc">
                <template slot="header" slot-scope="{item}">
                  <div :data-orderBy="item.orderBy">{{ item.value }}</div>
                </template>
                <template slot="body" slot-scope="{item}">
-                 <td>{{ item.id }}</td>
-                 <td><router-link :to="{ name:'profileDetails', params:{ id : item.id }}">{{ item.title }}</router-link></td>
+                 <td>
+                   <router-link class="btn btn-sm btn-light" :to="{ name : 'profileDetails', params : { id: item.id } }">
+                    <i class="material-icons">visibility</i>
+                  </router-link> 
+                 </td>
+                 <td>{{ item.title }}</td>
                  <td>{{ item.create }}</td>
                  <td>{{ item.update }}</td>
                </template> 
@@ -58,7 +62,7 @@ export default {
       loading: true,
       selects: [],
       header: [
-        { value: "ID", orderBy: "id" },
+        { value: "", orderBy: "" },
         { value: "Title", orderBy: "title" },
         { value: "Create", orderBy: "create" },
         { value: "Update", orderBy: "update" }

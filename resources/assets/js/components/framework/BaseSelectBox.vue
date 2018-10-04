@@ -2,7 +2,7 @@
 
     <div class="wrap" ref="BaseSelectBox">
 
-        <input type="text" class="select-value form-control"
+        <input type="text" :class="[inputSize, 'form-control select-value']"
             v-model="text"
             @focus="onFocus"
             :name="name" 
@@ -22,7 +22,8 @@
                     v-if="enableSearchbox"
                     :placeholder="searchPlaceholder">
             
-            <ul class="select-options">            
+            <ul class="select-options"> 
+                <slot name="default-options"></slot>           
                 <li v-for="item in options" 
                     :key="item.key" 
                     :class="[{'selected' : isSelected(item)}, 'select-option']"
@@ -56,8 +57,15 @@ export default {
       default: ""
     },
     id: {
-      type: String,      
+      type: String,
       default: ""
+    },
+    size: {
+      type: String,
+      default: "md",
+      validator: value => {
+        return ["lg", "md", "sm"].indexOf(value) !== -1;
+      }
     },
     placeholder: {
       type: String,
@@ -131,10 +139,10 @@ export default {
       }
     },
 
-    default: function(value) {      
+    default: function(value) {
       this.selects = [];
       let item = this.data.find(item => item.key == value);
-      this.text = item.value;      
+      this.text = item.value;
       this.selects.push(item);
     }
   },
@@ -144,6 +152,12 @@ export default {
       return this.data.filter(
         item => item.value.toLowerCase().indexOf(this.query.toLowerCase()) > -1
       );
+    },
+
+    inputSize: function() {
+      if (this.size == "lg") return "form-control-lg";
+      else if (this.size == "md") return "";
+      else if (this.size == "sm") return "form-control-sm";
     }
   },
 

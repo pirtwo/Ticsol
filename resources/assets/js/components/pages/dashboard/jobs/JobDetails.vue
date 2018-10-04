@@ -24,7 +24,7 @@
                     </button>
                 </li>
                 <li class="menu-title">Links</li>
-                <li><router-link :to="{ name: 'jobList' }">Jobs List</router-link></li>
+                <li><router-link :to="{ name: 'jobList' }">Jobs</router-link></li>
                 <li><router-link :to="{ name: 'jobList' }">Schedule Items</router-link></li>
                 <li><router-link :to="{ name: 'jobList' }">Activity Reports</router-link></li>
                 <li><router-link :to="{ name: 'jobList' }">Related Jobs</router-link></li>

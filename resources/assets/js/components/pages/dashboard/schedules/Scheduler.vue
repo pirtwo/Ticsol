@@ -25,11 +25,13 @@
 
         </template>
 
-        <template slot="drawer">
-
+        <template slot="drawer-toolbar">
             <div class="p-2">
               <input type="text" class="form-control form-control-sm">
             </div>
+        </template>
+
+        <template slot="drawer">
             
             <ul id="dp-draggable" class="res-menu">                
               <template v-if="!view">
@@ -90,7 +92,7 @@
               :event="event"
               :view="dpView">
             </update-modal>   
-
+            
         </template>
 
     </nav-view>
@@ -203,10 +205,13 @@ export default {
     },
 
     clickHandler(event) {
-      this.event = this.getList("schedule", item => item.id == event.eventId)[0];
+      this.event = this.getList(
+        "schedule",
+        item => item.id == event.eventId
+      )[0];
       this.event.name = this.scheduleResources[event.resourceId - 1].name;
       this.event.start = event.start;
-      this.event.end = event.end;       
+      this.event.end = event.end;
       this.updateModal = true;
     },
 

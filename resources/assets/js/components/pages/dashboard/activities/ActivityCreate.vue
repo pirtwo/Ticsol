@@ -23,7 +23,7 @@
                     </button>
                 </li>
                 <li class="menu-title">Links</li>
-                <li><router-link :to="{ name: 'activityList' }">Activity List</router-link></li>
+                <li><router-link :to="{ name: 'activityList' }">Activities</router-link></li>
             </ul>
 
         </template>

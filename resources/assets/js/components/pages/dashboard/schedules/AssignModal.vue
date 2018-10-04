@@ -1,6 +1,6 @@
 
 <template>
-
+  
   <!-- Modal -->
   <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -43,8 +43,12 @@
                     :multi-select="false"
                     :name="view == 'user' ? 'job_id' : 'user_id'"                    
                     :placeholder="view == 'user' ? 'please select job' : 'please select user'"
-                    search-placeholder="search..."
-                  ></selelct-box>
+                    search-placeholder="search...">
+                      <template slot="default-options" v-if="view == 'user'">
+                        <li @click="onCreateJob"><i>-- CREATE NEW JOB --</i></li>
+                        <li><i>-- CREATE NEW CONTACT --</i></li>
+                      </template>
+                    </selelct-box>
                 </div>
               </div>              
             </div>           
@@ -97,9 +101,8 @@
                 </div> 
               </div>
             </div>
-
-          </form>
-
+            
+          </form>                
         </div><!-- End Body -->
 
         <!-- Modal Footer -->
@@ -107,22 +110,27 @@
           <button @click="onSubmit" type="button" class="btn btn-success">Assign</button>
           <button @click="onClose" type="button" class="btn btn-secondary">Cancel</button>          
         </div><!-- End Footer -->
+        <job-modal v-model="jobModal"></job-modal>   
 
       </div><!-- End Content  -->
-    </div><!-- End Modal -->
-  </div>
+    </div><!-- End Modal --> 
+      
+  </div>   
 
 </template>
 
 <script>
+import Popper from "popper.js";
 import { mapGetters, mapActions } from "vuex";
 import Selectbox from "../../../framework/BaseSelectBox.vue";
+import CreateJobModal from "../schedules/CreateJobModal.vue";
 
 export default {
   name: "AssignJobModal",
 
   components: {
-    "selelct-box": Selectbox
+    "selelct-box": Selectbox,
+    "job-modal": CreateJobModal
   },
 
   props: {
@@ -160,7 +168,8 @@ export default {
       statusOptions: [
         { key: 1, value: "Tentative" },
         { key: 2, value: "Confirmed" }
-      ]
+      ],
+      jobModal: false
     };
   },
 
@@ -188,6 +197,7 @@ export default {
   },
 
   mounted() {
+    $("#assignModal").on("show.bs.modal", this.onShow);
     $("#assignModal").on("hide.bs.modal", this.onClose);
   },
 
@@ -232,6 +242,20 @@ export default {
       create: "resource/create"
     }),
 
+    onShow() {
+      // var ref = $("#assignModal .modal-body");
+      // var popover = $(".jobModal");
+      // popover.show();
+      // var popper = new Popper(ref, popover, {
+      //   placement: "right",
+      //   modifiers: {
+      //     arrow: { enabled: false },
+      //     preventOverflow: { enabled: false },
+      //     hide: { enabled: false }
+      //   }
+      // });
+    },
+
     onClose() {
       this.clearForm();
       this.$emit("input", false);
@@ -243,14 +267,10 @@ export default {
         this.view == "user" ? this.form.resource_id : this.form.event_id;
       event.job_id =
         this.view == "job" ? this.form.resource_id : this.form.event_id;
-      event.status = 
-        this.form.status.toLowerCase();
-      event.start = 
-        this.form.start + "T" + this.form.startTime + ":00";
-      event.end = 
-        this.form.end + "T" + this.form.endTime + ":00";
-      event.offsite = 
-        this.form.offsite;
+      event.status = this.form.status.toLowerCase();
+      event.start = this.form.start + "T" + this.form.startTime + ":00";
+      event.end = this.form.end + "T" + this.form.endTime + ":00";
+      event.offsite = this.form.offsite;
       event.break_length = 0;
       event.type = "schedule";
 
@@ -281,6 +301,10 @@ export default {
       this.form.start = "";
       this.form.end = "";
       this.form.offsite = false;
+    },
+
+    onCreateJob() {      
+      this.jobModal = true;
     }
   }
 };

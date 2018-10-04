@@ -462,7 +462,7 @@ export default {
     },
 
     eventClickHandler(arg) {
-      console.log(arg);
+      //console.log(arg);
       if (arg.e.isEvent) {
         this.$emit("event-clicked", {
           eventId: arg.e.id(),
@@ -504,19 +504,7 @@ export default {
       });
     },
 
-    eventResizeHandler(arg) {
-      // console.log(arg.e.data.start);
-      // console.log(arg.e.data.end);
-      // let startTime =
-      //   typeof arg.e.data.start == "string"
-      //     ? 'T' + arg.e.data.start.slice(11, 19)
-      //     : 'T' + arg.e.data.start.value.slice(11, 19);
-      // let endTime =
-      //   typeof arg.e.data.end == "string"
-      //     ? 'T' + arg.e.data.end.slice(11, 19)
-      //     : 'T' + arg.e.data.end.value.slice(11, 19);
-      // arg.newStart = new DayPilot.Date(arg.newStart.value.slice(0, 10) + startTime);
-      // arg.newEnd = new DayPilot.Date(arg.newEnd.value.slice(0, 10) + endTime);
+    eventResizeHandler(arg) {      
       this.$emit("event-resized", {
         eventId: arg.e.id(),
         newStart: arg.newStart,
