@@ -38,8 +38,7 @@ footer{
 }
 
 .toolbar-top .icon,
-.toolbar-bot .icon{
-  line-height: 1.6;
+.toolbar-bot .icon{  
   font-size: 1.6rem;
   font-weight: bold;
 }
@@ -53,9 +52,9 @@ footer{
 }
 
 .toolbar-top .btn,
-.toolbar-bot .btn{     
+.toolbar-bot .btn{  
+  padding: 10px;   
   min-width: 70px;  
-  line-height: 1.8;
   border: 0px transparent !important;
   background-color: rgba(255,255,255,0) !important;
 }
