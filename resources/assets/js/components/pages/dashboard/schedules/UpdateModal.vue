@@ -387,4 +387,7 @@ export default {
 </script>
 
 <style scoped>
+.modal-content{
+  border: 0px;
+}
 </style>

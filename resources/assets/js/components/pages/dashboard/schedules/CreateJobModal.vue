@@ -180,7 +180,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .wrap-panel {
   top: 0px;
   left: 0px;
