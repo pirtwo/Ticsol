@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ticsol\Base\Repository;
+namespace App\Ticsol\Base\Criteria;
 
 use App\Ticsol\Base\Repository\Repository;
 use App\Ticsol\Base\Repository\Contract\IRepository;
