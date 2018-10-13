@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
 
+use App\Ticsol\Base\Criteria\Criteria; 
 use App\Ticsol\Base\Repository\Contract\ICriteria;
 use App\Ticsol\Base\Repository\Contract\IRepository;
 

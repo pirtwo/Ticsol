@@ -2,7 +2,7 @@
 
 namespace App\Ticsol\Base\Repository\Contract;
 
-use App\Ticsol\Base\Repository\Criteria;
+use App\Ticsol\Base\Criteria\Criteria;
 
 /**
  * Base contrac for criteria.
