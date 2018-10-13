@@ -16,7 +16,7 @@
         <template slot="content">
 
             <table-view class="table table-striped" 
-            v-model="selects" :data="profiles" :header="header" :selection="false" order-by="id" order="asc">
+            v-model="selects" :data="profiles" :header="header" :selection="false" order-by="name" order="asc">
                <template slot="header" slot-scope="{item}">
                  <div :data-orderBy="item.orderBy">{{ item.value }}</div>
                </template>
@@ -26,9 +26,9 @@
                     <i class="material-icons">visibility</i>
                   </router-link> 
                  </td>
-                 <td>{{ item.title }}</td>
-                 <td>{{ item.create }}</td>
-                 <td>{{ item.update }}</td>
+                 <td>{{ item.name }}</td>
+                 <td>{{ item.created_at }}</td>
+                 <td>{{ item.updated_at }}</td>
                </template> 
             </table-view>
 
@@ -51,21 +51,23 @@ export default {
     "pagination-view": PaginationView
   },
 
+  props: ["col", "opt", "val"],
+
   data() {
     return {
       profiles: [],
       pager: {
         page: 1,
         perPage: 10,
-        pageCount: 10,
-      },      
+        pageCount: 10
+      },
       loading: true,
       selects: [],
       header: [
         { value: "", orderBy: "" },
-        { value: "Title", orderBy: "title" },
-        { value: "Create", orderBy: "create" },
-        { value: "Update", orderBy: "update" }
+        { value: "Title", orderBy: "name" },
+        { value: "Create", orderBy: "created_at" },
+        { value: "Update", orderBy: "updated_at" }
       ],
       order: "asc"
     };
@@ -88,17 +90,14 @@ export default {
       this.loading = true;
       this.fetch({
         resource: "form",
-        query: { page: this.pager.page, perPage: this.pager.perPage }
+        query: {
+          page: this.pager.page,
+          perPage: this.pager.perPage,
+          [this.opt]: `${this.col},${this.val}`
+        }
       })
         .then(respond => {
-          this.profiles = respond.data.map(obj => {
-            return {
-              id: obj.id,
-              title: obj.name,
-              create: obj.created_at,
-              update: obj.updated_at
-            };
-          });
+          this.profiles = respond.data;
           this.pager.pageCount = respond.last_page;
           this.loading = false;
         })

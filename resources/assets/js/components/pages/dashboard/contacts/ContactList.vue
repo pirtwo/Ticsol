@@ -16,7 +16,7 @@
         <template slot="content">
 
             <table-view class="table table-striped" 
-            v-model="selects" :data="contacts" :header="header" :selection="false" order-by="id" order="asc">
+            v-model="selects" :data="contacts" :header="header" :selection="false" order-by="name" order="asc">
                <template slot="header" slot-scope="{item}">
                  <div :data-orderBy="item.orderBy">{{ item.value }}</div>
                </template>
@@ -52,20 +52,22 @@ export default {
     "pagination-view": PaginationView
   },
 
+  props: ["col", "opt", "val"],
+
   data() {
     return {
       contacts: [],
       pager: {
         page: 1,
         perPage: 10,
-        pageCount: 10,
-      },      
+        pageCount: 10
+      },
       loading: true,
       selects: [],
       header: [
         { value: "", orderBy: "" },
         { value: "Name", orderBy: "name" },
-        { value: "Group", orderBy: "group" },        
+        { value: "Group", orderBy: "group" },
         { value: "Tel", orderBy: "telephone" },
         { value: "Mobile", orderBy: "mobilephone" }
       ],
@@ -90,7 +92,11 @@ export default {
       this.loading = true;
       this.fetch({
         resource: "contact",
-        query: { page: this.pager.page, perPage: this.pager.perPage }
+        query: {
+          page: this.pager.page,
+          perPage: this.pager.perPage,
+          [this.opt]: `${this.col},${this.val}`
+        }
       })
         .then(respond => {
           this.contacts = respond.data.map(obj => {

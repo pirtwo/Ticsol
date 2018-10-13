@@ -26,9 +26,14 @@
                      <i class="material-icons">visibility</i>
                    </router-link>                   
                  </td>
-                 <td>{{ item.from }}</td>
-                 <td>{{ item.till }}</td>
-                 <td>{{ item.report.slice(0,10) + "..." }}</td>                 
+                 <td>{{ dateToString(item.from) }}</td>
+                 <td>{{ dateToString(item.till) }}</td>
+                 <td>{{ item.desc }}</td>    
+                 <td>
+                   <router-link class="btn btn-sm btn-light" :to="{ name : 'jobDetails', params : { id: item.schedule.job_id } }">
+                     Related Job
+                   </router-link> 
+                 </td>             
                </template> 
             </table-view>
 
@@ -51,21 +56,24 @@ export default {
     "pagination-view": PaginationView
   },
 
+  props: ["col", "opt", "val"],
+
   data() {
     return {
       reports: [],
       pager: {
         page: 1,
         perPage: 10,
-        pageCount: 10,
-      },      
+        pageCount: 10
+      },
       loading: true,
       selects: [],
       header: [
         { value: "", orderBy: "" },
         { value: "From", orderBy: "from" },
         { value: "Till", orderBy: "till" },
-        { value: "Report", orderBy: "report" }
+        { value: "Report", orderBy: "report" },
+        { value: "Links", orderBy: "" }
       ],
       order: "asc"
     };
@@ -88,17 +96,15 @@ export default {
       this.loading = true;
       this.fetch({
         resource: "activity",
-        query: { page: this.pager.page, perPage: this.pager.perPage }
+        query: {
+          page: this.pager.page,
+          perPage: this.pager.perPage,
+          with: "schedule",
+          [this.opt]: `${this.col},${this.val}`
+        }
       })
         .then(respond => {
-          this.reports = respond.data.map(obj => {
-            return {
-              id: obj.id,
-              from: obj.from,
-              till: obj.till,
-              report: obj.desc
-            };
-          });
+          this.reports = respond.data;
           this.pager.pageCount = respond.last_page;
           this.loading = false;
         })
@@ -106,6 +112,10 @@ export default {
           console.log(error);
           this.loading = false;
         });
+    },
+
+    dateToString(date) {
+      return new DayPilot.Date(date).toString("ddd dd MMM yyyy");
     }
   }
 };

@@ -16,7 +16,7 @@
         <template slot="content">
 
             <table-view class="table table-striped" 
-            v-model="selects" :data="jobs" :header="header" :selection="false" order-by="id" order="asc">
+            v-model="selects" :data="jobs" :header="header" :selection="false" order-by="title" order="asc">
                <template slot="header" slot-scope="{item}">
                  <div :data-orderBy="item.orderBy">{{ item.value }}</div>
                </template>
@@ -28,7 +28,7 @@
                  </td>
                  <td>{{ item.title }}</td>
                  <td>{{ item.code }}</td>
-                 <td>{{ item.active ? "Yes" : "No" }}</td>
+                 <td>{{ item.isactive ? "Yes" : "No" }}</td>
                </template> 
             </table-view>
 
@@ -51,14 +51,16 @@ export default {
     "pagination-view": PaginationView
   },
 
+  props: ["col", "opt", "val"],
+
   data() {
     return {
       jobs: [],
       pager: {
         page: 1,
         perPage: 10,
-        pageCount: 10,
-      },      
+        pageCount: 10
+      },
       loading: true,
       selects: [],
       header: [
@@ -77,7 +79,7 @@ export default {
     }
   },
 
-  mounted() {
+  mounted() {        
     this.feedTable();
   },
 
@@ -88,17 +90,14 @@ export default {
       this.loading = true;
       this.fetch({
         resource: "job",
-        query: { page: this.pager.page, perPage: this.pager.perPage }
+        query: {
+          page: this.pager.page,
+          perPage: this.pager.perPage,
+          [this.opt]: `${this.col},${this.val}`
+        }
       })
         .then(respond => {
-          this.jobs = respond.data.map(obj => {
-            return {
-              id: obj.id,
-              title: obj.title,
-              active: obj.isactive,
-              code: obj.code
-            };
-          });
+          this.jobs = respond.data;
           this.pager.pageCount = respond.last_page;
           this.loading = false;
         })
