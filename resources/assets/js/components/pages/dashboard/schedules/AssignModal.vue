@@ -46,7 +46,7 @@
                     search-placeholder="search...">
                       <template slot="default-options" v-if="view == 'user'">
                         <li @click="onCreateJob"><i>-- CREATE NEW JOB --</i></li>
-                        <li><i>-- CREATE NEW CONTACT --</i></li>
+                        <hr>
                       </template>
                     </selelct-box>
                 </div>

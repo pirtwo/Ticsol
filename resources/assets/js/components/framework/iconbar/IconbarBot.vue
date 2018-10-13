@@ -19,7 +19,10 @@
                 </i>
                 <span class="caption">REQUESTS</span>
             </button>
-            <div class="dropdown-menu">                
+            <div class="dropdown-menu"> 
+                <router-link :to="{ name : 'requestList'}" class="dropdown-item">
+                    Inbox
+                </router-link>                
                 <router-link :to="{ name : 'reqLeave'}" class="dropdown-item">
                     Leave
                 </router-link>               

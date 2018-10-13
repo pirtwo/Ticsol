@@ -95,8 +95,7 @@ export default {
       });
     },
 
-    perPageChange() {
-      console.log(this.perPage);
+    perPageChange() {      
       this.page = 1;
       this.$refs.pageInput.value = this.page.toString();
       this.$emit("input", {

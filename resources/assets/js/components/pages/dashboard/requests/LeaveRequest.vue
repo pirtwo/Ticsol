@@ -22,7 +22,7 @@
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn-light">                        
+                    <button class="btn btn-light" @click="onSubmit">                        
                         Submit
                     </button>
                 </li>
@@ -52,15 +52,15 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-label">Leave Type</label>
                         <div class="col-sm-10">
-                            <select name="leave_type" class="custom-select">
+                            <select v-model="form.meta.leave_type" name="meta-leave_type" class="custom-select">
                                 <option selected>please select leave type</option>
-                                <option value="3">Annual</option>
-                                <option value="1">Longs Service</option>
-                                <option value="3">Sick</option>                                
-                                <option value="3">Bereavement</option>
-                                <option value="3">Maternity/Paternity</option>    
-                                <option value="3">Study</option>                            
-                                <option value="3">Other</option>                                
+                                <option value="annual">Annual</option>
+                                <option value="long service">Long Service</option>
+                                <option value="sick">Sick</option>                                
+                                <option value="bereavement">Bereavement</option>
+                                <option value="maternity/paternity">Maternity/Paternity</option>    
+                                <option value="study">Study</option>                            
+                                <option value="other">Other</option>                                
                             </select>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-label">From</label>
                         <div class="col-sm-10">
-                            <input name="leave_date" type="date" class="form-control">
+                            <input v-model="form.meta.from" type="date" name="meta-from" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-label">Return</label>
                         <div class="col-sm-10">
-                            <input name="return_date" type="date" class="form-control">
+                            <input v-model="form.meta.return" type="date" name="meta-return" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -170,13 +170,14 @@ export default {
     return {
       loading: false,
       form: {
-        type: "",
+        type: "leave",
+        job_id: 1,
         assigned_id: "",
         attachments: "",
         meta: {
           leave_type: "",
-          leave_date: "",
-          return_date: ""
+          from: "",
+          return: ""
         }
       }
     };
@@ -201,7 +202,7 @@ export default {
         this.loading = false;
       })
       .catch(error => {
-        console.log(error);
+        console.log(error);        
       });
   },
 
@@ -209,7 +210,18 @@ export default {
     ...mapActions({
       fetch: "resource/list",
       create: "resource/create"
-    })
+    }),
+
+    onSubmit(event) {
+      this.create({ resource: "request", data: this.form })
+        .then(respond => {
+            console.log('Request created sucessfuly.');
+        })
+        .catch(error => {
+            console.log(error.response);
+            this.$formFeedback(error.response.data.errors);
+        });
+    }
   }
 };
 </script>
