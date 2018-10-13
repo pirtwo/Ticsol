@@ -43,7 +43,7 @@ class ContactCreate extends FormRequest
     public function messages()
     {
         return[
-            
+            //
         ];
     }
 }

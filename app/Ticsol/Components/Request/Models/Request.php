@@ -11,18 +11,19 @@ class Request extends Model
     protected $table = 'ts_requests';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [        
-        'client_id',
-        'user_id',        
-        'assigned_id',
+    protected $fillable = [         
         'job_id',
-        'form_id',
+        'form_id',        
+        'assigned_id',        
         'schedule_id',
         'type',
         'status',
@@ -41,7 +42,7 @@ class Request extends Model
     #region Eloquent_Relationships
 
     /**
-     * Assosiated job to current request.
+     * Assosiated client to current request.
      */
     public function client()
     {

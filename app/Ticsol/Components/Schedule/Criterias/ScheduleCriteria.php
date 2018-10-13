@@ -3,7 +3,7 @@
 namespace App\Ticsol\Components\Schedule\Criterias;
 
 use App\Ticsol\Base\Repository\Contract\IRepository;
-use App\Ticsol\Base\Repository\Criteria;
+use App\Ticsol\Base\Criteria\Criteria;
 use Illuminate\Http\Request;
 
 class ScheduleCriteria extends Criteria

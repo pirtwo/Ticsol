@@ -10,6 +10,7 @@ use App\Ticsol\Components\Models\Contact;
 use App\Ticsol\Components\Contact\Requests;
 use App\Ticsol\Components\Contact\Exceptions;
 use App\Ticsol\Components\Contact\Repository;
+use App\Ticsol\Base\Criteria\CommonCriteria;
 
 class ContactController extends Controller
 {
@@ -38,6 +39,8 @@ class ContactController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+            $this->repository->pushCriteria(new CommonCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);

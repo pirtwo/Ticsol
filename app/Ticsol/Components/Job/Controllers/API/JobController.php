@@ -9,6 +9,8 @@ use App\Ticsol\Components\Models\Job;
 use App\Ticsol\Components\Job\Requests;
 use App\Ticsol\Components\Job\Exceptions;
 use App\Ticsol\Components\Job\Repository;
+use App\Ticsol\Base\Criteria\CommonCriteria;
+use App\Ticsol\Components\Job\Criterias\JobCriteria;
 
 class JobController extends Controller
 {
@@ -37,6 +39,8 @@ class JobController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+            $this->repository->pushCriteria(new CommonCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -100,8 +104,7 @@ class JobController extends Controller
      */
     public function update(Requests\UpdateJob $request, $id)
     {
-        try
-        { 
+        try {
             $job = $this->repository->findBy('id', $id);
             if ($job == null) {
                 throw new Exceptions\JobNotFound();

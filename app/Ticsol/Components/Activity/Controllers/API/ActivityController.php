@@ -9,6 +9,8 @@ use App\Ticsol\Components\Models\Activity;
 use App\Ticsol\Components\Activity\Requests;
 use App\Ticsol\Components\Activity\Exceptions;
 use App\Ticsol\Components\Activity\Repository;
+use App\Ticsol\Components\Activity\Criterias\ActivityCriteria;
+use App\Ticsol\Base\Criteria\CommonCriteria;
 
 class ActivityController extends Controller
 {
@@ -38,6 +40,9 @@ class ActivityController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+            $this->repository->pushCriteria(new ActivityCriteria($request));
+            $this->repository->pushCriteria(new CommonCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);

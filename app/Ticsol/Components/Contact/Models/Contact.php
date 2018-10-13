@@ -84,7 +84,7 @@ class Contact extends Model
      */
     public function jobs()
     {
-        return $this->belongsToMany(Job::class, 'job_contact', 'contact_id', 'job_id');
+        return $this->belongsToMany(Job::class, 'ts_job_contacts', 'contact_id', 'job_id');
     }
 
     #endregion

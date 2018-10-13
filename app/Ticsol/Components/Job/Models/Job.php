@@ -95,5 +95,13 @@ class Job extends Model
         return $this->belongsTo(Form::class, 'form_id');
     }
 
+    /**
+     * Assosiated contacts to current job.
+     */
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class, 'ts_job_contacts', 'job_id', 'contact_id');
+    }
+
     #regionend
 }
