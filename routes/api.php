@@ -53,11 +53,19 @@ Route::group([ 'prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers
     Route::get('contact/show/{id}', 'ContactController@show');
     Route::post('contact/store', 'ContactController@store');
     Route::post('contact/update/{id}', 'ContactController@update');
+
+    // Request
+    Route::get('request', 'RequestController@index');
+    Route::get('request/show/{id}', 'RequestController@show');
+    Route::post('request/store', 'RequestController@store');
+    Route::post('request/update/{id}', 'RequestController@update');
     
     /**
      * Protected api routes
      */
     Route::middleware('auth:api')->group(function () {
+
+        // Auth
         Route::post('/logout', 'AuthController@logout');
     });
     
