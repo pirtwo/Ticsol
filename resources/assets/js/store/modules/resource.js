@@ -35,11 +35,11 @@ export const resourceModule = {
 
         request: {
             list: [],
-            listURL: URLs.SCHEDULE_LIST,
-            showURL: URLs.SCHEDULE_SHOW,
-            createURL: URLs.SCHEDULE_CREATE,
-            updateURL: URLs.SCHEDULE_UPDATE,
-            deleteURL: URLs.SCHEDULE_DELETE
+            listURL: URLs.REQUEST_LIST,
+            showURL: URLs.REQUEST_SHOW,
+            createURL: URLs.REQUEST_CREATE,
+            updateURL: URLs.REQUEST_UPDATE,
+            deleteURL: URLs.REQUEST_DELETE
         },
 
         job: {
