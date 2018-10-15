@@ -24,17 +24,18 @@ class CreateActivity extends FormRequest
     public function rules()
     {
         return [
-            'schedule_id' => 'required|numeric|exists:ts_schedules,id',
-            'from' => 'required|date',
-            'till' => 'nullable|date',
-            'desc' => 'required|string|max:1000'
+            'schedule_id'   => 'required|numeric|exists:ts_schedules,id',
+            'job_id'        => 'required|numeric|exists:ts_jobs,id',
+            'from'          => 'required|date',
+            'till'          => 'nullable|date',
+            'desc'          => 'required|string|max:1000'
         ];
     }
 
     public function messages()
     {
         return[
-            
+            //
         ];
     }
 }
