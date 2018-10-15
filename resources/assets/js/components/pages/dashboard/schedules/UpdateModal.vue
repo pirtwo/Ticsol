@@ -181,7 +181,6 @@ export default {
     }),
 
     eventList: function() {
-      //if (!this.getList("job").map) return [];
       if (this.view == "user") {
         return this.getList("job").map(obj => {
           return { key: obj.id, value: obj.title };
@@ -195,7 +194,7 @@ export default {
   },
 
   created() {
-    //this.fetch({ resource: "job" });
+    //
   },
 
   mounted() {
@@ -210,142 +209,78 @@ export default {
       } else {
         $("#updateModal").modal("hide");
       }
-    },
-
-    // event: function(value) {
-    //   console.log('event change...');
-    //   this.form.resourceName = value.name;
-    //   this.form.resource_id = 
-    //     this.view == "user" ? value.user_id : value.job_id;
-    //   this.form.event_id = 
-    //     this.view == "user" ? value.job_id : value.user_id;
-    //   this.form.status = value.status;
-    //   this.form.break_length = value.break_length;
-    //   this.form.start = value.start
-    //     .toDate()
-    //     .toISOString()
-    //     .split("T")[0];
-    //   this.form.end = value.end
-    //     .toDate()
-    //     .toISOString()
-    //     .split("T")[0];
-    //   this.form.startTime = value.start.toDate().toLocaleTimeString("en-US", {
-    //     timeZone: "UTC",
-    //     hour12: false,
-    //     hour: "2-digit",
-    //     minute: "2-digit"
-    //   });
-    //   this.form.endTime = value.end.toDate().toLocaleTimeString("en-US", {
-    //     timeZone: "UTC",
-    //     hour12: false,
-    //     hour: "2-digit",
-    //     minute: "2-digit"
-    //   });
-    // },
-
-    // view: function(value){
-    //   console.log('view change...');
-    //   this.form.resourceName = 
-    //     this.event.name;
-    //   this.form.resource_id = 
-    //     this.view == "user" ? this.event.user_id : this.event.job_id;
-    //   this.form.event_id = 
-    //     this.view == "user" ? this.event.job_id : this.event.user_id;
-    //   this.form.status = 
-    //     this.event.status;
-    //   this.form.break_length = 
-    //     this.event.break_length;
-    //   this.form.start = this.event.start
-    //     .toDate()
-    //     .toISOString()
-    //     .split("T")[0];
-    //   this.form.end = this.event.end
-    //     .toDate()
-    //     .toISOString()
-    //     .split("T")[0];
-    //   this.form.startTime = this.event.start.toDate().toLocaleTimeString("en-US", {
-    //     timeZone: "UTC",
-    //     hour12: false,
-    //     hour: "2-digit",
-    //     minute: "2-digit"
-    //   });
-    //   this.form.endTime = this.event.end.toDate().toLocaleTimeString("en-US", {
-    //     timeZone: "UTC",
-    //     hour12: false,
-    //     hour: "2-digit",
-    //     minute: "2-digit"
-    //   });
-    // }
-
+    }
   },
 
   methods: {
     ...mapActions({
       fetch: "resource/list",
-      create: "resource/create"
+      update: "resource/update",
+      delete: "resource/delete"
     }),
 
-    onShow(){
+    onShow() {
       this.fillForm();
     },
 
     onHide() {
-      this.clearForm();
       this.$emit("input", false);
     },
 
     onSubmit(e) {
-      // let event = {};
-      // event.user_id =
-      //   this.view == "user" ? this.form.resource_id : this.form.event_id;
-      // event.job_id =
-      //   this.view == "job" ? this.form.resource_id : this.form.event_id;
-      // event.status = 
-      //   this.form.status.toLowerCase();      
-      // event.start = 
-      //   this.form.start + "T" + this.form.startTime + ":00";
-      // event.end = 
-      //   this.form.end + "T" + this.form.endTime + ":00";
-      // event.offsite = 
-      //   this.form.offsite;
-      // event.break_length = 0;
-      // event.type = "schedule";
+      let event = {};
+      event.user_id =
+        this.view == "user" ? this.form.resource_id : this.form.event_id;
+      event.job_id =
+        this.view == "job" ? this.form.resource_id : this.form.event_id;
+      event.status = this.form.status.toLowerCase();
+      event.start = this.form.start + "T" + this.form.startTime + ":00";
+      event.end = this.form.end + "T" + this.form.endTime + ":00";
+      event.offsite = this.form.offsite;
+      e.target.innerHTML = "Updating...";
+      e.target.disabled = true;
 
-      // e.target.innerHTML = "Creating...";
-      // e.target.disabled = true;
-
-      // this.create({ resource: "schedule", data: event })
-      //   .then(respond => {
-      //     e.target.innerHTML = "Assign";
-      //     e.target.disabled = false;
-      //     this.clearForm();
-      //     this.$emit("input", false);
-      //   })
-      //   .catch(error => {
-      //     e.target.innerHTML = "Assign";
-      //     e.target.disabled = false;
-      //     console.log(error.response);
-      //     this.$formFeedback(error.response.data.errors);
-      //   });
+      this.update({ resource: "schedule", id: this.event.id, data: event })
+        .then(respond => {
+          e.target.innerHTML = "Update";
+          e.target.disabled = false;
+          console.log("Event updated successfuly.");
+          this.$emit("input", false);
+        })
+        .catch(error => {
+          e.target.innerHTML = "Update";
+          e.target.disabled = false;
+          console.log(error.response);
+          this.$formFeedback(error.response.data.errors);
+        });
     },
 
-    onDelete(event){
-
+    onDelete(event) {
+      event.target.innerHTML = "Deleting...";
+      event.target.disabled = true;
+      this.delete({ resource: "schedule", id: this.event.id })
+        .then(respond => {
+          event.target.innerHTML = "Delete";
+          event.target.disabled = false;
+          console.log("Event deleted successfuly.");
+          this.$emit("input", false);
+        })
+        .catch(error => {
+          event.target.innerHTML = "Delete";
+          event.target.disabled = false;
+          console.log(error.response);
+        });
     },
 
-    fillForm(){
-      this.form.resourceName = 
-        this.event.name;
-      this.form.resource_id = 
+    fillForm() {
+      this.form.resourceName = this.event.name;
+      this.form.resource_id =
         this.view == "user" ? this.event.user_id : this.event.job_id;
-      this.form.event_id = 
+      this.form.event_id =
         this.view == "user" ? this.event.job_id : this.event.user_id;
-      this.form.status = 
-        this.event.status;
-      this.form.offsite = 
-        this.event.offsite;
-      this.form.break_length = 
-        this.event.break_length;
+      this.form.status = this.event.status;
+      this.form.offsite = this.event.offsite;
+      this.form.break_length = this.event.break_length;
       this.form.start = this.event.start
         .toDate()
         .toISOString()
@@ -354,12 +289,14 @@ export default {
         .toDate()
         .toISOString()
         .split("T")[0];
-      this.form.startTime = this.event.start.toDate().toLocaleTimeString("en-US", {
-        timeZone: "UTC",
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+      this.form.startTime = this.event.start
+        .toDate()
+        .toLocaleTimeString("en-US", {
+          timeZone: "UTC",
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit"
+        });
       this.form.endTime = this.event.end.toDate().toLocaleTimeString("en-US", {
         timeZone: "UTC",
         hour12: false,
@@ -368,18 +305,7 @@ export default {
       });
     },
 
-    clearForm() {
-      // this.form.userName = "";
-      // this.form.user_id = null;
-      // this.form.job_id = null;
-      // this.form.startTime = "";
-      // this.form.endTime = "";
-      // this.form.start = "";
-      // this.form.end = "";
-      // this.form.offsite = false;
-    },
-
-    onCreateJob() {      
+    onCreateJob() {
       this.jobModal = true;
     }
   }
@@ -387,7 +313,7 @@ export default {
 </script>
 
 <style scoped>
-.modal-content{
+.modal-content {
   border: 0px;
 }
 </style>

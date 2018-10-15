@@ -273,6 +273,7 @@ export default {
       event.offsite = this.form.offsite;
       event.break_length = 0;
       event.type = "schedule";
+      event.event_type = "scheduled";
 
       e.target.innerHTML = "Creating...";
       e.target.disabled = true;

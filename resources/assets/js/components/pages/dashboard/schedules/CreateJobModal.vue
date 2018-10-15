@@ -14,7 +14,7 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-label col-form-label-sm">Title</label>
                         <div class="col-sm-10">
-                            <input v-model="form.title" id="title" type="text" class="form-control form-control-sm" placeholder="job title"/>
+                            <input v-model="form.title" name="title" id="title" type="text" class="form-control form-control-sm" placeholder="job title"/>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                     <div class="form-row">
                         <label class="col-sm-2 col-form-label col-form-label-sm">Code</label>
                         <div class="col-sm-10">
-                            <input v-model="form.code" id="code" type="text" class="form-control form-control-sm" placeholder="display code"/>
+                            <input v-model="form.code" name="code" id="code" type="text" class="form-control form-control-sm" placeholder="display code"/>
                         </div>
                     </div>
                 </div>
@@ -65,8 +65,11 @@
             </form>
             </div>
             <div class="panel-footer">
-                <button class="btn btn-sm btn-success">                        
+                <button class="btn btn-sm btn-success" @click="onSubmit">                        
                     Save
+                </button>
+                <button class="btn btn-sm btn-success" @click="onHide">                        
+                    Cancel
                 </button>
             </div>
         </div>
@@ -112,7 +115,6 @@ export default {
 
   watch: {
     value: function(value) {
-      console.log("change value " + value);
       this.show = value;
     }
   },
@@ -126,26 +128,11 @@ export default {
       return this.getList("job").map(item => {
         return { key: item.id, value: item.title };
       });
-    },
-
-    profiles: function() {
-      return this.getList("form").map(item => {
-        return { key: item.id, value: item.name };
-      });
     }
   },
 
   mounted() {
-    this.loading = true;
-    let p1 = this.fetch({ resource: "job" });
-    let p2 = this.fetch({ resource: "form" });
-    Promise.all([p1, p2])
-      .then(() => {
-        this.loading = false;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    //
   },
 
   methods: {
@@ -163,14 +150,19 @@ export default {
 
     onSubmit(e) {
       e.target.disabled = true;
+      e.target.innerHTML = "Saving...";
       this.form.meta = JSON.stringify(this.formData);
       this.create({ resource: "job", data: this.form })
         .then(respond => {
           e.target.disabled = false;
+          e.target.innerHTML = "Save";
           console.log("job created successfuly");
+          this.onHide();
         })
         .catch(error => {
           e.target.disabled = false;
+          e.target.innerHTML = "Save";
+          console.log(error.response.data);
           this.$formFeedback(error.response.data.errors);
         });
 

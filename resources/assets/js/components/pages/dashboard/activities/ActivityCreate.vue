@@ -175,6 +175,7 @@ export default {
     onSubmit(e) {
       let form = {};
       form.schedule_id = this.form.schedule_id;
+      form.job_id = this.list.find(item => item.id === this.form.schedule_id).job_id;
       form.from =
         this.form.fromDate +
         "T" +

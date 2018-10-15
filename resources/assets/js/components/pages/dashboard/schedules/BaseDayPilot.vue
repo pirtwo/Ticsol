@@ -177,6 +177,52 @@ export default {
     };
   },
 
+   watch: {
+    height: function(value) {
+      if (this.dayPilot.height !== undefined) {
+        this.dayPilot.height = value - this.timeHeaderHeight * 2 - 4;
+        this.dayPilot.update();
+      }
+    },
+
+    resource: function(value) {
+      if (this.dayPilot.resources !== undefined) {
+        this.dayPilot.resources = value;
+        this.dayPilot.update();
+        this.makeDraggable();
+      }
+      //console.log('resource update...');
+    },
+
+    events: function(value) {
+      if (this.dayPilot.events !== undefined) {
+        this.dayPilot.events.list = value;
+        this.dayPilot.update();
+      }
+      //console.log('event update...');
+    },
+
+    message: function(value) {
+      this.dayPilot.message(value);
+    },
+
+    view: function(value) {
+      this.dayPilot.view = value;
+      this.dayPilot.update();
+    },
+
+    range: function(value) {
+      this.dayPilot.days = this.getDays();
+      this.dayPilot.startDate = this.getStartDate();
+      this.dayPilot.update();
+    },
+
+    startDate: function(value) {
+      this.dayPilot.startDate = value;
+      this.dayPilot.update();
+    }
+  },
+
   mounted() {
     let dp = (this.dayPilot = new DayPilot.Scheduler("dp"));
 
@@ -317,59 +363,13 @@ export default {
 
     dp.onBeforeEventRender = function(args) {
       args.data.html =
-        `<span class='event_title'>${args.data.text}</span><br/>` +
-        `<span>Progress: %${args.data.complete}</span>`;
-      args.data.cssClass = "has-popover";
+        `<span class='event_title'>${args.data.text}</span>`;
     };
 
     dp.init();
     this.makeDraggable();
   },
-
-  watch: {
-    height: function(value) {
-      if (this.dayPilot.height !== undefined) {
-        this.dayPilot.height = value - this.timeHeaderHeight * 2 - 4;
-        this.dayPilot.update();
-      }
-    },
-
-    resource: function(value) {
-      if (this.dayPilot.resources !== undefined) {
-        this.dayPilot.resources = value;
-        this.dayPilot.update();
-        this.makeDraggable();
-      }
-    },
-
-    events: function(value) {
-      if (this.dayPilot.events !== undefined) {
-        this.dayPilot.events.list = value;
-        this.dayPilot.update();
-      }
-    },
-
-    message: function(value) {
-      this.dayPilot.message(value);
-    },
-
-    view: function(value) {
-      this.dayPilot.view = value;
-      this.dayPilot.update();
-    },
-
-    range: function(value) {
-      this.dayPilot.days = this.getDays();
-      this.dayPilot.startDate = this.getStartDate();
-      this.dayPilot.update();
-    },
-
-    startDate: function(value) {
-      this.dayPilot.startDate = value;
-      this.dayPilot.update();
-    }
-  },
-
+  
   methods: {
     getDays() {
       switch (this.range) {

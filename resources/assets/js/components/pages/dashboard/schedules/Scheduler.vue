@@ -1,8 +1,7 @@
 <template>
     <nav-view 
         :scrollbar="false" 
-        :loading="loading"        
-        drawer-title="Actions"> 
+        :loading="loading"> 
 
         <template slot="toolbar">
           <div class="dp-ctrl d-flex justify-content-end"> 
@@ -27,7 +26,7 @@
 
         <template slot="drawer-toolbar">
             <div class="p-2">
-              <input type="text" class="form-control form-control-sm">
+              <input v-model="query" type="text" class="form-control form-control-sm" placeholder="search here...">
             </div>
         </template>
 
@@ -38,7 +37,7 @@
                   <template v-for="res in this.sidebarResources">  
                       <li :key="res.id" :data-id="res.id" class="res-user">
                           <a href="#">
-                              <img :src="avatar(res.meta)" class="rounded">                              
+                              <img :src="res.meta.avatar" class="rounded">                              
                               <span class="caption">{{ res.name }}</span>
                           </a>                        
                       </li>
@@ -124,6 +123,7 @@ export default {
       event: null,
       view: true,
       range: true,
+      query: "",
       start: DayPilot.Date.today().firstDayOfMonth(),
       assignModal: false,
       updateModal: false
@@ -147,8 +147,24 @@ export default {
     },
 
     sidebarResources: function() {
-      if (this.view) return this.getList("job");
-      else return this.getList("user");
+      if (this.view) {
+        if (this.query != "")
+          return this.getList(
+            "job",
+            item =>
+              item.title.toLowerCase().indexOf(this.query.toLowerCase()) > -1 ||
+              item.code.toLowerCase().indexOf(this.query.toLowerCase()) > -1
+          );
+        return this.getList("job");
+      } else {
+        if (this.query != "")
+          return this.getList(
+            "user",
+            item =>
+              item.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1
+          );
+        return this.getList("user");
+      }
     },
 
     scheduleEvents: function() {
@@ -188,18 +204,17 @@ export default {
     ...mapActions({
       fetch: "resource/list",
       clear: "resource/clearList",
+      create: "resource/create",
       update: "resource/update",
       scheduleInit: "resource/scheduleInit",
       scheduleView: "resource/scheduleView"
     }),
 
-    avatar(json) {
-      return JSON.parse(json).avatar;
-    },
-
     // DP Handlers
     rangeSelectHandler(event) {
-      event.name = this.scheduleResources[event.resourceId - 1].name;
+      event.name = this.scheduleResources.find(
+        item => item.id == event.resourceId
+      ).name;
       this.event = event;
       this.assignModal = true;
     },
@@ -209,7 +224,9 @@ export default {
         "schedule",
         item => item.id == event.eventId
       )[0];
-      this.event.name = this.scheduleResources[event.resourceId - 1].name;
+      this.event.name = this.scheduleResources.find(
+        item => item.id == event.resourceId
+      ).name;
       this.event.start = event.start;
       this.event.end = event.end;
       this.updateModal = true;
@@ -223,6 +240,28 @@ export default {
     draggHandler(event) {
       console.log("drag");
       console.log(event);
+
+      let item = {};
+      item.user_id = this.dpView == "user" ? event.resourceId : event.eventId;
+      item.job_id = this.dpView == "job" ? event.resourceId : event.eventId;
+      item.status = "tentative";
+      item.start = event.start;
+      item.end = event.end;
+      item.offsite = false;
+      item.break_length = 0;
+      item.type = "schedule";
+      item.event_type = "scheduled";
+
+      this.message = "Creating event, please wait...";
+      this.create({ resource: "schedule", data: item })
+        .then(respond => {
+          this.message = "Event created successfuly.";
+          this.$emit("input", false);
+        })
+        .catch(error => {
+          this.message = "Error!!!";
+          console.log(error.response);
+        });
     },
 
     moveHandler(event) {
