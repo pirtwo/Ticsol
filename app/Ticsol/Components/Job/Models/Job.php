@@ -11,6 +11,9 @@ class Job extends Model
     protected $table = 'ts_jobs';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -100,7 +103,16 @@ class Job extends Model
      */
     public function contacts()
     {
-        return $this->belongsToMany(Contact::class, 'ts_job_contacts', 'job_id', 'contact_id');
+        return $this->belongsToMany(Contact::class, 'ts_job_contact', 'job_id', 'contact_id')
+            ->withPivot('type')->withTimestamps();
+    }
+
+    /**
+     * Activities of current job.
+     */
+    public function Activities()
+    {
+        return $this->hasMany(Activity::class);
     }
 
     #regionend

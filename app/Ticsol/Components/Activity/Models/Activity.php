@@ -19,6 +19,7 @@ class Activity extends Model
      */
     protected $fillable = [        
         'schedule_id',
+        'job_id',
         'from',
         'till',
         'desc',        
@@ -58,6 +59,14 @@ class Activity extends Model
     public function schedule()
     {
         return $this->belongsTo(Schedule::class, 'schedule_id');
+    }
+
+    /**
+     * Associated job to current activity.
+     */
+    public function job()
+    {
+        return $this->belongsTo(Job::class, 'job_id');
     }
 
     #endregion
