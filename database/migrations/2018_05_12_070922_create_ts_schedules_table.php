@@ -24,7 +24,8 @@ class CreateTsSchedulesTable extends Migration
             $table->unsignedInteger('job_id');     
             
             // Attributes
-            $table->string('type');  
+            $table->string('type');
+            $table->string('event_type');  
             $table->string('status');                      
             $table->dateTime('start');
             $table->dateTime('end');

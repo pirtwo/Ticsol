@@ -14,18 +14,20 @@ class CreateTsJobContactsTable extends Migration
     public function up()
     {
         
-        Schema::create('ts_job_contacts', function (Blueprint $table) {
+        Schema::create('ts_job_contact', function (Blueprint $table) {
             
             // Keys
             $table->unsignedInteger('job_id');
             $table->unsignedInteger('contact_id');            
 
             // Attributes
+            $table->string('type')
+                ->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
         
-        Schema::table('ts_job_contacts', function (Blueprint $table) {
+        Schema::table('ts_job_contact', function (Blueprint $table) {
             
             $table->foreign('job_id')
                 ->references('id')
@@ -46,7 +48,7 @@ class CreateTsJobContactsTable extends Migration
      */
     public function down()
     {
-        Schema::table('ts_job_contacts', function (Blueprint $table) {
+        Schema::table('ts_job_contact', function (Blueprint $table) {
             //
         });
     }

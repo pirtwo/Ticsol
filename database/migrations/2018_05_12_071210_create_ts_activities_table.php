@@ -20,6 +20,7 @@ class CreateTsActivitiesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('schedule_id');
+            $table->unsignedInteger('job_id');
 
             // Attributes
             $table->dateTime('from');
@@ -40,6 +41,11 @@ class CreateTsActivitiesTable extends Migration
             $table->foreign('schedule_id')
                 ->references('id')
                 ->on('ts_schedules')
+                ->onDelete('cascade');
+            
+            $table->foreign('job_id')
+                ->references('id')
+                ->on('ts_jobs')
                 ->onDelete('cascade');
         });
     }

@@ -20,7 +20,7 @@ class CreateTsClientsTable extends Migration
 
             // Attributes
             $table->string('name', 50);
-            $table->json('licences');
+            $table->json('meta');
             $table->softDeletes();
             $table->timestamps();
         });
