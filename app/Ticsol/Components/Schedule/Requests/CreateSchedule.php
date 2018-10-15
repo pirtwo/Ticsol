@@ -4,7 +4,7 @@ namespace App\Ticsol\Components\Schedule\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ScheduleUpdate extends FormRequest
+class CreateSchedule extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,15 @@ class ScheduleUpdate extends FormRequest
     public function rules()
     {
         return [
-            'user_id'       => 'nullable|numeric',
-            'job_id'        => 'nullable|numeric',
-            'type'          => 'nullable|string|in:schedule,timesheet',
-            'status'        => 'nullable|string|in:tentative,confirmed,submitted',            
-            'start'         => 'nullable|date',
-            'end'           => 'nullable|date',
+            'user_id'       => 'required|numeric',
+            'job_id'        => 'required|numeric',
+            'type'          => 'required|string|in:schedule,timesheet',
+            'event_type'    => 'required|string|in:leave,unavailable hours,scheduled,RDO',
+            'status'        => 'required|string|in:tentative,confirmed',            
+            'start'         => 'required|date',
+            'end'           => 'required|date',
             'offsite'       => 'nullable|boolean',
-            'break_length'  => 'nullable|numeric'
+            'break_length'  => 'required|numeric'
         ];
     }
 
