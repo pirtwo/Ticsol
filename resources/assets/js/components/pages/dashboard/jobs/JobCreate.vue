@@ -86,6 +86,23 @@
 
                 <div class="form-group">
                     <div class="form-row">
+                        <label class="col-sm-2 col-form-label">Contacts</label>
+                        <div class="col-sm-10">
+                            <select-box
+                                v-model="form.contacts"
+                                :data="contacts"
+                                :multi-select="true" 
+                                id="contacts"
+                                name="contacts"                                                                                                                                              
+                                placeholder="select contacts..."
+                                search-placeholder="search..."
+                            ></select-box>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
                         <label class="col-sm-12 col-form-label">Status</label>
 
                         <div class="custom-control custom-radio custom-control-inline">
@@ -101,7 +118,7 @@
 
             </form>
 
-            <form-gen :schema="schema" v-model="formData"></form-gen>
+            <form-gen :schema="schema" v-model="form.meta"></form-gen>
 
         </template>
     </nav-view>
@@ -130,9 +147,9 @@ export default {
         isactive: 1,
         parent_id: null,
         form_id: null,
+        contacts: [],
         meta: null
       },
-      formData: "",
       loading: false
     };
   },
@@ -154,6 +171,12 @@ export default {
       });
     },
 
+    contacts: function() {
+      return this.getList("contact").map(item => {
+        return { key: item.id, value: `${item.firstname} ${item.lastname}` };
+      });
+    },
+
     schema: function() {
       let schema = this.getList(
         "form",
@@ -167,7 +190,8 @@ export default {
     this.loading = true;
     let p1 = this.fetch({ resource: "job" });
     let p2 = this.fetch({ resource: "form" });
-    Promise.all([p1, p2])
+    let p3 = this.fetch({ resource: "contact" });
+    Promise.all([p1, p2, p3])
       .then(() => {
         this.loading = false;
       })
@@ -183,8 +207,7 @@ export default {
     }),
 
     onSubmit(e) {
-      e.target.disabled = true;
-      this.form.meta = JSON.stringify(this.formData);
+      e.target.disabled = true;      
       this.create({ resource: "job", data: this.form })
         .then(respond => {
           e.target.disabled = false;
@@ -194,7 +217,6 @@ export default {
           e.target.disabled = false;
           this.$formFeedback(error.response.data.errors);
         });
-
       e.preventDefault();
     },
 
