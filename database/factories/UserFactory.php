@@ -13,6 +13,6 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'isowner' => false,
-        'meta' => json_encode([ 'avatar' => str_replace_array('?', [$index], '/img/avatar/pic_?.jpg') ])
+        'meta' => [ 'avatar' => str_replace_array('?', [$index], '/img/avatar/pic_?.jpg') ]
     ];
 });
