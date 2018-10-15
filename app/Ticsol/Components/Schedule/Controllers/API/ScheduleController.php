@@ -64,15 +64,15 @@ class ScheduleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\ScheduleCreate $request)
+    public function store(Requests\CreateSchedule $request)
     {
         try {
-            $item = new Schedule();
-            $item->client_id = 1;
-            $item->creator_id = 1;            
-            $item->fill($request->all());
-            $item->save();
-            return Schedule::with(['user', 'job'])->where('id', $item->id)->get();
+            $schedule = new Schedule();
+            $schedule->client_id = 1;
+            $schedule->creator_id = 1;            
+            $schedule->fill($request->all());
+            $schedule->save();
+            return Schedule::with(['user', 'job'])->where('id', $schedule->id)->get();
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
@@ -104,7 +104,7 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\ScheduleUpdate $request, $id)
+    public function update(Requests\UpdateSchedule $request, $id)
     {
         try {
             $schedule = $this->repository->findBy('id', $id);
@@ -113,7 +113,7 @@ class ScheduleController extends Controller
             }
             
             $schedule->update($request->all());
-            return Schedule::with(['user', 'job'])->where('id', $id)->get();
+            return $schedule;
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
@@ -125,7 +125,7 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
         try {
             return $this->repository->delete('id', $id);
