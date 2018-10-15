@@ -11,6 +11,9 @@ class Client extends Model
     protected $table = 'ts_clients';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +22,7 @@ class Client extends Model
      */
     protected $fillable = [
         'name',
-        'licences',
+        'meta',
     ];
 
     /**

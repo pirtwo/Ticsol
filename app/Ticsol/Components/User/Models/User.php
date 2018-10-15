@@ -15,6 +15,9 @@ class User extends Authenticatable
     protected $table = 'ts_users';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
