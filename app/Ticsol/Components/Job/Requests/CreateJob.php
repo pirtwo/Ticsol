@@ -29,6 +29,8 @@ class CreateJob extends FormRequest
             'title'     => 'required|string|between:1,100',
             'code'      => 'required|string|between:1,100',
             'isactive'  => 'required|boolean',
+            'contacts'  => 'nullable|array',
+            'meta'      => 'nullable'
         ];
     }
 

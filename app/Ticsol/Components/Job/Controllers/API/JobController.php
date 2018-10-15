@@ -34,9 +34,9 @@ class JobController extends Controller
     {
         try {
             $page =
-            $request->query('page') ?? null;
+            $request->query('page', null);
             $perPage =
-            $request->query('perPage') ?? 20;
+            $request->query('perPage', 20);
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
@@ -70,6 +70,10 @@ class JobController extends Controller
             $job->creator_id = 1;
             $job->fill($request->all());
             $job->save();
+            if ($request->filled('contacts')) {
+                $job->contacts()->sync($request->input('contacts'));
+            }
+
             return $job;
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
@@ -111,6 +115,10 @@ class JobController extends Controller
             }
 
             $job->update($request->all());
+            if ($request->filled('contacts')) {
+                $job->contacts()->sync($request->input('contacts'));
+            }
+
             return $job;
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
