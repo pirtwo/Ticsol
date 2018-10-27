@@ -34,6 +34,10 @@ class ACL extends Model
 
     ];
 
+    public function scopeOfClient($query, $clientId)
+    {
+        return $query->where('client_id', $clientId);
+    }
 
     #region Eloquent_Relationships
 
@@ -54,7 +58,7 @@ class ACL extends Model
     }
 
     /**
-     * Effectied role by current rule.
+     * Effectied role by current ACL.
      */
     public function role()
     {
@@ -62,7 +66,7 @@ class ACL extends Model
     }
 
     /**
-     * Effectied permission by current rule.
+     * Effectied permission by current ACL.
      */
     public function permission()
     {
@@ -70,7 +74,7 @@ class ACL extends Model
     }
 
     /**
-     * Effectied resource by current rule.
+     * Effectied resource by current ACL.
      */
     public function resource()
     {

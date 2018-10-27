@@ -2,11 +2,11 @@
 
 namespace App\Ticsol\Components\Models;
 
+use App\Ticsol\Base\Scopes\ClientScope;
+use App\Ticsol\Components\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
-use App\Ticsol\Components\Models;
 
 class User extends Authenticatable
 {
@@ -29,8 +29,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'isowner', 
-        'meta'       
+        'isowner',
+        'meta',
     ];
 
     /**
@@ -47,10 +47,15 @@ class User extends Authenticatable
         return $this->password;
     }
 
-    public function findForPassport($username) {
+    public function findForPassport($username)
+    {
         return $this->where('name', $username)->first();
     }
 
+    public function scopeOfClient($query, $clientId)
+    {
+        return $query->where('client_id', $clientId);
+    }
 
     #region Eloquent Relationships
 

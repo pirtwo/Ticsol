@@ -40,6 +40,11 @@ class Schedule extends Model
         'deleted_at',
     ];
 
+    public function scopeOfClient($query, $clientId)
+    {
+        return $query->where('client_id', $clientId);
+    }
+
     #region Eloquent_Relationships
 
     /**
