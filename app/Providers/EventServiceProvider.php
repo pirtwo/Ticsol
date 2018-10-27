@@ -19,6 +19,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Ticsol\Components\Events\InvitationCreated' => [
             'App\Ticsol\Components\Listeners\InvitationCreated',
         ],
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Ticsol\Components\Base\Listeners\RevokeOldTokens',
+        ],
+        'Laravel\Passport\Events\RefreshTokenCreated' => [
+            'App\Ticsol\Components\Base\Listeners\RevokeOldRefreshTokens',
+        ],
     ];
 
     /**
