@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Ticsol\Base\Exceptions\Handler;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use App\Ticsol\Base\Exceptions;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind(
+            ExceptionHandler::class,
+            Handler::class
+        ); 
     }
 
     /**
