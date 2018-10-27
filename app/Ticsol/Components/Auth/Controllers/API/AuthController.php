@@ -12,7 +12,6 @@ use App\Ticsol\Components\Models\User;
 use App\Ticsol\Components\Requests\LoginRequest;
 use App\Ticsol\Components\Exceptions\AuthException;
 
-
 class AuthController extends Controller
 {
 
@@ -27,18 +26,20 @@ class AuthController extends Controller
     {
         try {
 
-            $user = User::where('name', $request->json('username'))->first();
+            $user = User::where('name', $request->input('username'))->first();
             if ($user != null) {
                 return $this->proxy('password', [
-                    'username' => $request->json('username'),
-                    'password' => $request->json('password'),
+                    'username' => $request->input('username'),
+                    'password' => $request->input('password'),
                 ]);
             } else {
-                throw new AuthException('Invalid username or password.');
+                throw new \Illuminate\Auth\AuthenticationException('Invalid username or password.');
             }
 
-        } catch (AuthException $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 400);
+        } catch (\Illuminate\Auth\AuthenticationException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 401);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
     }
 
@@ -52,7 +53,7 @@ class AuthController extends Controller
             $refreshToken = $request->cookie(self::REFRESH_TOKEN);
             return $this->proxy(self::REFRESH_TOKEN, [self::REFRESH_TOKEN => $refreshToken]);
         } catch (Exception $e) {
-            $this->handelError($e);
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
     }
 
@@ -68,13 +69,12 @@ class AuthController extends Controller
                 ->where('access_token_id', $token->id)
                 ->update(['revoked' => true]);
             $token->revoke();
-            $cookie->queue($cookie->forget(self::REFRESH_TOKEN));                 
+            $cookie->queue($cookie->forget(self::REFRESH_TOKEN));
             return response()->json(['code' => '', 'message' => 'successful logout.'], 200);
         } catch (Exception $e) {
-            $this->handelError($e);
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
     }
-
 
     /**
      * Proxy a request for oauth server.
@@ -107,11 +107,15 @@ class AuthController extends Controller
                 ])->cookie(self::REFRESH_TOKEN, $body->refresh_token, self::COOKIE_LIFE_TIME, null, null, false, true);
 
             } else {
-                throw new \Exception('Invalid Credentials.', 0, null);
+                throw new \Illuminate\Auth\AuthenticationException('Invalid Credentials.');
             }
-
+            
+        } catch (\League\OAuth2\Server\Exception\OAuthServerException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 401);        
+        } catch (\Illuminate\Auth\AuthenticationException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 401);
         } catch (Exception $e) {
-            $this->handelError($e);
+            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
     }
 }
