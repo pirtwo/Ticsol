@@ -136,11 +136,11 @@ class CommonCriteria extends Criteria
     {
 
         if ($this->contains != null) {
-            $model->where($this->contains[0], 'like', $this->contains[1]);
+            $model->where($this->contains[0], 'like', '%' . $this->contains[1] . '%');
         }
 
         if ($this->notContains != null) {
-            $model->where($this->notContains[0], 'not like', $this->notContains[1]);
+            $model->where($this->notContains[0], 'not like', '%' . $this->notContains[1] . '%');
         }
 
         if ($this->equals != null) {
