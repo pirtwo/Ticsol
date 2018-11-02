@@ -2,6 +2,7 @@
     <nav-view :scrollbar="true" :loading="loading" padding="p-2">
 
         <template slot="toolbar">
+          <button type="button" @click="showFilter = true">Filter</button>
           <pagination-view v-model="pager" :page-count="pager.pageCount"></pagination-view>
         </template>
 
@@ -31,6 +32,7 @@
                  <td>{{ item.isactive ? "Yes" : "No" }}</td>
                </template> 
             </table-view>
+            <filter-view v-model="query" :show.sync="showFilter" :columns="columnList" @apply="feedTable"></filter-view>
 
         </template>
     </nav-view>
@@ -38,6 +40,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import FilterView from "../../../framework/BaseFilter.vue";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
@@ -48,6 +51,7 @@ export default {
   components: {
     "nav-view": NavView,
     "table-view": TableView,
+    "filter-view": FilterView,
     "pagination-view": PaginationView
   },
 
@@ -63,6 +67,8 @@ export default {
       },
       loading: true,
       selects: [],
+      query: [],
+      showFilter: false,
       header: [
         { value: "", orderBy: "" },
         { value: "Title", orderBy: "title" },
@@ -76,25 +82,43 @@ export default {
   watch: {
     pager: function(value) {
       this.feedTable();
+    },
+
+    query: function(value) {
+      console.log("update");
+      console.log(value);
     }
   },
 
-  mounted() {        
+  computed: {
+    columnList: function() {
+      return [
+        { key: "title", value: "Title" },
+        { key: "code", value: "Code" },
+        { key: "isactive", value: "Active" }
+      ];
+    }
+  },
+
+  mounted() {    
     this.feedTable();
   },
 
   methods: {
-    ...mapActions({ fetch: "resource/list" }),
+    ...mapActions({ fetch: "resource/list", logger: "core/pushLog" }),
 
     feedTable() {
       this.loading = true;
       this.fetch({
         resource: "job",
-        query: {
-          page: this.pager.page,
-          perPage: this.pager.perPage,
-          [this.opt]: `${this.col},${this.val}`
-        }
+        query: this.$queryBuilder(
+          this.pager.page,
+          this.pager.perPage,
+          this.opt,
+          this.col,
+          this.val,
+          this.query
+        )
       })
         .then(respond => {
           this.jobs = respond.data;

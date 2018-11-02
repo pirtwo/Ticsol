@@ -186,6 +186,10 @@ export default {
     }
   },
 
+  created() {
+    this.clear("job");
+  },
+
   mounted() {
     this.loading = true;
     let p1 = this.fetch({ resource: "job" });
@@ -203,17 +207,19 @@ export default {
   methods: {
     ...mapActions({
       fetch: "resource/list",
-      create: "resource/create"
+      create: "resource/create",
+      clear: "resource/clearList"
     }),
 
     onSubmit(e) {
-      e.target.disabled = true;      
+      e.target.disabled = true;
       this.create({ resource: "job", data: this.form })
         .then(respond => {
           e.target.disabled = false;
           console.log("job created successfuly");
         })
         .catch(error => {
+          console.log(error.response);
           e.target.disabled = false;
           this.$formFeedback(error.response.data.errors);
         });

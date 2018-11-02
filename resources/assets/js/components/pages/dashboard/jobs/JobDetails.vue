@@ -256,12 +256,7 @@ export default {
         this.currentJob = this.getList("job", item => item.id == this.id)[0];
         this.defaultParent = this.currentJob.parent_id;
         this.defaultProfile = this.currentJob.form_id;
-        this.form.contacts = this.currentJob.contacts.map(item => item.id);
-        // this.formData = Object.assign(
-        //   {},
-        //   this.formData,
-        //   this.currentJob.meta
-        // );
+        this.form.contacts = this.currentJob.contacts.map(item => item.id);        
         if (this.currentJob.form_id !== null) {
           this.schema = JSON.parse(
             this.getList("form", item => item.id == this.currentJob.form_id)[0]
@@ -283,13 +278,13 @@ export default {
       clear: "resource/clearList"
     }),
 
-    onSave(event) {
-      //this.form.meta = this.formData;
+    onSave(event) {      
       this.update({ resource: "job", id: this.id, data: this.form })
         .then(() => {
           console.log("job updated successfuly.");
         })
         .catch(error => {
+          console.log(error);
           this.$formFeedback(error.response.data.errors);
         });
     },

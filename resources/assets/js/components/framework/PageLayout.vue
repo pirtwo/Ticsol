@@ -18,6 +18,7 @@ import { mapActions } from "vuex";
 
 export default {
   name: "PageLayout",
+  
   props: {
     header: {
       type: Boolean,
@@ -28,14 +29,17 @@ export default {
       default: true
     }
   },
+
   data() {
     return {};
   },
+
   mounted() {
     this.$nextTick(this.resizeHandler);
     this.debounceResize = _.debounce(this.resizeHandler, 500);
     $(window).resize(this.debounceResize);
   },
+
   methods: {
     ...mapActions({
       setDocumentDim: "core/documentDimension",

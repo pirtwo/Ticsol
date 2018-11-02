@@ -229,7 +229,7 @@ export default {
 
 .drawer-body {
   flex: 1 1 auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: rgba(255, 255, 255, 0.95);
 }
 

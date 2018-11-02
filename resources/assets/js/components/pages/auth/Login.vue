@@ -30,7 +30,7 @@
           <a href="/resetpassword" class="btn btn-link d-block mx-auto">Forgot Password</a>                        
       </div>
 
-      <button class="btn btn-primary btn-block">
+      <button type="button" class="btn btn-primary btn-block" @click="onSubmit">
           <i class="icon material-icons">exit_to_app</i>  
           <span>LOGIN</span>
       </button>    
@@ -45,30 +45,31 @@ export default {
   name: "Login",
   data() {
     return {
-      form:{
+      form: {
         username: "",
         password: ""
-      }      
+      }
     };
   },
   methods: {
     ...mapActions({
-      login: "user/login"
+      login: "user/login",
+      logout: "user/logout",
+      info: "user/info"
     }),
     onSubmit() {
-      this.$store.dispatch("loading/start", { message: "Login..." });
-      this.$store
-        .dispatch("auth/login", {
-          username: this.form.username,
-          password: this.form.password
+      this.login(this.form)
+        .then(respond => {
+          console.log("login success");
+          this.info().then(() => {
+            console.log("info success");
+            this.$router.push("/home");
+          });
         })
-        .then(fulfilled => {
-          this.$router.push("/dash");
-          this.$store.dispatch("loading/stop", { message: "redirecting..." });
-        })
-        .catch(reason => {
-          console.log(reason);
-          this.$store.dispatch("loading/stop", { message: "error..." });
+        .catch(error => {
+          console.log("login error");
+          console.log(error.respond);
+          this.$formFeedback(error.response.data.errors);
         });
     }
   }
@@ -76,13 +77,13 @@ export default {
 </script>
 
 <style scoped>
-.btn span{
+.btn span {
   font-size: 1.5rem;
   line-height: 1.35;
   vertical-align: top;
 }
 
-.btn i{
+.btn i {
   font-size: 1.5rem;
   line-height: 1.5;
 }
