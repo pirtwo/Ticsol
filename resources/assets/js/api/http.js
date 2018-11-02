@@ -3,7 +3,7 @@ import axios from 'axios';
 import { store } from '../store/store';
 
 export const api = {
-    get(url, query = null, data = null, isJson = true, isAuth = true) {        
+    get(url, query = null, data = null, isJson = true, isAuth = true) {
         return makeRequest('GET', url, query, isJson, isAuth, data);
     },
 
@@ -29,26 +29,30 @@ export const api = {
 }
 
 /**
- * 
+ * Create an axios request. 
  * @param {String}   method   request method
  * @param {String}   url      base URL
- * @param {Array}    query    request query string
+ * @param {object}   query    request query string
  * @param {Boolean}  isJson   is a json request
  * @param {Boolean}  isAuth   is an authenticated request
  * @param {object}   data     request data
+ * @returns {object} axios
  */
 function makeRequest(method, url, query = null, isJson = true, isAuth = false, data = null) {
     let slug = url;
     let header = {};
-    let token = store.state.user.auth.token.value;
+    let token = store.state.user.token.value;
 
     if (query !== null) {
-        Object.keys(query).forEach((key, index) => {
-            if (index == 0)
-                slug += '?' + key + '=' + query[key];
-            else
-                slug += '&' + key + '=' + query[key];
-        });
+        if (typeof (query) === 'object')
+            Object.keys(query).forEach((key, index) => {
+                if (index == 0)
+                    slug += '?' + key + '=' + query[key];
+                else
+                    slug += '&' + key + '=' + query[key];
+            });
+        else if (typeof (query) === 'string')
+            slug += query;
     }
 
     console.log(slug);

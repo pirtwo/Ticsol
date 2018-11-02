@@ -9,7 +9,11 @@ import App from "./components/App.vue";
 
 /* plugins */
 import formFeedback from './plugin/formFeedback-plugin.js';
+import queryBuilder from './plugin/queryBuilder-plugin';
+import VueBase from './plugin/vue-base-plugin';
 Vue.use(formFeedback);
+Vue.use(queryBuilder);
+Vue.use(VueBase);
 
 sync(store, router);
 

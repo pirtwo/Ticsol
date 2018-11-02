@@ -10754,6 +10754,7 @@ header,
 footer {
   padding: 0px;
   margin: 0px;
+  position: relative;
 }
 
 footer {
@@ -10796,6 +10797,13 @@ footer {
   min-width: 70px;
   border: 0px transparent !important;
   background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.toolbar-top .btn .badge,
+.toolbar-bot .btn .badge {
+  top: 5px;
+  left: 5px;
+  position: absolute;
 }
 
 .toolbar-top .md-menu,

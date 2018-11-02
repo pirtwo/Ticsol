@@ -1,13 +1,20 @@
 
-export const AUTH_LOGIN ='/api/login';
+export const AUTH_LOGIN = '/api/login';
 export const AUTH_LOGOUT = '/api/logout';
 export const AUTH_REGISTER = '/api/register';
 export const AUTH_PASSWORD_RESET = '/api/passwordreset';
 
 export const USER_LIST = '/api/user';
 export const USER_SHOW = '/api/user/show';
+export const USER_INFO = '/api/user/info';
 export const USER_UPDATE = '/api/user/update';
 export const USER_DELETE = '/api/user/delete';
+
+export const ROLE_LIST = '/api/role';
+export const ROLE_SHOW = '/api/role/show';
+export const ROLE_CREATE = '/api/role/store';
+export const ROLE_UPDATE = '/api/role/update';
+export const ROLE_DELETE = '/api/role/delete';
 
 export const REQUEST_LIST = '/api/request';
 export const REQUEST_SHOW = '/api/request/show';

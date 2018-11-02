@@ -41,6 +41,7 @@ const formFeedback = {
                             $(ref).addClass("is-invalid");
                             $(ref).after("<div class='invalid-feedback'>" + invalidFeedbacks[el] + "</div>");
                         }
+                        console.log(ref);
                     });
                 }
             } catch (e) {
