@@ -17,11 +17,11 @@ export const resourceModule = {
 
         role: {
             list: [],
-            listURL: URLs.SCHEDULE_LIST,
-            showURL: URLs.SCHEDULE_SHOW,
-            createURL: URLs.SCHEDULE_CREATE,
-            updateURL: URLs.SCHEDULE_UPDATE,
-            deleteURL: URLs.SCHEDULE_DELETE
+            listURL: URLs.ROLE_LIST,
+            showURL: URLs.ROLE_SHOW,
+            createURL: URLs.ROLE_CREATE,
+            updateURL: URLs.ROLE_UPDATE,
+            deleteURL: URLs.ROLE_DELETE
         },
 
         acl: {
@@ -124,8 +124,7 @@ export const resourceModule = {
                             resource: obj.job_id,
                             start: obj.start,
                             end: obj.end,
-                            text: obj.user.name,
-                            complete: 30
+                            text: obj.user.name
                         };
                     });
                 case 'user':
@@ -135,8 +134,7 @@ export const resourceModule = {
                             resource: obj.user_id,
                             start: obj.start,
                             end: obj.end,
-                            text: obj.job.title,
-                            complete: 30
+                            text: obj.job.title
                         };
                     });
                 default:
@@ -158,8 +156,7 @@ export const resourceModule = {
                     list = callback === undefined ? state.user.list : state.user.list.filter(callback);
                     if (list.length == 0) return [];
                     return list.map(obj => {
-                        let meta = JSON.parse(obj.meta);
-                        return { id: obj.id, name: obj.name, avatar: meta.avatar };
+                        return { id: obj.id, name: obj.name, avatar: obj.meta.avatar };
                     });
                 default:
                     throw new Error('Invalid schedule view type.');
@@ -182,20 +179,18 @@ export const resourceModule = {
                 state[payload.resource].list.push(payload.data[0]);
             else
                 state[payload.resource].list.push(payload.data);
-
         },
 
         [MUTATIONS.RESOURCE_UPDATE](state, payload) {
             if (state[payload.resource].list.length === 0)
                 return;
             let index =
-                state[payload.resource].list.findIndex((el) => {
-                    return el.id === payload.id;
-                });
-            if (index !== -1) {
+                state[payload.resource].list.findIndex(item => item.id == payload.id);
+            if (index > -1) {
                 state[payload.resource].list[index] =
                     Object.assign(state[payload.resource].list[index], payload.data);
-            }
+            } else
+                throw new Error('Can not find the item');
         },
 
         [MUTATIONS.RESOURCE_DELETE](state, payload) {
@@ -228,6 +223,12 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_LIST, { resource: resource, data: data });
                         resolve(respond.data);
                     }).catch(error => {
+                        dispatch('core/pushLog', {
+                            type: 'danger',
+                            title: `Error ${error.request.status}`,
+                            content: error.toString(),
+                            date: new Date()
+                        }, { root: true });
                         console.log(error);
                         reject(error);
                     });
@@ -242,6 +243,12 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_CREATE, { resource: resource, data: respond.data });
                         resolve(respond.data);
                     }).catch(error => {
+                        dispatch('core/pushLog', {
+                            type: 'danger',
+                            title: `Error ${error.request.status}`,
+                            content: error.toString(),
+                            date: new Date()
+                        }, { root: true });
                         console.log(error);
                         reject(error);
                     });
@@ -255,6 +262,12 @@ export const resourceModule = {
                     .then(respond => {
                         resolve(respond.data);
                     }).catch(error => {
+                        dispatch('core/pushLog', {
+                            type: 'danger',
+                            title: `Error ${error.request.status}`,
+                            content: error.toString(),
+                            date: new Date()
+                        }, { root: true });
                         console.log(error);
                         reject(error);
                     });
@@ -269,6 +282,12 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_UPDATE, { resource: resource, id: id, data: respond.data });
                         resolve(respond.data);
                     }).catch(error => {
+                        dispatch('core/pushLog', {
+                            type: 'danger',
+                            title: `Error ${error.request.status}`,
+                            content: error.toString(),
+                            date: new Date()
+                        }, { root: true });
                         console.log(error);
                         reject(error);
                     });
@@ -283,6 +302,12 @@ export const resourceModule = {
                         commit(MUTATIONS.RESOURCE_DELETE, { resource: resource, id: id });
                         resolve(respond.data);
                     }).catch(error => {
+                        dispatch('core/pushLog', {
+                            type: 'danger',
+                            title: `Error ${error.request.status}`,
+                            content: error.toString(),
+                            date: new Date()
+                        }, { root: true });
                         console.log(error);
                         reject(error);
                     });
@@ -301,7 +326,16 @@ export const resourceModule = {
                 let resources = dispatch("list", { resource: view });
                 Promise.all([events, resources])
                     .then(() => resolve())
-                    .catch(error => { console.log(error); reject(error); });
+                    .catch(error => {
+                        dispatch('core/pushLog', {
+                            type: 'danger',
+                            title: `Error ${error.request.status}`,
+                            content: error.toString(),
+                            date: new Date()
+                        }, { root: true });
+                        console.log(error);
+                        reject(error);
+                    });
             });
         },
 
@@ -310,7 +344,7 @@ export const resourceModule = {
         },
 
         checkResource({ state }, payload) {
-            if (["user", "job", "schedule", "request", "activity", "form", "contact"].indexOf(payload) === -1)
+            if (["user", "job", "schedule", "request", "activity", "form", "contact", "role"].indexOf(payload) === -1)
                 throw new Error("Invalid resource name.");
         }
     }

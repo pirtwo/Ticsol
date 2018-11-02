@@ -1,71 +1,73 @@
 import { api } from "../../api/http";
 import * as URLs from "../../api/resources";
 import * as MUTATIONS from "../mutation-types";
+import { Date } from "core-js";
 
 export const userModule = {
     namespaced: true,
 
     state: {
-        user: {
-            name: "",
-            roles: []
+        roles: [],
+        isAuth: false,
+        token: {
+            value: "",
+            expire: ""
         },
-        auth: {
-            isAuth: false,
-            token: {
-                value: "",
-                expire: ""
-            }
-        },
-        settings: {
-            avatar: "",
-            firstName: "",
-            lastName: ""
-        }
+        info: null
     },
 
     getters: {
-        getUser(state) {
-            return state.user;
+        getInfo(state) {
+            return state.info;
         },
 
-        getIsAuth(state) {
-            return state.auth.isAuth;
+        getUsername(state) {
+            if (state.info === null) return '';
+            return state.info.name;
         },
 
-        getToken(state) {
-            return state.auth.token;
+        getAvatar(state) {
+            if (state.info === null) return '';
+            return state.info.meta.avatar;
         },
 
         getSettings(state) {
-            return state.settings;
+            return state.info.meta;
+        },
+
+        getIsAuth(state) {
+            return state.isAuth;
+        },
+
+        getToken(state) {
+            return state.token;
         }
     },
 
     mutations: {
         [MUTATIONS.USER_INFO](state, payload) {
-            state.user = payload;
+            console.log(payload);
+            state.info = payload;
         },
 
         [MUTATIONS.USER_AUTH_SUCCESS](state) {
-            state.auth.isAuth = true;
+            state.isAuth = true;
         },
 
         [MUTATIONS.USER_AUTH_FAILE](state) {
-            state.auth.isAuth = false;
+            state.isAuth = false;
         },
 
         [MUTATIONS.USER_AUTH_TOKEN](state, payload) {
-            state.auth.token.value = payload.value;
-            state.auth.token.expire = payload.expire;
+            console.log(payload.access_token);
+            state.token.value = payload.access_token;
+            state.token.expire = payload.expires_in;
         },
 
         [MUTATIONS.USER_AUTH_LOGOUT](state) {
-            state.auth.isAuth = false;
-            state.auth.token.value = "";
-            state.auth.token.expire = "";
-            state.user = {};
-            state.settings = {};
+            state.isAuth = false;
+            state.token.value = "";
+            state.token.expire = "";
         }
 
     },
@@ -79,6 +81,7 @@ export const userModule = {
                         commit(MUTATIONS.USER_AUTH_SUCCESS);
                         resolve("Success");
                     }).catch(error => {
+                        console.log(error);
                         commit(MUTATIONS.USER_AUTH_FAILE);
                         reject(error);
                     });
@@ -101,8 +104,16 @@ export const userModule = {
 
         },
 
-        settings() {
-
+        info({ commit, dispatch }) {
+            return new Promise((resolve, reject) => {
+                api.get(URLs.USER_INFO, null).then(respond => {
+                    commit(MUTATIONS.USER_INFO, respond.data);
+                    resolve(respond);
+                }).catch(error => {                    
+                    console.log(error);
+                    reject(error);
+                });
+            })
         }
     }
 }

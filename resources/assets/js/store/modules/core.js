@@ -5,10 +5,16 @@ export const coreModule = {
     namespaced: true,
 
     state: {
-        app: {
-            errors: [],
-            messages: []
-        },
+        /**
+         * @param {string}  type     primary, secondary, success, danger, warning, info
+         * @param {object}  date     date and time of log.
+         * @param {boolean} seen     is seen by user.
+         * @param {string}  title    The title of log.
+         * @param {string}  content  the log content.
+         * @param {string}  footer   the content of footer
+         */
+        logs:[],
+
         ui: {
             fullscreen: false,
             contentWidth: 0,
@@ -16,27 +22,33 @@ export const coreModule = {
             documentWidth: 0,
             documentHeight: 0
         },
+
         drawer: {
             show: true,
             message: ''
         },
+
         statusbar: {
             show: false,
             message: '',
             icon: ''
         },
+
         toolbar: {
             show: true,
             height: 0
         },
+
         header: {
             show: true,
             height: 0
         },
+
         footer: {
             show: true,
             height: 0
         },
+
         loading: {
             show: false,
             message: ''
@@ -46,22 +58,10 @@ export const coreModule = {
 
     getters: {
 
-        getAppError: state => id => {
-            return state.app.errors[id];
+        getAppLogs(state) {
+            return state.logs;
         },
-
-        getAppErrors(state) {
-            return state.app.errors;
-        },
-
-        getAppMessage: state => id => {
-            return state.app.messages[id];
-        },
-
-        getAppMessages(state) {
-            return state.app.messages;
-        },
-
+        
         getUiFullscreen(state) {
             return state.ui.fullscreen;
         },
@@ -133,25 +133,15 @@ export const coreModule = {
         getLoadingMessage(state) {
             return state.loading.message;
         }
-
-
     },
 
     mutations: {
-        [MUTATIONS.APP_ERRORS_PUSH](state, error) {
-            state.app.errors.push(error);
+        [MUTATIONS.APP_LOG_PUSH](state, log) {
+            state.logs.push(log);
         },
 
-        [MUTATIONS.APP_ERRORS_CLEAR](state) {
-            state.app.errors = [];
-        },
-
-        [MUTATIONS.APP_MESSAGES_PUSH](state, message) {
-            state.app.messages.push(message);
-        },
-
-        [MUTATIONS.APP_MESSAGES_CLEAR](state) {
-            state.app.messages = [];
+        [MUTATIONS.APP_LOG_CLEAR](state) {
+            state.logs = [];
         },
 
         [MUTATIONS.APP_LOADING](state, payload) {
@@ -202,22 +192,14 @@ export const coreModule = {
     },
 
     actions: {
-        errorPush({ commit }, { error }) {
-            commit(MUTATIONS.APP_ERRORS_PUSH, error);
+        pushLog({ commit }, payload) {
+            commit(MUTATIONS.APP_LOG_PUSH, payload);
         },
 
-        errorClear({ commit }) {
-            commit(MUTATIONS.APP_ERRORS_CLEAR);
+        clearLog({ commit }) {
+            commit(MUTATIONS.APP_LOG_CLEAR);
         },
-
-        messagePush({ commit }, { message }) {
-            commit(MUTATIONS.APP_MESSAGES_PUSH, message);
-        },
-
-        messageClear({ commit }) {
-            commit(MUTATIONS.APP_MESSAGES_CLEAR);
-        },
-
+        
         loading({ commit }, { show = true, message = "Loading Please Wait..." }) {
             commit(MUTATIONS.APP_LOADING, { show, message });
         },
