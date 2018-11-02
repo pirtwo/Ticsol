@@ -41,6 +41,7 @@ export const router = new VueRouter({
                 },
             ]
         },
+
         {
             path: '/dash',
             name: 'dash',
@@ -57,45 +58,17 @@ export const router = new VueRouter({
                     component: require('./components/pages/dashboard/Home.vue')
                 },
 
-                // Inbox
-                {
-                    path: '/inbox',
-                    name: 'inbox',
-                    meta: { requireAuth: true },
-                    redirect: { name: 'inboxList' },
-                    component: require('./components/pages/dashboard/inbox/Inbox.vue'),
-                    children: [
-                        {
-                            path: 'list',
-                            name: 'inboxList',
-                            meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/inbox/InboxList.vue'),
-                        }
-                    ]
-                },
-
-                // HR
-                {
-                    path: '/hr',
-                    name: 'hr',
-                    meta: { requireAuth: true },
-                    component: require('./components/pages/dashboard/HRs/HRs.vue'),
-                    children: [
-
-                    ]
-                },
-
-                // Requests
+                // Inbox & Requests 
                 {
                     path: '/request',
                     name: 'request',
                     meta: { requireAuth: true },
-                    redirect: { name: 'requestList' },
+                    redirect: { name: 'inbox' },
                     component: require('./components/pages/dashboard/requests/Requests.vue'),
                     children: [
                         {
-                            path: 'inbox/:col?/:opt?/:val?',
-                            name: 'requestList',
+                            path: '/inbox/:col?/:opt?/:val?',
+                            name: 'inbox',
                             meta: { requireAuth: true },
                             props: true,
                             component: require('./components/pages/dashboard/requests/RequestList.vue'),
@@ -112,6 +85,17 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/requests/ReimbRequest.vue'),
                         }
+                    ]
+                },
+
+                // HR
+                {
+                    path: '/hr',
+                    name: 'hr',
+                    meta: { requireAuth: true },
+                    component: require('./components/pages/dashboard/HRs/HRs.vue'),
+                    children: [
+
                     ]
                 },
 
@@ -303,6 +287,44 @@ export const router = new VueRouter({
                     ]
                 },
 
+                // Roles
+                {
+                    path: '/role',
+                    name: 'role',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'roleList' },
+                    component: require('./components/pages/dashboard/roles/Roles.vue'),
+                    children: [
+                        {
+                            path: 'list/:col?/:opt?/:val?',
+                            name: 'roleList',
+                            meta: { requireAuth: true },
+                            props: true,
+                            component: require('./components/pages/dashboard/roles/RoleList.vue'),
+                        },
+                        {
+                            path: 'create',
+                            name: 'roleCreate',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/roles/RoleCreate.vue'),
+                        },
+                        {
+                            path: ':id/details',
+                            name: 'roleDetails',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/roles/RoleDetails.vue'),
+                        },
+                        {
+                            path: ':id/users',
+                            name: 'roleUsers',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/roles/RoleUsers.vue'),
+                        },
+                    ]
+                },
+
                 // Test Page
                 {
                     path: '/test',
@@ -332,12 +354,15 @@ export const router = new VueRouter({
     ]
 });
 
-// router.beforeEach((to, from, next) => {
-//     var state = store.state.auth;
-//     if (to.meta.requireAuth === true && state.isAuth === false) {
-//         next('/');
-//     } else {
-//         next();
-//     }
-//     next();
-// });
+router.beforeEach((to, from, next) => {
+    let state = store.state.user;
+    if (to.meta.requireAuth === true && state.isAuth === false) {
+        next('/');
+    }
+    if (to.meta.requireAuth === false && state.isAuth === true) {
+        next('/home');
+    } else {
+        next();
+    }
+    next();
+});
