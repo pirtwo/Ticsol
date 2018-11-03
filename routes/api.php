@@ -30,8 +30,15 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         // User
         Route::get('user', 'UserController@index');
         Route::get('user/info', 'UserController@current');
-        Route::get('user/show/{id}', 'UserController@show');    
+        Route::get('user/show/{id}', 'UserController@show');
         Route::post('user/update/{id}', 'UserController@update');
+
+        // Role
+        Route::get('role', 'RoleController@index');
+        Route::get('role/show/{id}', 'RoleController@show');
+        Route::post('role/store', 'RoleController@store');
+        Route::post('role/update/{id}', 'RoleController@update');
+        Route::post('role/delete/{id}', 'RoleController@delete');
 
         // Job
         Route::get('job', 'JobController@index');
