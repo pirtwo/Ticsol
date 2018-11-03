@@ -1,15 +1,19 @@
 <template>
-<div class="container-fluid">
-    <header v-if="this.header" class="header">
-        <slot name="header"></slot>
+  <div class="container-fluid">
+    <header 
+      v-if="this.header" 
+      class="header">
+      <slot name="header"/>
     </header>    
     <main class="main">
-        <slot></slot>
+      <slot/>
     </main>   
-    <footer v-if="this.footer" class="footer">
-        <slot name="footer"></slot>
+    <footer 
+      v-if="this.footer" 
+      class="footer">
+      <slot name="footer"/>
     </footer>    
-</div>  
+  </div>  
 </template>
 
 <script>

@@ -1,47 +1,62 @@
 <template>
-    <div ref="statusbar" class="statusbar dropdown">
-        <button class="btn btn-light statusbar__btn" 
-            role="button" id="statusbar" 
-            data-toggle="dropdown" 
-            aria-haspopup="true"
-            aria-expanded="false">
-            <i class="icon material-icons">
-                notifications
-            </i>
-            <span class="caption">NOTIFs</span>
-            <span class="badge badge-light" v-show="unSeen > 0">{{ unSeen }}</span>
-        </button>
+  <div 
+    ref="statusbar" 
+    class="statusbar dropdown">
+    <button 
+      class="btn btn-light statusbar__btn" 
+      role="button" 
+      id="statusbar" 
+      data-toggle="dropdown" 
+      aria-haspopup="true"
+      aria-expanded="false">
+      <i class="icon material-icons">
+        notifications
+      </i>
+      <span class="caption">NOTIFs</span>
+      <span 
+        class="badge badge-light" 
+        v-show="unSeen > 0">{{ unSeen }}</span>
+    </button>
 
-        <!-- dropdown -->
-        <div class="statusbar__dropdown dropdown-menu dropdown-menu-right" aria-labelledby="statusbar">
-            <div class="statusbar__dropdown__controls">
-                <button class="btn btn-link" type="button" @click="clearAll">clear all</button>
-            </div>
-            <div class="text-center" v-show="logs.length == 0">List is empty</div>
-            <div class="statusbar__dropdown__list">
-                <!-- list -->
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-action flex-column align-items-start" 
-                        v-for="(value, index) in logList"
-                        :key="index">
-                        <div :class="['alert-' + value.type, 'alert d-flex']" 
-                        @mouseover.once="hoverLog(value)">
-                            <i class="p-2 mr-2 material-icons">{{ getIcon(value.type) }}</i>
-                            <div class="d-flex flex-grow-1 flex-column">
-                                <!-- <div class="d-flex w-100 justify-content-between">
+    <!-- dropdown -->
+    <div 
+      class="statusbar__dropdown dropdown-menu dropdown-menu-right" 
+      aria-labelledby="statusbar">
+      <div class="statusbar__dropdown__controls">
+        <button 
+          class="btn btn-link" 
+          type="button" 
+          @click="clearAll">clear all</button>
+      </div>
+      <div 
+        class="text-center" 
+        v-show="logs.length == 0">List is empty</div>
+      <div class="statusbar__dropdown__list">
+        <!-- list -->
+        <ul class="list-group">
+          <li 
+            class="list-group-item list-group-item-action flex-column align-items-start" 
+            v-for="(value, index) in logList"
+            :key="index">
+            <div 
+              :class="['alert-' + value.type, 'alert d-flex']" 
+              @mouseover.once="hoverLog(value)">
+              <i class="p-2 mr-2 material-icons">{{ getIcon(value.type) }}</i>
+              <div class="d-flex flex-grow-1 flex-column">
+                <!-- <div class="d-flex w-100 justify-content-between">
                                     <h6 class="mb-1">{{ value.title }}</h6>                                    
                                 </div> -->
-                                <p class="mb-1">{{ value.content }}</p>
-                                <small>{{ value.footer }}</small>
-                            </div>
-                            <small class="d-flex flex-shrink-0 ml-2">
-                              {{ getDate(value.date) }}</small>
-                        </div>
-                    </li>
-                </ul><!-- list END -->
+                <p class="mb-1">{{ value.content }}</p>
+                <small>{{ value.footer }}</small>
+              </div>
+              <small class="d-flex flex-shrink-0 ml-2">
+                {{ getDate(value.date) }}</small>
             </div>
-        </div><!-- dropdown END -->
-    </div>
+          </li>
+        </ul><!-- list END -->
+      </div>
+    </div><!-- dropdown END -->
+  </div>
 </template>
 
 <script>
@@ -61,8 +76,8 @@ export default {
     }),
 
     logList: function() {
-      return this.logs.sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
+      return this.logs.slice(0).sort((a, b) => {
+        new Date(b.date) - new Date(a.date);
       });
     },
 

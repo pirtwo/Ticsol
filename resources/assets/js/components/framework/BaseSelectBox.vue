@@ -1,41 +1,57 @@
 <template>
 
-    <div class="wrap" ref="BaseSelectBox">
+  <div 
+    class="wrap" 
+    ref="BaseSelectBox">
 
-        <input type="text" :class="[inputSize, 'form-control select-value']"
-            v-model="text"
-            @focus="onFocus"
-            :name="name" 
-            :id="id"
-            :placeholder="placeholder" 
-            readonly>
+    <input 
+      type="text" 
+      :class="[inputSize, 'form-control select-value']"
+      v-model="text"
+      @focus="onFocus"
+      :name="name" 
+      :id="id"
+      :placeholder="placeholder" 
+      readonly>
 
-        <button type="button" class="btn btn-sm btn-link" @click.stop="showList = !showList">
-            <i class="material-icons">
-                {{ showList? "expand_less": "expand_more"}}
-            </i>
-        </button>
+    <button 
+      type="button" 
+      class="btn btn-sm btn-link" 
+      @click.stop="showList = !showList">
+      <i class="material-icons">
+        {{ showList? "expand_less": "expand_more" }}
+      </i>
+    </button>
 
-        <div class="wrap-list" v-show="showList">
-            <input type="text" name="" class="searchbox form-control form-control-sm"
-                    v-model="query" 
-                    v-if="enableSearchbox"
-                    :placeholder="searchPlaceholder">
+    <div 
+      class="wrap-list" 
+      v-show="showList">
+      <input 
+        type="text" 
+        name="" 
+        class="searchbox form-control form-control-sm"
+        v-model="query" 
+        v-if="enableSearchbox"
+        :placeholder="searchPlaceholder">
             
-            <ul class="select-options"> 
-                <slot name="default-options"></slot>           
-                <li v-for="item in options" 
-                    :key="item.key" 
-                    :class="[{'selected' : isSelected(item)}, 'select-option']"
-                    @click="onSelect(item, $event)">
+      <ul class="select-options"> 
+        <slot name="default-options"/>           
+        <li 
+          v-for="item in options" 
+          :key="item.key" 
+          :class="[{'selected' : isSelected(item)}, 'select-option']"
+          @click="onSelect(item, $event)">
 
-                    <input type="checkbox" v-if="multiSelect" :checked="isSelected(item)">                     
-                    {{item.value}}
-                </li>
-            </ul>
-        </div>     
+          <input 
+            type="checkbox" 
+            v-if="multiSelect" 
+            :checked="isSelected(item)">                     
+          {{ item.value }}
+        </li>
+      </ul>
+    </div>     
 
-    </div>
+  </div>
 
 </template>
 

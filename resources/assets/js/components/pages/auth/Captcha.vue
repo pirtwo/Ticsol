@@ -1,13 +1,21 @@
 <template>
   <div>
-    <div class='g-recaptcha' id='g-recaptcha'></div>    
+    <div 
+      class='g-recaptcha' 
+      id='g-recaptcha'/>    
   </div>
 </template>
 <script>
 export default {
   props: {
-    theme: String,
-    siteKey: String
+    theme: {
+      type:String,
+      default: 'dark'
+    },
+    siteKey: {
+      type:String,
+      default:''
+    }
   },
   data() {
     return {

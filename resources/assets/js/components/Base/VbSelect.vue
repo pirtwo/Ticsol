@@ -8,8 +8,7 @@
       type="text"
       :class="[`form-control-${size}`,'vb-select__input form-control']"
       :value="inputText"
-      :placeholder="placeholder"
-      @click="dropdownStatus = !dropdownStatus"
+      :placeholder="placeholder" 
       @focus="focusHandler">
 
     <!-- toggole btn-->
@@ -115,9 +114,9 @@ export default {
   },
 
   watch: {
-    value: function (value) {
+    value: function (value) {        
       if (this.multi) {
-        this.selects = value
+        this.selects = [...value]
       } else {
         this.selects = []
         this.selects.push(value)
@@ -178,11 +177,11 @@ export default {
       if (this.multi) {
         if (!this.isSelected(item)) {
           this.selects.push(item)
-          this.$emit('input', this.selects)
+          this.$emit('input', [...this.selects])
         } else {
           this.selects.splice(
             this.selects.findIndex(fn => fn.key === item.key && fn.value === item.value), 1)
-          this.$emit('input', this.selects)
+          this.$emit('input', [...this.selects])
         }
       } else {
         this.dropdownStatus = false
@@ -205,7 +204,7 @@ export default {
     isSelected (option) {
       return (
         this.selects.find(
-          item => item.key === option.key && item.value === option.value
+          item => item.key == option.key && item.value == option.value
         ) != null
       )
     },

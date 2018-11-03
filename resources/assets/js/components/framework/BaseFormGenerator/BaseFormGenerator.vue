@@ -1,14 +1,13 @@
 <template>
-    <div>      
-        <component 
-          v-for="(field, index) in schema" 
-          v-bind="field"
-          :key="index"        
-          :value="formData[field.name]"   
-          :is="componentName(field.type)"    
-          @input="updateForm(field.name, $event)">
-        </component>          
-    </div>    
+  <div>      
+    <component 
+      v-for="(field, index) in schema" 
+      v-bind="field"
+      :key="index"        
+      :value="formData[field.name]"   
+      :is="componentName(field.type)"    
+      @input="updateForm(field.name, $event)"/>          
+  </div>    
 </template>
 
 <script>

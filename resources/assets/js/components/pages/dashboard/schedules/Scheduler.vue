@@ -1,100 +1,125 @@
 <template>
-    <nav-view 
-        :scrollbar="false" 
-        :loading="loading"> 
+  <nav-view 
+    :scrollbar="false" 
+    :loading="loading"> 
 
-        <template slot="toolbar">
-          <div class="dp-ctrl d-flex justify-content-end"> 
+    <template slot="toolbar">
+      <div class="dp-ctrl d-flex justify-content-end"> 
 
-            <date-picker v-model="start" :range="dpRange"></date-picker>
+        <date-picker 
+          v-model="start" 
+          :range="dpRange"/>
 
-            <label class="switch">
-              <input v-model="range" class="switch-input" type="checkbox" />
-              <span class="switch-label" data-on="wek" data-off="mon"></span> 
-              <span class="switch-handle"></span> 
-            </label>
+        <label class="switch">
+          <input 
+            v-model="range" 
+            class="switch-input" 
+            type="checkbox" >
+          <span 
+            class="switch-label" 
+            data-on="wek" 
+            data-off="mon"/> 
+          <span class="switch-handle"/> 
+        </label>
 
-            <label class="switch">
-              <input v-model="view" class="switch-input" type="checkbox" />
-              <span class="switch-label" data-on="emp" data-off="job"></span> 
-              <span class="switch-handle"></span> 
-            </label>           
+        <label class="switch">
+          <input 
+            v-model="view" 
+            class="switch-input" 
+            type="checkbox" >
+          <span 
+            class="switch-label" 
+            data-on="emp" 
+            data-off="job"/> 
+          <span class="switch-handle"/> 
+        </label>           
 
-          </div>  
+      </div>  
 
-        </template>
+    </template>
 
-        <template slot="drawer-toolbar">
-            <div class="p-2">
-              <input v-model="query" type="text" class="form-control form-control-sm" placeholder="search here...">
-            </div>
-        </template>
+    <template slot="drawer-toolbar">
+      <div class="p-2">
+        <input 
+          v-model="query" 
+          type="text" 
+          class="form-control form-control-sm" 
+          placeholder="search here...">
+      </div>
+    </template>
 
-        <template slot="drawer">
+    <template slot="drawer">
             
-            <ul id="dp-draggable" class="res-menu">                
-              <template v-if="!view">
-                  <template v-for="res in this.sidebarResources">  
-                      <li :key="res.id" :data-id="res.id" class="res-user">
-                          <a href="#">
-                              <img :src="res.meta.avatar" class="rounded">                              
-                              <span class="caption">{{ res.name }}</span>
-                          </a>                        
-                      </li>
-                  </template>  
-              </template>  
-              <template v-else>
-                  <template v-for="res in this.sidebarResources">  
-                      <li :key="res.id" :data-id="res.id" class="res-job">
-                          <a href="#">
-                              <span class="caption">{{ res.title }}</span><br>
-                              <span class="caption">Code: {{ res.code }}</span>
-                          </a>                        
-                      </li>
-                  </template>  
-              </template>                 
-            </ul>
+      <ul 
+        id="dp-draggable" 
+        class="res-menu">                
+        <template v-if="!view">
+          <template v-for="res in this.sidebarResources">  
+            <li 
+              :key="res.id" 
+              :data-id="res.id" 
+              class="res-user">
+              <a href="#">
+                <img 
+                  :src="res.meta.avatar" 
+                  class="rounded">                              
+                <span class="caption">{{ res.name }}</span>
+              </a>                        
+            </li>
+          </template>  
+        </template>  
+        <template v-else>
+          <template v-for="res in this.sidebarResources">  
+            <li 
+              :key="res.id" 
+              :data-id="res.id" 
+              class="res-job">
+              <a href="#">
+                <span class="caption">{{ res.title }}</span><br>
+                <span class="caption">Code: {{ res.code }}</span>
+              </a>                        
+            </li>
+          </template>  
+        </template>                 
+      </ul>
 
-        </template>
+    </template>
 
-        <template slot="content">           
-            <day-pilot  
-                @range-selected="rangeSelectHandler"
-                @event-clicked="clickHandler"
-                @event-dragged="draggHandler"
-                @event-moved="moveHandler"
-                @event-hoverd="hoverHandler"
-                @event-resized="resizeHandler"                
-                scale="Day"                 
-                time-header-format="Weeks/Days"
-                crosshair="Header"
-                cell-width="Auto"
-                :start-date="start"
-                :view="dpView"
-                :range="dpRange"                 
-                :message="message"
-                :time-header-auto-fit="false"
-                :time-header-height="35"
-                :height="height"                 
-                :event-height="45"  
-                :events="scheduleEvents"                    
-                :resource="scheduleResources">
-            </day-pilot> 
+    <template slot="content">           
+      <day-pilot  
+        @range-selected="rangeSelectHandler"
+        @event-clicked="clickHandler"
+        @event-dragged="draggHandler"
+        @event-moved="moveHandler"
+        @event-hoverd="hoverHandler"
+        @event-resized="resizeHandler"                
+        scale="Day"                 
+        time-header-format="Weeks/Days"
+        crosshair="Header"
+        cell-width="Auto"
+        :start-date="start"
+        :view="dpView"
+        :range="dpRange"                 
+        :message="message"
+        :time-header-auto-fit="false"
+        :time-header-height="35"
+        :height="height"                 
+        :event-height="45"  
+        :events="scheduleEvents"                    
+        :resource="scheduleResources"/> 
            
-            <assign-modal
-              v-model="assignModal"
-              :event="event"
-              :view="dpView">
-            </assign-modal> 
-            <update-modal
-              v-model="updateModal"
-              :event="event"
-              :view="dpView">
-            </update-modal>   
+      <assign-modal
+        v-model="assignModal"
+        :event="event"
+        :view="dpView"/> 
+      <update-modal
+        v-model="updateModal"
+        :event="event"
+        :view="dpView"/>   
             
-        </template>
+    </template>
 
-    </nav-view>
+  </nav-view>
 </template>
 
 <script>

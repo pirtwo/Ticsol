@@ -1,41 +1,51 @@
 <template>    
-    <div class="wrap-auth shadow-sm">
-        <img src="/img/app.png" class="app-logo" />
+  <div class="wrap-auth shadow-sm">
+    <img 
+      src="/img/app.png" 
+      class="app-logo" >
 
-        <form>
-            <div class="form-group row">
-                <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                    <i class="icon material-icons">account_circle</i>
-                    </div>
-                </div>
-                <input  type="text" class="form-control" id="username" placeholder="Enter your username">
-                </div>
+    <form>
+      <div class="form-group row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="icon material-icons">account_circle</i>
             </div>
+          </div>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="username" 
+            placeholder="Enter your username">
+        </div>
+      </div>
 
-            <div class="form-group row">
-                <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                    <i class="icon material-icons">email</i>
-                    </div>
-                </div>
-                <input  type="email" class="form-control" id="email" placeholder="Enter your email">
-                </div>
-            </div>                                 
-
-
-            <div class="form-group">
-                <captcha></captcha>
+      <div class="form-group row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="icon material-icons">email</i>
             </div>
+          </div>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            placeholder="Enter your email">
+        </div>
+      </div>                                 
 
-            <button class="btn btn-primary btn-block">
-                <i class="icon material-icons">autorenew</i>  
-                <span>RESET</span>
-            </button> 
-        </form>   
-    </div>   
+
+      <div class="form-group">
+        <captcha/>
+      </div>
+
+      <button class="btn btn-primary btn-block">
+        <i class="icon material-icons">autorenew</i>  
+        <span>RESET</span>
+      </button> 
+    </form>   
+  </div>   
 </template>
 
 <script>

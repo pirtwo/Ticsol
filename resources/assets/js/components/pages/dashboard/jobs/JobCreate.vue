@@ -1,127 +1,160 @@
 <template>
-    <nav-view 
-        :scrollbar="true" 
-        :loading="loading" 
-        padding="p-5">
+  <nav-view 
+    :scrollbar="true" 
+    :loading="loading" 
+    padding="p-5">
 
-        <template slot="toolbar">
+    <template slot="toolbar"/>
 
-        </template>
+    <template slot="drawer">
 
-        <template slot="drawer">
+      <ul class="v-menu">
+        <li class="menu-title">Actions</li>
+        <li>
+          <button 
+            class="btn btn-light" 
+            @click="onSubmit">                        
+            Save
+          </button>
+        </li>
+        <li>
+          <button 
+            class="btn btn-light" 
+            @click="onCancel">                        
+            Cancel
+          </button>
+        </li>
+        <li class="menu-title">Links</li>
+        <li><router-link :to="{ name: 'jobList' }">Jobs</router-link></li>
+      </ul>
 
-            <ul class="v-menu">
-                <li class="menu-title">Actions</li>
-                <li>
-                    <button class="btn btn-light" @click="onSubmit">                        
-                        Save
-                    </button>
-                </li>
-                <li>
-                    <button class="btn btn-light" @click="onCancel">                        
-                        Cancel
-                    </button>
-                </li>
-                <li class="menu-title">Links</li>
-                <li><router-link :to="{ name: 'jobList' }">Jobs</router-link></li>
-            </ul>
+    </template>
 
-        </template>
+    <template slot="content">
 
-        <template slot="content">
-
-            <form class="needs-validation" novalidate>
+      <form 
+        class="needs-validation" 
+        novalidate>
                 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-label">Title</label>
-                        <div class="col-sm-10">
-                            <input v-model="form.title" id="title" type="text" class="form-control" placeholder="job title"/>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+              <input 
+                v-model="form.title" 
+                id="title" 
+                type="text" 
+                class="form-control" 
+                placeholder="job title">
+            </div>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-label">Code</label>
-                        <div class="col-sm-10">
-                            <input v-model="form.code" id="code" type="text" class="form-control" placeholder="display code"/>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-label">Code</label>
+            <div class="col-sm-10">
+              <input 
+                v-model="form.code" 
+                id="code" 
+                type="text" 
+                class="form-control" 
+                placeholder="display code">
+            </div>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-label">Parent</label>
-                        <div class="col-sm-10">
-                            <select-box
-                                v-model="form.parent_id"
-                                :data="jobs"
-                                :multi-select="false"
-                                id="parent_id"
-                                name="jobParent"                                                                                                                                               
-                                placeholder="select parent..."
-                                search-placeholder="search..."
-                            ></select-box>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-label">Parent</label>
+            <div class="col-sm-10">
+              <select-box
+                v-model="form.parent_id"
+                :data="jobs"
+                :multi-select="false"
+                id="parent_id"
+                name="jobParent"                                                                                                                                               
+                placeholder="select parent..."
+                search-placeholder="search..."
+              />
+            </div>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-label">Profile</label>
-                        <div class="col-sm-10">
-                            <select-box
-                                v-model="form.form_id"
-                                :data="profiles"
-                                :multi-select="false" 
-                                id="form_id"
-                                name="jobProfile"                                                                                                                                              
-                                placeholder="select profile..."
-                                search-placeholder="search..."
-                            ></select-box>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-label">Profile</label>
+            <div class="col-sm-10">
+              <select-box
+                v-model="form.form_id"
+                :data="profiles"
+                :multi-select="false" 
+                id="form_id"
+                name="jobProfile"                                                                                                                                              
+                placeholder="select profile..."
+                search-placeholder="search..."
+              />
+            </div>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-label">Contacts</label>
-                        <div class="col-sm-10">
-                            <select-box
-                                v-model="form.contacts"
-                                :data="contacts"
-                                :multi-select="true" 
-                                id="contacts"
-                                name="contacts"                                                                                                                                              
-                                placeholder="select contacts..."
-                                search-placeholder="search..."
-                            ></select-box>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-label">Contacts</label>
+            <div class="col-sm-10">
+              <select-box
+                v-model="form.contacts"
+                :data="contacts"
+                :multi-select="true" 
+                id="contacts"
+                name="contacts"                                                                                                                                              
+                placeholder="select contacts..."
+                search-placeholder="search..."
+              />
+            </div>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-12 col-form-label">Status</label>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-12 col-form-label">Status</label>
 
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input v-model="form.isactive" type="radio" id="jobEnable" name="status" value="1" class="custom-control-input" checked>
-                            <label class="custom-control-label" for="jobEnable">Enable</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input v-model="form.isactive" type="radio" id="jobDisable" name="status" value="0" class="custom-control-input">
-                            <label class="custom-control-label" for="jobDisable">Disable</label>
-                        </div>                        
-                    </div>
-                </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input 
+                v-model="form.isactive" 
+                type="radio" 
+                id="jobEnable" 
+                name="status" 
+                value="1" 
+                class="custom-control-input" 
+                checked>
+              <label 
+                class="custom-control-label" 
+                for="jobEnable">Enable</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input 
+                v-model="form.isactive" 
+                type="radio" 
+                id="jobDisable" 
+                name="status" 
+                value="0" 
+                class="custom-control-input">
+              <label 
+                class="custom-control-label" 
+                for="jobDisable">Disable</label>
+            </div>                        
+          </div>
+        </div>
 
-            </form>
+      </form>
 
-            <form-gen :schema="schema" v-model="form.meta"></form-gen>
+      <form-gen 
+        :schema="schema" 
+        v-model="form.meta"/>
 
-        </template>
-    </nav-view>
+    </template>
+  </nav-view>
 </template>
 
 <script>

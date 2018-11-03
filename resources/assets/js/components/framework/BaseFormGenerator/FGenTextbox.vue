@@ -1,20 +1,23 @@
 <template>
-    <div class="form-group">
+  <div class="form-group">
     <div class="form-row">
-        <label class="col-sm-2 col-form-lable" :for="name">{{ label }}</label>
-        <div class="col">
-          <input class="form-control"
-              :type="subtype" 
-              :name="name" 
-              :value="value"   
-              :title="description"         
-              :required="required"
-              :maxlength="maxlength"
-              :placeholder="placeholder"
-              @input="$emit('input', $event.target.value)">
-        </div>
+      <label 
+        class="col-sm-2 col-form-lable" 
+        :for="name">{{ label }}</label>
+      <div class="col">
+        <input 
+          class="form-control"
+          :type="subtype" 
+          :name="name" 
+          :value="value"   
+          :title="description"         
+          :required="required"
+          :maxlength="maxlength"
+          :placeholder="placeholder"
+          @input="$emit('input', $event.target.value)">
+      </div>
     </div>
-    </div>  
+  </div>  
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="dp"></div>  
+  <div id="dp"/>  
 </template>
 
 <script>
@@ -20,12 +20,12 @@ export default {
     },
     resource: {
       type: Array,
-      default: [],
+      default: ()=>{return []},
       required: true
     },
     events: {
       type: Array,
-      default: [],
+      default: ()=>{return []},
       required: true
     },
     message: {

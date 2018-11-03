@@ -1,14 +1,18 @@
 <template>
-    <div :id="'step-sign-' + stepNumber" class="step-sign">
-        <slot>
-            <button class="btn" type="button"
-            :class="[value === stepNumber ? 'btn-success':'btn-primary']"  
-            @click="onClick">
-            {{ stepNumber }}
-            </button>
-            <label>{{ label }}</label>
-        </slot>
-    </div>
+  <div 
+    :id="'step-sign-' + stepNumber" 
+    class="step-sign">
+    <slot>
+      <button 
+        class="btn" 
+        type="button"
+        :class="[value === stepNumber ? 'btn-success':'btn-primary']"  
+        @click="onClick">
+        {{ stepNumber }}
+      </button>
+      <label>{{ label }}</label>
+    </slot>
+  </div>
 </template>
 
 <script>

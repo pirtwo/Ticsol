@@ -1,6 +1,8 @@
 <template>
   <div class="wrap-auth shadow-sm">
-    <img src="/img/app.png" class="app-logo" />
+    <img 
+      src="/img/app.png" 
+      class="app-logo" >
 
     <form>
 
@@ -11,7 +13,12 @@
               <i class="icon material-icons">account_circle</i>
             </div>
           </div>
-          <input v-model="form.username" type="text" class="form-control" id="username" placeholder="Enter your username">
+          <input 
+            v-model="form.username" 
+            type="text" 
+            class="form-control" 
+            id="username" 
+            placeholder="Enter your username">
         </div>
       </div>
 
@@ -22,17 +29,27 @@
               <i class="icon material-icons">lock_open</i>
             </div>
           </div>
-          <input v-model="form.password" type="password" class="form-control" id="password" placeholder="Enter your password">
+          <input 
+            v-model="form.password" 
+            type="password" 
+            class="form-control" 
+            id="password" 
+            placeholder="Enter your password">
         </div>
       </div>
 
       <div class="form-group text-center">  
-          <a href="/resetpassword" class="btn btn-link d-block mx-auto">Forgot Password</a>                        
+        <a 
+          href="/resetpassword" 
+          class="btn btn-link d-block mx-auto">Forgot Password</a>                        
       </div>
 
-      <button type="button" class="btn btn-primary btn-block" @click="onSubmit">
-          <i class="icon material-icons">exit_to_app</i>  
-          <span>LOGIN</span>
+      <button 
+        type="button" 
+        class="btn btn-primary btn-block" 
+        @click="onSubmit">
+        <i class="icon material-icons">exit_to_app</i>  
+        <span>LOGIN</span>
       </button>    
     </form>
     

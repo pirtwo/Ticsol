@@ -1,13 +1,15 @@
 <template>
- <page-layout v-bind:header="true" v-bind:footer="true">
-   <template slot="header">
-     <iconbar-top></iconbar-top>
-   </template>
-   <router-view></router-view>
-   <template slot="footer">
-     <iconbar-bot></iconbar-bot>
-   </template>
- </page-layout>
+  <page-layout 
+    :header="true" 
+    :footer="true">
+    <template slot="header">
+      <iconbar-top/>
+    </template>
+    <router-view/>
+    <template slot="footer">
+      <iconbar-bot/>
+    </template>
+  </page-layout>
 </template>
 
 <script>

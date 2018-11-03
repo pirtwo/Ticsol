@@ -2,29 +2,42 @@
 
   <table>
     <thead>
-      <slot name="toolbar">
-
-      </slot>
+      <slot name="toolbar"/>
       <th v-if="selection">
-        <input type="checkbox" @click.self="onSelectAll">
+        <input 
+          type="checkbox" 
+          @click.self="onSelectAll">
       </th>
 
-      <th v-for="(value, index) in header" :key="index" @click="toggleOrder(index, $event)">
-        <slot name="header" :item="value">
+      <th 
+        v-for="(value, index) in header" 
+        :key="index" 
+        @click="toggleOrder(index, $event)">
+        <slot 
+          name="header" 
+          :item="value">
           {{ value }}
           <!-- fallback content -->
         </slot>        
-        <i v-show="sortBy == value.orderBy" class="material-icons">{{ colOrder === "asc" ? "arrow_upward" : "arrow_downward"}}</i>        
+        <i 
+          v-show="sortBy == value.orderBy" 
+          class="material-icons">{{ colOrder === "asc" ? "arrow_upward" : "arrow_downward" }}</i>        
       </th>
 
     </thead>
 
     <tbody>
-      <tr v-for="(value, index) in list" v-bind:key="index">
+      <tr 
+        v-for="(value, index) in list" 
+        :key="index">
         <td v-if="selection">
-          <input type="checkbox" @click="onSelect(index, $event)">
+          <input 
+            type="checkbox" 
+            @click="onSelect(index, $event)">
         </td>
-        <slot name="body" :item="value">
+        <slot 
+          name="body" 
+          :item="value">
           {{ value }}
         </slot>        
       </tr>
@@ -77,7 +90,7 @@ export default {
 
   computed: {
     list: function() {      
-      return this.data.sort((a, b) => {
+      return this.data.slice(0).sort((a, b) => {
         if (this.colOrder === "asc") {
           if (a[this.sortBy] < b[this.sortBy]) return -1;
           if (a[this.sortBy] > b[this.sortBy]) return 1;

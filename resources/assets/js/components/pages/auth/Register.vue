@@ -1,64 +1,82 @@
 <template>
-    <div class="wrap-auth shadow-sm">
-        <img src="/img/app.png" class="app-logo" />
+  <div class="wrap-auth shadow-sm">
+    <img 
+      src="/img/app.png" 
+      class="app-logo" >
 
-        <form>
-            <div class="form-group row">
-                <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                    <i class="icon material-icons">account_circle</i>
-                    </div>
-                </div>
-                <input  type="text" class="form-control" id="username" placeholder="Enter your username">
-                </div>
+    <form>
+      <div class="form-group row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="icon material-icons">account_circle</i>
             </div>
+          </div>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="username" 
+            placeholder="Enter your username">
+        </div>
+      </div>
 
-            <div class="form-group row">
-                <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                    <i class="icon material-icons">email</i>
-                    </div>
-                </div>
-                <input  type="email" class="form-control" id="email" placeholder="Enter your email">
-                </div>
-            </div> 
-
-            <div class="form-group row">
-                <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                    <i class="icon material-icons">lock</i>
-                    </div>
-                </div>
-                <input  type="password" class="form-control" id="password" placeholder="Enter your password">
-                </div>
-            </div> 
-
-            <div class="form-group row">
-                <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                    <i class="icon material-icons">lock</i>
-                    </div>
-                </div>
-                <input  type="password" class="form-control" id="confirm" placeholder="Confirm your password">
-                </div>
-            </div>                                 
-
-
-            <div class="form-group">
-                <captcha></captcha>
+      <div class="form-group row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="icon material-icons">email</i>
             </div>
+          </div>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            placeholder="Enter your email">
+        </div>
+      </div> 
 
-            <button class="btn btn-primary btn-block">
-                <i class="icon material-icons">done</i>  
-                <span>REGISTER</span>
-            </button> 
-        </form>   
+      <div class="form-group row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="icon material-icons">lock</i>
+            </div>
+          </div>
+          <input 
+            type="password" 
+            class="form-control" 
+            id="password" 
+            placeholder="Enter your password">
+        </div>
+      </div> 
 
-    </div>
+      <div class="form-group row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="icon material-icons">lock</i>
+            </div>
+          </div>
+          <input 
+            type="password" 
+            class="form-control" 
+            id="confirm" 
+            placeholder="Confirm your password">
+        </div>
+      </div>                                 
+
+
+      <div class="form-group">
+        <captcha/>
+      </div>
+
+      <button class="btn btn-primary btn-block">
+        <i class="icon material-icons">done</i>  
+        <span>REGISTER</span>
+      </button> 
+    </form>   
+
+  </div>
 </template>
 
 <script>

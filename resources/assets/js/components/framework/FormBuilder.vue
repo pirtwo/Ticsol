@@ -1,5 +1,5 @@
 <template>
-     <div id="fb-editor"></div>
+  <div id="fb-editor"/>
 </template>
 
 <script>

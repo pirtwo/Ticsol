@@ -1,10 +1,24 @@
 <template>
-  <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filter" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+  <div 
+    class="modal fade" 
+    id="filterModal" 
+    tabindex="-1" 
+    role="dialog" 
+    aria-labelledby="filter" 
+    aria-hidden="true">
+    <div 
+      class="modal-dialog modal-dialog-centered" 
+      role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="filter">Filter</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 
+            class="modal-title" 
+            id="filter">Filter</h5>
+          <button 
+            type="button" 
+            class="close" 
+            data-dismiss="modal" 
+            aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -13,47 +27,80 @@
           <table class="table table-sm table-responsive">
             <thead>
               <tr>
-                <th scope="col"></th>
+                <th scope="col"/>
                 <th scope="col">
-                  <select v-model="col" class="baseFilter__select-column">
-                    <option disabled value="">Please select column</option>
-                    <option v-for="item in columns" :key="item.key" :value="item.key">
+                  <select 
+                    v-model="col" 
+                    class="baseFilter__select-column">
+                    <option 
+                      disabled 
+                      value="">Please select column</option>
+                    <option 
+                      v-for="item in columns" 
+                      :key="item.key" 
+                      :value="item.key">
                       {{ item.value }}
                     </option>
                   </select>
                 </th>
                 <th scope="col">
-                  <select v-model="opt" class="baseFilter__select-operator">
-                    <option disabled value="">Please select operator</option>
-                    <option v-for="item in operators" :key="item.key" :value="item.key">
+                  <select 
+                    v-model="opt" 
+                    class="baseFilter__select-operator">
+                    <option 
+                      disabled 
+                      value="">Please select operator</option>
+                    <option 
+                      v-for="item in operators" 
+                      :key="item.key" 
+                      :value="item.key">
                       {{ item.value }}
                     </option>
                   </select>
                 </th>
                 <th scope="col">
-                  <input v-model="val" class="baseFilter__value-input" type="text">
+                  <input 
+                    v-model="val" 
+                    class="baseFilter__value-input" 
+                    type="text">
                 </th>
                 <th>
-                  <button type="button" @click="addHandler">Add</button>
+                  <button 
+                    type="button" 
+                    @click="addHandler">Add</button>
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(query, index) in filters" :key="index">
+              <tr 
+                v-for="(query, index) in filters" 
+                :key="index">
                 <th scope="row">{{ index + 1 }}</th>
                 <td>{{ getColumnName(query.col) }}</td>
                 <td>{{ getOperatorName(query.opt) }}</td>
                 <td>{{ query.val }}</td>
-                <td><button type="button" class="btn btn-link" @click="removeHandler(index)">Remove</button></td>
+                <td><button 
+                  type="button" 
+                  class="btn btn-link" 
+                  @click="removeHandler(index)">Remove</button></td>
               </tr>
             </tbody>
           </table>
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-primary" @click="applyHandler">Apply</button>
-          <button type="button" class="btn btn-outline-primary" @click="filters = []">Clear</button>
-          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+          <button 
+            type="button" 
+            class="btn btn-outline-primary" 
+            @click="applyHandler">Apply</button>
+          <button 
+            type="button" 
+            class="btn btn-outline-primary" 
+            @click="filters = []">Clear</button>
+          <button 
+            type="button" 
+            class="btn btn-outline-primary" 
+            data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

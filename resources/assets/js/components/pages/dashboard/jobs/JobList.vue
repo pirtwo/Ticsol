@@ -1,41 +1,64 @@
 <template>
-    <nav-view :scrollbar="true" :loading="loading" padding="p-2">
+  <nav-view 
+    :scrollbar="true" 
+    :loading="loading" 
+    padding="p-2">
 
-        <template slot="toolbar">
-          <button type="button" @click="showFilter = true">Filter</button>
-          <pagination-view v-model="pager" :page-count="pager.pageCount"></pagination-view>
+    <template slot="toolbar">
+      <button 
+        type="button" 
+        @click="showFilter = true">Filter</button>
+      <pagination-view 
+        v-model="pager" 
+        :page-count="pager.pageCount"/>
+    </template>
+
+    <template slot="drawer">
+      <ul class="v-menu">
+        <li class="menu-title">Actions</li>
+        <li><router-link :to="{ name: 'jobCreate' }">New</router-link></li>
+        <li class="menu-title">Links</li>                
+      </ul>
+    </template>
+
+    <template slot="content">
+
+      <table-view 
+        class="table table-striped" 
+        v-model="selects" 
+        :data="jobs" 
+        :header="header" 
+        :selection="false" 
+        order-by="title" 
+        order="asc">
+        <template 
+          slot="header" 
+          slot-scope="{item}">
+          <div :data-orderBy="item.orderBy">{{ item.value }}</div>
         </template>
+        <template 
+          slot="body" 
+          slot-scope="{item}">
+          <td>
+            <router-link 
+              class="btn btn-sm btn-light" 
+              :to="{ name : 'jobDetails', params : { id: item.id } }">
+              <i class="material-icons">visibility</i>
+            </router-link> 
+          </td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.code }}</td>
+          <td>{{ item.isactive ? "Yes" : "No" }}</td>
+        </template> 
+      </table-view>
+      <filter-view 
+        v-model="query" 
+        :show.sync="showFilter" 
+        :columns="columnList" 
+        @apply="feedTable"/>
 
-        <template slot="drawer">
-            <ul class="v-menu">
-                <li class="menu-title">Actions</li>
-                <li><router-link :to="{ name: 'jobCreate' }">New</router-link></li>
-                <li class="menu-title">Links</li>                
-            </ul>
-        </template>
-
-        <template slot="content">
-
-            <table-view class="table table-striped" 
-            v-model="selects" :data="jobs" :header="header" :selection="false" order-by="title" order="asc">
-               <template slot="header" slot-scope="{item}">
-                 <div :data-orderBy="item.orderBy">{{ item.value }}</div>
-               </template>
-               <template slot="body" slot-scope="{item}">
-                 <td>
-                  <router-link class="btn btn-sm btn-light" :to="{ name : 'jobDetails', params : { id: item.id } }">
-                    <i class="material-icons">visibility</i>
-                  </router-link> 
-                 </td>
-                 <td>{{ item.title }}</td>
-                 <td>{{ item.code }}</td>
-                 <td>{{ item.isactive ? "Yes" : "No" }}</td>
-               </template> 
-            </table-view>
-            <filter-view v-model="query" :show.sync="showFilter" :columns="columnList" @apply="feedTable"></filter-view>
-
-        </template>
-    </nav-view>
+    </template>
+  </nav-view>
 </template>
 
 <script>

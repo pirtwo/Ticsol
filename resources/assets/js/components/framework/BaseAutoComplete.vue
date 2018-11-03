@@ -1,24 +1,30 @@
 <template>
-    <div class="wrap" ref="BaseAutoComplete">
-        <input 
-          v-model="input"          
-          @change="debounceOnChange"
-          @focus="showList = true"         
-          type="text"
-          :class="[{ 'list-open' : showList }, 'form-control']"
-          :id="id" 
-          :name="name" 
-          :placeholder="placeholder"/>
-        <div class="wrap-results" v-show="showList">
-          <ul class="results">
-            <li class="result" 
-                v-for="item in options" :key="item.key"
-                @click="onSelect(item.key, item.value)">
-                {{ item.value }}
-            </li>
-          </ul>
-        </div>        
-    </div>
+  <div 
+    class="wrap" 
+    ref="BaseAutoComplete">
+    <input 
+      v-model="input"          
+      @change="debounceOnChange"
+      @focus="showList = true"         
+      type="text"
+      :class="[{ 'list-open' : showList }, 'form-control']"
+      :id="id" 
+      :name="name" 
+      :placeholder="placeholder">
+    <div 
+      class="wrap-results" 
+      v-show="showList">
+      <ul class="results">
+        <li 
+          class="result" 
+          v-for="item in options" 
+          :key="item.key"
+          @click="onSelect(item.key, item.value)">
+          {{ item.value }}
+        </li>
+      </ul>
+    </div>        
+  </div>
 </template>
 
 <script>
@@ -30,7 +36,7 @@ export default {
     data: {
       type: Array,
       required: true,
-      default: []
+      default: ()=>{ return []}
     },
     id: {
       type: String,

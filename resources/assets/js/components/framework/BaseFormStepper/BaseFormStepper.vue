@@ -1,15 +1,15 @@
 <template>
-    <div class="form-stepper">        
-        <div class="stepper-signs d-flex justify-content-center">
-            <slot name="signs"></slot>
-        </div>
-        <div class="stepper-body">
-            <slot name="body"></slot>
-        </div>
-        <div class="stepper-nav">
-            <slot name="nav"></slot>
-        </div>        
+  <div class="form-stepper">        
+    <div class="stepper-signs d-flex justify-content-center">
+      <slot name="signs"/>
     </div>
+    <div class="stepper-body">
+      <slot name="body"/>
+    </div>
+    <div class="stepper-nav">
+      <slot name="nav"/>
+    </div>        
+  </div>
 </template>
 
 <script>

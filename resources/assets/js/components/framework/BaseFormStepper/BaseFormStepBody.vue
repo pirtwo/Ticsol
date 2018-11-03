@@ -1,7 +1,9 @@
 <template>
-    <div ref="stepBody" class="step-body">        
-        <slot></slot>
-    </div>
+  <div 
+    ref="stepBody" 
+    class="step-body">        
+    <slot/>
+  </div>
 </template>
 
 <script>

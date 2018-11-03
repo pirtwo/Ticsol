@@ -1,53 +1,58 @@
 <template>
-    <nav-view 
-      :scrollbar="true" 
-      :loading="loading" 
-      padding="p-2">
-        <template slot="drawer">
+  <nav-view 
+    :scrollbar="true" 
+    :loading="loading" 
+    padding="p-2">
+    <template slot="drawer">
 
-          <template slot="toolbar"></template>
+      <template slot="toolbar"/>
             
-            <ul class="v-menu">
-                <li class="menu-title">Actions</li>
-                <li>
-                    <button class="btn btn-light" @click="onSubmit">                        
-                        Save
-                    </button>
-                </li>
-                <li>
-                    <button class="btn btn-light" @click="onCancel">                        
-                        Cancel
-                    </button>
-                </li>
-                <li class="menu-title">Links</li>
-                <li><router-link :to="{ name: 'profileList' }">Profiles</router-link></li>
-            </ul>
+      <ul class="v-menu">
+        <li class="menu-title">Actions</li>
+        <li>
+          <button 
+            class="btn btn-light" 
+            @click="onSubmit">                        
+            Save
+          </button>
+        </li>
+        <li>
+          <button 
+            class="btn btn-light" 
+            @click="onCancel">                        
+            Cancel
+          </button>
+        </li>
+        <li class="menu-title">Links</li>
+        <li><router-link :to="{ name: 'profileList' }">Profiles</router-link></li>
+      </ul>
 
-        </template>
+    </template>
         
-        <template slot="content">
+    <template slot="content">
 
-            <div class="form-group">
-                <div class="form-row">
-                    <label class="col-sm-2 col-form-lable">Profile Name</label>
-                    <div class="col-sm-10">
-                        <input v-model="form.name" 
-                        id="title" 
-                        type="text" 
-                        class="form-control" 
-                        placeholder="enter name for profile..."/>
-                    </div>
-                </div>
-            </div>
+      <div class="form-group">
+        <div class="form-row">
+          <label class="col-sm-2 col-form-lable">Profile Name</label>
+          <div class="col-sm-10">
+            <input 
+              v-model="form.name" 
+              id="title" 
+              type="text" 
+              class="form-control" 
+              placeholder="enter name for profile...">
+          </div>
+        </div>
+      </div>
 
-            <form-builder 
-            v-model="frmBuilder"
-            :disable-fields="['hidden', 'button', 'paragraph', 'header']" 
-            :disabled-attrs="['className', 'value']" 
-            :disabled-action-buttons="[]"
-            :control-order="[]"></form-builder>
-        </template>
-    </nav-view>
+      <form-builder 
+        v-model="frmBuilder"
+        :disable-fields="['hidden', 'button', 'paragraph', 'header']" 
+        :disabled-attrs="['className', 'value']" 
+        :disabled-action-buttons="[]"
+        :control-order="[]"/>
+    </template>
+  </nav-view>
 </template>
 
 <script>

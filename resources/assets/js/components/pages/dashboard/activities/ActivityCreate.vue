@@ -1,92 +1,113 @@
 <template>
-    <nav-view
+  <nav-view
     :scrollbar="true" 
     :loading="loading" 
     padding="p-5">
 
-        <template slot="toolbar">
+    <template slot="toolbar"/>
 
-        </template>
+    <template slot="drawer">
 
-        <template slot="drawer">
+      <ul class="v-menu">
+        <li class="menu-title">Actions</li>
+        <li>
+          <button 
+            class="btn btn-light" 
+            @click="onSubmit">                        
+            Save
+          </button>
+        </li>
+        <li>
+          <button 
+            class="btn btn-light" 
+            @click="onCancel">                        
+            Cancel
+          </button>
+        </li>
+        <li class="menu-title">Links</li>
+        <li><router-link :to="{ name: 'activityList' }">Activities</router-link></li>
+      </ul>
 
-            <ul class="v-menu">
-                <li class="menu-title">Actions</li>
-                <li>
-                    <button class="btn btn-light" @click="onSubmit">                        
-                        Save
-                    </button>
-                </li>
-                <li>
-                    <button class="btn btn-light" @click="onCancel">                        
-                        Cancel
-                    </button>
-                </li>
-                <li class="menu-title">Links</li>
-                <li><router-link :to="{ name: 'activityList' }">Activities</router-link></li>
-            </ul>
+    </template>
 
-        </template>
-
-        <template slot="content">
+    <template slot="content">
             
-            <form>
+      <form>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">Schedule Item</label>
-                        <div class="col-sm-10">
-                            <select-box
-                                v-model="schedule_id"
-                                :data="scheduleItems"
-                                :multi-select="false" 
-                                id="schedule_id"
-                                name="schedule_id"                                                                                                                                              
-                                placeholder="select schedule item..."
-                                search-placeholder="search..."
-                            ></select-box>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-lable">Schedule Item</label>
+            <div class="col-sm-10">
+              <select-box
+                v-model="schedule_id"
+                :data="scheduleItems"
+                :multi-select="false" 
+                id="schedule_id"
+                name="schedule_id"                                                                                                                                              
+                placeholder="select schedule item..."
+                search-placeholder="search..."
+              />
+            </div>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">From</label>
-                        <div class="col">
-                            <input id="from" v-model="form.fromDate" type="date" class="form-control" />
-                        </div>
-                        <div class="col">
-                            <input v-model="form.fromTime" type="time" class="form-control" />
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-lable">From</label>
+            <div class="col">
+              <input 
+                id="from" 
+                v-model="form.fromDate" 
+                type="date" 
+                class="form-control" >
+            </div>
+            <div class="col">
+              <input 
+                v-model="form.fromTime" 
+                type="time" 
+                class="form-control" >
+            </div>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">Till</label>                        
-                        <div class="col">
-                            <input id="till" v-model="form.tillDate" type="date" class="form-control" />
-                        </div>
-                        <div class="col">
-                            <input v-model="form.tillTime" type="time" class="form-control" />
-                        </div>                        
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-lable">Till</label>                        
+            <div class="col">
+              <input 
+                id="till" 
+                v-model="form.tillDate" 
+                type="date" 
+                class="form-control" >
+            </div>
+            <div class="col">
+              <input 
+                v-model="form.tillTime" 
+                type="time" 
+                class="form-control" >
+            </div>                        
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="form-row">
-                        <label class="col-sm-2 col-form-lable">Report</label>                        
-                        <div class="col-sm-10">
-                            <textarea id="desc" v-model="form.desc" class="form-control" placeholder="write your report..." rows="7"></textarea>
-                        </div>                      
-                    </div>
-                </div>
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-lable">Report</label>                        
+            <div class="col-sm-10">
+              <textarea 
+                id="desc" 
+                v-model="form.desc" 
+                class="form-control" 
+                placeholder="write your report..." 
+                rows="7"/>
+            </div>                      
+          </div>
+        </div>
 
-            </form>
+      </form>
 
-        </template>
+    </template>
 
-    </nav-view>
+  </nav-view>
 </template>
 
 <script>

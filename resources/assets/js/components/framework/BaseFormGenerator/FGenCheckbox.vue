@@ -1,21 +1,26 @@
 <template>
   <div class="form-group">
     <div class="form-row">
-        <label class="col-sm-2 col-form-lable">{{ label }}</label>
-        <div class="col">
-          <div class="custom-control custom-checkbox" 
-              v-for="(checkbox, index) in values" 
-              :key="index"
-              :class="{ 'custom-control-inline' : inline}">            
-              <input class="custom-control-input" type="checkbox" 
-                  :name="name" 
-                  :id="name + index"
-                  :value="checkbox.value" 
-                  :checked="isChecked(checkbox.value)"
-                  @input="update($event)">
-              <label class="custom-control-label" :for="name + index">{{ checkbox.label }}</label>
-          </div>
+      <label class="col-sm-2 col-form-lable">{{ label }}</label>
+      <div class="col">
+        <div 
+          class="custom-control custom-checkbox" 
+          v-for="(checkbox, index) in values" 
+          :key="index"
+          :class="{ 'custom-control-inline' : inline}">            
+          <input 
+            class="custom-control-input" 
+            type="checkbox" 
+            :name="name" 
+            :id="name + index"
+            :value="checkbox.value" 
+            :checked="isChecked(checkbox.value)"
+            @input="update($event)">
+          <label 
+            class="custom-control-label" 
+            :for="name + index">{{ checkbox.label }}</label>
         </div>
+      </div>
     </div>
   </div>
 </template>

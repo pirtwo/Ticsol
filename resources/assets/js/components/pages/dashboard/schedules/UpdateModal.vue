@@ -2,16 +2,30 @@
 <template>
 
   <!-- Modal -->
-  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+  <div 
+    class="modal fade" 
+    id="updateModal" 
+    tabindex="-1" 
+    role="dialog" 
+    aria-labelledby="title" 
+    aria-hidden="true">
+    <div 
+      class="modal-dialog modal-dialog-centered" 
+      role="document">
 
       <!-- Modal Content -->
       <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h5 class="modal-title" id="title">Update Event</h5>
-          <button @click="onHide" type="button" class="close" aria-label="Close">
+          <h5 
+            class="modal-title" 
+            id="title">Update Event</h5>
+          <button 
+            @click="onHide" 
+            type="button" 
+            class="close" 
+            aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div><!-- End Header -->
@@ -28,7 +42,8 @@
                     v-model="form.resourceName" 
                     :name="view == 'user' ? 'user_id' : 'job_id'" 
                     class="form-control" 
-                    type="text" readonly>
+                    type="text" 
+                    readonly>
                 </div>
               </div>              
             </div>
@@ -45,7 +60,9 @@
                     :name="view == 'user' ? 'job_id' : 'user_id'"                    
                     :placeholder="view == 'user' ? 'please select job' : 'please select user'"
                     search-placeholder="search...">
-                    <template slot="default-options" v-if="view == 'user'">
+                    <template 
+                      slot="default-options" 
+                      v-if="view == 'user'">
                       <li @click="onCreateJob"><i>-- create new job --</i></li>
                       <li><i>-- create new contact --</i></li>
                     </template>  
@@ -55,13 +72,20 @@
             </div>           
 
             <div class="form-group">
-               <div class="form-row">
+              <div class="form-row">
                 <label class="col-form-label col-sm-12">Starts</label>
                 <div class="col">
-                  <input v-model="form.start" name="start" type="date" class="form-control" />
+                  <input 
+                    v-model="form.start" 
+                    name="start" 
+                    type="date" 
+                    class="form-control" >
                 </div>
                 <div class="col">
-                  <input v-model="form.startTime" type="time" class="form-control" />                  
+                  <input 
+                    v-model="form.startTime" 
+                    type="time" 
+                    class="form-control" >                  
                 </div>             
               </div>
             </div>
@@ -70,10 +94,17 @@
               <div class="form-row">
                 <label class="col-form-label col-sm-12">Ends</label>
                 <div class="col">
-                  <input v-model="form.end" name="end" type="date" class="form-control" />
+                  <input 
+                    v-model="form.end" 
+                    name="end" 
+                    type="date" 
+                    class="form-control" >
                 </div>
                 <div class="col">
-                  <input v-model="form.endTime" type="time" class="form-control" />
+                  <input 
+                    v-model="form.endTime" 
+                    type="time" 
+                    class="form-control" >
                 </div>  
               </div>
             </div>            
@@ -81,16 +112,35 @@
             <div class="form-row">
               <div class="form-group col-sm-7">
                 <div class="row no-gutters">
-                  <label class="col-sm-12" for="status">Status</label> 
+                  <label 
+                    class="col-sm-12" 
+                    for="status">Status</label> 
                   <div class="col-sm-12">     
-                  <div class="custom-control custom-radio custom-control-inline">
-                      <input v-model="form.status" type="radio" id="updateTentative" name="status" value="tentative" class="custom-control-input" checked>
-                      <label class="custom-control-label" for="updateTentative">Tentative</label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                      <input v-model="form.status" type="radio" id="updateConfirmed" name="status" value="confirmed" class="custom-control-input">
-                      <label class="custom-control-label" for="updateConfirmed">Confirmed</label>
-                  </div> 
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input 
+                        v-model="form.status" 
+                        type="radio" 
+                        id="updateTentative" 
+                        name="status" 
+                        value="tentative" 
+                        class="custom-control-input" 
+                        checked>
+                      <label 
+                        class="custom-control-label" 
+                        for="updateTentative">Tentative</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input 
+                        v-model="form.status" 
+                        type="radio" 
+                        id="updateConfirmed" 
+                        name="status" 
+                        value="confirmed" 
+                        class="custom-control-input">
+                      <label 
+                        class="custom-control-label" 
+                        for="updateConfirmed">Confirmed</label>
+                    </div> 
                   </div>  
                 </div>                  
               </div>
@@ -98,8 +148,15 @@
               <div class="form-group col-sm-5">
                 <label for="offsite">Offsite</label> 
                 <div class="custom-control custom-checkbox">
-                  <input v-model="form.offsite" name="offsite" type="checkbox" class="custom-control-input" id="updateOffsite">
-                  <label class="custom-control-label" for="updateOffsite">Work Offsite</label>
+                  <input 
+                    v-model="form.offsite" 
+                    name="offsite" 
+                    type="checkbox" 
+                    class="custom-control-input" 
+                    id="updateOffsite">
+                  <label 
+                    class="custom-control-label" 
+                    for="updateOffsite">Work Offsite</label>
                 </div> 
               </div>
             </div>
@@ -110,11 +167,20 @@
 
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button @click="onSubmit" type="button" class="btn btn-success">Update</button>
-          <button @click="onDelete" type="button" class="btn btn-danger">Delete</button>
-          <button @click="onHide" type="button" class="btn btn-secondary">Cancel</button>          
+          <button 
+            @click="onSubmit" 
+            type="button" 
+            class="btn btn-success">Update</button>
+          <button 
+            @click="onDelete" 
+            type="button" 
+            class="btn btn-danger">Delete</button>
+          <button 
+            @click="onHide" 
+            type="button" 
+            class="btn btn-secondary">Cancel</button>          
         </div><!-- End Footer -->
-        <job-modal v-model="jobModal"></job-modal> 
+        <job-modal v-model="jobModal"/> 
 
       </div><!-- End Content  -->
     </div><!-- End Modal -->

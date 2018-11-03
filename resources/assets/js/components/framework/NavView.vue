@@ -1,65 +1,84 @@
 <template>  
-    <div class="wrap-drawer">      
+  <div class="wrap-drawer">      
 
-        <!-- drawer -->
-        <div class="drawer" :class="[showDrawer? 'open' : 'close']">
-            <div class="drawer-toolbar">
-              <div class="title text-center" v-if="drawerTitle !== '' ">{{ drawerTitle }}</div> 
-              <slot name="drawer-toolbar"></slot>
-            </div>     
-            <div class="drawer-body">
-              <slot name="drawer"></slot>
-            </div> 
-        </div>
-
-        <!-- content -->
-        <div class="wrap-content">
-
-            <!-- loadingbox -->
-            <div class="wrap-loading" v-show="loading">
-              <div class="loading-box shadow-sm"> 
-                <div class="sk-cube-grid">
-                  <div class="sk-cube sk-cube1"></div>
-                  <div class="sk-cube sk-cube2"></div>
-                  <div class="sk-cube sk-cube3"></div>
-                  <div class="sk-cube sk-cube4"></div>
-                  <div class="sk-cube sk-cube5"></div>
-                  <div class="sk-cube sk-cube6"></div>
-                  <div class="sk-cube sk-cube7"></div>
-                  <div class="sk-cube sk-cube8"></div>
-                  <div class="sk-cube sk-cube9"></div>
-                </div>               
-                <div class="caption">Loading, Please wait...</div>
-              </div>
-            </div>
-
-            <!-- toolbar -->
-            <nav class="navbar navbar-light">                
-              <button class="btn btn-light btn-sm ml-auto" type="button" @click="onDrawer">
-                <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
-              </button>
-              <button class="btn btn-light btn-sm ml-auto" type="button" @click="clickBack">
-                <i class="material-icons">arrow_back</i>
-              </button>
-              <button class="btn btn-light btn-sm ml-auto" type="button" @click="clickForward">
-                <i class="material-icons">arrow_forward</i>
-              </button>
-              <button class="btn btn-light btn-sm ml-auto" type="button" @click="onFullscreen">
-                <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
-              </button>
-
-              <span class="navbar-brand">{{ menuTitle }}</span>
-              <slot name="toolbar"></slot>
-            </nav>
-
-            <div class="content" 
-              :class="[{ 'scrollbar-show' : scrollbar}, padding]"              
-              v-show="!loading">
-              <slot name="content"></slot>
-            </div>            
-        </div>
-
+    <!-- drawer -->
+    <div 
+      class="drawer" 
+      :class="[showDrawer? 'open' : 'close']">
+      <div class="drawer-toolbar">
+        <div 
+          class="title text-center" 
+          v-if="drawerTitle !== '' ">{{ drawerTitle }}</div> 
+        <slot name="drawer-toolbar"/>
+      </div>     
+      <div class="drawer-body">
+        <slot name="drawer"/>
+      </div> 
     </div>
+
+    <!-- content -->
+    <div class="wrap-content">
+
+      <!-- loadingbox -->
+      <div 
+        class="wrap-loading" 
+        v-show="loading">
+        <div class="loading-box shadow-sm"> 
+          <div class="sk-cube-grid">
+            <div class="sk-cube sk-cube1"/>
+            <div class="sk-cube sk-cube2"/>
+            <div class="sk-cube sk-cube3"/>
+            <div class="sk-cube sk-cube4"/>
+            <div class="sk-cube sk-cube5"/>
+            <div class="sk-cube sk-cube6"/>
+            <div class="sk-cube sk-cube7"/>
+            <div class="sk-cube sk-cube8"/>
+            <div class="sk-cube sk-cube9"/>
+          </div>               
+          <div class="caption">Loading, Please wait...</div>
+        </div>
+      </div>
+
+      <!-- toolbar -->
+      <nav class="navbar navbar-light">                
+        <button 
+          class="btn btn-light btn-sm ml-auto" 
+          type="button" 
+          @click="onDrawer">
+          <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
+        </button>
+        <button 
+          class="btn btn-light btn-sm ml-auto" 
+          type="button" 
+          @click="clickBack">
+          <i class="material-icons">arrow_back</i>
+        </button>
+        <button 
+          class="btn btn-light btn-sm ml-auto" 
+          type="button" 
+          @click="clickForward">
+          <i class="material-icons">arrow_forward</i>
+        </button>
+        <button 
+          class="btn btn-light btn-sm ml-auto" 
+          type="button" 
+          @click="onFullscreen">
+          <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
+        </button>
+
+        <span class="navbar-brand">{{ menuTitle }}</span>
+        <slot name="toolbar"/>
+      </nav>
+
+      <div 
+        class="content" 
+        :class="[{ 'scrollbar-show' : scrollbar}, padding]"              
+        v-show="!loading">
+        <slot name="content"/>
+      </div>            
+    </div>
+
+  </div>
 </template>
 
 <script>

@@ -1,25 +1,32 @@
 <template>
-  <nav-view :scrollbar="true" :loading="loading" padding="p-5">
+  <nav-view 
+    :scrollbar="true" 
+    :loading="loading" 
+    padding="p-5">
 
-    <template slot="toolbar">
-
-    </template>
+    <template slot="toolbar"/>
 
     <template slot="drawer">
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
         <li>
-          <router-link :to="{ name:'jobCreate' }" class="btn btn-light">
+          <router-link 
+            :to="{ name:'jobCreate' }" 
+            class="btn btn-light">
             New
           </router-link>
         </li>
         <li>
-          <button class="btn btn-light" @click="onSave">
+          <button 
+            class="btn btn-light" 
+            @click="onSave">
             Save
           </button>
         </li>
         <li>
-          <button class="btn btn-light" @click="onCancel">
+          <button 
+            class="btn btn-light" 
+            @click="onCancel">
             Cancel
           </button>
         </li>
@@ -29,28 +36,36 @@
         </li>
         <li>
           <router-link :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }">Schedule
-            Items</router-link>
+          Items</router-link>
         </li>
         <li>
-          <router-link :class="[{'disabled' : this.relatedActivities === null}, 'btn btn-link' ]" role="button"
+          <router-link 
+            :class="[{'disabled' : this.relatedActivities === null}, 'btn btn-link' ]" 
+            role="button"
             :aria-disabled="this.relatedActivities === null" 
             :to="{ name: 'activityList', params : { col: 'id', opt: 'in', val: this.relatedActivities } }">
             Activity Reports</router-link>
         </li>
         <li>
-          <router-link :class="[{'disabled' : this.relatedJobs === null}, 'btn btn-link' ]" role="button"
+          <router-link 
+            :class="[{'disabled' : this.relatedJobs === null}, 'btn btn-link' ]" 
+            role="button"
             :aria-disabled="this.relatedJobs === null" 
             :to="{ name: 'jobList', params : { col: 'id', opt: 'in', val: this.relatedJobs } }">
             Related Jobs</router-link>
         </li>
         <li>
-          <router-link :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]" role="button"
+          <router-link 
+            :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]" 
+            role="button"
             :aria-disabled="this.relatedRequests === null" 
             :to="{ name: 'requestList', params : { col: 'job_id', opt: 'in', val: this.relatedRequests } }">
             Related Requests</router-link>
         </li>
         <li>
-          <router-link :class="[{'disabled' : this.relatedContacts === null}, 'btn btn-link' ]" role="button"
+          <router-link 
+            :class="[{'disabled' : this.relatedContacts === null}, 'btn btn-link' ]" 
+            role="button"
             :aria-disabled="this.relatedContacts === null" 
             :to="{ name: 'contactList', params : { col: 'id', opt: 'in', val: this.relatedContacts } }">
             Related Contacts</router-link>
@@ -60,13 +75,20 @@
 
     <template slot="content">
 
-      <form class="needs-validation" novalidate>
+      <form 
+        class="needs-validation" 
+        novalidate>
 
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Title</label>
             <div class="col-sm-10">
-              <input v-model="form.title" id="title" type="text" class="form-control" placeholder="job title" />
+              <input 
+                v-model="form.title" 
+                id="title" 
+                type="text" 
+                class="form-control" 
+                placeholder="job title" >
             </div>
           </div>
         </div>
@@ -75,7 +97,12 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Code</label>
             <div class="col-sm-10">
-              <input v-model="form.code" id="code" type="text" class="form-control" placeholder="display code" />
+              <input 
+                v-model="form.code" 
+                id="code" 
+                type="text" 
+                class="form-control" 
+                placeholder="display code" >
             </div>
           </div>
         </div>
@@ -84,8 +111,15 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Parent</label>
             <div class="col-sm-10">
-              <select-box v-model="form.parent_id" :data="jobs" :default="defaultParent" :multi-select="false" id="parent_id"
-                name="jobParent" placeholder="select parent..." search-placeholder="search..."></select-box>
+              <select-box 
+                v-model="form.parent_id" 
+                :data="jobs" 
+                :default="defaultParent" 
+                :multi-select="false" 
+                id="parent_id"
+                name="jobParent" 
+                placeholder="select parent..." 
+                search-placeholder="search..."/>
             </div>
           </div>
         </div>
@@ -94,8 +128,15 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Profile</label>
             <div class="col-sm-10">
-              <select-box v-model="form.form_id" :data="profiles" :default="defaultProfile" :multi-select="false" id="form_id"
-                name="jobProfile" placeholder="select profile..." search-placeholder="search..."></select-box>
+              <select-box 
+                v-model="form.form_id" 
+                :data="profiles" 
+                :default="defaultProfile" 
+                :multi-select="false" 
+                id="form_id"
+                name="jobProfile" 
+                placeholder="select profile..." 
+                search-placeholder="search..."/>
             </div>
           </div>
         </div>
@@ -104,8 +145,14 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Contacts</label>
             <div class="col-sm-10">
-              <select-box v-model="form.contacts" :data="contacts" :multi-select="true" id="contacts"
-                name="contacts" placeholder="select contacts..." search-placeholder="search..."></select-box>
+              <select-box 
+                v-model="form.contacts" 
+                :data="contacts" 
+                :multi-select="true" 
+                id="contacts"
+                name="contacts" 
+                placeholder="select contacts..." 
+                search-placeholder="search..."/>
             </div>
           </div>
         </div>
@@ -115,18 +162,36 @@
             <label class="col-sm-12 col-form-lable">Status</label>
 
             <div class="custom-control custom-radio custom-control-inline">
-              <input v-model="form.isactive" type="radio" id="jobEnable" name="status" value="1" class="custom-control-input"
+              <input 
+                v-model="form.isactive" 
+                type="radio" 
+                id="jobEnable" 
+                name="status" 
+                value="1" 
+                class="custom-control-input"
                 checked>
-              <label class="custom-control-label" for="jobEnable">Enable</label>
+              <label 
+                class="custom-control-label" 
+                for="jobEnable">Enable</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input v-model="form.isactive" type="radio" id="jobDisable" name="status" value="0" class="custom-control-input">
-              <label class="custom-control-label" for="jobDisable">Disable</label>
+              <input 
+                v-model="form.isactive" 
+                type="radio" 
+                id="jobDisable" 
+                name="status" 
+                value="0" 
+                class="custom-control-input">
+              <label 
+                class="custom-control-label" 
+                for="jobDisable">Disable</label>
             </div>
           </div>
         </div>
 
-        <form-gen :schema="schema" v-model="form.meta"></form-gen>
+        <form-gen 
+          :schema="schema" 
+          v-model="form.meta"/>
 
       </form>
 

@@ -1,20 +1,29 @@
 <template>
-    <div class="wrap-datepicker d-flex align-items-center">
-        <div>
-            <button @click="onBack" type="button" class="btn btn-sm btn-light btn-left">
-                <i class="material-icons">keyboard_arrow_left</i>
-            </button>
-            <div class="datepicker-body">
-                <button @click="onToday" type="button" class="btn btn-sm btn-light">
-                    Today
-                </button>
-                <div>{{ todayToText }}</div>
-            </div>
-            <button @click="onNext" type="button" class="btn btn-sm btn-light btn-right">
-                <i class="material-icons">keyboard_arrow_right</i>
-            </button>
-        </div>        
-    </div>
+  <div class="wrap-datepicker d-flex align-items-center">
+    <div>
+      <button 
+        @click="onBack" 
+        type="button" 
+        class="btn btn-sm btn-light btn-left">
+        <i class="material-icons">keyboard_arrow_left</i>
+      </button>
+      <div class="datepicker-body">
+        <button 
+          @click="onToday" 
+          type="button" 
+          class="btn btn-sm btn-light">
+          Today
+        </button>
+        <div>{{ todayToText }}</div>
+      </div>
+      <button 
+        @click="onNext" 
+        type="button" 
+        class="btn btn-sm btn-light btn-right">
+        <i class="material-icons">keyboard_arrow_right</i>
+      </button>
+    </div>        
+  </div>
 </template>
 
 <script>
@@ -23,7 +32,8 @@ export default {
 
   props: {
     value: {
-      type: [String, Object]
+      type: [String, Object],
+      default: ''
     },
     range: {
       type: String,
