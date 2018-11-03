@@ -26,7 +26,8 @@ class AuthController extends Controller
     {
         try {
 
-            $user = User::where('name', $request->input('username'))->first();
+            $user = User::where('name', $request->input('username'))
+                ->where('password', bcrypt($request->input('password')))->first();
             if ($user != null) {
                 return $this->proxy('password', [
                     'username' => $request->input('username'),
