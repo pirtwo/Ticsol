@@ -67,7 +67,9 @@
         </button>
 
         <span class="navbar-brand">{{ menuTitle }}</span>
-        <slot name="toolbar"/>
+        <div class="toolbar">
+          <slot name="toolbar"/>
+        </div>        
       </nav>
 
       <div 
@@ -278,6 +280,10 @@ i.material-icons {
 .navbar-brand {
   font-size: 1.2rem;
   line-height: 1.2;
+}
+
+.toolbar{
+  display: flex;
 }
 
 .wrap-loading {

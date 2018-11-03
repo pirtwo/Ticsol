@@ -5,12 +5,14 @@
     padding="p-2">
 
     <template slot="toolbar">
-      <button 
-        type="button" 
-        @click="showFilter = true">Filter</button>
+     
       <pagination-view 
         v-model="pager" 
         :page-count="pager.pageCount"/>
+      <button 
+        type="button" 
+        class="btn btn-light btn-sm mr-auto"
+        @click="showFilter = true"><i class="material-icons">filter_list</i></button>
     </template>
 
     <template slot="drawer">

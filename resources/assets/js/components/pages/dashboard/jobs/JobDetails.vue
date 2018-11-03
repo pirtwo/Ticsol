@@ -32,11 +32,15 @@
         </li>
         <li class="menu-title">Links</li>
         <li>
-          <router-link :to="{ name: 'jobList' }">Jobs</router-link>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name: 'jobList' }">Jobs</router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }">Schedule
-          Items</router-link>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }">Schedule
+            Items</router-link>
         </li>
         <li>
           <router-link 
@@ -212,7 +216,9 @@ export default {
     "form-gen": FormGen,
     "select-box": Selectbox
   },
+
   props: ["id"],
+
   data() {
     return {
       form: {
@@ -321,7 +327,7 @@ export default {
         this.currentJob = this.getList("job", item => item.id == this.id)[0];
         this.defaultParent = this.currentJob.parent_id;
         this.defaultProfile = this.currentJob.form_id;
-        this.form.contacts = this.currentJob.contacts.map(item => item.id);        
+        this.form.contacts = this.currentJob.contacts.map(item => item.id);
         if (this.currentJob.form_id !== null) {
           this.schema = JSON.parse(
             this.getList("form", item => item.id == this.currentJob.form_id)[0]
@@ -343,10 +349,20 @@ export default {
       clear: "resource/clearList"
     }),
 
-    onSave(event) {      
-      this.update({ resource: "job", id: this.id, data: this.form })
+    onSave(e) {
+      let form = {};
+      form.title = this.form.title;
+      form.code = this.form.code;
+      form.isactive = this.form.isactive;
+      form.parent_id = this.form.parent_id;
+      form.form_id = this.form.form_id;
+      form.contacts = this.form.contacts;
+      form.meta = this.form.meta;
+
+      this.update({ resource: "job", id: this.id, data: form })
         .then(() => {
           console.log("job updated successfuly.");
+          this.$router.push({ name: "jobList" });
         })
         .catch(error => {
           console.log(error);
@@ -354,8 +370,8 @@ export default {
         });
     },
 
-    onCancel() {
-      this.$router.go(-1);
+    onCancel(e) {
+      this.$router.push({ name: "jobList" });
     }
   }
 };

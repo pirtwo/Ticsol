@@ -45,14 +45,7 @@
           </td>
           <td>{{ dateToString(item.from) }}</td>
           <td>{{ dateToString(item.till) }}</td>
-          <td>{{ item.desc }}</td>    
-          <td>
-            <router-link 
-              class="btn btn-sm btn-light" 
-              :to="{ name : 'jobDetails', params : { id: item.schedule.job_id } }">
-              Related Job
-            </router-link> 
-          </td>             
+          <td>{{ item.desc }}</td> 
         </template> 
       </table-view>
 
@@ -91,8 +84,7 @@ export default {
         { value: "", orderBy: "" },
         { value: "From", orderBy: "from" },
         { value: "Till", orderBy: "till" },
-        { value: "Report", orderBy: "report" },
-        { value: "Links", orderBy: "" }
+        { value: "Report", orderBy: "report" }
       ],
       order: "asc"
     };

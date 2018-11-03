@@ -8,7 +8,9 @@
     <template slot="drawer">
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
-        <li><router-link :to="{ name: 'contactCreate' }">New</router-link></li>
+        <li><router-link 
+          class="btn btn-light" 
+          :to="{ name: 'contactCreate' }">New</router-link></li>
         <li>
           <button 
             class="btn btn-light" 
@@ -24,7 +26,9 @@
           </button>
         </li>
         <li class="menu-title">Links</li>
-        <li><router-link :to="{ name: 'contactList' }">Contacts</router-link></li>
+        <li><router-link 
+          class="btn btn-link" 
+          :to="{ name: 'contactList' }">Contacts</router-link></li>
       </ul>
     </template>
         
@@ -368,7 +372,7 @@ export default {
       this.update({ resource: "contact", id: this.id, data: this.form })
         .then(() => {
           console.log("Contact updated successfuly.");
-          this.$formFeedback([]);
+          this.$router.push({name:'contactList'});          
         })
         .catch(error => {
           console.log(error.response);
@@ -377,7 +381,7 @@ export default {
     },
 
     onCancel() {
-      this.$router.go(-1);
+      this.$router.push({name:'contactList'});
     }
   }
 };

@@ -84,7 +84,12 @@
           :to="{ name : 'jobList'}" 
           class="dropdown-item">
           Jobs
-        </router-link>               
+        </router-link> 
+        <router-link 
+          :to="{ name : 'roleList'}" 
+          class="dropdown-item">
+          Roles
+        </router-link>                
         <router-link 
           :to="{ name : 'profileList'}" 
           class="dropdown-item">

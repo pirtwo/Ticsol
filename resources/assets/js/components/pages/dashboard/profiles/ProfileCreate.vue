@@ -24,7 +24,9 @@
           </button>
         </li>
         <li class="menu-title">Links</li>
-        <li><router-link :to="{ name: 'profileList' }">Profiles</router-link></li>
+        <li><router-link 
+          class="btn btn-link" 
+          :to="{ name: 'profileList' }">Profiles</router-link></li>
       </ul>
 
     </template>
@@ -92,6 +94,7 @@ export default {
       this.create({ resource: "form", data: this.form })
         .then(() => {
           console.log("Form created successfuly.");
+          this.$router.push({ name: "profileList" });
         })
         .catch(error => {
           this.$formFeedback(error.response.data.errors);
@@ -99,7 +102,7 @@ export default {
     },
 
     onCancel() {
-      this.$router.go(-1);
+      this.$router.push({ name: "profileList" });
     }
   }
 };

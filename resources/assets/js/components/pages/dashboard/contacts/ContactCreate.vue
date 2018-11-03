@@ -24,7 +24,9 @@
         </li>
         <li class="menu-title">Links</li>
         <li>
-          <router-link :to="{ name: 'contactList' }">Contacts</router-link>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name: 'contactList' }">Contacts</router-link>
         </li>
       </ul>
     </template>
@@ -360,7 +362,7 @@ export default {
       this.create({ resource: "contact", data: this.form })
         .then(() => {
           console.log("Contact created successfuly.");
-          this.$formFeedback([]);
+          this.$router.push({name:'contactList'});
         })
         .catch(error => {
           console.log(error.response);
@@ -369,7 +371,7 @@ export default {
     },
 
     onCancel() {
-      this.$router.go(-1);
+      this.$router.push({name:'contactList'});
     }
   }
 };

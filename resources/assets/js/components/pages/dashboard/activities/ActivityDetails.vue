@@ -10,7 +10,9 @@
 
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
-        <li><router-link :to="{ name: 'activityCreate' }">New</router-link></li>
+        <li><router-link 
+          class="btn btn-light" 
+          :to="{ name: 'activityCreate' }">New</router-link></li>
         <li>
           <button 
             class="btn btn-light" 
@@ -26,7 +28,16 @@
           </button>
         </li>
         <li class="menu-title">Links</li>
-        <li><router-link :to="{ name: 'activityList' }">Activities</router-link></li>
+        <li><router-link 
+          class="btn btn-link" 
+          :to="{ name: 'activityList' }">Activities</router-link></li>
+        <li>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name : 'jobDetails', params : { id: currentActivity.job_id } }">
+            Related Job
+          </router-link> 
+        </li>       
       </ul>
 
     </template>
@@ -129,6 +140,7 @@ export default {
 
   data() {
     return {
+      currentActivity: {},
       schedule_id: null,
       schedule_default: null,
       form: {
@@ -185,7 +197,12 @@ export default {
     let activity = null;
     this.loading = true;
     let p1 = this.fetch({ resource: "schedule", query: { with: "job" } });
-    let p2 = this.show({ resource: "activity", id: this.id }).then(respond => {
+    let p2 = this.show({
+      resource: "activity",
+      id: this.id,
+      query: { with: "job" }
+    }).then(respond => {
+      this.currentActivity = respond;
       activity = respond;
     });
     Promise.all([p1, p2])
@@ -214,6 +231,7 @@ export default {
     onSubmit(e) {
       let form = {};
       form.schedule_id = this.form.schedule_id;
+      form.job_id = this.currentActivity.job_id;
       form.from =
         this.form.fromDate +
         "T" +
@@ -226,6 +244,7 @@ export default {
       this.update({ resource: "activity", id: this.id, data: form })
         .then(() => {
           console.log("Report updated Successfuly.");
+          this.$router.push({ name: "activityList" });
         })
         .catch(error => {
           this.$formFeedback(error.response.data.errors);
@@ -242,7 +261,7 @@ export default {
     },
 
     onCancel(e) {
-      this.$router.go(-1);
+      this.$router.push({ name: "activityList" });
     }
   }
 };

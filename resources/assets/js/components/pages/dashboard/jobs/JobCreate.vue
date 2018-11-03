@@ -25,7 +25,9 @@
           </button>
         </li>
         <li class="menu-title">Links</li>
-        <li><router-link :to="{ name: 'jobList' }">Jobs</router-link></li>
+        <li><router-link 
+          class="btn btn-link" 
+          :to="{ name: 'jobList' }">Jobs</router-link></li>
       </ul>
 
     </template>
@@ -250,6 +252,7 @@ export default {
         .then(respond => {
           e.target.disabled = false;
           console.log("job created successfuly");
+          this.$router.push({ name: "jobList" });      
         })
         .catch(error => {
           console.log(error.response);
@@ -260,8 +263,8 @@ export default {
     },
 
     onCancel(e) {
-      this.$router.go(-1);
       e.preventDefault();
+      this.$router.push({ name: "jobList" });      
     }
   }
 };

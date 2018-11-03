@@ -4,10 +4,7 @@
     :loading="loading" 
     padding="p-2">
 
-    <template slot="toolbar">
-      <button 
-        type="button" 
-        @click="showFilter = true">Filter</button>
+    <template slot="toolbar">      
       <pagination-view 
         v-model="pager" 
         :page-count="pager.pageCount"/>
@@ -50,12 +47,7 @@
           <td>{{ item.created_at }}</td>
           <td>{{ item.updated_at }}</td>
         </template> 
-      </table-view>
-      <filter-view 
-        v-model="query" 
-        :show.sync="showFilter" 
-        :columns="columnList" 
-        @apply="feedTable"/>
+      </table-view>     
 
     </template>
   </nav-view>

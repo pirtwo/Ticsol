@@ -9,7 +9,9 @@
             
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
-        <li><router-link :to="{ name: 'profileCreate' }">New</router-link></li>
+        <li><router-link 
+          class="btn btn-light" 
+          :to="{ name: 'profileCreate' }">New</router-link></li>
         <li>
           <button 
             class="btn btn-light" 
@@ -25,7 +27,9 @@
           </button>
         </li>
         <li class="menu-title">Links</li>
-        <li><router-link :to="{ name: 'profileList' }">Profiles</router-link></li>
+        <li><router-link 
+          class="btn btn-link" 
+          :to="{ name: 'profileList' }">Profiles</router-link></li>
       </ul>
 
     </template>
@@ -84,10 +88,10 @@ export default {
   mounted() {
     this.loading = true;
     this.show({ resource: "form", id: this.id })
-      .then(respond => {          
-          this.form.name = respond.name;
-          this.frmBuilder.actions.setData(respond.body);
-          this.loading = false;
+      .then(respond => {
+        this.form.name = respond.name;
+        this.frmBuilder.actions.setData(respond.body);
+        this.loading = false;
       })
       .catch(error => {
         console.log(error);
@@ -110,6 +114,7 @@ export default {
       this.update({ resource: "form", id: this.id, data: this.form })
         .then(() => {
           console.log("Form updated successfuly.");
+          this.$router.push({ name: "profileList" });
         })
         .catch(error => {
           this.$formFeedback(error.response.data.errors);
@@ -117,7 +122,7 @@ export default {
     },
 
     onCancel() {
-      this.$router.go(-1);
+      this.$router.push({ name: "profileList" });
     }
   }
 };

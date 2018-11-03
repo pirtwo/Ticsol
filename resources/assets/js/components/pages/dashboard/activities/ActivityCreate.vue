@@ -209,6 +209,7 @@ export default {
       this.create({ resource: "activity", data: form })
         .then(() => {
           console.log("Report Created Successfuly.");
+          this.$router.push({ name: "activityList" });
         })
         .catch(error => {
           this.$formFeedback(error.response.data.errors);
@@ -224,7 +225,9 @@ export default {
       this.form.desc = "";
     },
 
-    onCancel(e) {}
+    onCancel(e) {
+      this.$router.push({ name: "activityList" });
+    }
   }
 };
 </script>

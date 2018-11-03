@@ -219,10 +219,11 @@ export default {
       .firstDayOfMonth()
       .toString("yyyy-MM-dd");
     this.loading = true;
-    this.fetch({ resource: "job" });
-    this.scheduleInit("user").then(() => {
-      this.loading = false;
-    });
+    this.fetch({ resource: "job" }).then(()=>{
+      this.scheduleInit("user").then(() => {
+        this.loading = false;
+      });
+    })    
   },
 
   methods: {
