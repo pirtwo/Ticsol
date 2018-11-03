@@ -4,11 +4,11 @@ import VbSwitch from '../components/Base/VbSwitch.vue'
 import VbTimepicker from '../components/Base/VbTimepicker.vue'
 
 const VueBase = {
-    install(Vue, options){
-        Vue.component(VbIcon.name, VbIcon)
-        Vue.component(VbSelect.name,VbSelect)
-        Vue.component(VbSwitch.name, VbSwitch)
-        Vue.component(VbTimepicker.name,VbTimepicker)
+    install(Vue, options) {
+        Vue.component('vb-icon', VbIcon)
+        Vue.component('vb-select', VbSelect)
+        Vue.component('vb-switch', VbSwitch)
+        Vue.component('vb-timepicker', VbTimepicker)
     }
 }
 

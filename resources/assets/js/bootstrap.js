@@ -13,7 +13,9 @@ try {
     require('jquery-ui-sortable-npm');
     require('bootstrap');
     window.fb = require('formBuilder');
-} catch (e) {}
+} catch (e) {
+    console.log(e);
+}
 
 
 
