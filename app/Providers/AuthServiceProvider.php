@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers;
-
+use App\Ticsol\Components\Job\Policies;
+use App\Ticsol\Components\Models;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -14,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        Models\Job::class => Policies\JobPolicy::class,
     ];
 
     /**
