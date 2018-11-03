@@ -44,7 +44,7 @@ class Role extends Model
      */
     public function client()
     {
-        $this->belongsTo(Client::class, 'client_id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     /**
@@ -52,7 +52,7 @@ class Role extends Model
      */
     public function users()
     {
-        $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'ts_user_roles', 'role_id', 'user_id');
     }
 
     /**
@@ -66,7 +66,7 @@ class Role extends Model
     /**
      * Effective ACL rules for current role.
      */
-    public function Permissions()
+    public function permissions()
     {
         return $this->hasMany(ACL::class);
     }
