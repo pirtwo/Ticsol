@@ -3,38 +3,35 @@
     :scrollbar="false" 
     :loading="loading"> 
 
-    <template slot="toolbar">
-      <div class="dp-ctrl d-flex justify-content-end"> 
+    <template slot="toolbar">     
 
-        <date-picker 
-          v-model="start" 
-          :range="dpRange"/>
+      <date-picker 
+        v-model="start" 
+        :range="dpRange"/>
 
-        <label class="switch">
-          <input 
-            v-model="range" 
-            class="switch-input" 
-            type="checkbox" >
-          <span 
-            class="switch-label" 
-            data-on="wek" 
-            data-off="mon"/> 
-          <span class="switch-handle"/> 
-        </label>
+      <label class="switch">
+        <input 
+          v-model="range" 
+          class="switch-input" 
+          type="checkbox" >
+        <span 
+          class="switch-label" 
+          data-on="wek" 
+          data-off="mon"/> 
+        <span class="switch-handle"/> 
+      </label>
 
-        <label class="switch">
-          <input 
-            v-model="view" 
-            class="switch-input" 
-            type="checkbox" >
-          <span 
-            class="switch-label" 
-            data-on="emp" 
-            data-off="job"/> 
-          <span class="switch-handle"/> 
-        </label>           
-
-      </div>  
+      <label class="switch">
+        <input 
+          v-model="view" 
+          class="switch-input" 
+          type="checkbox" >
+        <span 
+          class="switch-label" 
+          data-on="emp" 
+          data-off="job"/> 
+        <span class="switch-handle"/> 
+      </label> 
 
     </template>
 

@@ -74403,9 +74403,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
 
 
 
@@ -77894,121 +77891,119 @@ var render = function() {
     "nav-view",
     { attrs: { scrollbar: false, loading: _vm.loading } },
     [
-      _c("template", { slot: "toolbar" }, [
-        _c(
-          "div",
-          { staticClass: "dp-ctrl d-flex justify-content-end" },
-          [
-            _c("date-picker", {
-              attrs: { range: _vm.dpRange },
-              model: {
-                value: _vm.start,
-                callback: function($$v) {
-                  _vm.start = $$v
-                },
-                expression: "start"
+      _c(
+        "template",
+        { slot: "toolbar" },
+        [
+          _c("date-picker", {
+            attrs: { range: _vm.dpRange },
+            model: {
+              value: _vm.start,
+              callback: function($$v) {
+                _vm.start = $$v
+              },
+              expression: "start"
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "switch" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.range,
+                  expression: "range"
+                }
+              ],
+              staticClass: "switch-input",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.range)
+                  ? _vm._i(_vm.range, null) > -1
+                  : _vm.range
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.range,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.range = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.range = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.range = $$c
+                  }
+                }
               }
             }),
             _vm._v(" "),
-            _c("label", { staticClass: "switch" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.range,
-                    expression: "range"
-                  }
-                ],
-                staticClass: "switch-input",
-                attrs: { type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.range)
-                    ? _vm._i(_vm.range, null) > -1
-                    : _vm.range
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.range,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && (_vm.range = $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          (_vm.range = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
-                      }
-                    } else {
-                      _vm.range = $$c
-                    }
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("span", {
-                staticClass: "switch-label",
-                attrs: { "data-on": "wek", "data-off": "mon" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "switch-handle" })
-            ]),
+            _c("span", {
+              staticClass: "switch-label",
+              attrs: { "data-on": "wek", "data-off": "mon" }
+            }),
             _vm._v(" "),
-            _c("label", { staticClass: "switch" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.view,
-                    expression: "view"
-                  }
-                ],
-                staticClass: "switch-input",
-                attrs: { type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.view)
-                    ? _vm._i(_vm.view, null) > -1
-                    : _vm.view
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.view,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && (_vm.view = $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          (_vm.view = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
-                      }
+            _c("span", { staticClass: "switch-handle" })
+          ]),
+          _vm._v(" "),
+          _c("label", { staticClass: "switch" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.view,
+                  expression: "view"
+                }
+              ],
+              staticClass: "switch-input",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.view)
+                  ? _vm._i(_vm.view, null) > -1
+                  : _vm.view
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.view,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.view = $$a.concat([$$v]))
                     } else {
-                      _vm.view = $$c
+                      $$i > -1 &&
+                        (_vm.view = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
                     }
+                  } else {
+                    _vm.view = $$c
                   }
                 }
-              }),
-              _vm._v(" "),
-              _c("span", {
-                staticClass: "switch-label",
-                attrs: { "data-on": "emp", "data-off": "job" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "switch-handle" })
-            ])
-          ],
-          1
-        )
-      ]),
+              }
+            }),
+            _vm._v(" "),
+            _c("span", {
+              staticClass: "switch-label",
+              attrs: { "data-on": "emp", "data-off": "job" }
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "switch-handle" })
+          ])
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("template", { slot: "drawer-toolbar" }, [
         _c("div", { staticClass: "p-2" }, [
