@@ -5,10 +5,12 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Request as RequestModel;
 use App\Ticsol\Components\Request\Requests;
-use App\Ticsol\Components\Base\Exceptions;
 use App\Ticsol\Components\Request\Repository;
+use App\Ticsol\Base\Criteria\ClientCriteria;
+use App\Ticsol\Base\Criteria\CommonCriteria;
 
 class RequestController extends Controller
 {
@@ -38,6 +40,9 @@ class RequestController extends Controller
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
+            $this->repository->pushCriteria(new ClientCriteria($request));
+            $this->repository->pushCriteria(new CommonCriteria($request));   
+
             if ($page == null) {
                 return $this->repository->all($with);
             } else {
@@ -57,13 +62,9 @@ class RequestController extends Controller
     public function store(Requests\CreateRequest $request)
     {
         try {
-            $req = new RequestModel();
-            // $job->client_id =
-            //     $req->user()->client_id;
-            // $job->creator_id =
-            //     $req->user()->id;
-            $req->client_id = 1;
-            $req->user_id = 1;
+            $req = new RequestModel();            
+            $req->client_id = $request->user()->client_id;
+            $req->user_id = $request->user()->id;
             $req->status = 'submitted';
             $req->fill($request->all());
             $req->save();
@@ -84,7 +85,7 @@ class RequestController extends Controller
         try {
             $req = $this->repository->find($id);
             if ($req == null) {
-                throw new Exceptions\NotFound();
+                throw new NotFound();
             }
             return $req;
         } catch (\Exception $e) {
@@ -104,7 +105,7 @@ class RequestController extends Controller
         try {
             $req = $this->repository->find($id);
             if ($req == null) {
-                throw new Exceptions\NotFound();
+                throw new NotFound();
             }
 
             $req->update($request->all());

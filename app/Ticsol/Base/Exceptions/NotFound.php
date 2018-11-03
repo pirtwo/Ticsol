@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ticsol\Components\Base\Exceptions;
+namespace App\Ticsol\Base\Exceptions;
 
 use Exception;
 

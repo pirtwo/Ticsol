@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Contact;
 use App\Ticsol\Components\Contact\Requests;
-use App\Ticsol\Components\Contact\Exceptions;
 use App\Ticsol\Components\Contact\Repository;
+use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 
 class ContactController extends Controller
@@ -40,7 +41,8 @@ class ContactController extends Controller
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
-            $this->repository->pushCriteria(new CommonCriteria($request));
+            $this->repository->pushCriteria(new ClientCriteria($request));
+            $this->repository->pushCriteria(new CommonCriteria($request));   
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -61,13 +63,12 @@ class ContactController extends Controller
     public function store(Requests\ContactCreate $request)
     {
         try {
+            $creatorId = $request->user()->id;
+            $clientId = $request->user()->client_id;
+
             $contact = new contact();
-            // $contact->client_id =
-            //     $req->user()->client_id;
-            // $contact->creator_id =
-            //     $req->user()->id;
-            $contact->client_id = 1;
-            $contact->creator_id = 1;
+            $contact->client_id = $clientId;
+            $contact->creator_id = $creatorId;
             $contact->fill($request->all());
 
             DB::beginTransaction();
@@ -77,8 +78,8 @@ class ContactController extends Controller
                 if ($request->filled('addresses')) {
                     $addresses = $request->input('addresses');
                     foreach ($addresses as &$address) {
-                        $address['client_id'] = 1;
-                        $address['creator_id'] = 1;
+                        $address['client_id'] = $clientId;
+                        $address['creator_id'] = $creatorId;
                     }
                     $contact->addresses()->createMany($addresses);
                 }
@@ -107,7 +108,7 @@ class ContactController extends Controller
             $with = $request->query('with') != null ? explode(',', $request->query('with')) : [];
             $contact = $this->repository->find($id, $with);
             if ($contact == null) {
-                throw new Exceptions\ContactNotFound();
+                throw new NotFound();
             }
             return $contact;
         } catch (\Exception $e) {
@@ -126,9 +127,11 @@ class ContactController extends Controller
     {
         try
         {
+            $creatorId = $request->user()->id;
+            $clientId = $request->user()->client_id;
             $contact = $this->repository->findBy('id', $id);
             if ($contact == null) {
-                throw new Exceptions\FormNotFound();
+                throw new NotFound();
             }
 
             DB::beginTransaction();
@@ -138,12 +141,12 @@ class ContactController extends Controller
                 if ($request->filled('addresses')) {
                     $addresses = $request->input('addresses');
                     foreach ($addresses as &$address) {
-                        $address['client_id'] = 1;
-                        $address['creator_id'] = 1;
+                        $address['client_id'] = $clientId;
+                        $address['creator_id'] = $creatorId;
                         unset($address['deleted_at']);
                         unset($address['created_at']);
                         unset($address['updated_at']);
-                        $contact->addresses()->updateOrCreate(['id' => $address['id']], $address);
+                        $contact->addresses()->updateOrCreate($address, $address);
                     }
                 }
             } catch (\Exception $e) {

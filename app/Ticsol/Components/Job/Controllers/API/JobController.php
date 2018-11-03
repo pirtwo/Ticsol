@@ -4,13 +4,16 @@ namespace App\Ticsol\Components\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Job;
 use App\Ticsol\Components\Job\Requests;
-use App\Ticsol\Components\Job\Exceptions;
 use App\Ticsol\Components\Job\Repository;
 use App\Ticsol\Base\Criteria\CommonCriteria;
-use App\Ticsol\Components\Job\Criterias\JobCriteria;
+use App\Ticsol\Base\Criteria\ClientCriteria;
+
 
 class JobController extends Controller
 {
@@ -21,7 +24,7 @@ class JobController extends Controller
     protected $repository;
 
     public function __construct(Repository\JobRepository $rep)
-    {
+    {    
         $this->repository = $rep;
     }
 
@@ -33,13 +36,17 @@ class JobController extends Controller
     public function index(Request $request)
     {
         try {
+
+            $this->authorize('list', Job::class);
+
             $page =
             $request->query('page', null);
             $perPage =
-            $request->query('perPage', 20);
+            $request->query('perpage', 20);
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
+            $this->repository->pushCriteria(new ClientCriteria($request));
             $this->repository->pushCriteria(new CommonCriteria($request));
 
             if ($page == null) {
@@ -47,6 +54,9 @@ class JobController extends Controller
             } else {
                 return $this->repository->paginate($perPage, $with);
             }
+        
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This action is unauthorized.'], 401);   
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
@@ -61,20 +71,29 @@ class JobController extends Controller
     public function store(Requests\CreateJob $request)
     {
         try {
-            $job = new Job();
-            // $job->client_id =
-            //     $req->user()->client_id;
-            // $job->creator_id =
-            //     $req->user()->id;
-            $job->client_id = 1;
-            $job->creator_id = 1;
-            $job->fill($request->all());
-            $job->save();
-            if ($request->filled('contacts')) {
-                $job->contacts()->sync($request->input('contacts'));
-            }
+            $this->authorize('create', Job::class);
+            try{
 
+                DB::beginTransaction();  
+
+                $job = new Job();
+                $job->client_id = $request->user()->client_id;
+                $job->creator_id = $request->user()->id;            
+                $job->fill($request->all());
+                $job->save();
+                if ($request->filled('contacts')) {
+                    $job->contacts()->sync($request->input('contacts'));
+                }    
+
+                DB::commit();
+
+            }catch(\Exception $e){                
+                DB::rollback();                
+                return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            }
             return $job;
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This action is unauthorized.'], 401);   
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
@@ -91,9 +110,15 @@ class JobController extends Controller
         try {
             $job = Job::find($id);
             if ($job == null) {
-                throw new Exceptions\JobNotFound();
+                throw new NotFound();
             }
+
+            $this->authorize('view', $job);
+
             return $job;
+
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This action is unauthorized.'], 401);   
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }
@@ -109,17 +134,32 @@ class JobController extends Controller
     public function update(Requests\UpdateJob $request, $id)
     {
         try {
+            
             $job = $this->repository->findBy('id', $id);
             if ($job == null) {
-                throw new Exceptions\JobNotFound();
+                throw new NotFound();
             }
 
-            $job->update($request->all());
-            if ($request->filled('contacts')) {
-                $job->contacts()->sync($request->input('contacts'));
-            }
+            $this->authorize('update', $job);
 
+            try{
+
+                DB::beginTransaction();
+
+                $job->update($request->all());
+                if ($request->filled('contacts')) {
+                    $job->contacts()->sync($request->input('contacts'));
+                }   
+
+                DB::commit();
+                
+            }catch(\Exception $e){                
+                DB::rollback();                
+                return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            }   
             return $job;
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This action is unauthorized.'], 401);        
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
         }

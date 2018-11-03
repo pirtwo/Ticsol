@@ -5,10 +5,12 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Form;
 use App\Ticsol\Components\Form\Requests;
-use App\Ticsol\Components\Form\Exceptions;
 use App\Ticsol\Components\Form\Repository;
+use App\Ticsol\Base\Criteria\ClientCriteria;
+use App\Ticsol\Base\Criteria\CommonCriteria;
 
 class FormController extends Controller
 {
@@ -38,6 +40,9 @@ class FormController extends Controller
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
+            $this->repository->pushCriteria(new ClientCriteria($request));
+            $this->repository->pushCriteria(new CommonCriteria($request));   
+
             if ($page == null) {
                 return $this->repository->all($with);
             } else {
@@ -58,12 +63,8 @@ class FormController extends Controller
     {
         try {
             $form = new Form();
-            // $form->client_id =
-            //     $req->user()->client_id;
-            // $form->creator_id =
-            //     $req->user()->id;
-            $form->client_id = 1;
-            $form->creator_id = 1;
+            $form->client_id = $request->user()->client_id;
+            $form->creator_id = $request->user()->id;
             $form->fill($request->all());
             $form->save();
             return $form;
@@ -83,7 +84,7 @@ class FormController extends Controller
         try {
             $form = Form::find($id);
             if ($form == null) {
-                throw new Exceptions\FormNotFound();
+                throw new NotFound();
             }
             return $form;
         } catch (\Exception $e) {
@@ -104,7 +105,7 @@ class FormController extends Controller
         { 
             $form = $this->repository->findBy('id', $id);
             if ($form == null) {
-                throw new Exceptions\FormNotFound();
+                throw new NotFound();
             }
 
             $form->update($request->all());

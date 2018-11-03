@@ -5,11 +5,12 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Activity;
 use App\Ticsol\Components\Activity\Requests;
-use App\Ticsol\Components\Activity\Exceptions;
 use App\Ticsol\Components\Activity\Repository;
 use App\Ticsol\Components\Activity\Criterias\ActivityCriteria;
+use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 
 class ActivityController extends Controller
@@ -41,8 +42,9 @@ class ActivityController extends Controller
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
-            $this->repository->pushCriteria(new ActivityCriteria($request));
-            $this->repository->pushCriteria(new CommonCriteria($request));
+            $this->repository->pushCriteria(new ClientCriteria($request));
+            $this->repository->pushCriteria(new CommonCriteria($request));   
+            $this->repository->pushCriteria(new ActivityCriteria($request));            
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -64,8 +66,8 @@ class ActivityController extends Controller
     {
         try {
             $activity = new Activity();
-            $activity->client_id = 1;
-            $activity->creator_id = 1;
+            $activity->client_id = $request->user()->client_id;
+            $activity->creator_id = $request->user()->id;
             $activity->fill($request->all());
             $activity->save();
             return $activity;
@@ -85,7 +87,7 @@ class ActivityController extends Controller
         try {
             $activity = $this->repository->find($id);
             if ($activity == null) {
-                throw new Exceptions\ActivityNotFound();
+                throw new NotFound();
             }
             return $activity;
         } catch (\Exception $e) {
@@ -105,7 +107,7 @@ class ActivityController extends Controller
         try {
             $activity = $this->repository->find($id);
             if ($activity == null) {
-                throw new Exceptions\ActivityNotFound();
+                throw new NotFound();
             }
             $activity->update($request->all());
             return $activity;

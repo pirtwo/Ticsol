@@ -5,10 +5,12 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Schedule;
 use App\Ticsol\Components\Schedule\Requests;
-use App\Ticsol\Components\Schedule\Exceptions;
 use App\Ticsol\Components\Schedule\Repository;
+use App\Ticsol\Base\Criteria\ClientCriteria;
+use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Components\Schedule\Criterias\ScheduleCriteria;
 
 class ScheduleController extends Controller
@@ -35,12 +37,14 @@ class ScheduleController extends Controller
     {
         try {
             $page =
-                $request->query('page') ?? null;
+            $request->query('page') ?? null;
             $perPage =
-                $request->query('perPage') ?? 15;
+            $request->query('perPage') ?? 15;
             $with =
-                $request->query('with') != null ? explode(',', $request->query('with')) : [];
+            $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
+            $this->repository->pushCriteria(new ClientCriteria($request));
+            $this->repository->pushCriteria(new CommonCriteria($request));            
             $this->repository->pushCriteria(new ScheduleCriteria($request));
 
             if ($page == null) {
@@ -55,12 +59,12 @@ class ScheduleController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * Type         : schedule, timesheet
      * Status       : tentative, confirmed, submitted
      * Event_type   : leave, unavailable hours, scheduled, RDO
-     * 
-     * 
+     *
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -68,8 +72,8 @@ class ScheduleController extends Controller
     {
         try {
             $schedule = new Schedule();
-            $schedule->client_id = 1;
-            $schedule->creator_id = 1;            
+            $schedule->client_id = $request->user()->client_id;
+            $schedule->creator_id = $request->user()->id;
             $schedule->fill($request->all());
             $schedule->save();
             return Schedule::with(['user', 'job'])->where('id', $schedule->id)->get();
@@ -89,7 +93,7 @@ class ScheduleController extends Controller
         try {
             $schedule = Job::find($id);
             if ($schedule == null) {
-                throw new Exceptions\JobNotFound();
+                throw new NotFound();
             }
             return $schedule;
         } catch (\Exception $e) {
@@ -109,9 +113,9 @@ class ScheduleController extends Controller
         try {
             $schedule = $this->repository->findBy('id', $id);
             if ($schedule == null) {
-                throw new Exceptions\JobNotFound();
+                throw new NotFound();
             }
-            
+
             $schedule->update($request->all());
             return $schedule;
         } catch (\Exception $e) {
