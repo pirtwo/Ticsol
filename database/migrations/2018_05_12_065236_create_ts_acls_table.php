@@ -17,7 +17,7 @@ class CreateTsAclsTable extends Migration
         Schema::create('ts_acls', function (Blueprint $table) {
             
             // Keys
-            $table->increments('id');
+            $table->increments('id');            
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
             $table->unsignedInteger('role_id');
@@ -25,6 +25,9 @@ class CreateTsAclsTable extends Migration
             $table->unsignedInteger('permission_id');
 
             // Attributes
+            $table->string('name');
+            $table->json('meta')
+                ->nullable(); 
             $table->softDeletes();
             $table->timestamps();            
         });

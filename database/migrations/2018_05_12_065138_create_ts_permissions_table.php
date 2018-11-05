@@ -21,6 +21,8 @@ class CreateTsPermissionsTable extends Migration
 
             // Attributes
             $table->string('name');
+            $table->json('meta')
+                ->nullable(); 
             $table->softDeletes();
             $table->timestamps();
         });

@@ -50,7 +50,7 @@ class CreateTsJobsTable extends Migration
             $table->foreign('parent_id')
                 ->references('id')
                 ->on('ts_jobs')
-                ->onDelete('cascade');                        
+                ->onDelete('cascade'); 
         });
     }
 

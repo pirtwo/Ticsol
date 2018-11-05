@@ -29,8 +29,10 @@ class CreateTsSchedulesTable extends Migration
             $table->string('status');                      
             $table->dateTime('start');
             $table->dateTime('end');
-            $table->boolean('offsite');
-            $table->time('break_length');
+            $table->boolean('offsite')
+                ->default(false);
+            $table->time('break_length')
+                ->default('00:00');
             $table->softDeletes();
             $table->timestamps();
         });

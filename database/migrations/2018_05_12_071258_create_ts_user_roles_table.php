@@ -14,7 +14,7 @@ class CreateTsUserRolesTable extends Migration
     public function up()
     {
 
-        Schema::create('ts_user_roles', function (Blueprint $table) {
+        Schema::create('ts_user_role', function (Blueprint $table) {
 
             // Keys
             $table->unsignedInteger('user_id');
@@ -25,7 +25,7 @@ class CreateTsUserRolesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('ts_user_roles', function (Blueprint $table) {
+        Schema::table('ts_user_role', function (Blueprint $table) {
 
             $table->foreign('user_id')
                 ->references('id')

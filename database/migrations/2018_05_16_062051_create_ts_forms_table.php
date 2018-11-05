@@ -23,8 +23,9 @@ class CreateTsFormsTable extends Migration
 
             // Attributes
             $table->string('name');
-            $table->json('body');
-            $table->json('values');
+            $table->string('type')
+                ->nullable();
+            $table->json('schema');
             $table->softDeletes();
             $table->timestamps();
         });
