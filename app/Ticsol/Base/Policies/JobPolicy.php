@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ticsol\Components\Job\Policies;
+namespace App\Ticsol\Base\Policies;
 
 use App\Ticsol\Components\Models\Job;
 use App\Ticsol\Components\Models\User;
