@@ -11,6 +11,9 @@ class Permission extends Model
     protected $table = 'ts_permissions';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +22,7 @@ class Permission extends Model
      */
     protected $fillable = [
         'name',
+        'meta'
     ];
 
     /**

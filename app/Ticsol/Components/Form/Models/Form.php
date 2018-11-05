@@ -11,6 +11,9 @@ class Form extends Model
     protected $table = 'ts_forms';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'schema' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -19,8 +22,7 @@ class Form extends Model
      */
     protected $fillable = [        
         'name',
-        'body',
-        'values',
+        'schema',
     ];
 
     /**

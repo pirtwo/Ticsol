@@ -30,6 +30,7 @@ class User extends Authenticatable
         'email',
         'password',
         'isowner',
+        'isactive',
         'meta',
     ];
 
@@ -72,7 +73,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'ts_user_roles', 'user_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'ts_user_role', 'user_id', 'role_id');
     }
 
     /**

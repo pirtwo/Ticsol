@@ -11,6 +11,9 @@ class Role extends Model
     protected $table = 'ts_roles';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +23,8 @@ class Role extends Model
     protected $fillable = [
         'client_id',
         'creator_id',        
-        'name',        
+        'name', 
+        'meta'       
     ];
 
     /**
@@ -52,7 +56,7 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'ts_user_roles', 'role_id', 'user_id');
+        return $this->belongsToMany(User::class, 'ts_user_role', 'role_id', 'user_id');
     }
 
     /**

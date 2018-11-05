@@ -8,7 +8,7 @@ use App\Ticsol\Components\Models;
 
 class Address extends Model
 {    
-    protected $table = 'ts_Addresses';
+    protected $table = 'ts_addresses';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 

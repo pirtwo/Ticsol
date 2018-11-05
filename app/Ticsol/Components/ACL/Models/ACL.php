@@ -11,6 +11,9 @@ class ACL extends Model
     protected $table = 'ts_acls';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +22,7 @@ class ACL extends Model
      */
     protected $fillable = [
         'name',
+        'meta',
         'creator_id',
         'role_id',        
         'resource_id',
