@@ -19,7 +19,9 @@ class Schedule extends Model
      */
     protected $fillable = [        
         'user_id',        
-        'job_id',        
+        'job_id',  
+        'parent_id',
+        'request_id',      
         'status',
         'type',   
         'event_type',     
@@ -80,11 +82,27 @@ class Schedule extends Model
     }
 
     /**
+     * Assosiated job to current schedule item.
+     */
+    public function request()
+    {
+        return $this->belongsTo(Request::class, 'request_id');
+    }
+
+    /**
      * Current schedule item activities.
      */
     public function activities()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    /**
+     * Childs of current schedule.
+     */
+    public function childs()
+    {
+        return $this->hasMany(Schedule::class, 'parent_id');
     }
 
     #endregion

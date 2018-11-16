@@ -25,7 +25,11 @@ class Request extends Model
         'form_id',        
         'assigned_id',        
         'schedule_id',
+
+        // leave, reimbursement, timesheet
         'type',
+
+        // submitted, approved, rejected, draft
         'status',
         'meta',
     ];
@@ -36,7 +40,7 @@ class Request extends Model
      * @var array
      */
     protected $hidden = [
-
+        
     ];
 
     public function scopeOfClient($query, $clientId)
@@ -92,6 +96,14 @@ class Request extends Model
     public function schedule()
     {
         return $this->belongsTo(Schedule::class, 'schedule_id');
+    }
+
+    /**
+     * Assosiated timesheets to current request.
+     */
+    public function timesheets()
+    {
+        return $this->hasMany(Schedule::class);
     }
 
     #endregion

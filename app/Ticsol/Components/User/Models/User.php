@@ -58,6 +58,16 @@ class User extends Authenticatable
         return $query->where('client_id', $clientId);
     }
 
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.Users.' . $this->id;
+    }
+
     #region Eloquent Relationships
 
     /**
