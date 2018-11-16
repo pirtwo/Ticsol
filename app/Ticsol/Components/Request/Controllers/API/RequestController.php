@@ -9,6 +9,7 @@ use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Request as RequestModel;
 use App\Ticsol\Components\Request\Requests;
 use App\Ticsol\Components\Request\Repository;
+use App\Ticsol\Components\Request\Notifications;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 
@@ -39,9 +40,9 @@ class RequestController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-
-            $this->repository->pushCriteria(new ClientCriteria($request));
-            $this->repository->pushCriteria(new CommonCriteria($request));   
+           
+            $this->repository->pushCriteria(new CommonCriteria($request));  
+            $this->repository->pushCriteria(new ClientCriteria($request)); 
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -49,7 +50,7 @@ class RequestController extends Controller
                 return $this->repository->paginate($perPage, $with);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }    
 
@@ -68,9 +69,10 @@ class RequestController extends Controller
             $req->status = 'submitted';
             $req->fill($request->all());
             $req->save();
+            $request->user()->notify(new Notifications\RequestCreated($request->user(), $req));
             return $req;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -89,7 +91,7 @@ class RequestController extends Controller
             }
             return $req;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }    
 
@@ -111,7 +113,7 @@ class RequestController extends Controller
             $req->update($request->all());
             return $req;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 

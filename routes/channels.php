@@ -11,6 +11,10 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('ticsol', function(){
+    return true;
+});
+
+Broadcast::channel('App.Users.{id}', function ($user, $id) {
+    return true;
 });
