@@ -29,8 +29,7 @@ class UpdateRequest extends FormRequest
             'assigned_id'   => 'required|integer',
             'schedule_id'   => 'nullable|integer',
             'type'          => 'required|string|in:leave,reimbursement,timesheet',
-            'status'        => 'required|string|in:approved,submitted,rejected',
-            'meta'          => 'JSON'
+            'status'        => 'required|string|in:approved,submitted,rejected'
         ];
     }
 

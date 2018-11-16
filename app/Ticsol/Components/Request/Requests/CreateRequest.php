@@ -33,11 +33,11 @@ class CreateRequest extends FormRequest
             // Leave
             'meta.leave_type'   => 'required_if:type,leave|string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
             'meta.from'         => 'required_if:type,leave|date',
-            'meta.return'       => 'required_if:type,leave|date',
+            'meta.till'         => 'required_if:type,leave|date|after:meta.from',
 
             // Reimbursement
             'meta.details'      => 'required_if:type,reimbursement|string',
-            'meta.amount'       => 'required_if:type,reimbursement|number',
+            'meta.amount'       => 'required_if:type,reimbursement|numeric',
             'meta.tax'          => 'required_if:type,reimbursement|string',
             'meta.date'         => 'required_if:type,reimbursement|date'            
         ];

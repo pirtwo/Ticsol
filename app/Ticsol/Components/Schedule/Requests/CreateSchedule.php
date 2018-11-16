@@ -26,7 +26,7 @@ class CreateSchedule extends FormRequest
         return [
             'user_id'       => 'required|numeric',
             'job_id'        => 'required|numeric',
-            'type'          => 'required|string|in:schedule,timesheet',
+            'type'          => 'required|string|in:schedule',
             'event_type'    => 'required|string|in:leave,unavailable hours,scheduled,RDO',
             'status'        => 'required|string|in:tentative,confirmed',            
             'start'         => 'required|date',

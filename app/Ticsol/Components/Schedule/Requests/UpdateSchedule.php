@@ -26,7 +26,7 @@ class UpdateSchedule extends FormRequest
         return [
             'user_id'       => 'numeric',
             'job_id'        => 'numeric',
-            'type'          => 'string|in:schedule,timesheet',
+            'type'          => 'string|in:schedule',
             'event_type'    => 'string|in:leave,unavailable hours,scheduled,RDO',
             'status'        => 'string|in:tentative,confirmed',            
             'start'         => 'date',
