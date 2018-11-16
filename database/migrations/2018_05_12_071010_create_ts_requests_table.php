@@ -20,7 +20,8 @@ class CreateTsRequestsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('client_id');            
-            $table->unsignedInteger('assigned_id');
+            $table->unsignedInteger('assigned_id')
+                ->nullable();
             $table->unsignedInteger('job_id')
                 ->nullable();            
             $table->unsignedInteger('schedule_id')
