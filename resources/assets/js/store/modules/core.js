@@ -4,15 +4,7 @@ export const coreModule = {
 
     namespaced: true,
 
-    state: {
-        /**
-         * @param {string}  type     primary, secondary, success, danger, warning, info
-         * @param {object}  date     date and time of log.
-         * @param {boolean} seen     is seen by user.
-         * @param {string}  title    The title of log.
-         * @param {string}  content  the log content.
-         * @param {string}  footer   the content of footer
-         */
+    state: {        
         logs:[],
 
         ui: {

@@ -40,8 +40,7 @@ const formFeedback = {
                         if (Object.keys(ref).length !== 0) {
                             $(ref).addClass("is-invalid");
                             $(ref).after("<div class='invalid-feedback'>" + invalidFeedbacks[el] + "</div>");
-                        }
-                        console.log(ref);
+                        }                        
                     });
                 }
             } catch (e) {
