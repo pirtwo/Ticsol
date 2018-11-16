@@ -34,6 +34,12 @@ export const SCHEDULE_CREATE = '/api/schedule/store';
 export const SCHEDULE_UPDATE = '/api/schedule/update';
 export const SCHEDULE_DELETE = '/api/schedule/delete';
 
+export const TIMESHEET_LIST = '/api/timesheet';
+export const TIMESHEET_SHOW = '/api/timesheet/show';
+export const TIMESHEET_CREATE = '/api/timesheet/store';
+export const TIMESHEET_UPDATE = '/api/timesheet/update';
+export const TIMESHEET_DELETE = '/api/timesheet/delete';
+
 export const ACTIVITY_LIST = '/api/activity';
 export const ACTIVITY_SHOW = '/api/activity/show';
 export const ACTIVITY_CREATE = '/api/activity/store';
