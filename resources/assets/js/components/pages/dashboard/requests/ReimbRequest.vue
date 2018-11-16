@@ -21,7 +21,9 @@
           </button>
         </li>
         <li>
-          <button class="btn btn-light">                        
+          <button 
+            class="btn btn-light" 
+            @click="onSubmit">                        
             Submit
           </button>
         </li>
@@ -53,8 +55,9 @@
             <label class="col-sm-2 col-form-label">Details</label>
             <div class="col-sm-10">
               <textarea 
-                name="desc" 
-                id="" 
+                v-model="form.meta.details"
+                name="meta-details" 
+                id="meta-details" 
                 class="form-control" 
                 rows="5"/>
             </div>
@@ -66,8 +69,10 @@
             <label class="col-sm-2 col-form-label">Amount</label>
             <div class="col-sm-10">
               <input 
-                name="amount" 
-                type="number" 
+                v-model="form.meta.amount"
+                name="meta-amount" 
+                id="meta-amount"
+                type="text" 
                 class="form-control">
             </div>
           </div>
@@ -80,24 +85,28 @@
 
               <div class="custom-control custom-radio custom-control-inline">
                 <input 
+                  v-model="form.meta.tax"
                   type="radio" 
-                  id="tax1" 
-                  name="tax" 
+                  id="meta-tax1" 
+                  name="meta-tax"
+                  value="Incl" 
                   class="custom-control-input" 
                   checked>
                 <label 
                   class="custom-control-label" 
-                  for="tax1">Incl</label>
+                  for="meta-tax1">Incl</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input 
+                  v-model="form.meta.tax"
                   type="radio" 
-                  id="tax2" 
-                  name="tax" 
+                  id="meta-tax2" 
+                  name="meta-tax" 
+                  value="Excl" 
                   class="custom-control-input">
                 <label 
                   class="custom-control-label" 
-                  for="tax2">Excl</label>
+                  for="meta-tax2">Excl</label>
               </div>
 
             </div>
@@ -109,7 +118,9 @@
             <label class="col-sm-2 col-form-label">Date</label>
             <div class="col-sm-10">
               <input 
-                name="date" 
+                v-model="form.meta.date"
+                name="meta-date"
+                id="meta-date" 
                 type="date" 
                 class="form-control">
             </div>
@@ -192,10 +203,11 @@ export default {
       form: {
         job_id: "",
         assigned_id: "",
+        type: 'reimbursement',
         meta: {
-          tax: "",
+          tax: "Incl",
           date: "",
-          desc: "",
+          details: "",
           amount: ""
         }
       }
@@ -220,6 +232,11 @@ export default {
     }
   },
 
+  created() {
+    this.clear("job");
+    this.clear("user");
+  },
+
   mounted() {
     this.loading = true;
     let p1 = this.fetch({ resource: "job" });
@@ -236,11 +253,25 @@ export default {
   methods: {
     ...mapActions({
       fetch: "resource/list",
+      clear: "resource/clearList",
       create: "resource/create"
-    })
+    }),
+
+    onSubmit(e) {
+      console.log(JSON.stringify(this.form));
+      this.create({ resource: "request", data: this.form })
+        .then(() => {
+          console.log('request created successfuly.')
+          this.$router.push({ name: "inbox" });
+        })
+        .catch(error => {
+          console.log(error.response);
+          this.$formFeedback(error.response.data.errors);
+        });
+    }
   }
 };
 </script>
 
-<style>
+<style scoped>
 </style>

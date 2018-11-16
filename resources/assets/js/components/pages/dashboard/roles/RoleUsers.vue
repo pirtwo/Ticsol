@@ -139,7 +139,7 @@ export default {
   name: "RoleUsers",
 
   components: {
-    "nav-view": NavView,    
+    "nav-view": NavView,
     "table-view": TableView
   },
 
@@ -229,7 +229,8 @@ export default {
       })
         .then(respond => {
           e.target.disabled = false;
-          console.log("role created successfuly");
+          console.log("role updated successfuly");
+          this.$router.push({ name: "roleList" });
         })
         .catch(error => {
           console.log(error.response);
@@ -240,7 +241,7 @@ export default {
     },
 
     onCancel(e) {
-      this.$router.go(-1);
+      this.$router.push({ name: "roleList" });
       e.preventDefault();
     }
   }

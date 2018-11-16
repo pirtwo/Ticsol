@@ -74,8 +74,7 @@ export default {
       frmBuilder: {},
       form: {
         name: "",
-        body: "",
-        values: ""
+        schema: ""
       }
     };
   },
@@ -86,10 +85,7 @@ export default {
     }),
 
     onSubmit() {
-      this.form.body = this.form.values = this.frmBuilder.actions.getData(
-        "json",
-        false
-      );
+      this.form.schema = this.frmBuilder.actions.getData();
 
       this.create({ resource: "form", data: this.form })
         .then(() => {

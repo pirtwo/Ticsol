@@ -421,6 +421,7 @@ export default {
   list-style: none;
   vertical-align: top;
   display: inline-block;
+  min-width: 50px;
 }
 
 .vb-timepicker__dropdown__list__title {

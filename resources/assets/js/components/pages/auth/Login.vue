@@ -67,13 +67,14 @@
 </template>
 
 <script>
+import Echo from "laravel-echo";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Login",
   data() {
     return {
       haveError: false,
-      errorMsg: '',
+      errorMsg: "",
       form: {
         username: "",
         password: ""
@@ -91,8 +92,8 @@ export default {
       this.login(this.form)
         .then(respond => {
           console.log("login success");
-          this.info().then(() => {
-            console.log("info success");
+          this.info().then(data => {
+            console.log("info success");           
             this.$router.push("/home");
           });
         })

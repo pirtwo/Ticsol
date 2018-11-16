@@ -237,7 +237,7 @@ export default {
   components: {
     "nav-view": NavView
   },
-  
+
   props: ["id"],
 
   data() {
@@ -250,12 +250,16 @@ export default {
     };
   },
 
-  mounted() {     
+  created() {
+    this.clear("role");
+  },
+
+  mounted() {
     this.loading = true;
     this.show({ resource: "role", id: this.id, query: { with: "permissions" } })
       .then(data => {
         this.form.name = data.name;
-        this.form.permissions = data.permissions.map(item => item.name);        
+        this.form.permissions = data.permissions.map(item => item.name);
         this.loading = false;
       })
       .catch(error => {
@@ -266,6 +270,7 @@ export default {
   methods: {
     ...mapActions({
       show: "resource/show",
+      clear: "resource/clearList",
       update: "resource/update"
     }),
 
@@ -275,6 +280,7 @@ export default {
         .then(respond => {
           e.target.disabled = false;
           console.log("role updated successfuly");
+          this.$router.push({name:'roleList'});
         })
         .catch(error => {
           console.log(error.response);
@@ -285,7 +291,7 @@ export default {
     },
 
     onCancel(e) {
-      this.$router.go(-1);
+      this.$router.push({name:'roleList'});
       e.preventDefault();
     }
   }

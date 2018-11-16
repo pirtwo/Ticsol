@@ -79,8 +79,7 @@ export default {
       frmBuilder: {},
       form: {
         name: "",
-        body: "",
-        values: ""
+        schema: ""
       }
     };
   },
@@ -90,7 +89,7 @@ export default {
     this.show({ resource: "form", id: this.id })
       .then(respond => {
         this.form.name = respond.name;
-        this.frmBuilder.actions.setData(respond.body);
+        this.frmBuilder.actions.setData(JSON.stringify(respond.schema));
         this.loading = false;
       })
       .catch(error => {
@@ -106,10 +105,7 @@ export default {
     }),
 
     onSubmit() {
-      this.form.body = this.form.values = this.frmBuilder.actions.getData(
-        "json",
-        false
-      );
+      this.form.schema = this.frmBuilder.actions.getData();
 
       this.update({ resource: "form", id: this.id, data: this.form })
         .then(() => {

@@ -24,8 +24,7 @@
             Cancel
           </button>
         </li>
-        <li class="menu-title">Links</li>
-        <li><router-link :to="{ name: 'jobList' }">Assigned Users</router-link></li>
+        <li class="menu-title">Links</li>        
       </ul>
 
     </template>
@@ -256,11 +255,16 @@ export default {
 
   computed: {},
 
+  created(){
+    this.clear('role');
+  },
+
   mounted() {},
 
   methods: {
     ...mapActions({
       fetch: "resource/list",
+      clear: "resource/clearList",
       create: "resource/create"
     }),
 

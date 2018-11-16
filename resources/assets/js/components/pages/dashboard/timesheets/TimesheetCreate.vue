@@ -84,6 +84,7 @@
               <td>
                 <input 
                   type="time" 
+                  class="form-control"
                   @change="totalTime(item)"
                   v-model="item.startTime" 
                   v-show="item.editMode"> 
@@ -92,14 +93,17 @@
               <td>
                 <input 
                   type="time" 
+                  class="form-control"
                   @change="totalTime(item)"
                   v-model="item.endTime" 
                   v-show="item.editMode"> 
                 <span v-show="!item.editMode">{{ item.endTime }}</span>
               </td>
               <td>
+                <!-- <vb-timepicker v-model="item.break_length" :format="'HH:mm'" v-show="item.editMode"/> -->
                 <input 
-                  type="text"   
+                  type="text"  
+                  class="form-control" 
                   @change="totalTime(item)"                              
                   v-model="item.break_length" 
                   v-show="item.editMode"> 
@@ -209,7 +213,7 @@ export default {
       this.loading = true;
 
       this.fetch({
-        resource: "schedule",
+        resource: "timesheet",
         query: {
           inRange: `${this.weekStart},${this.weekEnd}`,
           with: "job"
@@ -237,8 +241,8 @@ export default {
         this.timesheetItems.map(item => {
           return {
             job_id: item.job_id,
-            type: item.type,
-            status: item.status,
+            type: 'timesheet',
+            status: 'draft',
             break_length: item.break_length,
             start: item.startDate + "T" + item.startTime,
             end: item.endDate + "T" + item.endTime

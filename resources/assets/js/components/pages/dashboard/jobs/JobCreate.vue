@@ -160,6 +160,7 @@
 </template>
 
 <script>
+import LoggerMixin from '../../../../mixins/logger-mixin.js'
 import { mapActions, mapGetters } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import Selectbox from "../../../framework/BaseSelectBox.vue";
@@ -167,6 +168,8 @@ import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue"
 
 export default {
   name: "JobCreate",
+
+  mixins:[LoggerMixin],
 
   components: {
     "nav-view": NavView,
@@ -213,11 +216,15 @@ export default {
     },
 
     schema: function() {
-      let schema = this.getList(
+      let profile = this.getList(
         "form",
         item => item.id == this.form.form_id
       )[0];
-      if (schema !== undefined) return JSON.parse(schema.body);
+      if (profile !== undefined) {
+        let s = profile.schema;
+        console.log(s);
+        return profile.schema;
+      }
     }
   },
 
@@ -226,7 +233,7 @@ export default {
   },
 
   mounted() {
-    this.loading = true;
+    this.loading = true;   
     let p1 = this.fetch({ resource: "job" });
     let p2 = this.fetch({ resource: "form" });
     let p3 = this.fetch({ resource: "contact" });
@@ -252,11 +259,12 @@ export default {
         .then(respond => {
           e.target.disabled = false;
           console.log("job created successfuly");
-          this.$router.push({ name: "jobList" });      
+          this.$router.push({ name: "jobList" });
         })
         .catch(error => {
           console.log(error.response);
           e.target.disabled = false;
+          this.logError(error);
           this.$formFeedback(error.response.data.errors);
         });
       e.preventDefault();
@@ -264,7 +272,7 @@ export default {
 
     onCancel(e) {
       e.preventDefault();
-      this.$router.push({ name: "jobList" });      
+      this.$router.push({ name: "jobList" });
     }
   }
 };

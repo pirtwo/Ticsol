@@ -44,8 +44,11 @@
             </router-link> 
           </td>
           <td>{{ item.type }}</td>
-          <td>{{ item.status }}</td>
           <td>{{ item.assigned.name }}</td>
+          <td>{{ item.status }}</td>
+          <td>{{ summary(item) }}</td>
+          <td>{{ item.created_at }}</td>
+          
         </template> 
       </table-view>
 
@@ -83,8 +86,10 @@ export default {
       header: [
         { value: "", orderBy: "" },
         { value: "Type", orderBy: "type" },
+        { value: "Approver", orderBy: "name" },
         { value: "Status", orderBy: "status" },
-        { value: "Approver", orderBy: "name" }
+        { value: "Summary", orderBy: "" },
+        { value: "Submitted date", orderBy: "created_at" }
       ],
       order: "asc"
     };
@@ -123,10 +128,26 @@ export default {
           console.log(error);
           this.loading = false;
         });
+    },
+
+    summary(item) {
+      if (item.type === "leave") {
+        let days = (
+          (new Date(item.meta.till) - new Date(item.meta.from)) /
+          86400000
+        ).toFixed(0);
+
+        return `From: ${item.meta.from} - Till: ${item.meta.till}  Days: ${days}`;
+      } else if (item.type === "reimbursement") {
+        return `${item.meta.date} - $${item.meta.amount}`;
+      }
     }
   }
 };
 </script>
 
 <style scoped>
+.table td {
+  text-transform: capitalize;
+}
 </style>

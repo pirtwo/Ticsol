@@ -243,9 +243,7 @@ export default {
   watch: {
     "form.form_id": function(value) {
       if (value !== null && value !== undefined) {
-        this.schema = JSON.parse(
-          this.getList("form", item => item.id == value)[0].body
-        );
+        this.schema = this.getList("form", item => item.id == value)[0].schema;
       }
     }
   },
@@ -329,10 +327,10 @@ export default {
         this.defaultProfile = this.currentJob.form_id;
         this.form.contacts = this.currentJob.contacts.map(item => item.id);
         if (this.currentJob.form_id !== null) {
-          this.schema = JSON.parse(
-            this.getList("form", item => item.id == this.currentJob.form_id)[0]
-              .body
-          );
+          this.schema = this.getList(
+            "form",
+            item => item.id == this.currentJob.form_id
+          )[0].schema;
         }
         Object.assign(this.form, this.currentJob);
         this.loading = false;

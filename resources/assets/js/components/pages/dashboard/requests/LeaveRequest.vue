@@ -119,9 +119,9 @@
             <label class="col-sm-2 col-form-label">Return</label>
             <div class="col-sm-10">
               <input 
-                v-model="form.meta.return" 
+                v-model="form.meta.till" 
                 type="date" 
-                name="meta-return" 
+                name="meta-till" 
                 class="form-control">
             </div>
           </div>
@@ -206,13 +206,12 @@ export default {
       loading: false,
       form: {
         type: "leave",
-        job_id: 1,
         assigned_id: "",
         attachments: "",
         meta: {
           leave_type: "",
           from: "",
-          return: ""
+          till: ""
         }
       }
     };
