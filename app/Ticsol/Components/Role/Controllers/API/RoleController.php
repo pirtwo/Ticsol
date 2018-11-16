@@ -46,9 +46,9 @@ class RoleController extends Controller
             $request->query('perPage') ?? 15;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-
-            $this->repository->pushCriteria(new ClientCriteria($request));
+            
             $this->repository->pushCriteria(new CommonCriteria($request));
+            $this->repository->pushCriteria(new ClientCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -56,7 +56,7 @@ class RoleController extends Controller
                 return $this->repository->paginate($perPage, $with);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -105,12 +105,12 @@ class RoleController extends Controller
 
             } catch (\Exception $e) {
                 DB::rollback();
-                return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
 
             return $role;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -130,7 +130,7 @@ class RoleController extends Controller
             }
             return $role;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -159,7 +159,7 @@ class RoleController extends Controller
             try {                
                 $role->update($request->all());
 
-                if($permissions != null){
+                if($permissions !== null){
                     $role->permissions()->delete();
                     foreach ($permissions as $key => $value) {                    
                         $pos = strpos($value, '-');
@@ -191,12 +191,12 @@ class RoleController extends Controller
 
             } catch (\Exception $e) {
                 DB::rollback();
-                return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
             
             return $role;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -211,7 +211,7 @@ class RoleController extends Controller
         try {
             return $this->repository->delete('id', $id);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 }
