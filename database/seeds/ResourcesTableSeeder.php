@@ -53,6 +53,10 @@ class ResourcesTableSeeder extends Seeder
         ]);
 
         Resource::create([
+            'name' => 'form_builder'
+        ]);
+
+        Resource::create([
             'name' => 'invitation'
         ]);
 
@@ -66,6 +70,10 @@ class ResourcesTableSeeder extends Seeder
 
         Resource::create([
             'name' => 'bank'
+        ]);
+
+        Resource::create([
+            'name' => 'comment'
         ]);
 
         Resource::create([
