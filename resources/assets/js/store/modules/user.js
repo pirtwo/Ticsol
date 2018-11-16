@@ -1,7 +1,8 @@
+import Echo from "laravel-echo";
+import Pusher from 'pusher-js';
 import { api } from "../../api/http";
 import * as URLs from "../../api/resources";
 import * as MUTATIONS from "../mutation-types";
-import { Date } from "core-js";
 
 export const userModule = {
     namespaced: true,
@@ -46,7 +47,6 @@ export const userModule = {
 
     mutations: {
         [MUTATIONS.USER_INFO](state, payload) {
-            console.log(payload);
             state.info = payload;
         },
 
@@ -73,13 +73,14 @@ export const userModule = {
     },
 
     actions: {
-        login({ commit }, payload) {
+        login({ commit, dispatch }, payload) {
             return new Promise((resolve, reject) => {
                 api.post(URLs.AUTH_LOGIN, payload, null, true, false)
                     .then(respond => {
                         commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
                         commit(MUTATIONS.USER_AUTH_SUCCESS);
-                        resolve("Success");
+
+                        resolve("success");
                     }).catch(error => {
                         console.log(error);
                         commit(MUTATIONS.USER_AUTH_FAILE);
@@ -89,15 +90,8 @@ export const userModule = {
         },
 
         logout({ commit }) {
-            return new Promise((resolve, reject) => {
-                api.post(URLs.AUTH_LOGOUT, null)
-                    .then(() => {
-                        commit(MUTATIONS.USER_AUTH_LOGOUT);
-                        resolve("Success");
-                    }).catch(error => {
-                        reject(error);
-                    });
-            });
+            api.post(URLs.AUTH_LOGOUT, null);
+            commit(MUTATIONS.USER_AUTH_LOGOUT);
         },
 
         refresh() {
@@ -108,12 +102,40 @@ export const userModule = {
             return new Promise((resolve, reject) => {
                 api.get(URLs.USER_INFO, null).then(respond => {
                     commit(MUTATIONS.USER_INFO, respond.data);
-                    resolve(respond);
-                }).catch(error => {                    
+                    resolve(respond.data);
+                }).catch(error => {
                     console.log(error);
                     reject(error);
                 });
             })
+        },
+
+        subscribeForNotifications({ state, commit }) {
+            if (!state.isAuth) return
+
+            let pusher = new Pusher("8cf467561b944c1668e0", {
+                cluster: "ap2",
+                authEndpoint: '/broadcasting/auth',
+                auth: {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + state.token.value
+                    }
+                }
+            });
+
+            let notifChannel = pusher.subscribe(`private-App.Users.${state.info.id}`);
+            notifChannel.bind("Illuminate\\Notifications\\Events\\BroadcastNotificationCreated", (data) => {
+                console.log(data);
+            });
+
+            notifChannel.bind('pusher:subscription_succeeded', () => {
+                console.log('subscribed to notif channel successfuly.');
+            });
+            notifChannel.bind('pusher:subscription_error', () => {
+                console.log('subscribe to notif channel failed.');
+            });
+
         }
     }
 }
