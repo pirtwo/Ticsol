@@ -28,15 +28,15 @@ class RevokeOldRefreshTokens
     public function handle(RefreshTokenCreated $event)
     {        
         // $event contains: accessTokenId, refreshTokenId
-        $userId = DB::table('oauth_access_tokens')        
-        ->where('oauth_access_tokens.id', '=', $event->accessTokenId)
-        ->get()[0]->user_id;
+        // $userId = DB::table('oauth_access_tokens')        
+        // ->where('oauth_access_tokens.id', '=', $event->accessTokenId)
+        // ->get()[0]->user_id;
 
-        DB::table('oauth_refresh_tokens')
-        ->join('oauth_access_tokens', 'oauth_refresh_tokens.access_token_id', '=', 'oauth_access_tokens.id')
-        ->where('oauth_access_tokens.user_id', '=', $userId)
-        ->where('oauth_refresh_tokens.id', '!=', $event->refreshTokenId)
-        ->update(['oauth_refresh_tokens.revoked' => true]);
+        // DB::table('oauth_refresh_tokens')
+        // ->join('oauth_access_tokens', 'oauth_refresh_tokens.access_token_id', '=', 'oauth_access_tokens.id')
+        // ->where('oauth_access_tokens.user_id', '=', $userId)
+        // ->where('oauth_refresh_tokens.id', '!=', $event->refreshTokenId)
+        // ->update(['oauth_refresh_tokens.revoked' => true]);
         
     }
 }

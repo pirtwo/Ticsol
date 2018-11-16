@@ -28,10 +28,10 @@ class RevokeOldTokens
     public function handle(AccessTokenCreated $event)
     {        
         //$event contains: tokenId, userId, clientId
-        DB::table('oauth_access_tokens')
-            ->where('client_id', $event->clientId)
-            ->Where('user_id', $event->userId)
-            ->where('id', '!=', $event->tokenId)
-            ->update(['revoked' => true]);
+        // DB::table('oauth_access_tokens')
+        //     ->where('client_id', $event->clientId)
+        //     ->Where('user_id', $event->userId)
+        //     ->where('id', '!=', $event->tokenId)
+        //     ->update(['revoked' => true]);
     }
 }
