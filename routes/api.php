@@ -53,6 +53,13 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::post('schedule/update/{id}', 'ScheduleController@update');
         Route::post('schedule/delete/{id}', 'ScheduleController@delete');
 
+        // Timesheet
+        Route::get('timesheet', 'TimesheetController@index');
+        Route::get('timesheet/show/{id}', 'TimesheetController@show');
+        Route::post('timesheet/store', 'TimesheetController@store');
+        Route::post('timesheet/update/{id}', 'TimesheetController@update');
+        Route::post('timesheet/delete/{id}', 'TimesheetController@delete');
+
         // Activity
         Route::get('activity', 'ActivityController@index');
         Route::get('activity/show/{id}', 'ActivityController@show');
