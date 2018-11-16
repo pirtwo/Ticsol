@@ -38,9 +38,9 @@ class UserController extends Controller
             $request->query('perPage') ?? 15;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            
-            $this->repository->pushCriteria(new ClientCriteria($request));
+                        
             $this->repository->pushCriteria(new CommonCriteria($request));   
+            $this->repository->pushCriteria(new ClientCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -48,7 +48,7 @@ class UserController extends Controller
                 return $this->repository->paginate($perPage, $with);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -63,7 +63,7 @@ class UserController extends Controller
         try {
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -74,7 +74,7 @@ class UserController extends Controller
             $with = $request->query('with') != null ? explode(',', $request->query('with')) : [];
             return $this->repository->find($userId, $with);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 

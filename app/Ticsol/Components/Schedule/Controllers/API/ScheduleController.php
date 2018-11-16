@@ -11,7 +11,7 @@ use App\Ticsol\Components\Schedule\Requests;
 use App\Ticsol\Components\Schedule\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
-use App\Ticsol\Components\Schedule\Criterias\ScheduleCriteria;
+use App\Ticsol\Components\Schedule\Criterias\TimesheetCriteria;
 
 class ScheduleController extends Controller
 {
@@ -42,10 +42,11 @@ class ScheduleController extends Controller
             $request->query('perPage') ?? 15;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-
-            $this->repository->pushCriteria(new ClientCriteria($request));
-            $this->repository->pushCriteria(new CommonCriteria($request));            
-            $this->repository->pushCriteria(new ScheduleCriteria($request));
+   
+            
+            $this->repository->pushCriteria(new CommonCriteria($request));           
+            $this->repository->pushCriteria(new ClientCriteria($request));           
+            
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -53,7 +54,7 @@ class ScheduleController extends Controller
                 return $this->repository->paginate($perPage, $with);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -61,7 +62,7 @@ class ScheduleController extends Controller
      * Store a newly created resource in storage.
      *
      * Type         : schedule, timesheet
-     * Status       : tentative, confirmed, submitted
+     * Status       : tentative, confirmed, submitted, approved, rejected, draft
      * Event_type   : leave, unavailable hours, scheduled, RDO
      *
      *
@@ -78,7 +79,7 @@ class ScheduleController extends Controller
             $schedule->save();
             return Schedule::with(['user', 'job'])->where('id', $schedule->id)->get();
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -97,7 +98,7 @@ class ScheduleController extends Controller
             }
             return $schedule;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -119,7 +120,7 @@ class ScheduleController extends Controller
             $schedule->update($request->all());
             return $schedule;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -134,7 +135,7 @@ class ScheduleController extends Controller
         try {
             return $this->repository->delete('id', $id);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 }

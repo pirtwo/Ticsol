@@ -55,7 +55,7 @@ class RegisterController extends Controller
         try {
             Mail::to('ahmad.f1111@gmail.com')->send(new DemoEmail());            
         } catch (Exception $e) {            
-            return response()->json($e->getMessage(), 500);            
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);            
         }
     }
 }

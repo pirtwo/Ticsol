@@ -39,9 +39,9 @@ class FormController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-
-            $this->repository->pushCriteria(new ClientCriteria($request));
-            $this->repository->pushCriteria(new CommonCriteria($request));   
+            
+            $this->repository->pushCriteria(new CommonCriteria($request)); 
+            $this->repository->pushCriteria(new ClientCriteria($request));  
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -49,7 +49,7 @@ class FormController extends Controller
                 return $this->repository->paginate($perPage, $with);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }    
 
@@ -69,7 +69,7 @@ class FormController extends Controller
             $form->save();
             return $form;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -88,7 +88,7 @@ class FormController extends Controller
             }
             return $form;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }   
 
@@ -111,7 +111,7 @@ class FormController extends Controller
             $form->update($request->all());
             return $form;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 

@@ -41,10 +41,10 @@ class ActivityController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-
-            $this->repository->pushCriteria(new ClientCriteria($request));
+            
             $this->repository->pushCriteria(new CommonCriteria($request));   
-            $this->repository->pushCriteria(new ActivityCriteria($request));            
+            $this->repository->pushCriteria(new ActivityCriteria($request));  
+            $this->repository->pushCriteria(new ClientCriteria($request));          
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -52,7 +52,7 @@ class ActivityController extends Controller
                 return $this->repository->paginate($perPage, $with);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -72,7 +72,7 @@ class ActivityController extends Controller
             $activity->save();
             return $activity;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -91,7 +91,7 @@ class ActivityController extends Controller
             }
             return $activity;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -112,7 +112,7 @@ class ActivityController extends Controller
             $activity->update($request->all());
             return $activity;
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 

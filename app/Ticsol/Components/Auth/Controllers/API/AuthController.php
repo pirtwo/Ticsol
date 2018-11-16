@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Support\Facades\DB;
-
 use App\Http\Controllers\Controller;
 use App\Ticsol\Components\Models\User;
 use App\Ticsol\Components\Requests\LoginRequest;
@@ -39,7 +38,7 @@ class AuthController extends Controller
         } catch (\Illuminate\Auth\AuthenticationException $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 401);
         } catch (Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -53,7 +52,7 @@ class AuthController extends Controller
             $refreshToken = $request->cookie(self::REFRESH_TOKEN);
             return $this->proxy(self::REFRESH_TOKEN, [self::REFRESH_TOKEN => $refreshToken]);
         } catch (Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -72,7 +71,7 @@ class AuthController extends Controller
             $cookie->queue($cookie->forget(self::REFRESH_TOKEN));
             return response()->json(['code' => '', 'message' => 'successful logout.'], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -115,7 +114,7 @@ class AuthController extends Controller
         } catch (\Illuminate\Auth\AuthenticationException $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 401);
         } catch (Exception $e) {
-            return response()->json(['message' => 'An error ocured while proccessing your request.'], 500);
+            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
     }
 }
