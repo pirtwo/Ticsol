@@ -70,7 +70,7 @@ class FormPolicy
     {
         $roles = $user->load('roles.permissions')->roles;
         foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'create-job_profile')) {
+            if ($role->permissions->contains('name', 'update-job_profile')) {
                 return true;
             }
         }
@@ -87,7 +87,7 @@ class FormPolicy
     {
         $roles = $user->load('roles.permissions')->roles;
         foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'create-job_profile')) {
+            if ($role->permissions->contains('name', 'delete-job_profile')) {
                 return true;
             }
         }
