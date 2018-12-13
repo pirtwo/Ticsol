@@ -44,7 +44,7 @@
             </router-link> 
           </td>
           <td>{{ item.type }}</td>
-          <td>{{ item.assigned.name }}</td>
+          <td>{{ item.assigned === null ? "None" : item.assigned.name }}</td>
           <td>{{ item.status }}</td>
           <td>{{ summary(item) }}</td>
           <td>{{ item.created_at }}</td>
@@ -141,6 +141,11 @@ export default {
       } else if (item.type === "reimbursement") {
         return `${item.meta.date} - $${item.meta.amount}`;
       }
+    },
+
+    getDate(date){
+      let d = new DayPilot.Date(Date.UTC(date));
+      return d.toDateLocal();
     }
   }
 };

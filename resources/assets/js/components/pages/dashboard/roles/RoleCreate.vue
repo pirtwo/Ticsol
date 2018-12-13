@@ -255,8 +255,8 @@ export default {
 
   computed: {},
 
-  created(){
-    this.clear('role');
+  created() {
+    this.clear("role");
   },
 
   mounted() {},
@@ -273,6 +273,7 @@ export default {
       this.create({ resource: "role", data: this.form })
         .then(respond => {
           e.target.disabled = false;
+          this.$router.push({ name: "roleList" });
           console.log("role created successfuly");
         })
         .catch(error => {
@@ -284,7 +285,7 @@ export default {
     },
 
     onCancel(e) {
-      this.$router.go(-1);
+      this.$router.push({ name: "roleList" });
       e.preventDefault();
     }
   }

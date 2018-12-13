@@ -61,11 +61,16 @@
 </template>
 
 <script>
+import LoggerMixin from "../../../../mixins/logger-mixin.js";
 import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import FormBuilder from "../../../framework/FormBuilder.vue";
+
 export default {
   name: "JobProfile",
+
+  mixins: [LoggerMixin],
+
   components: {
     "nav-view": NavView,
     "form-builder": FormBuilder
@@ -113,6 +118,8 @@ export default {
           this.$router.push({ name: "profileList" });
         })
         .catch(error => {
+          console.log(error.response);
+          this.logError(error);
           this.$formFeedback(error.response.data.errors);
         });
     },

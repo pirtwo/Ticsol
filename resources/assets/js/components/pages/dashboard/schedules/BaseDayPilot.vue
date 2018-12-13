@@ -488,10 +488,8 @@ export default {
         this.$emit("event-moved", {
           eventId: arg.e.id(),
           resourceId: arg.newResource,
-          newStart:
-            arg.newStart.value.slice(0, 10) + arg.e.start().value.slice(11, 16),
-          newEnd:
-            arg.newEnd.value.slice(0, 10) + arg.e.end().value.slice(11, 16)
+          newStart: arg.newStart,
+          newEnd: arg.newEnd
         });
       }
       arg.preventDefault();

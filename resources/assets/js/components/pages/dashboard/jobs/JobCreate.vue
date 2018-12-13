@@ -160,7 +160,7 @@
 </template>
 
 <script>
-import LoggerMixin from '../../../../mixins/logger-mixin.js'
+import LoggerMixin from "../../../../mixins/logger-mixin.js";
 import { mapActions, mapGetters } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import Selectbox from "../../../framework/BaseSelectBox.vue";
@@ -169,7 +169,7 @@ import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue"
 export default {
   name: "JobCreate",
 
-  mixins:[LoggerMixin],
+  mixins: [LoggerMixin],
 
   components: {
     "nav-view": NavView,
@@ -233,7 +233,7 @@ export default {
   },
 
   mounted() {
-    this.loading = true;   
+    this.loading = true;
     let p1 = this.fetch({ resource: "job" });
     let p2 = this.fetch({ resource: "form" });
     let p3 = this.fetch({ resource: "contact" });
