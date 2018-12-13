@@ -7,7 +7,7 @@
     <template slot="toolbar">
       <date-picker 
         v-model="weekStart" 
-        range="Week"/>
+        range="Week"/>      
     </template>
 
     <template slot="drawer">
@@ -27,13 +27,19 @@
             @click="onSubmit">                        
             Submit
           </button>
-        </li>
+        </li>        
         <li>
           <button 
             class="btn btn-light" 
             @click="onCancel">                        
             Cancel
           </button>
+        </li>
+        <li>
+          <button 
+            type="button" 
+            class="btn btn-light" 
+            @click="genFromSchedule(scheduleItems)">Genrate Timesheets</button>
         </li>
         <li class="menu-title">Links</li>
       </ul>
@@ -58,7 +64,7 @@
           </thead>
           <tbody>
             <tr 
-              v-for="(item, index) in timesheet" 
+              v-for="(item, index) in timesheetItems" 
               :key="index">
               <td>
                 <button 
@@ -117,8 +123,10 @@
         </table>
       </div>
 
-      <div>TOTAL: {{ this.showTotalTime }}</div>
-      <div>STATUS: </div>
+      <div class="stats">
+        <div>TOTAL: {{ this.showTotalTime }}</div>
+        <div>STATUS: </div>
+      </div>     
            
     </template>
   </nav-view>
@@ -159,30 +167,17 @@ export default {
 
   computed: {
     ...mapGetters({
-      getList: "resource/getList"
+      userId: "user/getId"
     }),
 
-    timesheet: function() {
+    weekDays: function() {
+      let days = [];
       let day = this.weekStart;
       for (let i = 0; i < 7; i++) {
-        this.scheduleItems.forEach(item => {
-          if (item.start <= day && item.end >= day) {
-            item.day = day.toString("ddd dd MMM");
-            item.startDate = item.start.slice(0, 10);
-            item.startTime = item.start.slice(11, 16);
-            item.endDate = item.start.slice(0, 10);
-            item.endTime = item.start.slice(11, 16);
-            item.editMode = false;
-            item.total = this.subTime(
-              this.subTime(item.endTime, item.startTime),
-              item.break_length
-            );
-            this.timesheetItems.push(Object.assign({}, item));
-          }
-        });
+        days.push(day);
         day = day.addDays(1);
       }
-      return this.timesheetItems;
+      return days;
     },
 
     showTotalTime: function() {
@@ -200,7 +195,7 @@ export default {
   },
 
   mounted() {
-    this.fetchItems();
+    //this.fetchItems();
   },
 
   methods: {
@@ -211,50 +206,134 @@ export default {
 
     fetchItems() {
       this.loading = true;
+      this.scheduleItems = [];
+      this.timesheetItems = [];
 
-      this.fetch({
+      let p1 = this.fetch({
         resource: "timesheet",
         query: {
           inRange: `${this.weekStart},${this.weekEnd}`,
-          with: "job"
+          with: "job,request"
         }
-      })
-        .then(data => {
-          this.scheduleItems = [];
-          this.timesheetItems = [];
-          this.scheduleItems = data;
+      }).then(data => {
+        console.log("p1 finished...");
+        this.genFromTimesheet(data);
+        this.loading = false;
+      });
+
+      let p2 = this.fetch({
+        resource: "schedule",
+        query: {
+          eq: `user_id,${this.userId}`,
+          with: "job",
+          inRange: `${this.weekStart},${this.weekEnd}`
+        }
+      }).then(data => {
+        console.log("p2 finished...");
+        this.scheduleItems = data;
+      });
+
+      Promise.all([p1, p2])
+        .then(() => {
           this.loading = false;
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
         });
+    },
+
+    onSubmit(event) {
+      let timesheets = this.timesheetItems.map(item => {
+        return {
+          job_id: item.job_id,
+          user_id: item.user_id,
+          type: "timesheet",
+          status: "draft",
+          break_length: item.break_length,
+          start: item.startDate + "T" + item.startTime,
+          end: item.endDate + "T" + item.endTime
+        };
+      });
+      console.log(timesheets);
+      console.log(this.weekDays);
+    },
+
+    onSave(event) {
+      let timesheets = this.timesheetItems.map(item => {
+        return {
+          job_id: item.job_id,
+          user_id: item.user_id,
+          type: "timesheet",
+          break_length: item.break_length,
+          start: item.startDate + "T" + item.startTime,
+          end: item.endDate + "T" + item.endTime
+        };
+      });
+
+      this.create({
+        resource: "timesheet",
+        data: { status: "draft", timesheets: timesheets }
+      })
+        .then(() => {
+          console.log("draft created successfuly.");
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+      console.log(timesheets);
+    },
+
+    onCancel() {
+      this.$router.go(-1);
+    },
+
+    genFromTimesheet(data) {
+      let day = null;
+      for (let i = 0; i < 7; i++) {
+        day = this.weekDays[i];
+        data.forEach(item => {
+          if (item.start >= day.addDays(-1) && item.end <= day) {
+            item.day = day.toString("ddd dd MMM");
+            item.startDate = day.toString().slice(0, 10);
+            item.startTime = item.start.slice(11, 16);
+            item.endDate = day.toString().slice(0, 10);
+            item.endTime = item.end.slice(11, 16);
+            item.editMode = false;
+            item.total = this.subTime(
+              this.subTime(item.endTime, item.startTime),
+              item.break_length
+            );
+            this.timesheetItems.push(Object.assign({}, item));
+          }
+        });
+      }
+    },
+
+    genFromSchedule(data) {
+      let day = null;
+      for (let i = 0; i < 7; i++) {
+        day = this.weekDays[i];
+        data.forEach(item => {
+          if (item.start <= day && item.end >= day) {
+            item.day = day.toString("ddd dd MMM");
+            item.startDate = day.toString().slice(0, 10);
+            item.startTime = item.start.slice(11, 16);
+            item.endDate = day.toString().slice(0, 10);
+            item.endTime = item.start.slice(11, 16);
+            item.editMode = false;
+            item.total = this.subTime(
+              this.subTime(item.endTime, item.startTime),
+              item.break_length
+            );
+            this.timesheetItems.push(Object.assign({}, item));
+          }
+        });
+      }
     },
 
     totalTime(item) {
       let workHour = this.subTime(item.endTime, item.startTime);
       item.total = this.subTime(workHour, item.break_length);
-    },
-
-    onSubmit(event) {
-      console.log(
-        this.timesheetItems.map(item => {
-          return {
-            job_id: item.job_id,
-            type: 'timesheet',
-            status: 'draft',
-            break_length: item.break_length,
-            start: item.startDate + "T" + item.startTime,
-            end: item.endDate + "T" + item.endTime
-          };
-        })
-      );
-    },
-
-    onSave(event) {},
-
-    onCancel() {
-      this.$router.go(-1);
     },
 
     subTime(a, b) {
@@ -335,4 +414,11 @@ export default {
 </script>
 
 <style scoped>
+.stats {
+  position: absolute;
+  padding: 10px;
+  bottom: 5px;
+  right: 5px;
+  background-color: darkgray;
+}
 </style>
