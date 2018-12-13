@@ -12,6 +12,7 @@ use App\Ticsol\Components\Request\Repository;
 use App\Ticsol\Components\Request\Notifications;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
+use App\Ticsol\Components\Request\Criterias\RequestCriteria;
 
 class RequestController extends Controller
 {
@@ -41,7 +42,8 @@ class RequestController extends Controller
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
            
-            $this->repository->pushCriteria(new CommonCriteria($request));  
+            $this->repository->pushCriteria(new CommonCriteria($request));
+            $this->repository->pushCriteria(new RequestCriteria($request));    
             $this->repository->pushCriteria(new ClientCriteria($request)); 
 
             if ($page == null) {
@@ -49,6 +51,7 @@ class RequestController extends Controller
             } else {
                 return $this->repository->paginate($perPage, $with);
             }
+            
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }

@@ -20,10 +20,10 @@ class Request extends Model
      *
      * @var array
      */
-    protected $fillable = [         
+    protected $fillable = [
         'job_id',
-        'form_id',        
-        'assigned_id',        
+        'form_id',
+        'assigned_id',
         'schedule_id',
 
         // leave, reimbursement, timesheet
@@ -40,12 +40,18 @@ class Request extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     public function scopeOfClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
+    }
+
+    public function scopeRelatedRequests($query, $userId)
+    {
+        return $query->where('user_id', $userId)
+            ->orWhere('assigned_id', $userId);
     }
 
     #region Eloquent_Relationships
