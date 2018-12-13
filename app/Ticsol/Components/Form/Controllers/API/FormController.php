@@ -4,6 +4,7 @@ namespace App\Ticsol\Components\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Form;
@@ -39,9 +40,9 @@ class FormController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            
-            $this->repository->pushCriteria(new CommonCriteria($request)); 
-            $this->repository->pushCriteria(new ClientCriteria($request));  
+
+            $this->repository->pushCriteria(new CommonCriteria($request));
+            $this->repository->pushCriteria(new ClientCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);
@@ -51,7 +52,7 @@ class FormController extends Controller
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
-    }    
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -62,12 +63,17 @@ class FormController extends Controller
     public function store(Request $request)
     {
         try {
+            $this->authorize('create', Form::class);
+
             $form = new Form();
             $form->client_id = $request->user()->client_id;
             $form->creator_id = $request->user()->id;
             $form->fill($request->all());
             $form->save();
             return $form;
+
+        } catch (AuthorizationException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -90,7 +96,7 @@ class FormController extends Controller
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
-    }   
+    }
 
     /**
      * Update the specified resource in storage.
@@ -102,14 +108,19 @@ class FormController extends Controller
     public function update(Request $request, $id)
     {
         try
-        { 
+        {
             $form = $this->repository->findBy('id', $id);
             if ($form == null) {
                 throw new NotFound();
             }
 
+            $this->authorize('update', $form);
+
             $form->update($request->all());
             return $form;
+
+        } catch (AuthorizationException $e) {
+            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }

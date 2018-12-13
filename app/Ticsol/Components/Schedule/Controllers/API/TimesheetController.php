@@ -82,23 +82,25 @@ class TimesheetController extends Controller
 
             DB::beginTransaction();
             try {
-
-                $req = Request::create([
-                    'client_id' => $client_id,
-                    'creator_id' => $creator_id,
+                $req = new ReqModel();
+                $req->client_id = $client_id;
+                $req->user_id = $creator_id;
+                $req->fill([                    
                     'type' => 'timesheet',
                     'status' => 'draft'
-                ]);    
+                ]);                  
+                $req->save();
 
                 foreach ($timesheets as &$timesheet) {
-                    $timesheet['client_id'] = $client_id;
-                    $timesheet['creator_id'] = $creator_id;
+                    $ts = new Schedule();
+                    $ts->client_id = $client_id;
+                    $ts->creator_id = $creator_id;                    
                     $timesheet['request_id'] = $req->id;                    
                     $timesheet['event_type'] = 'scheduled';
                     $timesheet['status'] = \strtolower($status);
-                }  
-                
-                $req->timesheets()->createMany($timesheets);
+                    $ts->fill($timesheet);
+                    $ts->save();
+                } 
 
                 DB::commit();
 
@@ -107,7 +109,7 @@ class TimesheetController extends Controller
                 return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
             
-            return $req->timesheets();
+            return $req->timesheets()->get();
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -122,11 +124,11 @@ class TimesheetController extends Controller
     public function show($id)
     {
         try {
-            $schedule = Job::find($id);
-            if ($schedule == null) {
+            $req = ReqModel::find($id);
+            if ($req == null) {
                 throw new NotFound();
             }
-            return $schedule;
+            return $req->timesheets()->get();
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }

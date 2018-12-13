@@ -56,7 +56,7 @@ class JobController extends Controller
             }
         
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);   
+            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);   
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -93,7 +93,7 @@ class JobController extends Controller
             }
             return $job;
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);   
+            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);  
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -118,7 +118,7 @@ class JobController extends Controller
             return $job;
 
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);   
+            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);  
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -159,7 +159,7 @@ class JobController extends Controller
             }   
             return $job;
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);        
+            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);       
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
