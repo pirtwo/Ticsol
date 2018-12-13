@@ -17,18 +17,18 @@ class Schedule extends Model
      *
      * @var array
      */
-    protected $fillable = [        
-        'user_id',        
-        'job_id',  
+    protected $fillable = [
+        'user_id',
+        'job_id',
         'parent_id',
-        'request_id',      
+        'request_id',
         'status',
-        'type',   
-        'event_type',     
+        'type',
+        'event_type',
         'start',
         'end',
         'offsite',
-        'break_length',        
+        'break_length',
     ];
 
     /**
@@ -37,7 +37,7 @@ class Schedule extends Model
      * @var array
      */
     protected $hidden = [
-        'created_at', 
+        'created_at',
         'updated_at',
         'deleted_at',
     ];
@@ -46,6 +46,30 @@ class Schedule extends Model
     {
         return $query->where('client_id', $clientId);
     }
+
+    public function scopeScheduleItems($query)
+    {
+        return $query->where('type', 'schedule');
+    }
+
+    public function scopeTimesheetItems($query)
+    {
+        return $query->where('type', 'timesheet');
+    }
+
+    public function scopeRelatedSchedules($query, $userId)
+    {
+        return $query->where('type', 'schedule')
+            ->where('user_id', $userId);
+    }
+
+    public function scopeRelatedTimesheets($query, $userId)
+    {
+        return $query->where('type', 'timesheet')
+            ->where('user_id', $userId);
+    }
+
+
 
     #region Eloquent_Relationships
 

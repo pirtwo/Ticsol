@@ -11,7 +11,7 @@ use App\Ticsol\Components\Schedule\Requests;
 use App\Ticsol\Components\Schedule\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
-use App\Ticsol\Components\Schedule\Criterias\TimesheetCriteria;
+use App\Ticsol\Components\Schedule\Criterias\ScheduleCriteria;
 
 class ScheduleController extends Controller
 {
@@ -41,12 +41,11 @@ class ScheduleController extends Controller
             $perPage =
             $request->query('perPage') ?? 15;
             $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
-   
+            $request->query('with') != null ? explode(',', $request->query('with')) : [];   
             
-            $this->repository->pushCriteria(new CommonCriteria($request));           
-            $this->repository->pushCriteria(new ClientCriteria($request));           
-            
+            $this->repository->pushCriteria(new CommonCriteria($request));
+            $this->repository->pushCriteria(new ScheduleCriteria($request));           
+            $this->repository->pushCriteria(new ClientCriteria($request));             
 
             if ($page == null) {
                 return $this->repository->all($with);
