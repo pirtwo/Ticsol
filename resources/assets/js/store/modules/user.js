@@ -18,6 +18,10 @@ export const userModule = {
     },
 
     getters: {
+        getId(state){
+            return state.info.id;
+        },
+
         getInfo(state) {
             return state.info;
         },
@@ -79,7 +83,7 @@ export const userModule = {
                     .then(respond => {
                         commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
                         commit(MUTATIONS.USER_AUTH_SUCCESS);
-
+                        dispatch('subscribeForNotifications');
                         resolve("success");
                     }).catch(error => {
                         console.log(error);
