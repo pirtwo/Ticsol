@@ -24,8 +24,8 @@ class UpdateSchedule extends FormRequest
     public function rules()
     {
         return [
-            'user_id'       => 'numeric',
-            'job_id'        => 'numeric',
+            'user_id'       => 'numeric|exists:ts_users,id',
+            'job_id'        => 'numeric|exists:ts_jobs,id',
             'type'          => 'string|in:schedule',
             'event_type'    => 'string|in:leave,unavailable hours,scheduled,RDO',
             'status'        => 'string|in:tentative,confirmed',            

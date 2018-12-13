@@ -31,7 +31,7 @@ class CreateTimesheet extends FormRequest
             'timesheets.*.type'          => 'required|string|in:timesheet',  
             'timesheets.*.start'         => 'required|date',
             'timesheets.*.end'           => 'required|date',            
-            'timesheets.*.break_length'  => 'required|numeric'
+            'timesheets.*.break_length'  => 'required|string'
         ];
     }
 

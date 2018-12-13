@@ -24,15 +24,15 @@ class UpdateTimesheet extends FormRequest
     public function rules()
     {
         return [
-            'user_id'       => 'numeric',
-            'job_id'        => 'numeric',
-            'type'          => 'string|in:schedule,timesheet',
-            'event_type'    => 'string|in:leave,unavailable hours,scheduled,RDO',
-            'status'        => 'string|in:tentative,confirmed',            
-            'start'         => 'date',
-            'end'           => 'date',
-            'offsite'       => 'boolean',
-            'break_length'  => 'numeric'
+            'request_id'                 => 'required|numeric|exists:ts_requests,id',
+            'status'                     => 'nullable|string|in:submitted,draft',
+            'timesheets'                 => 'nullable|array',
+            'timesheets.*.user_id'       => 'required_with:timesheets|numeric',
+            'timesheets.*.job_id'        => 'required_with:timesheets|numeric',
+            'timesheets.*.type'          => 'required_with:timesheets|string|in:timesheet',  
+            'timesheets.*.start'         => 'required_with:timesheets|date',
+            'timesheets.*.end'           => 'required_with:timesheets|date',            
+            'timesheets.*.break_length'  => 'required_with:timesheets|numeric'
         ];
     }
 
