@@ -14,16 +14,15 @@ class AddRequestsForeignKeyToSchedules extends Migration
     public function up()
     {
         Schema::table('ts_schedules', function (Blueprint $table) {
+            
             $table->unsignedInteger('request_id')
                 ->after('job_id')
                 ->nullable();
+
             $table->unsignedInteger('parent_id')
                 ->after('request_id')
                 ->nullable();
-        });
 
-        Schema::table('ts_schedules', function (Blueprint $table) {            
-            
             $table->foreign('request_id')
                 ->references('id')
                 ->on('ts_requests')
@@ -32,7 +31,7 @@ class AddRequestsForeignKeyToSchedules extends Migration
             $table->foreign('parent_id')
                 ->references('id')
                 ->on('ts_schedules')
-                ->onDelete('cascade');            
+                ->onDelete('cascade'); 
         });
     }
 

@@ -13,7 +13,7 @@ class CreateTsCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('ts_comments', function (Blueprint $table) {
+        Schema::create('ts_comments', function (Blueprint $table) {
             
             // Keys
             $table->increments('id');
@@ -32,7 +32,7 @@ class CreateTsCommentsTable extends Migration
 
         });
 
-        Schema::table('ts_schedules', function (Blueprint $table) {            
+        Schema::table('ts_comments', function (Blueprint $table) {            
             
             $table->foreign('client_id')
                 ->references('id')
