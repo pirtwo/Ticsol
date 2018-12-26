@@ -8,6 +8,8 @@ export const router = new VueRouter({
     mode: 'history',
     linkExactActiveClass: 'active',
     routes: [
+
+        // Auth 
         {
             path: '/',
             name: 'auth',
@@ -42,6 +44,7 @@ export const router = new VueRouter({
             ]
         },
 
+        // Dashboard
         {
             path: '/dash',
             name: 'dash',
@@ -325,6 +328,23 @@ export const router = new VueRouter({
                     ]
                 },
 
+                // Comments
+                {
+                    path: '/comments',
+                    name: 'comments',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'roleList' },
+                    component: require('./components/pages/dashboard/comments/Comments.vue'),
+                    children: [
+                        {
+                            path: '/comments/:entity/:id',
+                            name: 'commentList',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/comments/CommentList.vue'),
+                        }]
+                },
+
                 // Test Page
                 {
                     path: '/test',
@@ -354,6 +374,7 @@ export const router = new VueRouter({
     ]
 });
 
+// check auth
 router.beforeEach((to, from, next) => {
     let state = store.state.user;
     if (to.meta.requireAuth === true && state.isAuth === false) {
