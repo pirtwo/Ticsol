@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-5">
 
     <template slot="toolbar"/>
@@ -160,8 +160,8 @@
 </template>
 
 <script>
-import LoggerMixin from "../../../../mixins/logger-mixin.js";
 import { mapActions, mapGetters } from "vuex";
+import PageMixin from '../../../../mixins/page-mixin.js';
 import NavView from "../../../framework/NavView.vue";
 import Selectbox from "../../../framework/BaseSelectBox.vue";
 import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue";
@@ -169,7 +169,7 @@ import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue"
 export default {
   name: "JobCreate",
 
-  mixins: [LoggerMixin],
+  mixins: [PageMixin],
 
   components: {
     "nav-view": NavView,
@@ -188,7 +188,6 @@ export default {
         contacts: [],
         meta: null
       },
-      loading: false
     };
   },
 
@@ -221,8 +220,7 @@ export default {
         item => item.id == this.form.form_id
       )[0];
       if (profile !== undefined) {
-        let s = profile.schema;
-        console.log(s);
+        let s = profile.schema;        
         return profile.schema;
       }
     }
@@ -233,16 +231,17 @@ export default {
   },
 
   mounted() {
-    this.loading = true;
+    this.loadingStart();
     let p1 = this.fetch({ resource: "job" });
     let p2 = this.fetch({ resource: "form" });
     let p3 = this.fetch({ resource: "contact" });
     Promise.all([p1, p2, p3])
       .then(() => {
-        this.loading = false;
+        this.loadingStop();
       })
-      .catch(error => {
-        console.log(error);
+      .catch(error => {       
+        this.loadingStop();
+        this.showMessage(error.message, 'danger'); 
       });
   },
 
@@ -254,20 +253,18 @@ export default {
     }),
 
     onSubmit(e) {
+      e.preventDefault();
       e.target.disabled = true;
       this.create({ resource: "job", data: this.form })
         .then(respond => {
           e.target.disabled = false;
-          console.log("job created successfuly");
-          this.$router.push({ name: "jobList" });
+          this.showMessage(`Job <b>${this.form.title}</b> created successfuly.`, 'success');
         })
-        .catch(error => {
-          console.log(error.response);
-          e.target.disabled = false;
-          this.logError(error);
-          this.$formFeedback(error.response.data.errors);
-        });
-      e.preventDefault();
+        .catch(error => {          
+          e.target.disabled = false; 
+          this.showMessage(error.message, 'danger');         
+          this.$formFeedback(error.response.data.errors);          
+        });      
     },
 
     onCancel(e) {

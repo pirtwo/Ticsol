@@ -76,6 +76,14 @@
         class="content" 
         :class="[{ 'scrollbar-show' : scrollbar}, padding]"              
         v-show="!loading">
+        <vb-snackbar          
+          v-model="snackbar.show" 
+          :class="['snackbar', snackbar.theme]"        
+          :fixed="snackbar.fixed"
+          :timeout="snackbar.timeout"
+          @hide="onSnackbarHide">
+          <span v-html="snackbar.message"/>
+        </vb-snackbar>
         <slot name="content"/>
       </div>            
     </div>
@@ -116,23 +124,24 @@ export default {
     return {};
   },
 
-  computed: {
-    ...mapGetters({
-      fullscreen: "core/getUiFullscreen",
-      showDrawer: "core/getDrawerStatus",
-      contentHeight: "core/getUiContentHeight"
-    }),
-
-    enablePadding: function() {
-      return this.padding !== "";
-    }
-  },
-
   watch: {
     contentHeight: function(value) {
       $(".content").outerHeight(value);
     }
   },
+
+  computed: {
+    ...mapGetters({
+      snackbar: "core/getSnackbar",
+      fullscreen: "core/getUiFullscreen",
+      showDrawer: "core/getDrawerStatus",      
+      contentHeight: "core/getUiContentHeight",
+    }),
+
+    enablePadding: function() {
+      return this.padding !== "";
+    }
+  },  
 
   mounted() {
     this.$nextTick(this.setContentHeight);
@@ -140,6 +149,7 @@ export default {
 
   methods: {
     ...mapActions({
+      hideSnackbar: "core/snackbar",
       toggleDrawer: "core/drawer",
       toggleFullscreen: "core/fullscreen"
     }),
@@ -182,6 +192,14 @@ export default {
       }
     },
 
+    onSnackbarHide(){
+      this.hideSnackbar({show:false, message:'', theme: this.snackbar.theme});
+    },
+
+    getSnackbarTheme(){
+
+    },
+
     clickForward(e) {
       this.$router.go(1);
     },
@@ -215,6 +233,14 @@ export default {
 .content {
   position: relative;
   background-color: rgba(255, 255, 255, 0.8);
+}
+
+.snackbar{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 50px;
 }
 
 .scrollbar-show {

@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-5">
 
     <template slot="toolbar"/>
@@ -41,6 +41,11 @@
             class="btn btn-link" 
             :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }">Schedule
             Items</router-link>
+        </li>
+        <li>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }">Comments</router-link>
         </li>
         <li>
           <router-link 
@@ -205,12 +210,16 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import PageMixin from '../../../../mixins/page-mixin.js';
 import NavView from "../../../framework/NavView.vue";
 import Selectbox from "../../../framework/BaseSelectBox.vue";
 import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue";
 
 export default {
   name: "JobDetails",
+
+  mixins:[PageMixin],
+
   components: {
     "nav-view": NavView,
     "form-gen": FormGen,
@@ -236,7 +245,6 @@ export default {
       defaultParent: null,
       defaultProfile: null,
       defaultContacts: null,
-      loading: false
     };
   },
 
@@ -313,7 +321,7 @@ export default {
   },
 
   mounted() {
-    this.loading = true;
+    this.loadingStart();
     let p1 = this.fetch({
       resource: "job",
       query: { with: "childs,contacts,requests,activities" }
@@ -333,7 +341,7 @@ export default {
           )[0].schema;
         }
         Object.assign(this.form, this.currentJob);
-        this.loading = false;
+        this.loadingStop();     
       })
       .catch(error => {
         console.log(error);
@@ -359,11 +367,10 @@ export default {
 
       this.update({ resource: "job", id: this.id, data: form })
         .then(() => {
-          console.log("job updated successfuly.");
-          this.$router.push({ name: "jobList" });
+          this.showMessage(`job <b>${form.title}</b> updated successfuly.`, 'success');          
         })
-        .catch(error => {
-          console.log(error);
+        .catch(error => {          
+          this.showMessage(error.message, 'danger');
           this.$formFeedback(error.response.data.errors);
         });
     },
