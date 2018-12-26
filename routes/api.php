@@ -83,6 +83,12 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::get('request/show/{id}', 'RequestController@show');
         Route::post('request/store', 'RequestController@store');
         Route::post('request/update/{id}', 'RequestController@update');
+
+        // Comment
+        Route::get('comment', 'CommentController@index');        
+        Route::post('comment/store', 'CommentController@store');
+        Route::post('comment/update/{id}', 'CommentController@update');        
+        Route::post('comment/delete/{id}', 'CommentController@delete');
     });
 
 });
