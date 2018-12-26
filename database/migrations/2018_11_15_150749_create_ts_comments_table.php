@@ -27,7 +27,7 @@ class CreateTsCommentsTable extends Migration
                 ->nullable();
             
             // Attributes
-            $table->string('body');            
+            $table->text('body');            
             $table->timestamps();
 
         });
