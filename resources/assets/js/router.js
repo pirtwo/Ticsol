@@ -344,30 +344,6 @@ export const router = new VueRouter({
                             component: require('./components/pages/dashboard/comments/CommentList.vue'),
                         }]
                 },
-
-                // Test Page
-                {
-                    path: '/test',
-                    name: 'test',
-                    meta: { requireAuth: true },
-                    component: require('./components/pages/dashboard/test/test.vue'),
-                    children: [
-                        {
-                            path: 'test01',
-                            name: 'test01',
-                            meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/test/test01.vue'),
-                        },
-                        {
-                            path: 'test02',
-                            name: 'test02',
-                            meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/test/test02.vue'),
-                        }
-                    ]
-                },
-
-
             ]
         },
 
