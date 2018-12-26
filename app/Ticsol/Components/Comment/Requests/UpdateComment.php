@@ -24,12 +24,7 @@ class UpdateComment extends FormRequest
     public function rules()
     {
         return [
-            'parent_id' => 'nullable|integer',
-            'form_id'   => 'nullable|integer',
-            'title'     => 'required|string|between:1,100',
-            'code'      => 'required|string|between:1,100',
-            'isactive'  => 'required|boolean',
-            'meta'      => 'nullable'
+            'body'   => 'required|string',   
         ];
     }
 

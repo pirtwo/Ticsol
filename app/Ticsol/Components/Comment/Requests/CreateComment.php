@@ -24,21 +24,18 @@ class CreateComment extends FormRequest
     public function rules()
     {
         return [
-            'parent_id' => 'nullable|integer',
-            'form_id'   => 'nullable|integer',
-            'title'     => 'required|string|between:1,100',
-            'code'      => 'required|string|between:1,100',
-            'isactive'  => 'required|boolean',
-            'contacts'  => 'nullable|array',
-            'meta'      => 'nullable'
+            'body'              => 'required|string',   
+            'entity'            => 'required|string|in:job,request',         
+            'job_id'            => 'required_if:entity,job|integer|exists:ts_jobs,id',
+            'request_id'        => 'required_if:entity,request|integer|exists:ts_requests,id', 
+            'parent_id'         => 'nullable|integer|exists:ts_comments,id',          
         ];
     }
 
     public function messages()
     {
         return[
-            "title.required" => "job title is required.",
-            "code.required" => "job code is required",
+            //
         ];
     }
 }

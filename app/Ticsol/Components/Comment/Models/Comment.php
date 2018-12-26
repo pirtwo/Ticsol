@@ -12,6 +12,7 @@ class Comment extends Model
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
     protected $casts = [];
+    protected $appends = ['reply_count'];
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +36,13 @@ class Comment extends Model
         'client_id'               
     ];
 
+    //====== Attributes =====
+    public function getReplyCountAttribute()
+    {
+        return $this->attributes['replyCount'] = $this->childs()->count();
+    }
+
+    //====== Scopes =======
     public function scopeOfClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
@@ -80,7 +88,7 @@ class Comment extends Model
      */
     public function childs()
     {
-        return $this->hasMany(Comment::class, 'parent_id');
+        return $this->hasMany(Comment::class, 'parent_id')->orderby('created_at', 'desc');
     }   
 
     #regionend
