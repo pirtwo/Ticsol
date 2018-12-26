@@ -37,6 +37,14 @@ class ResourcesTableSeeder extends Seeder
         ]);
 
         Resource::create([
+            'name' => 'leave'
+        ]);
+
+        Resource::create([
+            'name' => 'reimbursement'
+        ]);
+
+        Resource::create([
             'name' => 'activity'
         ]);
 

@@ -17,6 +17,18 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
+            'name' => 'approve'
+        ]);
+
+        Permission::create([
+            'name' => 'list'
+        ]);
+
+        Permission::create([
+            'name' => 'list_all'
+        ]);
+
+        Permission::create([
             'name' => 'view'
         ]);
 

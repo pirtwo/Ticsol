@@ -42,7 +42,7 @@ class JobController extends Controller
             $page =
             $request->query('page', null);
             $perPage =
-            $request->query('perpage', 20);
+            $request->query('perPage', 20);
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
            
