@@ -1,20 +1,24 @@
 import VbIcon from '../components/Base/VbIcon.vue'
 import VbSelect from '../components/Base/VbSelect.vue'
 import VbSwitch from '../components/Base/VbSwitch.vue'
+import VbComment from '../components/Base/VbComment.vue'
 import VbDropdown from '../components/Base/VbDropdown.vue'
+import VbSnackbar from '../components/Base/VbSnackbar'
 import VbTimepicker from '../components/Base/VbTimepicker.vue'
 import VbNotification from '../components/Base/VbNotification.vue'
-import CKEditor from '../components/Base/CKEditor.vue'
+import VbPagination from '../components/Base/VbPagination.vue'
 
 const VueBase = {
     install(Vue, options) {        
         Vue.component('vb-icon', VbIcon);
         Vue.component('vb-select', VbSelect);
         Vue.component('vb-switch', VbSwitch);
+        Vue.component('vb-comment', VbComment);
+        Vue.component('vb-snackbar', VbSnackbar);
         Vue.component('vb-dropdown', VbDropdown);
         Vue.component('vb-timepicker', VbTimepicker);
         Vue.component('vb-notification', VbNotification);
-        Vue.component('ckeditor', CKEditor);
+        Vue.component('vb-pagination', VbPagination); 
     }
 }
 

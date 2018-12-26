@@ -2,6 +2,18 @@ import { api } from "../../api/http";
 import * as URLs from "../../api/resources";
 import * as MUTATIONS from "../mutation-types";
 
+const resourceList = [
+    "user",
+    "job",
+    "schedule",
+    "timesheet",
+    "request",
+    "activity",
+    "form",
+    "contact",
+    "comment",
+    "role"];
+
 export const resourceModule = {
     namespaced: true,
 
@@ -22,15 +34,6 @@ export const resourceModule = {
             createURL: URLs.ROLE_CREATE,
             updateURL: URLs.ROLE_UPDATE,
             deleteURL: URLs.ROLE_DELETE
-        },
-
-        acl: {
-            list: [],
-            listURL: URLs.SCHEDULE_LIST,
-            showURL: URLs.SCHEDULE_SHOW,
-            createURL: URLs.SCHEDULE_CREATE,
-            updateURL: URLs.SCHEDULE_UPDATE,
-            deleteURL: URLs.SCHEDULE_DELETE
         },
 
         request: {
@@ -70,24 +73,6 @@ export const resourceModule = {
             deleteURL: URLs.TIMESHEET_DELETE
         },
 
-        resource: {
-            list: [],
-            listURL: URLs.SCHEDULE_LIST,
-            showURL: URLs.SCHEDULE_SHOW,
-            createURL: URLs.SCHEDULE_CREATE,
-            updateURL: URLs.SCHEDULE_UPDATE,
-            deleteURL: URLs.SCHEDULE_DELETE
-        },
-
-        permission: {
-            list: [],
-            listURL: URLs.SCHEDULE_LIST,
-            showURL: URLs.SCHEDULE_SHOW,
-            createURL: URLs.SCHEDULE_CREATE,
-            updateURL: URLs.SCHEDULE_UPDATE,
-            deleteURL: URLs.SCHEDULE_DELETE
-        },
-
         activity: {
             list: [],
             listURL: URLs.ACTIVITY_LIST,
@@ -113,6 +98,14 @@ export const resourceModule = {
             createURL: URLs.FORM_CREATE,
             updateURL: URLs.FORM_UPDATE,
             deleteURL: URLs.FORM_DELETE
+        },
+
+        comment: {
+            list: [],
+            listURL: URLs.COMMENT_LIST,
+            createURL: URLs.COMMENT_CREATE,
+            updateURL: URLs.COMMENT_UPDATE,
+            deleteURL: URLs.COMMENT_DELETE
         },
 
     },
@@ -184,13 +177,13 @@ export const resourceModule = {
         },
 
         [MUTATIONS.RESOURCE_CREATE](state, payload) {
-            if (Array.isArray(payload.data))
-                state[payload.resource].list.push(payload.data[0]);
-            else
-                state[payload.resource].list.push(payload.data);
+            // if (Array.isArray(payload.data))
+            //     state[payload.resource].list.push(payload.data[0]);            
+            // else
+            //     state[payload.resource].list.push(payload.data);
         },
 
-        [MUTATIONS.RESOURCE_UPDATE](state, payload) {            
+        [MUTATIONS.RESOURCE_UPDATE](state, payload) {
             if (state[payload.resource].list.length === 0)
                 return;
             let index =
@@ -231,7 +224,7 @@ export const resourceModule = {
                             data = respond.data;
                         commit(MUTATIONS.RESOURCE_LIST, { resource: resource, data: data });
                         resolve(respond.data);
-                    }).catch(error => {                        
+                    }).catch(error => {
                         console.log(error);
                         reject(error);
                     });
@@ -245,7 +238,7 @@ export const resourceModule = {
                     .then(respond => {
                         commit(MUTATIONS.RESOURCE_CREATE, { resource: resource, data: respond.data });
                         resolve(respond.data);
-                    }).catch(error => {                       
+                    }).catch(error => {
                         console.log(error);
                         reject(error);
                     });
@@ -258,7 +251,7 @@ export const resourceModule = {
                 api.get(`${state[resource].showURL}/${id}`, query)
                     .then(respond => {
                         resolve(respond.data);
-                    }).catch(error => {                        
+                    }).catch(error => {
                         console.log(error);
                         reject(error);
                     });
@@ -272,7 +265,7 @@ export const resourceModule = {
                     .then(respond => {
                         commit(MUTATIONS.RESOURCE_UPDATE, { resource: resource, id: id, data: respond.data });
                         resolve(respond.data);
-                    }).catch(error => {                        
+                    }).catch(error => {
                         console.log(error);
                         reject(error);
                     });
@@ -286,7 +279,7 @@ export const resourceModule = {
                     .then(respond => {
                         commit(MUTATIONS.RESOURCE_DELETE, { resource: resource, id: id });
                         resolve(respond.data);
-                    }).catch(error => {                        
+                    }).catch(error => {
                         console.log(error);
                         reject(error);
                     });
@@ -305,7 +298,7 @@ export const resourceModule = {
                 let resources = dispatch("list", { resource: view });
                 Promise.all([events, resources])
                     .then(() => resolve())
-                    .catch(error => {                        
+                    .catch(error => {
                         console.log(error);
                         reject(error);
                     });
@@ -317,7 +310,7 @@ export const resourceModule = {
         },
 
         checkResource({ state }, payload) {
-            if (["user", "job", "schedule", "timesheet", "request", "activity", "form", "contact", "role"].indexOf(payload) === -1)
+            if (resourceList.indexOf(payload) === -1)
                 throw new Error("Invalid resource name.");
         }
     }

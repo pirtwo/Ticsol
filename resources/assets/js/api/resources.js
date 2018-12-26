@@ -57,3 +57,8 @@ export const CONTACT_SHOW = '/api/contact/show';
 export const CONTACT_CREATE = '/api/contact/store';
 export const CONTACT_UPDATE = '/api/contact/update';
 export const CONTACT_DELETE = '/api/contact/delete';
+
+export const COMMENT_LIST = '/api/comment';
+export const COMMENT_CREATE = '/api/comment/store';
+export const COMMENT_UPDATE = '/api/comment/update';
+export const COMMENT_DELETE = '/api/comment/delete';

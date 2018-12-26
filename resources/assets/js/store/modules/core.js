@@ -18,12 +18,14 @@ export const coreModule = {
         drawer: {
             show: true,
             message: ''
-        },
+        },       
 
-        statusbar: {
+        snackbar:{
             show: false,
             message: '',
-            icon: ''
+            theme: '',
+            fixed: false,
+            timeout: 300
         },
 
         toolbar: {
@@ -82,16 +84,8 @@ export const coreModule = {
             return state.drawer.message;
         },
 
-        getStatusbarStatus(state) {
-            return state.statusbar.show;
-        },
-
-        getStatusbarMessage(state) {
-            return state.statusbar.message;
-        },
-
-        getStatusbarIcon(state) {
-            return state.statusbar.icon;
+        getSnackbar(state){
+            return state.snackbar;
         },
 
         getToolbarStatus(state) {
@@ -165,10 +159,12 @@ export const coreModule = {
             state.toolbar.height = payload.height;
         },
 
-        [MUTATIONS.APP_STATUSBAR](state, payload) {
-            state.statusbar.show = payload.show;
-            state.statusbar.icon = payload.icon;
-            state.statusbar.message = payload.message;
+        [MUTATIONS.APP_SNACKBAR](state, payload){                      
+            state.snackbar.show = payload.show;
+            state.snackbar.message = payload.message;
+            state.snackbar.theme = payload.theme;
+            state.snackbar.fixed = payload.fixed;
+            state.snackbar.timeout = payload.timeout;
         },
 
         [MUTATIONS.APP_HEADER](state, payload) {
@@ -210,14 +206,14 @@ export const coreModule = {
 
         drawer({ commit }, { show = true, message = "" }) {
             commit(MUTATIONS.APP_DRAWER, { show, message });
-        },
+        },        
 
         toolbar({ commit }, { height, show }) {
             commit(MUTATIONS.APP_TOOLBAR, { show, height });
         },
 
-        statusbar({ commit }, { show, message, icon = "" }) {
-            commit(MUTATIONS.APP_STATUSBAR, { show, message, icon });
+        snackbar({ commit }, { show, message, theme = '', fixed = false, timeout = 300 }){            
+            commit(MUTATIONS.APP_SNACKBAR, { show, message, theme, fixed, timeout });
         },
 
         header({ commit }, { show, height }) {
