@@ -6,7 +6,7 @@
 import { mapActions } from "vuex";
 export default {
   created() {       
-    this.subscribeForNotifs();   
+    //this.subscribeForNotifs();   
   },
 
   methods:{

@@ -83,7 +83,7 @@ export const userModule = {
                     .then(respond => {
                         commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
                         commit(MUTATIONS.USER_AUTH_SUCCESS);
-                        dispatch('subscribeForNotifications');
+                        //dispatch('subscribeForNotifications');
                         resolve("success");
                     }).catch(error => {
                         console.log(error);
