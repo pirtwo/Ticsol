@@ -56604,7 +56604,7 @@ var userModule = {
                 __WEBPACK_IMPORTED_MODULE_2__api_http__["a" /* api */].post(__WEBPACK_IMPORTED_MODULE_3__api_resources__["f" /* AUTH_LOGIN */], payload, null, true, false).then(function (respond) {
                     commit(__WEBPACK_IMPORTED_MODULE_4__mutation_types__["u" /* USER_AUTH_TOKEN */], respond.data);
                     commit(__WEBPACK_IMPORTED_MODULE_4__mutation_types__["t" /* USER_AUTH_SUCCESS */]);
-                    dispatch('subscribeForNotifications');
+                    //dispatch('subscribeForNotifications');
                     resolve("success");
                 }).catch(function (error) {
                     console.log(error);
@@ -94973,7 +94973,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    this.subscribeForNotifs();
+    //this.subscribeForNotifs();   
   },
 
 
