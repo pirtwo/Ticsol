@@ -18,7 +18,10 @@
     <template slot="drawer">
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
-        <li><router-link :to="{ name: 'jobCreate' }">New</router-link></li>
+        <li><router-link 
+          tag="button" 
+          class="btn btn-light" 
+          :to="{ name: 'jobCreate' }">New</router-link></li>
         <li class="menu-title">Links</li>                
       </ul>
     </template>

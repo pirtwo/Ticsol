@@ -7,31 +7,37 @@
 
       <date-picker 
         v-model="start" 
-        :range="dpRange"/>
+        :range="range"/>
 
-      <label class="switch">
-        <input 
-          v-model="range" 
-          class="switch-input" 
-          type="checkbox" >
-        <span 
-          class="switch-label" 
-          data-on="wek" 
-          data-off="mon"/> 
-        <span class="switch-handle"/> 
-      </label>
+      <div 
+        class="btn-group btn-group-sm" 
+        role="group" 
+        aria-label="schedule range">
+        <button 
+          type="button"
+          @click="range = 'Week'"                    
+          :class="[{'active' : range === 'Week'} ,'btn btn-secondary']">Week</button>
+        <button 
+          type="button"
+          @click="range = 'Month'"           
+          :class="[{'active' : range === 'Month'} ,'btn btn-secondary']">Month</button>
+      </div>
 
-      <label class="switch">
-        <input 
-          v-model="view" 
-          class="switch-input" 
-          type="checkbox" >
-        <span 
-          class="switch-label" 
-          data-on="emp" 
-          data-off="job"/> 
-        <span class="switch-handle"/> 
-      </label> 
+      <div 
+        class="btn-group btn-group-sm" 
+        role="group" 
+        aria-label="schedule view">
+        <button 
+          type="button"
+          @click="view = 'user'"                    
+          :class="[{'active' : view === 'user'} ,'btn btn-secondary']">Employee</button>
+        <button 
+          type="button" 
+          @click="view = 'job'"          
+          :class="[{'active' : view === 'job'} ,'btn btn-secondary']">Jobs</button>
+      </div>
+
+      
 
     </template>
 
@@ -50,7 +56,7 @@
       <ul 
         id="dp-draggable" 
         class="res-menu">                
-        <template v-if="!view">
+        <template v-if="view === 'job'">
           <template v-for="res in this.sidebarResources">  
             <li 
               :key="res.id" 
@@ -95,8 +101,8 @@
         crosshair="Header"
         cell-width="Auto"
         :start-date="start"
-        :view="dpView"
-        :range="dpRange"                 
+        :view="view"
+        :range="range"                 
         :message="message"
         :time-header-auto-fit="false"
         :time-header-height="35"
@@ -108,11 +114,11 @@
       <assign-modal
         v-model="assignModal"
         :event="event"
-        :view="dpView"/> 
+        :view="view"/> 
       <update-modal
         v-model="updateModal"
         :event="event"
-        :view="dpView"/>   
+        :view="view"/>   
             
     </template>
 
@@ -126,9 +132,12 @@ import DatePicker from "../../../framework/BaseDatePicker.vue";
 import BaseDayPilot from "../schedules/BaseDayPilot.vue";
 import AssignModal from "../schedules/AssignModal.vue";
 import UpdateModal from "../schedules/UpdateModal.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "Scheduler",
+
+  mixins:[pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -143,8 +152,8 @@ export default {
       loading: false,
       message: "",
       event: null,
-      view: true,
-      range: true,
+      view: 'user',
+      range: 'Month',
       query: "",
       start: DayPilot.Date.today().firstDayOfMonth(),
       assignModal: false,
@@ -169,7 +178,7 @@ export default {
     },
 
     sidebarResources: function() {
-      if (this.view) {
+      if (this.view === 'user') {
         if (this.query != "")
           return this.getList(
             "job",
@@ -200,7 +209,7 @@ export default {
 
   watch: {
     view: function(value) {
-      this.scheduleView(value ? "user" : "job");
+      this.scheduleView(value);
     },
 
     start: function(value) {}
@@ -265,8 +274,8 @@ export default {
       console.log(event);
 
       let item = {};
-      item.user_id = this.dpView == "user" ? event.resourceId : event.eventId;
-      item.job_id = this.dpView == "job" ? event.resourceId : event.eventId;
+      item.user_id = this.view == "user" ? event.resourceId : event.eventId;
+      item.job_id = this.view == "job" ? event.resourceId : event.eventId;
       item.status = "tentative";
       item.start = event.start;
       item.end = event.end;
@@ -274,16 +283,17 @@ export default {
       item.break_length = 0;
       item.type = "schedule";
       item.event_type = "scheduled";
-
-      this.message = "Creating event, please wait...";
+      
       this.create({ resource: "schedule", data: item })
         .then(respond => {
-          this.message = "Event created successfuly.";
+          this.showMessage(
+            `Event created successfuly.`,
+            "success"
+          );
           this.$emit("input", false);
         })
-        .catch(error => {
-          this.message = "Error!!!";
-          console.log(error.response);
+        .catch(error => {          
+          this.showMessage(error.message, "danger");          
         });
     },
 
@@ -291,7 +301,6 @@ export default {
       console.log("move");
       console.log(event);
 
-      this.message = "updating...";
       this.update({
         resource: "schedule",
         id: event.eventId,
@@ -301,12 +310,17 @@ export default {
           end: event.newEnd
         }
       }).then(() => {
-        this.message = "event updated successfuly";
-      });
+        this.showMessage(
+            `Event updated successfuly.`,
+            "success"
+          );
+      })
+      .catch(error => {          
+          this.showMessage(error.message, "danger");          
+        });
     },
 
-    resizeHandler(event) {
-      this.message = "updating...";
+    resizeHandler(event) {      
       this.update({
         resource: "schedule",
         id: event.eventId,
@@ -315,18 +329,25 @@ export default {
           end: event.newEnd
         }
       }).then(() => {
-        this.message = "event updated successfuly";
-      });
+        this.showMessage(
+            `Event updated successfuly.`,
+            "success"
+          );
+      }).catch(error => {          
+          this.showMessage(error.message, "danger");          
+        });
     }
   }
 };
 </script>
 
 <style scoped>
-.popover {
-  display: none;
-  background-color: yellow;
-  padding: 10px;
+.btn-group .btn{
+  font-size: 0.8rem !important;
+}
+
+.btn-group .btn:first-child{
+  margin-left: 5px;
 }
 
 .dp-ctrl {

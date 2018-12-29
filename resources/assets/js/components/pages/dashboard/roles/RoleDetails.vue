@@ -230,9 +230,12 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import NavView from "../../../framework/NavView.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "RoleCreate",
+
+  mixins:[pageMixin],
 
   components: {
     "nav-view": NavView
@@ -279,20 +282,22 @@ export default {
       this.update({ resource: "role", id: this.id, data: this.form })
         .then(respond => {
           e.target.disabled = false;
-          console.log("role updated successfuly");
-          this.$router.push({name:'roleList'});
+          this.showMessage(
+            `Role <b>${this.form.name}</b> updated successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
-          console.log(error.response);
           e.target.disabled = false;
+          this.showMessage(error.message, "danger");          
           this.$formFeedback(error.response.data.errors);
         });
       e.preventDefault();
     },
 
     onCancel(e) {
-      this.$router.push({name:'roleList'});
       e.preventDefault();
+      this.$router.push({name:'roleList'});      
     }
   }
 };

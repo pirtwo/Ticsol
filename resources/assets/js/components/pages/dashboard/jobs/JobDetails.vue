@@ -241,9 +241,9 @@ export default {
   },
 
   watch: {
-    "form.form_id": function(value) {
-      if (value !== null && value !== undefined) {
-        this.schema = this.getList("form", item => item.id == value)[0].schema;
+    "form.profile": function(value) {
+      if (value.key) {
+        this.schema = this.getList("form", item => item.id == value.key)[0].schema;
       }
     }
   },
@@ -340,6 +340,8 @@ export default {
           this.currentJob.contacts.find(elm => elm.id === item.key)
         );
 
+        this.form.meta = this.currentJob.meta;
+
         this.schema =
           this.currentJob.form_id !== null
             ? this.getList(
@@ -384,9 +386,9 @@ export default {
           e.target.disabled = false;
         })
         .catch(error => {
-          this.showMessage(error.message, "danger");
-          this.$formFeedback(error.response.data.errors);
           e.target.disabled = false;
+          this.showMessage(error.message, "danger");
+          this.$formFeedback(error.response.data.errors);          
         });
     },
 

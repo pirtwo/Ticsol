@@ -58,15 +58,15 @@
 </template>
 
 <script>
-import LoggerMixin from "../../../../mixins/logger-mixin.js";
 import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import FormBuilder from "../../../framework/FormBuilder.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
-  name: "JobProfile",
+  name: "ProfileCreate",
 
-  mixins: [LoggerMixin],
+  mixins: [pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -89,22 +89,27 @@ export default {
       create: "resource/create"
     }),
 
-    onSubmit() {
+    onSubmit(e) {
+      e.preventDefault();      
+      e.target.disabled = true;
       this.form.schema = this.frmBuilder.actions.getData();
-
       this.create({ resource: "form", data: this.form })
         .then(() => {
-          console.log("Form created successfuly.");
-          this.$router.push({ name: "profileList" });
+          e.target.disabled = false;
+          this.showMessage(
+            `Profile <b>${this.form.name}</b> created successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
-          console.log(error.response);
-          this.logError(error);
+          e.target.disabled = false;
+          this.showMessage(error.message, "danger");  
           this.$formFeedback(error.response.data.errors);
         });
     },
 
-    onCancel() {
+    onCancel(e) {
+      e.preventDefault();   
       this.$router.push({ name: "profileList" });
     }
   }

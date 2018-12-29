@@ -50,11 +50,11 @@
             <div class="form-row">
               <label class="col-sm-2 col-form-label col-form-label-sm">Parent</label>
               <div class="col-sm-10">
-                <select-box
-                  v-model="form.parent_id"
+                <vb-select
+                  v-model="form.parent"
                   :size="'sm'"
                   :data="jobs"
-                  :multi-select="false"
+                  :multi="false"
                   id="parent_id"
                   name="jobParent"                                                                                                                                               
                   placeholder="select parent..."
@@ -143,7 +143,7 @@ export default {
         title: "",
         code: "",
         isactive: 1,
-        parent_id: null,
+        parent: {},
         form_id: null,
         meta: null
       },
@@ -190,8 +190,16 @@ export default {
     onSubmit(e) {
       e.target.disabled = true;
       e.target.innerHTML = "Saving...";
-      this.form.meta = JSON.stringify(this.formData);
-      this.create({ resource: "job", data: this.form })
+
+      let newJob = {};
+      newJob.title = this.form.title;
+      newJob.code = this.form.code;
+      newJob.parent_id = this.form.parent.key;
+      newJob.form_id = this.form.form_id;
+      newJob.isactive = this.form.isactive;
+      newJob.meta = this.form.meta;
+      
+      this.create({ resource: "job", data: newJob })
         .then(respond => {
           e.target.disabled = false;
           e.target.innerHTML = "Save";

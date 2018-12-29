@@ -52,21 +52,21 @@
               <div class="form-row">
                 <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }}</label>
                 <div class="col">
-                  <selelct-box
+                  <vb-select
                     v-model="form.event_id"
                     :default="form.event_id"
                     :data="eventList"
-                    :multi-select="false"
+                    :multi="false"
                     :name="view == 'user' ? 'job_id' : 'user_id'"                    
                     :placeholder="view == 'user' ? 'please select job' : 'please select user'"
                     search-placeholder="search...">
                     <template 
-                      slot="default-options" 
+                      slot="fixed-top" 
                       v-if="view == 'user'">
-                      <li @click="onCreateJob"><i>-- create new job --</i></li>
-                      <li><i>-- create new contact --</i></li>
+                      <li @click="onCreateJob"><i>-- CREATE NEW JOB --</i></li>
+                      <hr>
                     </template>  
-                  </selelct-box>
+                  </vb-select>
                 </div>
               </div>              
             </div>           
@@ -190,14 +190,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Selectbox from "../../../framework/BaseSelectBox.vue";
 import CreateJobModal from "../schedules/CreateJobModal.vue";
 
 export default {
   name: "AssignJobModal",
 
   components: {
-    "selelct-box": Selectbox,
     "job-modal": CreateJobModal
   },
 
@@ -225,7 +223,7 @@ export default {
       form: {
         resourceName: "",
         resource_id: null,
-        event_id: null,
+        event_id: {},
         status: "tentative",
         startTime: "",
         endTime: "",
@@ -296,9 +294,9 @@ export default {
     onSubmit(e) {
       let event = {};
       event.user_id =
-        this.view == "user" ? this.form.resource_id : this.form.event_id;
+        this.view == "user" ? this.form.resource_id : this.form.event_id.key;
       event.job_id =
-        this.view == "job" ? this.form.resource_id : this.form.event_id;
+        this.view == "job" ? this.form.resource_id : this.form.event_id.key;
       event.status = this.form.status.toLowerCase();
       event.start = this.form.start + "T" + this.form.startTime + ":00";
       event.end = this.form.end + "T" + this.form.endTime + ":00";
@@ -339,11 +337,13 @@ export default {
     },
 
     fillForm() {
+      let eventId = this.view == "user" ? this.event.job_id : this.event.user_id;
+      let resourceId = this.view == "user" ? this.event.user_id : this.event.job_id;
+
       this.form.resourceName = this.event.name;
-      this.form.resource_id =
-        this.view == "user" ? this.event.user_id : this.event.job_id;
+      this.form.resource_id = resourceId;        
       this.form.event_id =
-        this.view == "user" ? this.event.job_id : this.event.user_id;
+        this.eventList.find(item => item.key === eventId);        
       this.form.status = this.event.status;
       this.form.offsite = this.event.offsite;
       this.form.break_length = this.event.break_length;
