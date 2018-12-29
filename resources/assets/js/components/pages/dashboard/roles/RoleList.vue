@@ -13,7 +13,10 @@
     <template slot="drawer">
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
-        <li><router-link :to="{ name: 'roleCreate' }">New</router-link></li>
+        <li><router-link 
+          tag="button" 
+          class="btn btn-light" 
+          :to="{ name: 'roleCreate' }">New</router-link></li>
         <li class="menu-title">Links</li>                
       </ul>
     </template>

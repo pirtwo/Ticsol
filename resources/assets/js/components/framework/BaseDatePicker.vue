@@ -1,28 +1,23 @@
 <template>
-  <div class="wrap-datepicker d-flex align-items-center">
-    <div>
+  <div class="vb-datepicker d-flex align-items-center">
+    <div 
+      class="btn-group" 
+      role="group" 
+      aria-label="select date">
       <button 
-        @click="onBack" 
         type="button" 
-        class="btn btn-sm btn-light btn-left">
-        <i class="material-icons">keyboard_arrow_left</i>
-      </button>
-      <div class="datepicker-body">
-        <button 
-          @click="onToday" 
-          type="button" 
-          class="btn btn-sm btn-light">
-          Today
-        </button>
-        <div>{{ todayToText }}</div>
-      </div>
+        class="btn btn-sm btn-secondary" 
+        @click="onBack" ><i class="material-icons">keyboard_arrow_left</i></button>
       <button 
-        @click="onNext" 
         type="button" 
-        class="btn btn-sm btn-light btn-right">
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-    </div>        
+        class="btn btn-sm btn-secondary" 
+        @click="onToday" >Today</button>
+      <button 
+        type="button" 
+        class="btn btn-sm btn-secondary" 
+        @click="onNext" ><i class="material-icons">keyboard_arrow_right</i></button>
+    </div>
+    <div class="vb-datepicker__range">{{ todayToText }}</div>
   </div>
 </template>
 
@@ -46,7 +41,8 @@ export default {
 
   data() {
     return {
-      today: this.getToday()
+      today: this.getToday(),
+      picker: {}
     };
   },
 
@@ -54,23 +50,26 @@ export default {
     range: function(value) {
       this.today = this.getToday();
       this.$emit("input", this.today);
-    },
-
-    // today: function(value) {
-    //   console.log(value);
-    // }
+    }
   },
 
   computed: {
     todayToText: function() {
       return this.range == "Month"
         ? this.today.toString("MMM yyyy")
-        : `W${this.today.weekNumber()} ${this.today.toString("yyyy")}`;
+        : `${this.today.toString("MMM dd")} - ${this.today.addDays(6).toString("MMM dd")}`;
     }
   },
 
   mounted() {
     this.today = this.getToday();
+    // this.picker = new DayPilot.DatePicker({
+    //     target: 'range', 
+    //     pattern: 'yyyy-MM-dd', 
+    //     onTimeRangeSelected: function(args) { 
+    //         console.log(args.date);
+    //     }
+    //   });
   },
 
   methods: {
@@ -80,7 +79,7 @@ export default {
         : DayPilot.Date.today().firstDayOfWeek();
     },
 
-    onToday() {
+    onToday() {      
       this.today = this.getToday();
       this.$emit("input", this.today);
     },
@@ -105,44 +104,25 @@ export default {
 </script>
 
 <style scoped>
-.wrap-datepicker {
-  border: 1px solid black;
-  overflow: hidden;
+.vb-datepicker {
+  color: white;  
+  overflow: hidden;   
+  background-color: #6c757d;
+  border: 1px solid rgba(0, 0, 0, 0.1);  
 }
 
-.wrap-datepicker div {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.datepicker-body {
-  width: 120px;
+.vb-datepicker__range{
+  padding: 0px 5px;
   font-size: 0.8rem;
-  vertical-align: middle;
-  display: inline-block;
 }
 
-.datepicker-body .btn {
+.btn-group .btn{
   font-size: 0.8rem;
-  padding: 6px;
-  margin-right: 3px;
 }
 
-.btn {
-  font-size: 1rem;
-  display: inline-block;
-}
-
-.btn i {
-  font-size: 1rem;
+.btn-group .btn i {
+  font-size: 0.8rem;
   line-height: 1;
-}
-
-.btn-left {
-  border-right: 1px solid black;
-}
-
-.btn-right {
-  border-left: 1px solid black;
+  vertical-align: baseline;
 }
 </style>
