@@ -1,6 +1,6 @@
 <template>
-  <div
-    ref="vbSelect"
+  <div 
+    ref="vbSelect" 
     class="vb-select">
     <input
       readonly
@@ -8,21 +8,23 @@
       type="text"
       :class="[`form-control-${size}`,'vb-select__input form-control']"
       :value="inputText"
-      :placeholder="placeholder" 
-      @focus="focusHandler">
+      :placeholder="placeholder"
+      @focus="focusHandler"
+    >
 
     <!-- toggole btn-->
     <button
       type="button"
       class="vb-select__toggleBtn btn btn-sm btn-link"
-      @click="dropdownStatus = !dropdownStatus">
+      @click="dropdownStatus = !dropdownStatus"
+    >
       <i class="material-icons">{{ dropdownStatus ? 'expand_less' : 'expand_more' }}</i>
     </button>
 
     <!-- dropdown -->
-    <div
-      ref="dropdown"
-      v-show="dropdownStatus"
+    <div 
+      ref="dropdown" 
+      v-show="dropdownStatus" 
       class="vb-select__dropdown">
       <!-- searchbox -->
       <input
@@ -31,35 +33,39 @@
         class="vb-select__dropdown__search form-control form-control-sm"
         v-model="searchQuery"
         v-if="searchEnable"
-        :placeholder="searchPlaceholder"><!-- END searchbox -->
-
+        :placeholder="searchPlaceholder"
+      >
+      <!-- END searchbox -->
       <!-- options-->
       <ul class="vb-select__dropdown__list">
-        <slot
-          v-if="options.length != 0"
+        <slot 
+          v-if="options.length != 0" 
           name="fixed-top"/>
         <li
           v-for="(value, index) in options"
           :key="index"
           :class="[{ 'vb-select__dropdown__list__option--selected': isSelected(value) }]"
-          @click="selectHandler(value, $event)">
+          @click="selectHandler(value, $event)"
+        >
           <slot :item="value">{{ value.value }}</slot>
         </li>
-        <slot
-          v-if="options.length != 0"
+        <slot 
+          v-if="options.length != 0" 
           name="fixed-bottom"/>
-        <slot
-          v-if="options.length === 0"
+        <slot 
+          v-if="options.length === 0" 
           name="notfound-message"/>
-      </ul><!-- END options -->
-
-    </div><!-- END dropdown-->
-  </div><!-- END vb-select -->
+      </ul>
+      <!-- END options -->
+    </div>
+    <!-- END dropdown-->
+  </div>
+  <!-- END vb-select -->
 </template>
 
 <script>
 export default {
-  name: 'VbSelect',
+  name: "VbSelect",
 
   props: {
     value: {
@@ -69,7 +75,7 @@ export default {
     data: {
       type: Array,
       default: () => {
-        return []
+        return [];
       }
     },
     multi: {
@@ -78,22 +84,22 @@ export default {
     },
     id: {
       type: String,
-      default: ''
+      default: ""
     },
     name: {
       type: String,
-      default: ''
+      default: ""
     },
     size: {
       type: String,
-      default: 'md',
-      validator: function (value) {
-        return ['sm', 'md', 'lg'].indexOf(value.toLowerCase()) > -1
+      default: "md",
+      validator: function(value) {
+        return ["sm", "md", "lg"].indexOf(value.toLowerCase()) > -1;
       }
     },
     placeholder: {
       type: String,
-      default: ''
+      default: ""
     },
     searchEnable: {
       type: Boolean,
@@ -101,123 +107,135 @@ export default {
     },
     searchPlaceholder: {
       type: String,
-      default: 'search...'
+      default: "search..."
     }
   },
 
-  data () {
+  data() {
     return {
       selects: this.multi ? this.value : Array(this.value),
       dropdownStatus: false,
-      searchQuery: ''
-    }
+      searchQuery: ""
+    };
   },
 
   watch: {
-    value: function (value) {        
+    value: function(value) {
       if (this.multi) {
-        this.selects = [...value]
+        this.selects = [...value];
       } else {
-        this.selects = []
-        this.selects.push(value)
+        this.selects = [];
+        this.selects.push(value);
       }
     },
 
-    data: function (value) {
-      this.selects = []
+    data: function(value) {
+      this.selects = [];
     },
 
-    multi: function (value) {
-      this.selects = []
+    multi: function(value) {
+      this.selects = [];
     },
 
-    dropdownStatus: function (value) {
+    dropdownStatus: function(value) {
       if (value) {
-        this.$refs.dropdown.classList.remove('vb-select__dropdown--close')
-        this.$refs.dropdown.classList.add('vb-select__dropdown--open')
+        this.$refs.dropdown.classList.remove("vb-select__dropdown--close");
+        this.$refs.dropdown.classList.add("vb-select__dropdown--open");
       } else {
-        this.$refs.dropdown.classList.remove('vb-select__dropdown--open')
-        this.$refs.dropdown.classList.add('vb-select__dropdown--close')
+        this.$refs.dropdown.classList.remove("vb-select__dropdown--open");
+        this.$refs.dropdown.classList.add("vb-select__dropdown--close");
       }
-      this.searchQuery = ''
+      this.searchQuery = "";
     }
   },
 
   computed: {
-    options: function () {
+    options: function() {
       return this.data.filter(
-        item => item.value.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1)
+        item =>
+          item.value.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
+      );
     },
 
-    inputText: function () {
+    inputText: function() {
       if (this.multi) {
-        if (this.selects.length === 0) return ''
-        return `${this.selects.length} item selected`
+        if (this.selects.length === 0) return "";
+        return `${this.selects.length} item selected`;
       } else {
-        if (this.selects[0] === undefined) return ''
-        return this.selects[0].value
+        if (this.selects[0] === undefined) return "";
+        return this.selects[0].value;
       }
     }
   },
 
-  created () {
-    document.addEventListener('click', this.docClickHandler)
+  created() {
+    document.addEventListener("click", this.docClickHandler);
   },
 
-  mounted () {
+  mounted() {
     //
   },
 
-  destroyed () {
-    document.removeEventListener('click', this.docClickHandler)
+  destroyed() {
+    document.removeEventListener("click", this.docClickHandler);
   },
 
   methods: {
-    selectHandler (item, event) {
-      if (this.multi) {
+    selectHandler(item, event) {
+      if (this.multi) {        
         if (!this.isSelected(item)) {
-          this.selects.push(item)
-          this.$emit('input', [...this.selects])
+          this.selects.push(item);
+          this.$emit("input", [...this.selects]);
         } else {
           this.selects.splice(
-            this.selects.findIndex(fn => fn.key === item.key && fn.value === item.value), 1)
-          this.$emit('input', [...this.selects])
+            this.selects.findIndex(
+              fn => fn.key === item.key && fn.value === item.value
+            ),
+            1
+          );
+          this.$emit("input", [...this.selects]);
         }
       } else {
-        this.dropdownStatus = false
-        this.selects = []
-        this.selects.push(item)
-        this.$emit('input', this.selects[0])
+        this.dropdownStatus = false;
+        this.selects = [];
+        this.selects.push(item);
+        this.$emit("input", this.selects[0]);
       }
     },
 
-    focusHandler (event) {
-      this.dropdownStatus = true
-      this.$refs.input.blur()
-      if (this.searchEnable) { this.$refs.searchbox.focus() }
+    focusHandler(event) {
+      this.dropdownStatus = true;
+      this.$refs.input.blur();
+      if (this.searchEnable) {
+        this.$refs.searchbox.focus();
+      }
     },
 
-    isExist (option) {
-      return this.data.find(item => item.key === option.key && item.value === option.value) != null
+    isExist(option) {
+      return (
+        this.data.find(
+          item => item.key === option.key && item.value === option.value
+        ) != null
+      );
     },
 
-    isSelected (option) {
+    isSelected(option) {
       return (
         this.selects.find(
-          item => item.key == option.key && item.value == option.value
+          item => item.key === option.key && item.value === option.value
         ) != null
-      )
+      );
     },
 
-    docClickHandler (event) {
-      let selectbox = this.$refs.vbSelect
-      let target = event.target
+    docClickHandler(event) {
+      let selectbox = this.$refs.vbSelect;
+      let target = event.target;
       if (selectbox !== target && !selectbox.contains(target)) {
-        this.dropdownStatus = false
+        this.dropdownStatus = false;
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -257,26 +275,38 @@ export default {
   border-radius: 0px 0px 5px 5px;
 }
 
-.vb-select__dropdown--open{
+.vb-select__dropdown--open {
   animation-name: dropdown-open;
   animation-duration: 0.3s;
   opacity: 1;
 }
 
-.vb-select__dropdown--close{
-  animation-name: dropdown-close ;
+.vb-select__dropdown--close {
+  animation-name: dropdown-close;
   animation-duration: 0.3s;
   opacity: 0;
 }
 
-@keyframes dropdown-open{
-  from { top: -30px; opacity: 0; }
-  to { top: 100%; opacity: 1; }
+@keyframes dropdown-open {
+  from {
+    top: -30px;
+    opacity: 0;
+  }
+  to {
+    top: 100%;
+    opacity: 1;
+  }
 }
 
-@keyframes dropdown-close{
-  from { top: 100%; opacity: 1; }
-  to { top: -30px; opacity: 0; }
+@keyframes dropdown-close {
+  from {
+    top: 100%;
+    opacity: 1;
+  }
+  to {
+    top: -30px;
+    opacity: 0;
+  }
 }
 
 .vb-select__dropdown__list {
@@ -294,8 +324,8 @@ export default {
   text-align: left;
   cursor: pointer;
   margin: 0px 5px;
-  padding: 1px 10px;
-  border-radius: 4px;
+  padding: 5px 10px;
+  border-radius: 0px;
 }
 
 .vb-select__dropdown__list li:last-child {

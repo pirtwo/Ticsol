@@ -72,18 +72,19 @@
         </div>        
       </nav>
 
+      <vb-snackbar          
+        v-model="snackbar.show" 
+        :class="['snackbar', snackbar.theme]"        
+        :fixed="snackbar.fixed"
+        :timeout="snackbar.timeout"
+        @hide="onSnackbarHide">
+        <span v-html="snackbar.message"/>
+      </vb-snackbar>
+
       <div 
         class="content" 
         :class="[{ 'scrollbar-show' : scrollbar}, padding]"              
-        v-show="!loading">
-        <vb-snackbar          
-          v-model="snackbar.show" 
-          :class="['snackbar', snackbar.theme]"        
-          :fixed="snackbar.fixed"
-          :timeout="snackbar.timeout"
-          @hide="onSnackbarHide">
-          <span v-html="snackbar.message"/>
-        </vb-snackbar>
+        v-show="!loading">        
         <slot name="content"/>
       </div>            
     </div>
@@ -238,7 +239,7 @@ export default {
 .snackbar{
   position: absolute;
   left: 0px;
-  top: 0px;
+  top: 55px;
   width: 100%;
   height: 50px;
 }

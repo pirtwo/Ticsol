@@ -4,10 +4,10 @@
     class="vb-snackbar">
     <div class="d-flex align-items-center">
       <slot/>
-      <button         
+      <button 
         type="button" 
         class="close ml-auto" 
-        aria-label="Close"
+        aria-label="Close" 
         @click="hideSnackbar">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -35,13 +35,13 @@ export default {
   },
 
   watch: {
-    value: function(value) {      
+    value: function(value) {
       if (value) this.showSnackbar();
     }
   },
 
   methods: {
-    showSnackbar() {      
+    showSnackbar() {
       this.$emit("show");
       this.$refs.vbSnackbar.classList.remove("vb-snackbar--hide");
       this.$refs.vbSnackbar.classList.add("vb-snackbar--show");
@@ -50,7 +50,7 @@ export default {
       }
     },
 
-    hideSnackbar() {            
+    hideSnackbar() {
       this.$refs.vbSnackbar.classList.remove("vb-snackbar--show");
       this.$refs.vbSnackbar.classList.add("vb-snackbar--hide");
       this.$emit("input", false);
@@ -62,45 +62,43 @@ export default {
 
 <style scoped>
 .vb-snackbar {
-  visibility: visible;
+  visibility: hidden;
   border-radius: 0px;
   opacity: 0;
   z-index: 10;
 }
 
-.vb-snackbar__close{
-    padding: 5px;
-    cursor: pointer;
+.vb-snackbar__close {
+  padding: 5px;
+  cursor: pointer;
 }
 
-.vb-snackbar--show { 
+.vb-snackbar--show {
+  visibility: visible;
   opacity: 1;
   animation: fadein 0.3s;
 }
 
-.vb-snackbar--hide { 
-  opacity: 0; 
+.vb-snackbar--hide {
+  visibility: hidden;
+  opacity: 0;
   animation: fadeout 0.3s;
 }
 
 @keyframes fadein {
   from {
-    top: -50px;
     opacity: 0;
   }
   to {
-    top: 0px;
     opacity: 1;
   }
 }
 
 @keyframes fadeout {
   from {
-    top: 0px;
     opacity: 1;
   }
   to {
-    top: -50px;
     opacity: 0;
   }
 }
