@@ -3,51 +3,45 @@
     :scrollbar="true" 
     :loading="isLoading" 
     padding="p-5">
-
     <template slot="toolbar"/>
 
     <template slot="drawer">
-
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">                        
-            Save
-          </button>
+            @click="onSubmit">Save</button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">                        
-            Cancel
-          </button>
+            @click="onCancel">Cancel</button>
         </li>
         <li class="menu-title">Links</li>
-        <li><router-link 
-          class="btn btn-link" 
-          :to="{ name: 'jobList' }">Jobs</router-link></li>
+        <li>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name: 'jobList' }">Jobs</router-link>
+        </li>
       </ul>
-
     </template>
 
     <template slot="content">
-
       <form 
         class="needs-validation" 
         novalidate>
-                
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Title</label>
             <div class="col-sm-10">
-              <input 
-                v-model="form.title" 
-                id="title" 
-                type="text" 
-                class="form-control" 
-                placeholder="job title">
+              <input
+                v-model="form.title"
+                id="title"
+                type="text"
+                class="form-control"
+                placeholder="job title"
+              >
             </div>
           </div>
         </div>
@@ -56,12 +50,13 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Code</label>
             <div class="col-sm-10">
-              <input 
-                v-model="form.code" 
-                id="code" 
-                type="text" 
-                class="form-control" 
-                placeholder="display code">
+              <input
+                v-model="form.code"
+                id="code"
+                type="text"
+                class="form-control"
+                placeholder="display code"
+              >
             </div>
           </div>
         </div>
@@ -70,12 +65,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Parent</label>
             <div class="col-sm-10">
-              <select-box
-                v-model="form.parent_id"
+              <vb-select
+                v-model="form.parent"
                 :data="jobs"
-                :multi-select="false"
                 id="parent_id"
-                name="jobParent"                                                                                                                                               
+                name="jobParent"
                 placeholder="select parent..."
                 search-placeholder="search..."
               />
@@ -87,12 +81,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Profile</label>
             <div class="col-sm-10">
-              <select-box
-                v-model="form.form_id"
+              <vb-select
+                v-model="form.profile"
                 :data="profiles"
-                :multi-select="false" 
                 id="form_id"
-                name="jobProfile"                                                                                                                                              
+                name="jobProfile"
                 placeholder="select profile..."
                 search-placeholder="search..."
               />
@@ -104,12 +97,12 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Contacts</label>
             <div class="col-sm-10">
-              <select-box
+              <vb-select
                 v-model="form.contacts"
                 :data="contacts"
-                :multi-select="true" 
+                :multi="true"
                 id="contacts"
-                name="contacts"                                                                                                                                              
+                name="contacts"
                 placeholder="select contacts..."
                 search-placeholder="search..."
               />
@@ -122,48 +115,47 @@
             <label class="col-sm-12 col-form-label">Status</label>
 
             <div class="custom-control custom-radio custom-control-inline">
-              <input 
-                v-model="form.isactive" 
-                type="radio" 
-                id="jobEnable" 
-                name="status" 
-                value="1" 
-                class="custom-control-input" 
-                checked>
+              <input
+                v-model="form.isactive"
+                type="radio"
+                id="jobEnable"
+                name="status"
+                value="1"
+                class="custom-control-input"
+                checked
+              >
               <label 
                 class="custom-control-label" 
                 for="jobEnable">Enable</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input 
-                v-model="form.isactive" 
-                type="radio" 
-                id="jobDisable" 
-                name="status" 
-                value="0" 
-                class="custom-control-input">
+              <input
+                v-model="form.isactive"
+                type="radio"
+                id="jobDisable"
+                name="status"
+                value="0"
+                class="custom-control-input"
+              >
               <label 
                 class="custom-control-label" 
                 for="jobDisable">Disable</label>
-            </div>                        
+            </div>
           </div>
         </div>
-
       </form>
 
       <form-gen 
         :schema="schema" 
         v-model="form.meta"/>
-
     </template>
   </nav-view>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import PageMixin from '../../../../mixins/page-mixin.js';
+import PageMixin from "../../../../mixins/page-mixin.js";
 import NavView from "../../../framework/NavView.vue";
-import Selectbox from "../../../framework/BaseSelectBox.vue";
 import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue";
 
 export default {
@@ -173,8 +165,7 @@ export default {
 
   components: {
     "nav-view": NavView,
-    "form-gen": FormGen,
-    "select-box": Selectbox
+    "form-gen": FormGen
   },
 
   data() {
@@ -183,11 +174,11 @@ export default {
         title: "",
         code: "",
         isactive: 1,
-        parent_id: null,
-        form_id: null,
+        parent: {},
+        profile: {},
         contacts: [],
         meta: null
-      },
+      }
     };
   },
 
@@ -217,10 +208,10 @@ export default {
     schema: function() {
       let profile = this.getList(
         "form",
-        item => item.id == this.form.form_id
+        item => item.id == this.form.profile.key
       )[0];
       if (profile !== undefined) {
-        let s = profile.schema;        
+        let s = profile.schema;
         return profile.schema;
       }
     }
@@ -239,9 +230,9 @@ export default {
       .then(() => {
         this.loadingStop();
       })
-      .catch(error => {       
+      .catch(error => {
         this.loadingStop();
-        this.showMessage(error.message, 'danger'); 
+        this.showMessage(error.message, "danger");
       });
   },
 
@@ -255,16 +246,29 @@ export default {
     onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
-      this.create({ resource: "job", data: this.form })
+
+      let form = {};
+      form.title = this.form.title;
+      form.code = this.form.code;
+      form.isactive = this.form.isactive;
+      form.parent_id = this.form.parent.key;
+      form.form_id = this.form.profile.key;
+      form.contacts = this.form.contacts.map(item => item.key);
+      form.meta = this.form.meta;
+
+      this.create({ resource: "job", data: form })
         .then(respond => {
           e.target.disabled = false;
-          this.showMessage(`Job <b>${this.form.title}</b> created successfuly.`, 'success');
+          this.showMessage(
+            `Job <b>${form.title}</b> created successfuly.`,
+            "success"
+          );
         })
-        .catch(error => {          
-          e.target.disabled = false; 
-          this.showMessage(error.message, 'danger');         
-          this.$formFeedback(error.response.data.errors);          
-        });      
+        .catch(error => {
+          e.target.disabled = false;
+          this.showMessage(error.message, "danger");
+          this.$formFeedback(error.response.data.errors);
+        });
     },
 
     onCancel(e) {

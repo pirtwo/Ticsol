@@ -3,7 +3,6 @@
     :scrollbar="true" 
     :loading="isLoading" 
     padding="p-5">
-
     <template slot="toolbar"/>
 
     <template slot="drawer">
@@ -11,24 +10,19 @@
         <li class="menu-title">Actions</li>
         <li>
           <router-link 
-            :to="{ name:'jobCreate' }" 
-            class="btn btn-light">
-            New
-          </router-link>
+            class="btn btn-light" 
+            tag="button" 
+            :to="{ name:'jobCreate' }">New</router-link>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSave">
-            Save
-          </button>
+            @click="onSave">Save</button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">
-            Cancel
-          </button>
+            @click="onCancel">Cancel</button>
         </li>
         <li class="menu-title">Links</li>
         <li>
@@ -37,67 +31,70 @@
             :to="{ name: 'jobList' }">Jobs</router-link>
         </li>
         <li>
-          <router-link 
-            class="btn btn-link" 
-            :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }">Schedule
-            Items</router-link>
+          <router-link
+            class="btn btn-link"
+            :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }"
+          >
+            Schedule
+            Items
+          </router-link>
         </li>
         <li>
-          <router-link 
-            class="btn btn-link" 
-            :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }">Comments</router-link>
+          <router-link
+            class="btn btn-link"
+            :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }"
+          >Comments</router-link>
         </li>
         <li>
-          <router-link 
-            :class="[{'disabled' : this.relatedActivities === null}, 'btn btn-link' ]" 
+          <router-link
+            :class="[{'disabled' : this.relatedActivities === null}, 'btn btn-link' ]"
             role="button"
-            :aria-disabled="this.relatedActivities === null" 
-            :to="{ name: 'activityList', params : { col: 'id', opt: 'in', val: this.relatedActivities } }">
-            Activity Reports</router-link>
+            :aria-disabled="this.relatedActivities === null"
+            :to="{ name: 'activityList', params : { col: 'id', opt: 'in', val: this.relatedActivities } }"
+          >Activity Reports</router-link>
         </li>
         <li>
-          <router-link 
-            :class="[{'disabled' : this.relatedJobs === null}, 'btn btn-link' ]" 
+          <router-link
+            :class="[{'disabled' : this.relatedJobs === null}, 'btn btn-link' ]"
             role="button"
-            :aria-disabled="this.relatedJobs === null" 
-            :to="{ name: 'jobList', params : { col: 'id', opt: 'in', val: this.relatedJobs } }">
-            Related Jobs</router-link>
+            :aria-disabled="this.relatedJobs === null"
+            :to="{ name: 'jobList', params : { col: 'id', opt: 'in', val: this.relatedJobs } }"
+          >Related Jobs</router-link>
         </li>
         <li>
-          <router-link 
-            :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]" 
+          <router-link
+            :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]"
             role="button"
-            :aria-disabled="this.relatedRequests === null" 
-            :to="{ name: 'requestList', params : { col: 'job_id', opt: 'in', val: this.relatedRequests } }">
-            Related Requests</router-link>
+            :aria-disabled="this.relatedRequests === null"
+            :to="{ name: 'requestList', params : { col: 'job_id', opt: 'in', val: this.relatedRequests } }"
+          >Related Requests</router-link>
         </li>
         <li>
-          <router-link 
-            :class="[{'disabled' : this.relatedContacts === null}, 'btn btn-link' ]" 
+          <router-link
+            :class="[{'disabled' : this.relatedContacts === null}, 'btn btn-link' ]"
             role="button"
-            :aria-disabled="this.relatedContacts === null" 
-            :to="{ name: 'contactList', params : { col: 'id', opt: 'in', val: this.relatedContacts } }">
-            Related Contacts</router-link>
+            :aria-disabled="this.relatedContacts === null"
+            :to="{ name: 'contactList', params : { col: 'id', opt: 'in', val: this.relatedContacts } }"
+          >Related Contacts</router-link>
         </li>
       </ul>
     </template>
 
     <template slot="content">
-
       <form 
         class="needs-validation" 
         novalidate>
-
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Title</label>
             <div class="col-sm-10">
-              <input 
-                v-model="form.title" 
-                id="title" 
-                type="text" 
-                class="form-control" 
-                placeholder="job title" >
+              <input
+                v-model="form.title"
+                id="title"
+                type="text"
+                class="form-control"
+                placeholder="job title"
+              >
             </div>
           </div>
         </div>
@@ -106,12 +103,13 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Code</label>
             <div class="col-sm-10">
-              <input 
-                v-model="form.code" 
-                id="code" 
-                type="text" 
-                class="form-control" 
-                placeholder="display code" >
+              <input
+                v-model="form.code"
+                id="code"
+                type="text"
+                class="form-control"
+                placeholder="display code"
+              >
             </div>
           </div>
         </div>
@@ -120,15 +118,14 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Parent</label>
             <div class="col-sm-10">
-              <select-box 
-                v-model="form.parent_id" 
-                :data="jobs" 
-                :default="defaultParent" 
-                :multi-select="false" 
+              <vb-select
+                v-model="form.parent"
+                :data="jobs"
                 id="parent_id"
-                name="jobParent" 
-                placeholder="select parent..." 
-                search-placeholder="search..."/>
+                name="jobParent"
+                placeholder="select parent..."
+                search-placeholder="search..."
+              />
             </div>
           </div>
         </div>
@@ -137,15 +134,14 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Profile</label>
             <div class="col-sm-10">
-              <select-box 
-                v-model="form.form_id" 
-                :data="profiles" 
-                :default="defaultProfile" 
-                :multi-select="false" 
+              <vb-select
+                v-model="form.profile"
+                :data="profiles"
                 id="form_id"
-                name="jobProfile" 
-                placeholder="select profile..." 
-                search-placeholder="search..."/>
+                name="jobProfile"
+                placeholder="select profile..."
+                search-placeholder="search..."
+              />
             </div>
           </div>
         </div>
@@ -154,14 +150,15 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Contacts</label>
             <div class="col-sm-10">
-              <select-box 
-                v-model="form.contacts" 
-                :data="contacts" 
-                :multi-select="true" 
+              <vb-select
+                v-model="form.contacts"
+                :data="contacts"
+                :multi="true"
                 id="contacts"
-                name="contacts" 
-                placeholder="select contacts..." 
-                search-placeholder="search..."/>
+                name="contacts"
+                placeholder="select contacts..."
+                search-placeholder="search..."
+              />
             </div>
           </div>
         </div>
@@ -171,26 +168,28 @@
             <label class="col-sm-12 col-form-lable">Status</label>
 
             <div class="custom-control custom-radio custom-control-inline">
-              <input 
-                v-model="form.isactive" 
-                type="radio" 
-                id="jobEnable" 
-                name="status" 
-                value="1" 
+              <input
+                v-model="form.isactive"
+                type="radio"
+                id="jobEnable"
+                name="status"
+                value="1"
                 class="custom-control-input"
-                checked>
+                checked
+              >
               <label 
                 class="custom-control-label" 
                 for="jobEnable">Enable</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input 
-                v-model="form.isactive" 
-                type="radio" 
-                id="jobDisable" 
-                name="status" 
-                value="0" 
-                class="custom-control-input">
+              <input
+                v-model="form.isactive"
+                type="radio"
+                id="jobDisable"
+                name="status"
+                value="0"
+                class="custom-control-input"
+              >
               <label 
                 class="custom-control-label" 
                 for="jobDisable">Disable</label>
@@ -201,50 +200,43 @@
         <form-gen 
           :schema="schema" 
           v-model="form.meta"/>
-
       </form>
-
     </template>
   </nav-view>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import PageMixin from '../../../../mixins/page-mixin.js';
+import PageMixin from "../../../../mixins/page-mixin.js";
 import NavView from "../../../framework/NavView.vue";
-import Selectbox from "../../../framework/BaseSelectBox.vue";
 import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue";
 
 export default {
   name: "JobDetails",
 
-  mixins:[PageMixin],
+  mixins: [PageMixin],
 
   components: {
     "nav-view": NavView,
-    "form-gen": FormGen,
-    "select-box": Selectbox
+    "form-gen": FormGen
   },
 
   props: ["id"],
 
   data() {
     return {
+      currentJob: null,
+      schema: "",
+      formData: "",
       form: {
         title: "",
         code: "",
         isactive: 1,
-        parent_id: null,
-        form_id: null,
+        parent: {},
+        profile: {},
         contacts: [],
         meta: null
-      },
-      currentJob: null,
-      schema: "",
-      formData: "",
-      defaultParent: null,
-      defaultProfile: null,
-      defaultContacts: null,
+      }
     };
   },
 
@@ -331,17 +323,32 @@ export default {
     Promise.all([p1, p2, p3])
       .then(() => {
         this.currentJob = this.getList("job", item => item.id == this.id)[0];
-        this.defaultParent = this.currentJob.parent_id;
-        this.defaultProfile = this.currentJob.form_id;
-        this.form.contacts = this.currentJob.contacts.map(item => item.id);
-        if (this.currentJob.form_id !== null) {
-          this.schema = this.getList(
-            "form",
-            item => item.id == this.currentJob.form_id
-          )[0].schema;
-        }
-        Object.assign(this.form, this.currentJob);
-        this.loadingStop();     
+        this.form.title = this.currentJob.title;
+        this.form.code = this.currentJob.code;
+
+        this.form.parent =
+          this.currentJob.parent_id !== null
+            ? this.jobs.find(item => item.key == this.currentJob.parent_id)
+            : {};
+
+        this.form.profile =
+          this.currentJob.form_id !== null
+            ? this.profiles.find(item => item.key == this.currentJob.form_id)
+            : {};
+
+        this.form.contacts = this.contacts.filter(item =>
+          this.currentJob.contacts.find(elm => elm.id === item.key)
+        );
+
+        this.schema =
+          this.currentJob.form_id !== null
+            ? this.getList(
+                "form",
+                item => item.id == this.currentJob.form_id
+              )[0].schema
+            : null;
+
+        this.loadingStop();
       })
       .catch(error => {
         console.log(error);
@@ -356,22 +363,30 @@ export default {
     }),
 
     onSave(e) {
+      e.preventDefault();
+      e.target.disabled = true;
+
       let form = {};
       form.title = this.form.title;
       form.code = this.form.code;
       form.isactive = this.form.isactive;
-      form.parent_id = this.form.parent_id;
-      form.form_id = this.form.form_id;
-      form.contacts = this.form.contacts;
+      form.parent_id = this.form.parent.key;
+      form.form_id = this.form.profile.key;
+      form.contacts = this.form.contacts.map(item => item.key);
       form.meta = this.form.meta;
 
       this.update({ resource: "job", id: this.id, data: form })
         .then(() => {
-          this.showMessage(`job <b>${form.title}</b> updated successfuly.`, 'success');          
+          this.showMessage(
+            `job <b>${form.title}</b> updated successfuly.`,
+            "success"
+          );
+          e.target.disabled = false;
         })
-        .catch(error => {          
-          this.showMessage(error.message, 'danger');
+        .catch(error => {
+          this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
+          e.target.disabled = false;
         });
     },
 
@@ -382,5 +397,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>
