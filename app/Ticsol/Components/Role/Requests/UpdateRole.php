@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 
 class UpdateRole extends FormRequest
 {
+    protected $roleId;
     protected $clientId = null;
 
     /**
@@ -17,6 +18,7 @@ class UpdateRole extends FormRequest
     public function authorize()
     {
         $this->clientId = $this->user()->client_id;
+        $this->roleId = $this->route('id');
         return true;
     }
 
@@ -28,7 +30,12 @@ class UpdateRole extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'nullable|string',
+            'name'          => [
+                'required',
+                Rule::unique('ts_roles')->where(function($query){
+                    $query->where('client_id', $this->clientId)
+                        ->where('id', '!=', $this->roleId);
+                })],
             'permissions'   => 'nullable|array',
             'users'         => 'nullable|array',
             'users.*'       => Rule::exists('ts_users', 'id')->where(function ($query) {
