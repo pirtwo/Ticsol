@@ -23,20 +23,13 @@ export default {
     value: {
       type: Boolean,
       default: false
-    },
-    fixed: {
-      type: Boolean,
-      default: false
-    },
-    timeout: {
-      type: Number,
-      default: 3000
     }
   },
 
   watch: {
     value: function(value) {
-      if (value) this.showSnackbar();
+      if (value) this.showSnackbar()
+      else this.hideSnackbar();
     }
   },
 
@@ -45,14 +38,11 @@ export default {
       this.$emit("show");
       this.$refs.vbSnackbar.classList.remove("vb-snackbar--hide");
       this.$refs.vbSnackbar.classList.add("vb-snackbar--show");
-      if (!this.fixed) {
-        setTimeout(this.hideSnackbar, this.timeout);
-      }
     },
 
-    hideSnackbar() {
+    hideSnackbar() {      
       this.$refs.vbSnackbar.classList.remove("vb-snackbar--show");
-      this.$refs.vbSnackbar.classList.add("vb-snackbar--hide");
+      this.$refs.vbSnackbar.classList.add("vb-snackbar--hide");          
       this.$emit("input", false);
       this.$emit("hide");
     }

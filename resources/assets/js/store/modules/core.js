@@ -4,8 +4,8 @@ export const coreModule = {
 
     namespaced: true,
 
-    state: {        
-        logs:[],
+    state: {
+        logs: [],
 
         ui: {
             fullscreen: false,
@@ -18,9 +18,9 @@ export const coreModule = {
         drawer: {
             show: true,
             message: ''
-        },       
+        },
 
-        snackbar:{
+        snackbar: {
             show: false,
             message: '',
             theme: '',
@@ -55,7 +55,7 @@ export const coreModule = {
         getAppLogs(state) {
             return state.logs;
         },
-        
+
         getUiFullscreen(state) {
             return state.ui.fullscreen;
         },
@@ -84,7 +84,7 @@ export const coreModule = {
             return state.drawer.message;
         },
 
-        getSnackbar(state){
+        getSnackbar(state) {
             return state.snackbar;
         },
 
@@ -159,7 +159,7 @@ export const coreModule = {
             state.toolbar.height = payload.height;
         },
 
-        [MUTATIONS.APP_SNACKBAR](state, payload){                      
+        [MUTATIONS.APP_SNACKBAR](state, payload) {
             state.snackbar.show = payload.show;
             state.snackbar.message = payload.message;
             state.snackbar.theme = payload.theme;
@@ -187,7 +187,7 @@ export const coreModule = {
         clearLog({ commit }) {
             commit(MUTATIONS.APP_LOG_CLEAR);
         },
-        
+
         loading({ commit }, { show = true, message = "Loading Please Wait..." }) {
             commit(MUTATIONS.APP_LOADING, { show, message });
         },
@@ -206,14 +206,19 @@ export const coreModule = {
 
         drawer({ commit }, { show = true, message = "" }) {
             commit(MUTATIONS.APP_DRAWER, { show, message });
-        },        
+        },
 
         toolbar({ commit }, { height, show }) {
             commit(MUTATIONS.APP_TOOLBAR, { show, height });
         },
 
-        snackbar({ commit }, { show, message, theme = '', fixed = false, timeout = 300 }){            
+        snackbar({ commit }, { show, message, theme = '', fixed = false, timeout = 300 }) {
             commit(MUTATIONS.APP_SNACKBAR, { show, message, theme, fixed, timeout });
+            if (!fixed) {
+                setTimeout(() => {
+                    commit(MUTATIONS.APP_SNACKBAR, { show: false, message: '', theme: theme });
+                }, timeout);
+            }
         },
 
         header({ commit }, { show, height }) {
