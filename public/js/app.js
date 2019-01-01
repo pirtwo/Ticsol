@@ -40800,7 +40800,6 @@ var SNACKBAR_THEME = {
             var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3000;
             var fixed = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
-            this.snackbar({ show: false, message: '', theme: SNACKBAR_THEME[theme] });
             this.snackbar({
                 show: true,
                 message: message,
@@ -56442,6 +56441,11 @@ var coreModule = {
                 timeout = _ref16$timeout === undefined ? 300 : _ref16$timeout;
 
             commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["j" /* APP_SNACKBAR */], { show: show, message: message, theme: theme, fixed: fixed, timeout: timeout });
+            if (!fixed) {
+                setTimeout(function () {
+                    commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["j" /* APP_SNACKBAR */], { show: false, message: '', theme: theme });
+                }, timeout);
+            }
         },
         header: function header(_ref17, _ref18) {
             var commit = _ref17.commit;
@@ -65865,20 +65869,22 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
             redirect: { name: 'inbox' },
             component: __webpack_require__(131),
             children: [{
-                path: '/inbox/:col?/:opt?/:val?',
+                props: true,
                 name: 'inbox',
                 meta: { requireAuth: true },
-                props: true,
+                path: '/inbox/:col?/:opt?/:val?',
                 component: __webpack_require__(140)
             }, {
-                path: 'leave',
+                props: true,
                 name: 'reqLeave',
                 meta: { requireAuth: true },
+                path: 'leave/:id?',
                 component: __webpack_require__(157)
             }, {
-                path: 'reimbursement',
+                props: true,
                 name: 'reqReimb',
                 meta: { requireAuth: true },
+                path: 'reimbursement/:id?',
                 component: __webpack_require__(166)
             }]
         },
@@ -72114,6 +72120,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getDate: function getDate(date) {
       var d = new DayPilot.Date(Date.UTC(date));
       return d.toDateLocal();
+    },
+    getRouteName: function getRouteName(reqType) {
+      if (reqType === 'leave') return 'reqLeave';else if (reqType === 'reimbursement') return 'reqLeave';else if (reqType === 'timesheet') return 'reqReimb';
     }
   })
 });
@@ -72169,9 +72178,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(3);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-//
-//
-//
 //
 //
 //
@@ -72321,7 +72327,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapActions */])({
-    hideSnackbar: "core/snackbar",
     toggleDrawer: "core/drawer",
     toggleFullscreen: "core/fullscreen"
   }), {
@@ -72361,10 +72366,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         }
       }
     },
-    onSnackbarHide: function onSnackbarHide() {
-      this.hideSnackbar({ show: false, message: '', theme: this.snackbar.theme });
-    },
-    getSnackbarTheme: function getSnackbarTheme() {},
     clickForward: function clickForward(e) {
       this.$router.go(1);
     },
@@ -72495,8 +72496,6 @@ var render = function() {
           "vb-snackbar",
           {
             class: ["snackbar", _vm.snackbar.theme],
-            attrs: { fixed: _vm.snackbar.fixed, timeout: _vm.snackbar.timeout },
-            on: { hide: _vm.onSnackbarHide },
             model: {
               value: _vm.snackbar.show,
               callback: function($$v) {
@@ -73249,7 +73248,7 @@ var render = function() {
                             staticClass: "btn btn-sm btn-light",
                             attrs: {
                               to: {
-                                name: "profileDetails",
+                                name: _vm.getRouteName(item.type),
                                 params: { id: item.id }
                               }
                             }
@@ -73394,7 +73393,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -73558,52 +73557,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -73611,13 +73564,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "LeaveRequest",
+
   components: {
     "nav-view": __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default.a,
     "select-box": __WEBPACK_IMPORTED_MODULE_2__framework_BaseSelectBox_vue___default.a
   },
+
+  props: ["id"],
+
   data: function data() {
     return {
       loading: false,
+      currentReq: {},
       form: {
         type: "leave",
         assigned_id: "",
@@ -73647,7 +73605,23 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     var _this = this;
 
     this.loading = true;
-    this.fetch({ resource: "user" }).then(function () {
+    var p1 = void 0;
+    var p2 = void 0;
+    if (this.id) {
+      p1 = this.fetchItem({ resource: "request", id: this.id }).then(function (data) {
+        _this.form.meta.leave_type = data.meta.leave_type;
+        _this.form.meta.from = data.meta.from;
+        _this.form.meta.till = data.meta.till;
+        console.log(data);
+      });
+    } else {
+      p1 = new Promise(function (resolve) {
+        return resolve();
+      });
+    }
+    p2 = this.fetchList({ resource: "user" });
+
+    Promise.all([p1, p2]).then(function () {
       _this.loading = false;
     }).catch(function (error) {
       console.log(error);
@@ -73656,14 +73630,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])({
-    fetch: "resource/list",
+    fetchList: "resource/list",
+    fetchItem: "resource/show",
     create: "resource/create"
   }), {
     onSubmit: function onSubmit(event) {
       var _this2 = this;
 
       this.create({ resource: "request", data: this.form }).then(function (respond) {
-        console.log('Request created sucessfuly.');
+        console.log("Request created sucessfuly.");
       }).catch(function (error) {
         console.log(error.response);
         _this2.$formFeedback(error.response.data.errors);
@@ -74149,35 +74124,27 @@ var render = function() {
           _c("li", { staticClass: "menu-title" }, [_vm._v("Actions")]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [
-              _vm._v("                        \n          New\n        ")
-            ])
+            _c("button", { staticClass: "btn btn-light" }, [_vm._v("New")])
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [
-              _vm._v("                        \n          Suspend\n        ")
-            ])
+            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Suspend")])
           ]),
           _vm._v(" "),
           _c("li", [
             _c(
               "button",
               { staticClass: "btn btn-light", on: { click: _vm.onSubmit } },
-              [_vm._v("                        \n          Submit\n        ")]
+              [_vm._v("Submit")]
             )
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [
-              _vm._v("                        \n          Cancel\n        ")
-            ])
+            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Cancel")])
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [
-              _vm._v("                        \n          Print\n        ")
-            ])
+            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Print")])
           ]),
           _vm._v(" "),
           _c("li", { staticClass: "menu-title" }, [_vm._v("Links")]),
@@ -76176,7 +76143,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted: function mounted() {
     this.today = this.getToday();
     // this.picker = new DayPilot.DatePicker({
-    //     target: 'range', 
+    //     target: 'picker', 
     //     pattern: 'yyyy-MM-dd', 
     //     onTimeRangeSelected: function(args) { 
     //         console.log(args.date);
@@ -80344,7 +80311,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("Genrate Timesheets")]
+              [_vm._v("Generate")]
             )
           ]),
           _vm._v(" "),
@@ -91913,12 +91880,11 @@ var render = function() {
                     attrs: {
                       type: "checkbox",
                       id: "create-profile",
-                      value: "create-job_profile"
+                      value: "full-job_profile"
                     },
                     domProps: {
                       checked: Array.isArray(_vm.form.permissions)
-                        ? _vm._i(_vm.form.permissions, "create-job_profile") >
-                          -1
+                        ? _vm._i(_vm.form.permissions, "full-job_profile") > -1
                         : _vm.form.permissions
                     },
                     on: {
@@ -91927,7 +91893,7 @@ var render = function() {
                           $$el = $event.target,
                           $$c = $$el.checked ? true : false
                         if (Array.isArray($$a)) {
-                          var $$v = "create-job_profile",
+                          var $$v = "full-job_profile",
                             $$i = _vm._i($$a, $$v)
                           if ($$el.checked) {
                             $$i < 0 &&
@@ -91957,7 +91923,11 @@ var render = function() {
                       staticClass: "custom-control-label",
                       attrs: { for: "create-profile" }
                     },
-                    [_vm._v("\n                Can Create Job Profile")]
+                    [
+                      _vm._v(
+                        "\n                Can Create/Maintain Job Profile"
+                      )
+                    ]
                   )
                 ]),
                 _vm._v(" "),
@@ -96489,20 +96459,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     value: {
       type: Boolean,
       default: false
-    },
-    fixed: {
-      type: Boolean,
-      default: false
-    },
-    timeout: {
-      type: Number,
-      default: 3000
     }
   },
 
   watch: {
     value: function value(_value) {
-      if (_value) this.showSnackbar();
+      if (_value) this.showSnackbar();else this.hideSnackbar();
     }
   },
 
@@ -96511,9 +96473,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$emit("show");
       this.$refs.vbSnackbar.classList.remove("vb-snackbar--hide");
       this.$refs.vbSnackbar.classList.add("vb-snackbar--show");
-      if (!this.fixed) {
-        setTimeout(this.hideSnackbar, this.timeout);
-      }
     },
     hideSnackbar: function hideSnackbar() {
       this.$refs.vbSnackbar.classList.remove("vb-snackbar--show");

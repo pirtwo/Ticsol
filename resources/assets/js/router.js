@@ -70,22 +70,24 @@ export const router = new VueRouter({
                     component: require('./components/pages/dashboard/requests/Requests.vue'),
                     children: [
                         {
-                            path: '/inbox/:col?/:opt?/:val?',
-                            name: 'inbox',
-                            meta: { requireAuth: true },
                             props: true,
+                            name: 'inbox',
+                            meta: { requireAuth: true },   
+                            path: '/inbox/:col?/:opt?/:val?',                                                     
                             component: require('./components/pages/dashboard/requests/RequestList.vue'),
                         },
                         {
-                            path: 'leave',
+                            props: true,
                             name: 'reqLeave',
                             meta: { requireAuth: true },
+                            path: 'leave/:id?',
                             component: require('./components/pages/dashboard/requests/LeaveRequest.vue'),
                         },
                         {
-                            path: 'reimbursement',
+                            props: true,
                             name: 'reqReimb',
                             meta: { requireAuth: true },
+                            path: 'reimbursement/:id?',
                             component: require('./components/pages/dashboard/requests/ReimbRequest.vue'),
                         }
                     ]
