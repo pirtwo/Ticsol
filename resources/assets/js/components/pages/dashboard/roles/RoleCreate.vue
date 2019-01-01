@@ -60,11 +60,11 @@
                   type="checkbox" 
                   class="custom-control-input" 
                   id="create-profile" 
-                  value="create-job_profile">
+                  value="full-job_profile">
                 <label 
                   class="custom-control-label" 
                   for="create-profile">
-                  Can Create Job Profile</label>
+                  Can Create/Maintain Job Profile</label>
               </div>
 
               <div class="custom-control custom-checkbox">

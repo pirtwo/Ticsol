@@ -74,10 +74,7 @@
 
       <vb-snackbar          
         v-model="snackbar.show" 
-        :class="['snackbar', snackbar.theme]"        
-        :fixed="snackbar.fixed"
-        :timeout="snackbar.timeout"
-        @hide="onSnackbarHide">
+        :class="['snackbar', snackbar.theme]">
         <span v-html="snackbar.message"/>
       </vb-snackbar>
 
@@ -150,7 +147,6 @@ export default {
 
   methods: {
     ...mapActions({
-      hideSnackbar: "core/snackbar",
       toggleDrawer: "core/drawer",
       toggleFullscreen: "core/fullscreen"
     }),
@@ -191,14 +187,6 @@ export default {
           this.toggleFullscreen({ enable: false });
         }
       }
-    },
-
-    onSnackbarHide(){
-      this.hideSnackbar({show:false, message:'', theme: this.snackbar.theme});
-    },
-
-    getSnackbarTheme(){
-
     },
 
     clickForward(e) {

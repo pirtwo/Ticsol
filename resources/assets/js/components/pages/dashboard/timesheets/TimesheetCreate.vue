@@ -39,7 +39,7 @@
           <button 
             type="button" 
             class="btn btn-light" 
-            @click="genFromSchedule(scheduleItems)">Genrate Timesheets</button>
+            @click="genFromSchedule(scheduleItems)">Generate</button>
         </li>
         <li class="menu-title">Links</li>
       </ul>

@@ -64,7 +64,7 @@ export default {
   mounted() {
     this.today = this.getToday();
     // this.picker = new DayPilot.DatePicker({
-    //     target: 'range', 
+    //     target: 'picker', 
     //     pattern: 'yyyy-MM-dd', 
     //     onTimeRangeSelected: function(args) { 
     //         console.log(args.date);

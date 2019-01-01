@@ -39,7 +39,7 @@
           <td>
             <router-link 
               class="btn btn-sm btn-light" 
-              :to="{ name : 'profileDetails', params : { id: item.id } }">
+              :to="{ name : getRouteName(item.type), params : { id: item.id } }">
               <i class="material-icons">visibility</i>
             </router-link> 
           </td>
@@ -146,6 +146,12 @@ export default {
     getDate(date){
       let d = new DayPilot.Date(Date.UTC(date));
       return d.toDateLocal();
+    },
+
+    getRouteName(reqType){
+      if(reqType === 'leave') return 'reqLeave';
+      else if(reqType === 'reimbursement') return 'reqLeave';
+      else if(reqType === 'timesheet') return 'reqReimb';
     }
   }
 };
