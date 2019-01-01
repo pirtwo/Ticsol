@@ -7,6 +7,7 @@ import VbSnackbar from '../components/Base/VbSnackbar'
 import VbTimepicker from '../components/Base/VbTimepicker.vue'
 import VbNotification from '../components/Base/VbNotification.vue'
 import VbPagination from '../components/Base/VbPagination.vue'
+import TsModal from '../components/Base/TsModal.vue'
 
 const VueBase = {
     install(Vue, options) {        
@@ -19,6 +20,7 @@ const VueBase = {
         Vue.component('vb-timepicker', VbTimepicker);
         Vue.component('vb-notification', VbNotification);
         Vue.component('vb-pagination', VbPagination); 
+        Vue.component('ts-modal', TsModal);
     }
 }
 

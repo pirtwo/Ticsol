@@ -1,5 +1,8 @@
 <template>
-  <nav-view :scrollbar="true" :loading="loading" padding="p-5">
+  <nav-view 
+    :scrollbar="true" 
+    :loading="loading" 
+    padding="p-5">
     <template slot="toolbar"/>
 
     <template slot="drawer">
@@ -12,7 +15,9 @@
           <button class="btn btn-light">Suspend</button>
         </li>
         <li>
-          <button class="btn btn-light" @click="onSubmit">Submit</button>
+          <button 
+            class="btn btn-light" 
+            @click="onSubmit">Submit</button>
         </li>
         <li>
           <button class="btn btn-light">Cancel</button>
@@ -39,7 +44,10 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Leave Type</label>
             <div class="col-sm-10">
-              <select v-model="form.meta.leave_type" name="meta-leave_type" class="custom-select">
+              <select 
+                v-model="form.meta.leave_type" 
+                name="meta-leave_type" 
+                class="custom-select">
                 <option selected>please select leave type</option>
                 <option value="annual">Annual</option>
                 <option value="long service">Long Service</option>
@@ -65,11 +73,19 @@
                   class="custom-control-input"
                   checked
                 >
-                <label class="custom-control-label" for="display1">Days</label>
+                <label 
+                  class="custom-control-label" 
+                  for="display1">Days</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="display2" name="display" class="custom-control-input">
-                <label class="custom-control-label" for="display2">Hours</label>
+                <input 
+                  type="radio" 
+                  id="display2" 
+                  name="display" 
+                  class="custom-control-input">
+                <label 
+                  class="custom-control-label" 
+                  for="display2">Hours</label>
               </div>
             </div>
           </div>
@@ -79,7 +95,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">From</label>
             <div class="col-sm-10">
-              <input v-model="form.meta.from" type="date" name="meta-from" class="form-control">
+              <input 
+                v-model="form.meta.from" 
+                type="date" 
+                name="meta-from" 
+                class="form-control">
             </div>
           </div>
         </div>
@@ -88,7 +108,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Return</label>
             <div class="col-sm-10">
-              <input v-model="form.meta.till" type="date" name="meta-till" class="form-control">
+              <input 
+                v-model="form.meta.till" 
+                type="date" 
+                name="meta-till" 
+                class="form-control">
             </div>
           </div>
         </div>
@@ -97,7 +121,9 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Days Requested</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control">
+              <input 
+                type="text" 
+                class="form-control">
             </div>
           </div>
         </div>
@@ -106,7 +132,9 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Days Remaining</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control">
+              <input 
+                type="text" 
+                class="form-control">
             </div>
           </div>
         </div>
@@ -133,8 +161,14 @@
             <label class="col-sm-2 col-form-label">Attachments</label>
             <div class="col-sm-10">
               <div class="custom-file">
-                <input name="Attachments" id="customFile" type="file" class="custom-file-input">
-                <label class="custom-file-label" for="customFile">choose files</label>
+                <input 
+                  name="Attachments" 
+                  id="customFile" 
+                  type="file" 
+                  class="custom-file-input">
+                <label 
+                  class="custom-file-label" 
+                  for="customFile">choose files</label>
               </div>
             </div>
           </div>
