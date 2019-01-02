@@ -201,7 +201,7 @@ export default {
 
   mounted() {
     this.loading = true;
-    this.show({
+    this.fetchItem({
       id: this.id,
       resource: "contact",
       query: { with: "addresses" }
@@ -218,7 +218,7 @@ export default {
 
   methods: {
     ...mapActions({
-      show: "resource/show",
+      fetchItem: "resource/show",
       update: "resource/update"
     }),
 
@@ -231,21 +231,44 @@ export default {
         country: "",
         postcode: ""
       });
+
+      // show modal
+      // get values
+      // create new address
+      // push new address to list
+      // clear inputs
+      // close modal
     },
 
-    onSubmit() {
+    editAddress(address){
+      // show modal
+      // fill inputs
+      // edite address
+      // update list
+      // close modal
+    },
+
+    onSubmit(e) {
+      e.preventDefault();
+      e.target.disabled = true;
+
       this.update({ resource: "contact", id: this.id, data: this.form })
         .then(() => {
-          console.log("Contact updated successfuly.");
-          this.$router.push({ name: "contactList" });
+          e.target.disabled = false;
+          this.showMessage(
+            `Contact <b>${this.form.firstname} ${this.form.lastname}</b> updated successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
-          console.log(error.response);
+          e.target.disabled = false;
+          this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
         });
     },
 
-    onCancel() {
+    onCancel(e) {
+      e.preventDefault();
       this.$router.push({ name: "contactList" });
     }
   }
@@ -253,7 +276,4 @@ export default {
 </script>
 
 <style scoped>
-.btn {
-  line-height: 1;
-}
 </style>

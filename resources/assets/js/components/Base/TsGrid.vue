@@ -27,7 +27,10 @@
           </th>   
         </tr>        
       </thead>
-      <tbody>        
+      <tbody> 
+        <tr v-show="value.length < 1">
+          <td :colspan="columns.length + 1">No Record</td>
+        </tr>       
         <tr 
           v-for="row in value" 
           :key="row.id">
@@ -56,7 +59,22 @@ export default {
     "base-table": BaseTable
   },
 
-  props: ["value", "columns", 'hasToolbar'],
+  props: {
+    value:{
+      type: Array,
+      default: () => {return []}
+    },
+
+    columns:{
+      type:Array,
+      default: () => {return []}
+    },
+
+    hasToolbar:{
+      type: Boolean,
+      default: false
+    }
+  },
 
   methods: {}
 };

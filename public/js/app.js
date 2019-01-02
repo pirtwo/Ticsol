@@ -87163,7 +87163,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.btn[data-v-7fa7b56c] {\r\n  line-height: 1;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -87177,6 +87177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_page_mixin__ = __webpack_require__(10);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -87342,134 +87343,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ContactCreate",
+
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_page_mixin__["a" /* default */]],
 
   components: {
     "nav-view": __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default.a
@@ -87478,8 +87360,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   data: function data() {
     return {
       loading: false,
-      mode: "add",
-      index: 0,
       form: {
         group: "",
         firstname: "",
@@ -87495,7 +87375,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         unit: "",
         country: "",
         postcode: ""
-      }
+      },
+      columns: [{ key: 1, value: "Number" }, { key: 2, value: "Street" }, { key: 3, value: "Suburb" }, { key: 4, value: "Unit" }, { key: 5, value: "Country" }, { key: 6, value: "Post Code" }]
     };
   },
 
@@ -87508,43 +87389,47 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])({
     create: "resource/create"
   }), {
-    onAddressAdd: function onAddressAdd() {
-      this.form.addresses.push(Object.assign({}, this.address));
-      this.clearAddress();
+    addAddress: function addAddress() {
+      this.form.addresses.push({
+        number: "",
+        street: "",
+        suburb: "",
+        unit: "",
+        country: "",
+        postcode: ""
+      });
+
+      // show modal
+      // get values
+      // create new address
+      // push new address to list
+      // clear inputs
+      // close modal
     },
-    onAddressEdit: function onAddressEdit(item, index) {
-      this.clearAddress();
-      this.mode = "edit";
-      this.index = index;
-      Object.assign(this.address, this.form.addresses[index]);
+    editAddress: function editAddress(address) {
+      // show modal
+      // fill inputs
+      // edite address
+      // update list
+      // close modal
     },
-    onAddressDelete: function onAddressDelete(item, index) {
-      this.clearAddress();
-      this.mode = "add";
-      this.form.addresses.splice(index, 1);
-    },
-    onAddressCancel: function onAddressCancel() {
-      this.mode = "add";
-      this.clearAddress();
-    },
-    onAddressSave: function onAddressSave() {
-      Object.assign(this.form.addresses[this.index], this.address);
-    },
-    clearAddress: function clearAddress() {
-      this.address = {};
-    },
-    onSubmit: function onSubmit() {
+    onSubmit: function onSubmit(e) {
       var _this = this;
 
+      e.preventDefault();
+      e.target.disabled = true;
+
       this.create({ resource: "contact", data: this.form }).then(function () {
-        console.log("Contact created successfuly.");
-        _this.$router.push({ name: 'contactList' });
+        e.target.disabled = false;
+        _this.showMessage("Contact <b>" + _this.form.firstname + " " + _this.form.lastname + "</b> created successfuly.", "success");
       }).catch(function (error) {
-        console.log(error.response);
+        e.target.disabled = false;
+        _this.showMessage(error.message, "danger");
         _this.$formFeedback(error.response.data.errors);
       });
     },
-    onCancel: function onCancel() {
+    onCancel: function onCancel(e) {
+      e.preventDefault();
       this.$router.push({ name: 'contactList' });
     }
   })
@@ -87555,6 +87440,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
+  var this$1 = this
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -87852,400 +87738,53 @@ var render = function() {
                 )
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "form-row" }, [
-              _c("div", { staticClass: "col" }, [
-                _c("label", { staticClass: "col-form-lable" }, [
-                  _vm._v("Number")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.address.number,
-                      expression: "address.number"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "mobilephone" },
-                  domProps: { value: _vm.address.number },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.address, "number", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col" }, [
-                _c("label", { staticClass: "col-form-lable" }, [
-                  _vm._v("Street")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.address.street,
-                      expression: "address.street"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "mobilephone" },
-                  domProps: { value: _vm.address.street },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.address, "street", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col" }, [
-                _c("label", { staticClass: "col-form-lable" }, [
-                  _vm._v("Suburb")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.address.suburb,
-                      expression: "address.suburb"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "mobilephone" },
-                  domProps: { value: _vm.address.suburb },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.address, "suburb", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col" }, [
-                _c("label", { staticClass: "col-form-lable" }, [
-                  _vm._v("Unit")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.address.unit,
-                      expression: "address.unit"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "mobilephone" },
-                  domProps: { value: _vm.address.unit },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.address, "unit", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col" }, [
-                _c("label", { staticClass: "col-form-lable" }, [
-                  _vm._v("Country")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.address.country,
-                      expression: "address.country"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "mobilephone" },
-                  domProps: { value: _vm.address.country },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.address, "country", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col" }, [
-                _c("label", { staticClass: "col-form-lable" }, [
-                  _vm._v("Post Code")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.address.postcode,
-                      expression: "address.postcode"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "mobilephone" },
-                  domProps: { value: _vm.address.postcode },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.address, "postcode", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col text-center" }, [
-                _c(
-                  "button",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.mode == "add",
-                        expression: "mode == 'add'"
-                      }
-                    ],
-                    staticClass: "btn btn-sm btn-light mt-4",
-                    attrs: { type: "button" },
-                    on: { click: _vm.onAddressAdd }
-                  },
-                  [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.mode == "edit",
-                        expression: "mode == 'edit'"
-                      }
-                    ],
-                    staticClass: "btn btn-sm btn-light mt-4",
-                    attrs: { type: "button" },
-                    on: { click: _vm.onAddressSave }
-                  },
-                  [_c("i", { staticClass: "material-icons" }, [_vm._v("save")])]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.mode == "edit",
-                        expression: "mode == 'edit'"
-                      }
-                    ],
-                    staticClass: "btn btn-sm btn-light mt-4",
-                    attrs: { type: "button" },
-                    on: { click: _vm.onAddressCancel }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("clear")
-                    ])
-                  ]
-                )
-              ])
-            ])
           ])
         ]),
         _vm._v(" "),
         _c(
           "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.form.addresses.length != 0,
-                expression: "form.addresses.length != 0"
-              }
-            ],
-            staticClass: "table-responsive"
-          },
+          { staticClass: "table-responsive" },
           [
-            _c(
-              "table",
-              { staticClass: "table table-sm table-hover table-light" },
-              [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", { attrs: { scope: "col" } }, [
-                      _c(
-                        "button",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.mode == "add",
-                              expression: "mode == 'add'"
-                            }
-                          ],
-                          staticClass: "btn btn-sm btn-light mt-4",
-                          attrs: { type: "button" },
-                          on: { click: _vm.onAddressAdd }
-                        },
-                        [
-                          _c("i", { staticClass: "material-icons" }, [
-                            _vm._v("add")
-                          ])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Unit")]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Number")]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Street")]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Suburb")]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [
-                      _vm._v("Post Code")
-                    ]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Country")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.form.addresses, function(item, index) {
-                    return _c("tr", { key: index }, [
-                      _c("th", { attrs: { scope: "row" } }, [
-                        _vm._v(_vm._s(index + 1))
-                      ]),
+            _c("ts-grid", {
+              attrs: { columns: _vm.columns, "has-toolbar": false },
+              on: {
+                insert: _vm.addAddress,
+                edit: _vm.editAddress,
+                select: function(selects) {
+                  this$1.selects = selects
+                }
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return [
+                      _c("td", [_vm._v(_vm._s(item.number))]),
                       _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "div",
-                          { attrs: { id: "addresses-" + index + "-number" } },
-                          [_vm._v(_vm._s(item.number))]
-                        )
-                      ]),
+                      _c("td", [_vm._v(_vm._s(item.street))]),
                       _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "div",
-                          { attrs: { id: "addresses-" + index + "-street" } },
-                          [_vm._v(_vm._s(item.street))]
-                        )
-                      ]),
+                      _c("td", [_vm._v(_vm._s(item.suburb))]),
                       _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "div",
-                          { attrs: { id: "addresses-" + index + "-suburb" } },
-                          [_vm._v(_vm._s(item.suburb))]
-                        )
-                      ]),
+                      _c("td", [_vm._v(_vm._s(item.unit))]),
                       _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "div",
-                          { attrs: { id: "addresses-" + index + "-unit" } },
-                          [_vm._v(_vm._s(item.unit))]
-                        )
-                      ]),
+                      _c("td", [_vm._v(_vm._s(item.country))]),
                       _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "div",
-                          { attrs: { id: "addresses-" + index + "-country" } },
-                          [_vm._v(_vm._s(item.country))]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "div",
-                          { attrs: { id: "addresses-" + index + "-postcode" } },
-                          [_vm._v(_vm._s(item.postcode))]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-light",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.onAddressEdit(item, index)
-                              }
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("edit")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-light",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.onAddressDelete(item, index)
-                              }
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("remove")
-                            ])
-                          ]
-                        )
-                      ])
-                    ])
-                  })
-                )
-              ]
-            )
-          ]
+                      _c("td", [_vm._v(_vm._s(item.postcode))])
+                    ]
+                  }
+                }
+              ]),
+              model: {
+                value: _vm.form.addresses,
+                callback: function($$v) {
+                  _vm.$set(_vm.form, "addresses", $$v)
+                },
+                expression: "form.addresses"
+              }
+            })
+          ],
+          1
         )
       ])
     ],
@@ -88348,7 +87887,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.btn[data-v-27840a38] {\r\n  line-height: 1;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -88563,7 +88102,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     var _this = this;
 
     this.loading = true;
-    this.show({
+    this.fetchItem({
       id: this.id,
       resource: "contact",
       query: { with: "addresses" }
@@ -88578,7 +88117,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])({
-    show: "resource/show",
+    fetchItem: "resource/show",
     update: "resource/update"
   }), {
     addAddress: function addAddress() {
@@ -88590,19 +88129,38 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         country: "",
         postcode: ""
       });
+
+      // show modal
+      // get values
+      // create new address
+      // push new address to list
+      // clear inputs
+      // close modal
     },
-    onSubmit: function onSubmit() {
+    editAddress: function editAddress(address) {
+      // show modal
+      // fill inputs
+      // edite address
+      // update list
+      // close modal
+    },
+    onSubmit: function onSubmit(e) {
       var _this2 = this;
 
+      e.preventDefault();
+      e.target.disabled = true;
+
       this.update({ resource: "contact", id: this.id, data: this.form }).then(function () {
-        console.log("Contact updated successfuly.");
-        _this2.$router.push({ name: "contactList" });
+        e.target.disabled = false;
+        _this2.showMessage("Contact <b>" + _this2.form.firstname + " " + _this2.form.lastname + "</b> updated successfuly.", "success");
       }).catch(function (error) {
-        console.log(error.response);
+        e.target.disabled = false;
+        _this2.showMessage(error.message, "danger");
         _this2.$formFeedback(error.response.data.errors);
       });
     },
-    onCancel: function onCancel() {
+    onCancel: function onCancel(e) {
+      e.preventDefault();
       this.$router.push({ name: "contactList" });
     }
   })
@@ -97357,7 +96915,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97419,6 +96977,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -97428,7 +96989,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     "base-table": __WEBPACK_IMPORTED_MODULE_0__core_BaseTable_vue___default.a
   },
 
-  props: ["value", "columns", 'hasToolbar'],
+  props: {
+    value: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
+
+    columns: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
+
+    hasToolbar: {
+      type: Boolean,
+      default: false
+    }
+  },
 
   methods: {}
 });
@@ -97506,44 +97086,66 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.value, function(row) {
-                  return _c(
+                [
+                  _c(
                     "tr",
-                    { key: row.id },
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.value.length < 1,
+                          expression: "value.length < 1"
+                        }
+                      ]
+                    },
                     [
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.$emit("edit", row)
+                      _c("td", { attrs: { colspan: _vm.columns.length + 1 } }, [
+                        _vm._v("No Record")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.value, function(row) {
+                    return _c(
+                      "tr",
+                      { key: row.id },
+                      [
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  _vm.$emit("edit", row)
+                                }
                               }
-                            }
-                          },
-                          [_vm._v("Edite")]
-                        ),
+                            },
+                            [_vm._v("Edite")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  deleteRow(row)
+                                }
+                              }
+                            },
+                            [_vm._v("Delete")]
+                          )
+                        ]),
                         _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                deleteRow(row)
-                              }
-                            }
-                          },
-                          [_vm._v("Delete")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _vm._t("default", null, { item: row })
-                    ],
-                    2
-                  )
-                })
+                        _vm._t("default", null, { item: row })
+                      ],
+                      2
+                    )
+                  })
+                ],
+                2
               )
             ]
           )
