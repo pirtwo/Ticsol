@@ -8,6 +8,7 @@ import VbTimepicker from '../components/Base/VbTimepicker.vue'
 import VbNotification from '../components/Base/VbNotification.vue'
 import VbPagination from '../components/Base/VbPagination.vue'
 import TsModal from '../components/Base/TsModal.vue'
+import TsGrid from '../components/Base/TsGrid.vue'
 
 const VueBase = {
     install(Vue, options) {        
@@ -21,6 +22,7 @@ const VueBase = {
         Vue.component('vb-notification', VbNotification);
         Vue.component('vb-pagination', VbPagination); 
         Vue.component('ts-modal', TsModal);
+        Vue.component('ts-grid', TsGrid);
     }
 }
 
