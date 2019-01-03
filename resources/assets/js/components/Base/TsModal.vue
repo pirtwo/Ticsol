@@ -10,7 +10,16 @@
     >
       <div class="modal-content">
         <div class="modal-header">
-          <slot name="header"/>
+          <slot name="header">
+            <h5 class="modal-title">{{ title }}</h5>
+            <button 
+              type="button" 
+              class="close" 
+              data-dismiss="modal" 
+              aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </slot>
         </div>
         <div class="modal-body">
           <slot/>
@@ -31,6 +40,10 @@ export default {
     show: {
       value: Boolean,
       default: false
+    },
+    title:{
+      value:String,
+      default:''
     },
     size: {
       value: String,
@@ -58,9 +71,9 @@ export default {
 
   mounted() {
     $(this.$refs.tsModal).on("show.bs.modal", this.onShow);
-    $(this.$refs.tsModal).on("show.bs.modal", this.shown);
-    $(this.$refs.tsModal).on("show.bs.modal", this.onHide);
-    $(this.$refs.tsModal).on("show.bs.modal", this.hidden);
+    $(this.$refs.tsModal).on("shown.bs.modal", this.shown);
+    $(this.$refs.tsModal).on("hide.bs.modal", this.onHide);
+    $(this.$refs.tsModal).on("hidden.bs.modal", this.hidden);
   },
 
   methods: {

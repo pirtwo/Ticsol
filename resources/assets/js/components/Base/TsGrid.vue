@@ -1,82 +1,164 @@
 <template>
-  <base-table 
+  <base-grid
     :value="value"
     @input="(data)=>{ $emit('input', data) }"
-    @select="(selects)=>{ $emit('select', selects) }">
+    @inserted="inserted"
+    @updated="updated"
+    @deleted="deleted"
+    @select="(selects)=>{ $emit('select', selects) }"
+  >
+    <div 
+      class="table-responsive"
+      slot-scope="{ selectRow, insertRow, updateRow, deleteRow, copyRow, pastRow }">
+      <table class="table table-sm table-hover table-light">
+        <thead>
+          <tr v-if="hasToolbar">
+            <th :colspan="columns.length + 1">
+              <slot name="toolbar"/>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <button 
+                type="button" 
+                @click="onAdd">ADD NEW</button>
+            </th>
+            <th 
+              v-for="column in columns" 
+              :key="column.key">{{ column.value }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-show="value.length < 1">
+            <td :colspan="columns.length + 1">No Record</td>
+          </tr>
+          <tr 
+            v-for="(row, index) in value" 
+            :key="row.id">
+            <td>
+              <button 
+                type="button" 
+                @click="onEdit(copyRow(row), index)">Edite</button>
+              <button 
+                type="button" 
+                @click="deleteRow(row)">Delete</button>
+            </td>
+            <slot :item="row"/>
+          </tr>
+        </tbody>
 
-    <table
-      class="table table-sm table-hover table-light" 
-      slot-scope="{ toggleRow, isSelected, deleteRow }">
-     
-      <thead> 
-        <tr v-if="hasToolbar"> 
-          <th :colspan="columns.length + 1">
-            <slot name="toolbar" />       
-          </th>    
-        </tr>
-        <tr>
-          <th>
-            <button 
+        <ts-modal 
+          :show.sync="modal" 
+          :title="modalTitle">
+          <slot 
+            name="grid-modal" 
+            :item="currentRow"/>
+          <template slot="footer">
+            <button
+              class="btn"
               type="button"
-              @click="$emit('insert')">ADD NEW</button>   
-          </th>
-          <th 
-            v-for="column in columns" 
-            :key="column.key">
-            {{ column.value }}
-          </th>   
-        </tr>        
-      </thead>
-      <tbody> 
-        <tr v-show="value.length < 1">
-          <td :colspan="columns.length + 1">No Record</td>
-        </tr>       
-        <tr 
-          v-for="row in value" 
-          :key="row.id">
-          <td>
-            <button 
+              v-show="mode === 'insert'"
+              @click="insertRow(currentRow)"
+            >Insert</button>
+            <button
+              class="btn"
               type="button"
-              @click="$emit('edit', row)">Edite</button>
+              v-show="mode === 'update'"
+              @click="updateRow(currentRow, rowIndex)"
+            >Save</button>
             <button 
-              type="button"
-              @click="deleteRow(row)">Delete</button>
-          </td>
-          <slot :item="row" />
-        </tr>
-      </tbody>
-    </table>
-
-  </base-table>
+              class="btn" 
+              type="button" 
+              @click="hideModal">Cancel</button>
+          </template>
+        </ts-modal>
+      </table>
+    </div>
+  </base-grid>
 </template>
 
 <script>
-import BaseTable from "./core/BaseTable.vue";
+import BaseGrid from "./core/BaseGrid.vue";
+import TsModalVue from "./TsModal.vue";
+
 export default {
   name: "TsGrid",
 
   components: {
-    "base-table": BaseTable
+    "base-grid": BaseGrid,
+    "ts-modal": TsModalVue
   },
 
   props: {
-    value:{
+    value: {
       type: Array,
-      default: () => {return []}
+      default: () => {
+        return [];
+      }
     },
 
-    columns:{
-      type:Array,
-      default: () => {return []}
+    columns: {
+      type: Array,
+      default: () => {
+        return [];
+      }
     },
 
-    hasToolbar:{
+    hasToolbar: {
       type: Boolean,
       default: false
     }
   },
 
-  methods: {}
+  data() {
+    return {
+      mode: "insert",
+      modal: false,
+      modalTitle: "",
+      rowIndex: 0,
+      currentRow: {},      
+    };
+  },
+
+  methods: {
+    inserted(row){
+      this.hideModal();
+      this.$emit('inserted', row);
+    },
+
+    updated(row){
+      this.hideModal();
+      this.$emit('updated', row);
+    },
+
+    deleted(row){
+      this.$emit('deleted', row);
+    },
+
+    onAdd() {
+      this.mode = "insert";      
+      this.currentRow = {};
+      this.modalTitle = 'Add New Row';
+      this.showModal();
+    },
+
+    onEdit(row, index) {
+      this.mode = 'update';      
+      this.currentRow = row;
+      this.rowIndex = index;
+      this.modalTitle = 'Update Row';
+      this.showModal();
+    },
+
+    showModal(){
+      this.modal = true;
+    },
+
+    hideModal(){
+      this.modal = false;
+    },
+
+  }
 };
 </script>
 
