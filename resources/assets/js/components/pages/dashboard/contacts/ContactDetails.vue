@@ -10,6 +10,7 @@
         <li class="menu-title">Actions</li>
         <li>
           <router-link 
+            tag="button"
             class="btn btn-light" 
             :to="{ name: 'contactCreate' }">New</router-link>
         </li>
@@ -134,26 +135,112 @@
           </div>
         </div>
       </form>
+      
+      <ts-grid
+        v-model="form.addresses"
+        :columns="columns"
+        :has-toolbar="false"
+      >
+        <template slot-scope="{ item }">
+          <td>{{ item.number }}</td>
+          <td>{{ item.street }}</td>
+          <td>{{ item.suburb }}</td>
+          <td>{{ item.unit }}</td>
+          <td>{{ item.country }}</td>
+          <td>{{ item.postcode }}</td>
+        </template>
+        <template 
+          slot="grid-modal"
+          slot-scope="{ item }">
+          <div class="p-2">      
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Number</label>
+                <div class="col-sm-10">
+                  <input 
+                    v-model="item.number" 
+                    type="text" 
+                    placeholder="please enter number..."
+                    class="form-control" 
+                    id="number">
+                </div>
+              </div>
+            </div>
 
-      <div class="table-responsive">
-        <ts-grid
-          v-model="form.addresses"
-          :columns="columns"
-          :has-toolbar="false"
-          @insert="addAddress"
-          @edit="editAddress"
-          @select="(selects)=>{ this.selects = selects }"
-        >
-          <template slot-scope="{ item }">
-            <td>{{ item.number }}</td>
-            <td>{{ item.street }}</td>
-            <td>{{ item.suburb }}</td>
-            <td>{{ item.unit }}</td>
-            <td>{{ item.country }}</td>
-            <td>{{ item.postcode }}</td>
-          </template>
-        </ts-grid>
-      </div>
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Street</label>
+                <div class="col-sm-10">
+                  <input 
+                    v-model="item.street" 
+                    type="text" 
+                    placeholder="please enter street..."
+                    class="form-control" 
+                    id="street">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Suburb</label>
+                <div class="col-sm-10">
+                  <input 
+                    v-model="item.suburb" 
+                    type="text" 
+                    placeholder="please enter suburb..."
+                    class="form-control" 
+                    id="suburb">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Unit</label>
+                <div class="col-sm-10">
+                  <input 
+                    v-model="item.unit" 
+                    type="text" 
+                    placeholder="please enter unit..."
+                    class="form-control" 
+                    id="unit">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Country</label>
+                <div class="col-sm-10">
+                  <input 
+                    v-model="item.country" 
+                    type="text" 
+                    placeholder="please enter country..."
+                    class="form-control" 
+                    id="country">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Post Code</label>
+                <div class="col-sm-10">
+                  <input 
+                    v-model="item.postcode" 
+                    type="text" 
+                    placeholder="please enter post code..."
+                    class="form-control" 
+                    id="postcode">
+                </div>
+              </div>
+            </div>
+          </div>     
+          
+        </template>          
+      </ts-grid>     
+
     </template>
   </nav-view>
 </template>
@@ -161,9 +248,12 @@
 <script>
 import { mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "ContactCreate",
+
+  mixins:[pageMixin],
 
   components: {
     "nav-view": NavView
@@ -222,32 +312,6 @@ export default {
       update: "resource/update"
     }),
 
-    addAddress() {
-      this.form.addresses.push({
-        number: "",
-        street: "",
-        suburb: "",
-        unit: "",
-        country: "",
-        postcode: ""
-      });
-
-      // show modal
-      // get values
-      // create new address
-      // push new address to list
-      // clear inputs
-      // close modal
-    },
-
-    editAddress(address){
-      // show modal
-      // fill inputs
-      // edite address
-      // update list
-      // close modal
-    },
-
     onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
@@ -256,7 +320,9 @@ export default {
         .then(() => {
           e.target.disabled = false;
           this.showMessage(
-            `Contact <b>${this.form.firstname} ${this.form.lastname}</b> updated successfuly.`,
+            `Contact <b>${this.form.firstname} ${
+              this.form.lastname
+            }</b> updated successfuly.`,
             "success"
           );
         })

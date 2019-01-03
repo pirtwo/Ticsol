@@ -138,6 +138,7 @@ class ContactController extends Controller
 
             try {
                 $contact->update($request->all());
+                $contact->addresses()->delete();
                 if ($request->filled('addresses')) {
                     $addresses = $request->input('addresses');
                     foreach ($addresses as &$address) {
@@ -145,9 +146,9 @@ class ContactController extends Controller
                         $address['creator_id'] = $creatorId;
                         unset($address['deleted_at']);
                         unset($address['created_at']);
-                        unset($address['updated_at']);
-                        $contact->addresses()->updateOrCreate($address, $address);
+                        unset($address['updated_at']);                        
                     }
+                    $contact->addresses()->createMany($addresses);
                 }
             } catch (\Exception $e) {
                 DB::rollback();
