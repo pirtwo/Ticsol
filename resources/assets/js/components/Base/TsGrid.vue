@@ -20,8 +20,11 @@
           <tr>
             <th>
               <button 
+                class="btn btn-sm"
                 type="button" 
-                @click="onAdd">ADD NEW</button>
+                @click="onAdd">
+                <vb-icon :icon="'playlist_add'"/>
+              </button>
             </th>
             <th 
               v-for="column in columns" 
@@ -37,11 +40,17 @@
             :key="row.id">
             <td>
               <button 
+                class="btn btn-sm"
                 type="button" 
-                @click="onEdit(copyRow(row), index)">Edite</button>
+                @click="onEdit(copyRow(row), index)">
+                <vb-icon :icon="'edit'"/>
+              </button>
               <button 
+                class="btn btn-sm"
                 type="button" 
-                @click="deleteRow(row)">Delete</button>
+                @click="deleteRow(row)">
+                <vb-icon :icon="'delete'"/>
+              </button>
             </td>
             <slot :item="row"/>
           </tr>

@@ -1,12 +1,17 @@
 <template>
   <i class="material-icons">
-    <slot/>
+    <slot>
+      <!-- fallback content -->
+      {{ icon }}
+    </slot>
   </i>
 </template>
 
 <script>
 export default {
-  name: 'VbIcon'
+  name: 'VbIcon',
+
+  props:['icon']
 }
 </script>
 
