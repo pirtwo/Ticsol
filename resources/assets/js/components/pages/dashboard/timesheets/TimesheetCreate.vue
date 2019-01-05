@@ -1,133 +1,148 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="loading" 
-    padding="p-2">
-
+  <nav-view :scrollbar="true" :loading="loading" padding="p-2">
     <template slot="toolbar">
-      <date-picker 
-        v-model="weekStart" 
-        range="Week"/>      
+      <date-picker v-model="weekStart" range="Week"/>
     </template>
 
     <template slot="drawer">
-
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
         <li>
-          <button 
-            class="btn btn-light" 
-            @click="onSave">                        
-            Save
-          </button>
+          <button class="btn btn-light" @click="onSave">Save</button>
         </li>
         <li>
-          <button 
-            class="btn btn-light" 
-            @click="onSubmit">                        
-            Submit
-          </button>
-        </li>        
-        <li>
-          <button 
-            class="btn btn-light" 
-            @click="onCancel">                        
-            Cancel
-          </button>
+          <button class="btn btn-light" @click="onSubmit">Submit</button>
         </li>
         <li>
-          <button 
-            type="button" 
-            class="btn btn-light" 
-            @click="genFromSchedule(scheduleItems)">Generate</button>
+          <button class="btn btn-light" @click="onCancel">Cancel</button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-light"
+            @click="genFromSchedule(scheduleItems)"
+          >Generate</button>
         </li>
         <li class="menu-title">Links</li>
       </ul>
-
     </template>
 
     <template slot="content">
+      <ts-grid 
+        v-model="timesheetItems" 
+        :columns="columns" 
+        :has-toolbar="false">
+        <template slot-scope="{ item }">
+          <td>{{ item.day }}</td>
+          <td>{{ item.job.title }}</td>
+          <td>{{ item.job.title }}</td>
+          <td>{{ item.startTime }}</td>
+          <td>{{ item.EndTime }}</td>
+          <td>{{ item.break_length }}</td>
+          <td>{{ totalTime(item) }}</td>
+        </template>
+        <template 
+          slot="grid-modal" 
+          slot-scope="{ item }">
 
-      <div class="table-responsive">
-        <table class="table table-hover table-light">
-          <thead>
-            <tr>         
-              <th/>               
-              <th scope="col">Day</th>
-              <th scope="col">Link</th>
-              <th scope="col">Job</th>
-              <th scope="col">Start Time</th>
-              <th scope="col">End Time</th>
-              <th scope="col">Break</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr 
-              v-for="(item, index) in timesheetItems" 
-              :key="index">
-              <td>
-                <button 
-                  v-show="!item.editMode" 
-                  @click="item.editMode = true"
-                  type="button" 
-                  class="btn btn-sm btn-light">
-                  <i class="material-icons">edit</i>
-                </button>
-                <button 
-                  v-show="item.editMode" 
-                  @click="item.editMode = false"
-                  type="button" 
-                  class="btn btn-sm btn-light">
-                  <i class="material-icons">save</i>
-                </button>                                
-              </td>
-              <td>                                
-                {{ item.day }}
-              </td>
-              <td/>
-              <td>{{ item.job.title }}</td>
-              <td>
-                <input 
-                  type="time" 
-                  class="form-control"
-                  @change="totalTime(item)"
-                  v-model="item.startTime" 
-                  v-show="item.editMode"> 
-                <span v-show="!item.editMode">{{ item.startTime }}</span>
-              </td>
-              <td>
-                <input 
-                  type="time" 
-                  class="form-control"
-                  @change="totalTime(item)"
-                  v-model="item.endTime" 
-                  v-show="item.editMode"> 
-                <span v-show="!item.editMode">{{ item.endTime }}</span>
-              </td>
-              <td>
-                <!-- <vb-timepicker v-model="item.break_length" :format="'HH:mm'" v-show="item.editMode"/> -->
-                <input 
-                  type="text"  
-                  class="form-control" 
-                  @change="totalTime(item)"                              
-                  v-model="item.break_length" 
-                  v-show="item.editMode"> 
-                <span v-show="!item.editMode">{{ item.break_length }}</span>
-              </td>
-              <td>
-                {{ item.total }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          <div class="p-2">
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Number</label>
+                <div class="col-sm-10">
+                  <input
+                    v-model="item.number"
+                    type="text"
+                    placeholder="please enter number..."
+                    class="form-control"
+                    id="number"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Street</label>
+                <div class="col-sm-10">
+                  <input
+                    v-model="item.street"
+                    type="text"
+                    placeholder="please enter street..."
+                    class="form-control"
+                    id="street"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Suburb</label>
+                <div class="col-sm-10">
+                  <input
+                    v-model="item.suburb"
+                    type="text"
+                    placeholder="please enter suburb..."
+                    class="form-control"
+                    id="suburb"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Unit</label>
+                <div class="col-sm-10">
+                  <input
+                    v-model="item.unit"
+                    type="text"
+                    placeholder="please enter unit..."
+                    class="form-control"
+                    id="unit"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Country</label>
+                <div class="col-sm-10">
+                  <input
+                    v-model="item.country"
+                    type="text"
+                    placeholder="please enter country..."
+                    class="form-control"
+                    id="country"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Post Code</label>
+                <div class="col-sm-10">
+                  <input
+                    v-model="item.postcode"
+                    type="text"
+                    placeholder="please enter post code..."
+                    class="form-control"
+                    id="postcode"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </ts-grid>
 
       <div class="stats">
         <div>TOTAL: {{ this.showTotalTime }}</div>
-        <div>STATUS: </div>
-      </div>     
-           
+        <div>STATUS:</div>
+      </div>
     </template>
   </nav-view>
 </template>
@@ -135,26 +150,37 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/BaseTable.vue";
 import DatePicker from "../../../framework/BaseDatePicker.vue";
+import pageMixin from "../../../../mixins/page-mixin";
+import uuid from '../../../../utils/uuid';
 
 export default {
   name: "TimesheetCreate",
 
+  mixins: [pageMixin],
+
   components: {
     "nav-view": NavView,
-    "table-view": TableView,
     "date-picker": DatePicker
   },
 
   data() {
     return {
-      loading: false,
-      selects: [],
+      loading: false,      
+      weekEnd: "",
+      weekStart: "",
       scheduleItems: [],
       timesheetItems: [],
-      weekStart: "",
-      weekEnd: ""
+      columns: [
+        { key: "day", value: "Day" },
+        { key: "link", value: "Link" },
+        { key: "job", value: "Job" },
+        { key: "start-time", value: "Start Time" },
+        { key: "end-time", value: "End Time" },
+        { key: "break", value: "Break" },
+        { key: "total", value: "Total" }
+      ],
+      
     };
   },
 
@@ -194,8 +220,7 @@ export default {
     this.weekEnd = this.weekStart.addDays(7);
   },
 
-  mounted() {
-    //this.fetchItems();
+  mounted() {    
   },
 
   methods: {
@@ -293,17 +318,20 @@ export default {
         day = this.weekDays[i];
         data.forEach(item => {
           if (item.start >= day.addDays(-1) && item.end <= day) {
-            item.day = day.toString("ddd dd MMM");
-            item.startDate = day.toString().slice(0, 10);
-            item.startTime = item.start.slice(11, 16);
-            item.endDate = day.toString().slice(0, 10);
-            item.endTime = item.end.slice(11, 16);
-            item.editMode = false;
-            item.total = this.subTime(
-              this.subTime(item.endTime, item.startTime),
-              item.break_length
+            let timesheet = {};
+            timesheet.id = uuid();
+            timesheet.job = item.job;
+            timesheet.day = day.toString("ddd dd MMM");
+            timesheet.startDate = day.toString().slice(0, 10);
+            timesheet.startTime = item.start.slice(11, 16);
+            timesheet.endDate = day.toString().slice(0, 10);
+            timesheet.endTime = item.end.slice(11, 16);
+            timesheet.break_length = item.break_length;
+            timesheet.total = this.subTime(
+              this.subTime(timesheet.endTime, timesheet.startTime),
+              timesheet.break_length
             );
-            this.timesheetItems.push(Object.assign({}, item));
+            this.timesheetItems.push(timesheet);
           }
         });
       }
@@ -320,7 +348,6 @@ export default {
             item.startTime = item.start.slice(11, 16);
             item.endDate = day.toString().slice(0, 10);
             item.endTime = item.start.slice(11, 16);
-            item.editMode = false;
             item.total = this.subTime(
               this.subTime(item.endTime, item.startTime),
               item.break_length
