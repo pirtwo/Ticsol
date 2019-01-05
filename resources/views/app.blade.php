@@ -18,6 +18,7 @@
         <app></app>
     </div>
 </body>
+<script src="{{ 'https://maps.googleapis.com/maps/api/js?key=' . env('GOOGLE_MAP_PLACES') . '&libraries=places' }}"></script>
 <script src="{{ asset('js/daypilot-all.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 </html>

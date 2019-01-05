@@ -152,11 +152,24 @@
         <template 
           slot="grid-modal"
           slot-scope="{ item }">
-          <div class="p-2">      
+          <div class="p-2">    
+            
+
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Number</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 col-form-lable">Find Address</label>
+                <div class="col-sm-9">
+                  <goole-places 
+                    v-model="place" />
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-3 col-form-lable">Number</label>
+                <div class="col-sm-9">
                   <input 
                     v-model="item.number" 
                     type="text" 
@@ -169,8 +182,8 @@
 
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Street</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 col-form-lable">Street</label>
+                <div class="col-sm-9">
                   <input 
                     v-model="item.street" 
                     type="text" 
@@ -183,8 +196,8 @@
 
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Suburb</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 col-form-lable">Suburb</label>
+                <div class="col-sm-9">
                   <input 
                     v-model="item.suburb" 
                     type="text" 
@@ -197,8 +210,8 @@
 
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Unit</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 col-form-lable">Unit</label>
+                <div class="col-sm-9">
                   <input 
                     v-model="item.unit" 
                     type="text" 
@@ -211,8 +224,8 @@
 
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Country</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 col-form-lable">Country</label>
+                <div class="col-sm-9">
                   <input 
                     v-model="item.country" 
                     type="text" 
@@ -225,8 +238,8 @@
 
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Post Code</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 col-form-lable">Post Code</label>
+                <div class="col-sm-9">
                   <input 
                     v-model="item.postcode" 
                     type="text" 
@@ -249,6 +262,7 @@
 import { mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import pageMixin from '../../../../mixins/page-mixin';
+import GooglePlaces from '../../../Base/GooglePlaces.vue'
 
 export default {
   name: "ContactCreate",
@@ -256,7 +270,8 @@ export default {
   mixins:[pageMixin],
 
   components: {
-    "nav-view": NavView
+    "nav-view": NavView,
+    "goole-places": GooglePlaces
   },
 
   props: ["id"],
@@ -264,6 +279,7 @@ export default {
   data() {
     return {
       loading: false,
+      place:{},
       form: {
         group: "",
         firstname: "",
