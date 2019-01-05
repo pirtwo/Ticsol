@@ -1,7 +1,7 @@
 <template>  
   <input 
     ref="autoComplete" 
-    class="form-control" 
+    class="" 
     type="text">  
 </template>
 
@@ -44,6 +44,7 @@ export default {
 
   methods: {
     onPlaceChange(){
+      console.log('change...');
       console.log(this.autoComplete.getPlace());
     }
   }
