@@ -1,8 +1,9 @@
-<template>  
+<template>
   <input 
     ref="autoComplete" 
-    class="" 
-    type="text">  
+    v-model="inputValue" 
+    class="form-control" 
+    type="text">
 </template>
 
 <script>
@@ -21,36 +22,73 @@ export default {
       default: () => {
         return { types: ["regions"] };
       }
+    },
+    formOptions: {
+      type: Object,
+      default: () => {
+        return {
+          street_number: "long_name",
+          route: "long_name",
+          locality: "long_name",
+          administrative_area_level_1: "long_name",
+          administrative_area_level_2: "long_name",
+          administrative_area_level_3: "long_name",
+          country: "long_name",
+          postal_code: "long_name"
+        };
+      }
     }
   },
 
   data() {
     return {
+      inputValue: "",
       autoComplete: {}
     };
   },
 
-  created() {
-    
+  watch: {
+    value: function(value) {
+      if (value.formatted_address) {
+        this.inputValue = value.formatted_address;
+      } else {
+        this.inputValue = "";
+      }
+    }
   },
+
+  created() {},
 
   mounted() {
     this.autoComplete = new google.maps.places.Autocomplete(
       this.$refs.autoComplete,
-      this.options
+      {}
     );
-    this.autoComplete.addListener('place_changed', this.onPlaceChange);
+    this.autoComplete.addListener("place_changed", this.onPlaceChange);
   },
 
   methods: {
-    onPlaceChange(){
-      console.log('change...');
-      console.log(this.autoComplete.getPlace());
+    onPlaceChange() {
+      let form = {};
+      let place = this.autoComplete.getPlace();
+      form.formatted_address = place.formatted_address;
+      Object.keys(this.formOptions).forEach(formKey => {
+        form[formKey] = "";
+        place.address_components.forEach(addressPart => {
+          if (addressPart.types.indexOf(formKey) > -1) {
+            form[formKey] = addressPart[this.formOptions[formKey]];
+          }
+        });
+      });
+      this.$emit("input", form);
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
+.pac-container {
+  z-index: 2000;
+}
 </style>
 

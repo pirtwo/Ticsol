@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-5">
     <template slot="toolbar"/>
 
@@ -148,7 +148,8 @@
         v-model="form.addresses"
         :columns="columns"
         :has-toolbar="false"
-      >
+        @inserted="place = {}"
+        @modalHide="place = {}">
         <template slot-scope="{ item }">
           <td>{{ item.number }}</td>
           <td>{{ item.street }}</td>
@@ -160,7 +161,19 @@
         <template 
           slot="grid-modal"
           slot-scope="{ item }">
-          <div class="p-2">      
+          <div class="p-2">  
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-3 col-form-lable">Find Address</label>
+                <div class="col-sm-9">
+                  <goole-places 
+                    :value="place" 
+                    @input="placeChange($event, item)"/>
+                </div>
+              </div>
+            </div>
+            <hr>
+
             <div class="form-group">
               <div class="form-row">
                 <label class="col-sm-2 col-form-lable">Number</label>
@@ -257,6 +270,7 @@
 import { mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import pageMixin from '../../../../mixins/page-mixin';
+import GooglePlaces from "../../../Base/GooglePlaces.vue";
 
 export default {
   name: "ContactCreate",
@@ -264,12 +278,13 @@ export default {
   mixins:[pageMixin],
 
   components: {
-    "nav-view": NavView
+    "nav-view": NavView,
+    "goole-places": GooglePlaces
   },
 
   data() {
-    return {
-      loading: false,
+    return {      
+      place: {},
       form: {
         group: "",
         firstname: "",
@@ -301,6 +316,13 @@ export default {
       this.form.telephone= "",
       this.form.mobilephone= "",
       this.form.addresses= []
+    },
+
+    placeChange(place, item) {
+      this.$set(item, "number", place.street_number);
+      this.$set(item, "street", place.route);
+      this.$set(item, "country", place.country);
+      this.$set(item, "postcode", place.postal_code);      
     },
 
     onSubmit(e) {

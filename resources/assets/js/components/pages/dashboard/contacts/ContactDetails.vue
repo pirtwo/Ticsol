@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-5">
     <template slot="toolbar"/>
 
@@ -10,7 +10,7 @@
         <li class="menu-title">Actions</li>
         <li>
           <router-link 
-            tag="button"
+            tag="button" 
             class="btn btn-light" 
             :to="{ name: 'contactCreate' }">New</router-link>
         </li>
@@ -135,12 +135,12 @@
           </div>
         </div>
       </form>
-      
-      <ts-grid
-        v-model="form.addresses"
-        :columns="columns"
+
+      <ts-grid 
+        v-model="form.addresses" 
+        :columns="columns" 
         :has-toolbar="false"
-      >
+        @inserted="place = {}">
         <template slot-scope="{ item }">
           <td>{{ item.number }}</td>
           <td>{{ item.street }}</td>
@@ -150,17 +150,16 @@
           <td>{{ item.postcode }}</td>
         </template>
         <template 
-          slot="grid-modal"
+          slot="grid-modal" 
           slot-scope="{ item }">
-          <div class="p-2">    
-            
-
+          <div class="p-2">
             <div class="form-group">
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Find Address</label>
                 <div class="col-sm-9">
                   <goole-places 
-                    v-model="place" />
+                    :value="place" 
+                    @input="placeChange($event, item)"/>
                 </div>
               </div>
             </div>
@@ -170,12 +169,13 @@
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Number</label>
                 <div class="col-sm-9">
-                  <input 
-                    v-model="item.number" 
-                    type="text" 
+                  <input
+                    v-model="item.number"
+                    type="text"
                     placeholder="please enter number..."
-                    class="form-control" 
-                    id="number">
+                    class="form-control"
+                    id="number"
+                  >
                 </div>
               </div>
             </div>
@@ -184,12 +184,13 @@
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Street</label>
                 <div class="col-sm-9">
-                  <input 
-                    v-model="item.street" 
-                    type="text" 
+                  <input
+                    v-model="item.street"
+                    type="text"
                     placeholder="please enter street..."
-                    class="form-control" 
-                    id="street">
+                    class="form-control"
+                    id="street"
+                  >
                 </div>
               </div>
             </div>
@@ -198,12 +199,13 @@
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Suburb</label>
                 <div class="col-sm-9">
-                  <input 
-                    v-model="item.suburb" 
-                    type="text" 
+                  <input
+                    v-model="item.suburb"
+                    type="text"
                     placeholder="please enter suburb..."
-                    class="form-control" 
-                    id="suburb">
+                    class="form-control"
+                    id="suburb"
+                  >
                 </div>
               </div>
             </div>
@@ -212,12 +214,13 @@
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Unit</label>
                 <div class="col-sm-9">
-                  <input 
-                    v-model="item.unit" 
-                    type="text" 
+                  <input
+                    v-model="item.unit"
+                    type="text"
                     placeholder="please enter unit..."
-                    class="form-control" 
-                    id="unit">
+                    class="form-control"
+                    id="unit"
+                  >
                 </div>
               </div>
             </div>
@@ -226,12 +229,13 @@
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Country</label>
                 <div class="col-sm-9">
-                  <input 
-                    v-model="item.country" 
-                    type="text" 
+                  <input
+                    v-model="item.country"
+                    type="text"
                     placeholder="please enter country..."
-                    class="form-control" 
-                    id="country">
+                    class="form-control"
+                    id="country"
+                  >
                 </div>
               </div>
             </div>
@@ -240,19 +244,19 @@
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Post Code</label>
                 <div class="col-sm-9">
-                  <input 
-                    v-model="item.postcode" 
-                    type="text" 
+                  <input
+                    v-model="item.postcode"
+                    type="text"
                     placeholder="please enter post code..."
-                    class="form-control" 
-                    id="postcode">
+                    class="form-control"
+                    id="postcode"
+                  >
                 </div>
               </div>
             </div>
-          </div>     
-          
-        </template>          
-      </ts-grid>     
+          </div>
+        </template>
+      </ts-grid>
 
     </template>
   </nav-view>
@@ -261,13 +265,13 @@
 <script>
 import { mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
-import pageMixin from '../../../../mixins/page-mixin';
-import GooglePlaces from '../../../Base/GooglePlaces.vue'
+import pageMixin from "../../../../mixins/page-mixin";
+import GooglePlaces from "../../../Base/GooglePlaces.vue";
 
 export default {
   name: "ContactCreate",
 
-  mixins:[pageMixin],
+  mixins: [pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -278,8 +282,7 @@ export default {
 
   data() {
     return {
-      loading: false,
-      place:{},
+      place: {},
       form: {
         group: "",
         firstname: "",
@@ -306,19 +309,20 @@ export default {
   },
 
   mounted() {
-    this.loading = true;
+    this.loadingStart();
     this.fetchItem({
       id: this.id,
       resource: "contact",
       query: { with: "addresses" }
     })
       .then(respond => {
+        this.loadingStop();
         this.form = Object.assign({}, this.form, respond);
-        this.loading = false;
+        
       })
       .catch(error => {
-        console.log(error);
-        this.loading = false;
+        this.loadingStop();
+        this.showMessage(error.message, "danger");
       });
   },
 
@@ -327,6 +331,13 @@ export default {
       fetchItem: "resource/show",
       update: "resource/update"
     }),
+
+    placeChange(place, item) {
+      this.$set(item, "number", place.street_number);
+      this.$set(item, "street", place.route);
+      this.$set(item, "country", place.country);
+      this.$set(item, "postcode", place.postal_code);      
+    },
 
     onSubmit(e) {
       e.preventDefault();

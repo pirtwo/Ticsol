@@ -87248,7 +87248,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -87263,6 +87263,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_page_mixin__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Base_GooglePlaces_vue__ = __webpack_require__(316);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Base_GooglePlaces_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__Base_GooglePlaces_vue__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -87520,6 +87522,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -87531,12 +87547,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_page_mixin__["a" /* default */]],
 
   components: {
-    "nav-view": __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default.a
+    "nav-view": __WEBPACK_IMPORTED_MODULE_1__framework_NavView_vue___default.a,
+    "goole-places": __WEBPACK_IMPORTED_MODULE_3__Base_GooglePlaces_vue___default.a
   },
 
   data: function data() {
     return {
-      loading: false,
+      place: {},
       form: {
         group: "",
         firstname: "",
@@ -87555,6 +87572,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   }), {
     clearForm: function clearForm() {
       this.form.group = "", this.form.firstname = "", this.form.lastname = "", this.form.telephone = "", this.form.mobilephone = "", this.form.addresses = [];
+    },
+    placeChange: function placeChange(place, item) {
+      this.$set(item, "number", place.street_number);
+      this.$set(item, "street", place.route);
+      this.$set(item, "country", place.country);
+      this.$set(item, "postcode", place.postal_code);
     },
     onSubmit: function onSubmit(e) {
       var _this = this;
@@ -87588,7 +87611,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav-view",
-    { attrs: { scrollbar: true, loading: _vm.loading, padding: "p-5" } },
+    { attrs: { scrollbar: true, loading: _vm.isLoading, padding: "p-5" } },
     [
       _c("template", { slot: "toolbar" }),
       _vm._v(" "),
@@ -87896,6 +87919,14 @@ var render = function() {
           _vm._v(" "),
           _c("ts-grid", {
             attrs: { columns: _vm.columns, "has-toolbar": false },
+            on: {
+              inserted: function($event) {
+                _vm.place = {}
+              },
+              modalHide: function($event) {
+                _vm.place = {}
+              }
+            },
             scopedSlots: _vm._u([
               {
                 key: "default",
@@ -87922,6 +87953,34 @@ var render = function() {
                   var item = ref.item
                   return [
                     _c("div", { staticClass: "p-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("div", { staticClass: "form-row" }, [
+                          _c(
+                            "label",
+                            { staticClass: "col-sm-3 col-form-lable" },
+                            [_vm._v("Find Address")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-sm-9" },
+                            [
+                              _c("goole-places", {
+                                attrs: { value: _vm.place },
+                                on: {
+                                  input: function($event) {
+                                    _vm.placeChange($event, item)
+                                  }
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("div", { staticClass: "form-row" }, [
                           _c(
@@ -88269,7 +88328,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -88288,6 +88347,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Base_GooglePlaces_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__Base_GooglePlaces_vue__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
+//
 //
 //
 //
@@ -88568,7 +88631,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
   data: function data() {
     return {
-      loading: false,
       place: {},
       form: {
         group: "",
@@ -88592,17 +88654,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   mounted: function mounted() {
     var _this = this;
 
-    this.loading = true;
+    this.loadingStart();
     this.fetchItem({
       id: this.id,
       resource: "contact",
       query: { with: "addresses" }
     }).then(function (respond) {
+      _this.loadingStop();
       _this.form = Object.assign({}, _this.form, respond);
-      _this.loading = false;
     }).catch(function (error) {
-      console.log(error);
-      _this.loading = false;
+      _this.loadingStop();
+      _this.showMessage(error.message, "danger");
     });
   },
 
@@ -88611,6 +88673,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     fetchItem: "resource/show",
     update: "resource/update"
   }), {
+    placeChange: function placeChange(place, item) {
+      this.$set(item, "number", place.street_number);
+      this.$set(item, "street", place.route);
+      this.$set(item, "country", place.country);
+      this.$set(item, "postcode", place.postal_code);
+    },
     onSubmit: function onSubmit(e) {
       var _this2 = this;
 
@@ -88652,7 +88720,7 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-6acd54c9"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -88695,13 +88763,13 @@ var content = __webpack_require__(318);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("65593bda", content, false, {});
+var update = __webpack_require__(2)("79d4fbf6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6acd54c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./GooglePlaces.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6acd54c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./GooglePlaces.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6acd54c9\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./GooglePlaces.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6acd54c9\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./GooglePlaces.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -88719,7 +88787,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.pac-container {\r\n  z-index: 2000;\n}\r\n", ""]);
 
 // exports
 
@@ -88730,6 +88798,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -88753,25 +88822,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       default: function _default() {
         return { types: ["regions"] };
       }
+    },
+    formOptions: {
+      type: Object,
+      default: function _default() {
+        return {
+          street_number: "long_name",
+          route: "long_name",
+          locality: "long_name",
+          administrative_area_level_1: "long_name",
+          administrative_area_level_2: "long_name",
+          administrative_area_level_3: "long_name",
+          country: "long_name",
+          postal_code: "long_name"
+        };
+      }
     }
   },
 
   data: function data() {
     return {
+      inputValue: "",
       autoComplete: {}
     };
   },
+
+
+  watch: {
+    value: function value(_value) {
+      if (_value.formatted_address) {
+        this.inputValue = _value.formatted_address;
+      } else {
+        this.inputValue = "";
+      }
+    }
+  },
+
   created: function created() {},
   mounted: function mounted() {
-    this.autoComplete = new google.maps.places.Autocomplete(this.$refs.autoComplete, this.options);
-    this.autoComplete.addListener('place_changed', this.onPlaceChange);
+    this.autoComplete = new google.maps.places.Autocomplete(this.$refs.autoComplete, {});
+    this.autoComplete.addListener("place_changed", this.onPlaceChange);
   },
 
 
   methods: {
     onPlaceChange: function onPlaceChange() {
-      console.log('change...');
-      console.log(this.autoComplete.getPlace());
+      var _this = this;
+
+      var form = {};
+      var place = this.autoComplete.getPlace();
+      form.formatted_address = place.formatted_address;
+      Object.keys(this.formOptions).forEach(function (formKey) {
+        form[formKey] = "";
+        place.address_components.forEach(function (addressPart) {
+          if (addressPart.types.indexOf(formKey) > -1) {
+            form[formKey] = addressPart[_this.formOptions[formKey]];
+          }
+        });
+      });
+      this.$emit("input", form);
     }
   }
 });
@@ -88784,7 +88893,28 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("input", { ref: "autoComplete", attrs: { type: "text" } })
+  return _c("input", {
+    directives: [
+      {
+        name: "model",
+        rawName: "v-model",
+        value: _vm.inputValue,
+        expression: "inputValue"
+      }
+    ],
+    ref: "autoComplete",
+    staticClass: "form-control",
+    attrs: { type: "text" },
+    domProps: { value: _vm.inputValue },
+    on: {
+      input: function($event) {
+        if ($event.target.composing) {
+          return
+        }
+        _vm.inputValue = $event.target.value
+      }
+    }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -88806,7 +88936,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav-view",
-    { attrs: { scrollbar: true, loading: _vm.loading, padding: "p-5" } },
+    { attrs: { scrollbar: true, loading: _vm.isLoading, padding: "p-5" } },
     [
       _c("template", { slot: "toolbar" }),
       _vm._v(" "),
@@ -89121,6 +89251,11 @@ var render = function() {
           _vm._v(" "),
           _c("ts-grid", {
             attrs: { columns: _vm.columns, "has-toolbar": false },
+            on: {
+              inserted: function($event) {
+                _vm.place = {}
+              }
+            },
             scopedSlots: _vm._u([
               {
                 key: "default",
@@ -89160,12 +89295,11 @@ var render = function() {
                             { staticClass: "col-sm-9" },
                             [
                               _c("goole-places", {
-                                model: {
-                                  value: _vm.place,
-                                  callback: function($$v) {
-                                    _vm.place = $$v
-                                  },
-                                  expression: "place"
+                                attrs: { value: _vm.place },
+                                on: {
+                                  input: function($event) {
+                                    _vm.placeChange($event, item)
+                                  }
                                 }
                               })
                             ],
@@ -98045,7 +98179,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -98060,6 +98194,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core_BaseGrid_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__core_BaseGrid_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__TsModal_vue__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__TsModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__TsModal_vue__);
+//
 //
 //
 //
@@ -98195,33 +98330,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     inserted: function inserted(row) {
       this.hideModal();
-      this.$emit('inserted', row);
+      this.$emit("inserted", row);
     },
     updated: function updated(row) {
       this.hideModal();
-      this.$emit('updated', row);
+      this.$emit("updated", row);
     },
     deleted: function deleted(row) {
-      this.$emit('deleted', row);
+      this.$emit("deleted", row);
     },
     onAdd: function onAdd() {
       this.mode = "insert";
       this.currentRow = {};
-      this.modalTitle = 'Add New Row';
+      this.modalTitle = "Add New Row";
       this.showModal();
     },
     onEdit: function onEdit(row, index) {
-      this.mode = 'update';
+      this.mode = "update";
       this.currentRow = row;
       this.rowIndex = index;
-      this.modalTitle = 'Update Row';
+      this.modalTitle = "Update Row";
       this.showModal();
     },
     showModal: function showModal() {
       this.modal = true;
+      this.$emit('modalShow');
     },
     hideModal: function hideModal() {
       this.modal = false;
+      this.$emit('modalHide');
     }
   }
 });
@@ -98366,7 +98503,6 @@ var render = function() {
           var updateRow = ref.updateRow
           var deleteRow = ref.deleteRow
           var copyRow = ref.copyRow
-          var pastRow = ref.pastRow
           return _c("div", { staticClass: "table-responsive" }, [
             _c(
               "table",

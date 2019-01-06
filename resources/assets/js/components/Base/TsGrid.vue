@@ -7,9 +7,10 @@
     @deleted="deleted"
     @select="(selects)=>{ $emit('select', selects) }"
   >
-    <div 
+    <div
       class="table-responsive"
-      slot-scope="{ selectRow, insertRow, updateRow, deleteRow, copyRow, pastRow }">
+      slot-scope="{ selectRow, insertRow, updateRow, deleteRow, copyRow }"
+    >
       <table class="table table-sm table-hover table-light">
         <thead>
           <tr v-if="hasToolbar">
@@ -20,7 +21,7 @@
           <tr>
             <th>
               <button 
-                class="btn btn-sm"
+                class="btn btn-sm" 
                 type="button" 
                 @click="onAdd">
                 <vb-icon :icon="'playlist_add'"/>
@@ -40,13 +41,13 @@
             :key="row.id">
             <td>
               <button 
-                class="btn btn-sm"
+                class="btn btn-sm" 
                 type="button" 
                 @click="onEdit(copyRow(row), index)">
                 <vb-icon :icon="'edit'"/>
               </button>
               <button 
-                class="btn btn-sm"
+                class="btn btn-sm" 
                 type="button" 
                 @click="deleteRow(row)">
                 <vb-icon :icon="'delete'"/>
@@ -125,48 +126,49 @@ export default {
       modal: false,
       modalTitle: "",
       rowIndex: 0,
-      currentRow: {},      
+      currentRow: {}
     };
   },
 
   methods: {
-    inserted(row){
+    inserted(row) {
       this.hideModal();
-      this.$emit('inserted', row);
+      this.$emit("inserted", row);
     },
 
-    updated(row){
+    updated(row) {
       this.hideModal();
-      this.$emit('updated', row);
+      this.$emit("updated", row);
     },
 
-    deleted(row){
-      this.$emit('deleted', row);
+    deleted(row) {
+      this.$emit("deleted", row);
     },
 
     onAdd() {
-      this.mode = "insert";      
+      this.mode = "insert";
       this.currentRow = {};
-      this.modalTitle = 'Add New Row';
+      this.modalTitle = "Add New Row";
       this.showModal();
     },
 
     onEdit(row, index) {
-      this.mode = 'update';      
+      this.mode = "update";
       this.currentRow = row;
       this.rowIndex = index;
-      this.modalTitle = 'Update Row';
+      this.modalTitle = "Update Row";
       this.showModal();
     },
 
-    showModal(){
+    showModal() {
       this.modal = true;
+      this.$emit('modalShow');
     },
 
-    hideModal(){
+    hideModal() {      
       this.modal = false;
-    },
-
+      this.$emit('modalHide');
+    }
   }
 };
 </script>
