@@ -27,14 +27,14 @@ export default {
       type: Object,
       default: () => {
         return {
-          street_number: "long_name",
-          route: "long_name",
-          locality: "long_name",
-          administrative_area_level_1: "long_name",
-          administrative_area_level_2: "long_name",
-          administrative_area_level_3: "long_name",
+          street_number: "short_name",
+          route: "short_name",
+          locality: "short_name",
+          administrative_area_level_1: "short_name",
+          administrative_area_level_2: "short_name",
+          administrative_area_level_3: "short_name",
           country: "long_name",
-          postal_code: "long_name"
+          postal_code: "short_name"
         };
       }
     }

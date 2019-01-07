@@ -66,7 +66,7 @@
             :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]"
             role="button"
             :aria-disabled="this.relatedRequests === null"
-            :to="{ name: 'requestList', params : { col: 'job_id', opt: 'in', val: this.relatedRequests } }"
+            :to="{ name: 'inbox', params : { col: 'job_id', opt: 'in', val: this.relatedRequests } }"
           >Related Requests</router-link>
         </li>
         <li>

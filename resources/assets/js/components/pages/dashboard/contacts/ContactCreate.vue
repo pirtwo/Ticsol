@@ -176,6 +176,20 @@
 
             <div class="form-group">
               <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Unit</label>
+                <div class="col-sm-10">
+                  <input 
+                    v-model="item.unit" 
+                    type="text" 
+                    placeholder="please enter unit..."
+                    class="form-control" 
+                    id="unit">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
                 <label class="col-sm-2 col-form-lable">Number</label>
                 <div class="col-sm-10">
                   <input 
@@ -214,21 +228,21 @@
                     id="suburb">
                 </div>
               </div>
-            </div>
+            </div>  
 
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Unit</label>
+                <label class="col-sm-2 col-form-lable">State</label>
                 <div class="col-sm-10">
                   <input 
                     v-model="item.unit" 
                     type="text" 
-                    placeholder="please enter unit..."
+                    placeholder="please enter state..."
                     class="form-control" 
                     id="unit">
                 </div>
               </div>
-            </div>
+            </div>          
 
             <div class="form-group">
               <div class="form-row">

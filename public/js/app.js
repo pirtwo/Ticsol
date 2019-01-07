@@ -84512,7 +84512,7 @@ var render = function() {
                     role: "button",
                     "aria-disabled": this.relatedRequests === null,
                     to: {
-                      name: "requestList",
+                      name: "inbox",
                       params: {
                         col: "job_id",
                         opt: "in",
