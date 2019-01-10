@@ -11,8 +11,8 @@
 |
 */
 
-Broadcast::channel('ticsol', function(){
-    return true;
+Broadcast::channel('App.Clients.{id}', function($user, $id){
+    return $user->client_id == $id;
 });
 
 Broadcast::channel('App.Users.{id}', function ($user, $id) {
