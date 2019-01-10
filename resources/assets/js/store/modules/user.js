@@ -18,7 +18,7 @@ export const userModule = {
     },
 
     getters: {
-        getId(state){
+        getId(state) {
             return state.info.id;
         },
 
@@ -114,7 +114,7 @@ export const userModule = {
             })
         },
 
-        subscribeForNotifications({ state, commit }) {
+        subscribeForNotifications({ state, dispatch }) {
             if (!state.isAuth) return
 
             let pusher = new Pusher("8cf467561b944c1668e0", {
@@ -128,9 +128,16 @@ export const userModule = {
                 }
             });
 
+            pusher.logToConsole = true;
+
             let notifChannel = pusher.subscribe(`private-App.Users.${state.info.id}`);
             notifChannel.bind("Illuminate\\Notifications\\Events\\BroadcastNotificationCreated", (data) => {
                 console.log(data);
+            });
+
+            let clientChannel = pusher.subscribe(`private-App.Clients.${state.info.client_id}`);
+            clientChannel.bind("Client.Update", (data) => {                
+                dispatch('resource/onClientUpdate', data.resName, { root: true });
             });
 
             notifChannel.bind('pusher:subscription_succeeded', () => {
@@ -138,6 +145,14 @@ export const userModule = {
             });
             notifChannel.bind('pusher:subscription_error', () => {
                 console.log('subscribe to notif channel failed.');
+            });
+
+            clientChannel.bind('pusher:subscription_succeeded', () => {
+                console.log('subscribed to client channel successfuly.');
+            });
+
+            clientChannel.bind('pusher:subscription_error', () => {
+                console.log('subscribe to client channel failed.');
             });
 
         }
