@@ -245,8 +245,8 @@ export const coreModule = {
             });
             
             let notifChannel = pusher.subscribe(`private-App.Users.${user.info.id}`);
-            notifChannel.bind("Illuminate\\Notifications\\Events\\BroadcastNotificationCreated", (data) => {
-                console.log(data);
+            notifChannel.bind("User.Update", (data) => {
+                dispatch('resource/onClientUpdate', data.resName, { root: true });
             });
 
             let clientChannel = pusher.subscribe(`private-App.Clients.${user.info.client_id}`);
