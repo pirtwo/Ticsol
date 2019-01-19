@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-2">
 
     <template slot="toolbar">
@@ -21,8 +21,7 @@
     <template slot="content">
 
       <table-view 
-        class="table table-striped" 
-        v-model="selects" 
+        class="table table-striped"        
         :data="requests" 
         :header="header" 
         :selection="false" 
@@ -61,9 +60,12 @@ import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "RequestList",
+
+  mixins:[pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -74,15 +76,12 @@ export default {
   props: ["col", "opt", "val"],
 
   data() {
-    return {
-      requests: [],
+    return {     
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },
-      loading: true,
-      selects: [],
+      },      
       header: [
         { value: "", orderBy: "" },
         { value: "Type", orderBy: "type" },
@@ -101,16 +100,26 @@ export default {
     }
   },
 
+  computed:{
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    requests: function() {
+      return this.getList("request");
+    },
+  },
+
   mounted() {
     this.feedTable();
   },
 
   methods: {
-    ...mapActions({ fetch: "resource/list" }),
+    ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-      this.loading = true;
-      this.fetch({
+      this.loadingStart();
+      this.fetchList({
         resource: "request",
         query: {
           page: this.pager.page,
@@ -119,14 +128,13 @@ export default {
           [this.opt]: `${this.col},${this.val}`
         }
       })
-        .then(respond => {
-          this.requests = respond.data;
+        .then(respond => {          
           this.pager.pageCount = respond.last_page;
-          this.loading = false;
+          this.loadingStop();
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          this.loadingStop();
         });
     },
 
