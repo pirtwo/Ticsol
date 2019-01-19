@@ -1,4 +1,3 @@
-import Echo from "laravel-echo";
 import Pusher from 'pusher-js';
 import { api } from "../../api/http";
 import * as URLs from "../../api/resources";
@@ -83,7 +82,7 @@ export const userModule = {
                     .then(respond => {
                         commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
                         commit(MUTATIONS.USER_AUTH_SUCCESS);
-                        //dispatch('subscribeForNotifications');
+                        dispatch('core/goRealTime', null, { root: true });
                         resolve("success");
                     }).catch(error => {
                         console.log(error);
@@ -113,48 +112,5 @@ export const userModule = {
                 });
             })
         },
-
-        subscribeForNotifications({ state, dispatch }) {
-            if (!state.isAuth) return
-
-            let pusher = new Pusher("8cf467561b944c1668e0", {
-                cluster: "ap2",
-                authEndpoint: '/broadcasting/auth',
-                auth: {
-                    headers: {
-                        Accept: "application/json",
-                        Authorization: "Bearer " + state.token.value
-                    }
-                }
-            });
-
-            pusher.logToConsole = true;
-
-            let notifChannel = pusher.subscribe(`private-App.Users.${state.info.id}`);
-            notifChannel.bind("Illuminate\\Notifications\\Events\\BroadcastNotificationCreated", (data) => {
-                console.log(data);
-            });
-
-            let clientChannel = pusher.subscribe(`private-App.Clients.${state.info.client_id}`);
-            clientChannel.bind("Client.Update", (data) => {                
-                dispatch('resource/onClientUpdate', data.resName, { root: true });
-            });
-
-            notifChannel.bind('pusher:subscription_succeeded', () => {
-                console.log('subscribed to notif channel successfuly.');
-            });
-            notifChannel.bind('pusher:subscription_error', () => {
-                console.log('subscribe to notif channel failed.');
-            });
-
-            clientChannel.bind('pusher:subscription_succeeded', () => {
-                console.log('subscribed to client channel successfuly.');
-            });
-
-            clientChannel.bind('pusher:subscription_error', () => {
-                console.log('subscribe to client channel failed.');
-            });
-
-        }
     }
 }
