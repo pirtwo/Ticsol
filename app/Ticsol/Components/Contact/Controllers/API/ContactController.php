@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Contact;
+use App\Ticsol\Components\Contact\Events;
 use App\Ticsol\Components\Contact\Requests;
 use App\Ticsol\Components\Contact\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
@@ -89,7 +90,7 @@ class ContactController extends Controller
             }
 
             DB::commit();
-
+            event(new Events\ContactCreated($contact));
             return $contact;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
@@ -156,7 +157,7 @@ class ContactController extends Controller
             }
 
             DB::commit();
-
+            event(new Events\ContactUpdated($contact));
             return $contact;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);

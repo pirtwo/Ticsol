@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Activity;
+use App\Ticsol\Components\Activity\Events;
 use App\Ticsol\Components\Activity\Requests;
 use App\Ticsol\Components\Activity\Repository;
 use App\Ticsol\Components\Activity\Criterias\ActivityCriteria;
@@ -70,6 +71,7 @@ class ActivityController extends Controller
             $activity->creator_id = $request->user()->id;
             $activity->fill($request->all());
             $activity->save();
+            event(new Events\ActivityCreated($activity));
             return $activity;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
@@ -110,6 +112,7 @@ class ActivityController extends Controller
                 throw new NotFound();
             }
             $activity->update($request->all());
+            event(new Events\ActivityUpdated($activity));
             return $activity;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);

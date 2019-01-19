@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Components\Models\Comment;
+use App\Ticsol\Components\Comment\Events;
 use App\Ticsol\Components\Comment\Requests;
 use App\Ticsol\Components\Comment\Repository;
 use App\Ticsol\Components\Comment\Criterias\CommentCriteria;
@@ -89,7 +90,7 @@ class CommentController extends Controller
             }
 
             $comment->save();
-                
+            event(new Events\CommentCreated($comment));    
             return $comment;
         } catch (AuthorizationException $e) {
             return response()->json(['message' => 'This action is unauthorized.'], 401);   
@@ -124,8 +125,7 @@ class CommentController extends Controller
      */
     public function update(Requests\UpdateComment $request, $id)
     {
-        try {
-            
+        try {            
             $comment = $this->repository->findBy('id', $id);
             if ($comment == null) {
                 throw new NotFound();
@@ -134,7 +134,7 @@ class CommentController extends Controller
             $this->authorize('update', $comment);
             
             $comment->update($request->only('body'));
-            
+            event(new Events\CommentCreated($comment));  
             return $comment;
         } catch (AuthorizationException $e) {
             return response()->json(['message' => 'This action is unauthorized.'], 401);        

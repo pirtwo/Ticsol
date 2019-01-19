@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Schedule;
+use App\Ticsol\Components\Schedule\Events;
 use App\Ticsol\Components\Schedule\Requests;
 use App\Ticsol\Components\Schedule\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
@@ -76,7 +77,8 @@ class ScheduleController extends Controller
             $schedule->creator_id = $request->user()->id;
             $schedule->fill($request->all());
             $schedule->save();
-            return Schedule::with(['user', 'job'])->where('id', $schedule->id)->get();
+            event(new Events\ScheduleCreated($schedule));
+            return $schedule;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -117,6 +119,7 @@ class ScheduleController extends Controller
             }
 
             $schedule->update($request->all());
+            event(new Events\ScheduleUpdated($schedule));
             return $schedule;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);

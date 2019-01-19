@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
+use App\Ticsol\Components\Role\Events;
 use App\Ticsol\Components\Role\Requests;
 use App\Ticsol\Components\Role\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
@@ -107,7 +108,7 @@ class RoleController extends Controller
                 DB::rollback();
                 return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-
+            event(new Events\RoleCreated($role));
             return $role;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
@@ -193,7 +194,7 @@ class RoleController extends Controller
                 DB::rollback();
                 return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-            
+            event(new Events\RoleUpdated($role));
             return $role;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
