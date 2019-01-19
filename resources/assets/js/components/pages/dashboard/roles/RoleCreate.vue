@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-5">
 
     <template slot="toolbar"/>
@@ -245,8 +245,7 @@ export default {
       form: {
         name: "",
         permissions: []
-      },
-      loading: false
+      }
     };
   },
 
@@ -256,18 +255,8 @@ export default {
     }
   },
 
-  computed: {},
-
-  created() {
-    this.clear("role");
-  },
-
-  mounted() {},
-
   methods: {
     ...mapActions({
-      fetch: "resource/list",
-      clear: "resource/clearList",
       create: "resource/create"
     }),
 

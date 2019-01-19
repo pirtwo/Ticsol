@@ -87,8 +87,7 @@ export default {
 
   data() {
     return {
-      comments: [],
-      comment: "",
+      comment: "",        
       parentId: null,
       pager: {
         page: 1,
@@ -98,13 +97,20 @@ export default {
     };
   },
 
-  created() {},
+  computed:{
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    comments: function(){
+      return this.getList("comment");
+    },
+  },
 
   mounted() {
     this.loadingStart();
     this.loadComments()
-      .then(respond => {
-        this.comments = respond.data;  
+      .then(respond => {        
         this.pager.pageCount = respond.last_page;      
         this.loadingStop();
       })
@@ -116,15 +122,14 @@ export default {
 
   methods: {
     ...mapActions({
-      fetch: "resource/list",
+      fetchList: "resource/list",
       create: "resource/create"
     }),
 
     changePage() {   
       this.loadingStart();
       this.loadComments()
-        .then(respond => {
-          this.comments = respond.data;  
+        .then(respond => {          
           this.pager.pageCount = respond.last_page; 
           this.loadingStop();          
         })
@@ -136,7 +141,7 @@ export default {
 
     loadComments() {   
       this.cancelReply();   
-      return this.fetch({
+      return this.fetchList({
         resource: 'comment',
         query: {
           id: this.id,

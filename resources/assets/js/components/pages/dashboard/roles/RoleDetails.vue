@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-5">
 
     <template slot="toolbar"/>
@@ -248,32 +248,27 @@ export default {
       form: {
         name: "",
         permissions: []
-      },
-      loading: false
+      }
     };
   },
-
-  created() {
-    this.clear("role");
-  },
-
+  
   mounted() {
-    this.loading = true;
-    this.show({ resource: "role", id: this.id, query: { with: "permissions" } })
+    this.loadingStart();
+    this.fetchItem({ resource: "role", id: this.id, query: { with: "permissions" } })
       .then(data => {
         this.form.name = data.name;
         this.form.permissions = data.permissions.map(item => item.name);
-        this.loading = false;
+        this.loadingStop();
       })
       .catch(error => {
         console.log(error);
+        this.loadingStop();
       });
   },
 
   methods: {
     ...mapActions({
-      show: "resource/show",
-      clear: "resource/clearList",
+      fetchItem: "resource/show",
       update: "resource/update"
     }),
 

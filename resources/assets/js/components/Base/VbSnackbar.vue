@@ -1,7 +1,8 @@
 <template>
   <div 
     ref="vbSnackbar" 
-    class="vb-snackbar">
+    class="vb-snackbar"
+    v-show="value">
     <div class="d-flex align-items-center">
       <slot/>
       <button 
@@ -36,13 +37,13 @@ export default {
   methods: {
     showSnackbar() {
       this.$emit("show");
-      this.$refs.vbSnackbar.classList.remove("vb-snackbar--hide");
-      this.$refs.vbSnackbar.classList.add("vb-snackbar--show");
+      //this.$refs.vbSnackbar.classList.remove("vb-snackbar--hide");
+      //this.$refs.vbSnackbar.classList.add("vb-snackbar--show");
     },
 
     hideSnackbar() {      
-      this.$refs.vbSnackbar.classList.remove("vb-snackbar--show");
-      this.$refs.vbSnackbar.classList.add("vb-snackbar--hide");          
+      //this.$refs.vbSnackbar.classList.remove("vb-snackbar--show");
+      //this.$refs.vbSnackbar.classList.add("vb-snackbar--hide");          
       this.$emit("input", false);
       this.$emit("hide");
     }
@@ -52,9 +53,8 @@ export default {
 
 <style scoped>
 .vb-snackbar {
-  visibility: hidden;
-  border-radius: 0px;
-  opacity: 0;
+  visibility: visible;
+  border-radius: 0px;  
   z-index: 10;
 }
 

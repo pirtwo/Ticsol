@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-2">
 
     <template slot="toolbar">
@@ -24,8 +24,7 @@
     <template slot="content">
 
       <table-view 
-        class="table table-striped" 
-        v-model="selects" 
+        class="table table-striped"
         :data="reports" 
         :header="header" 
         :selection="false" 
@@ -61,9 +60,12 @@ import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "ActivityList",
+
+  mixins:[pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -75,14 +77,11 @@ export default {
 
   data() {
     return {
-      reports: [],
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },
-      loading: true,
-      selects: [],
+      },      
       header: [
         { value: "", orderBy: "" },
         { value: "From", orderBy: "from" },
@@ -99,6 +98,16 @@ export default {
     }
   },
 
+  computed:{
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    reports: function(){
+      return this.getList("activity");
+    },
+  },
+
   mounted() {
     this.feedTable();
   },
@@ -107,7 +116,7 @@ export default {
     ...mapActions({ fetch: "resource/list" }),
 
     feedTable() {
-      this.loading = true;
+      this.loadingStart();
       this.fetch({
         resource: "activity",
         query: {
@@ -117,14 +126,13 @@ export default {
           [this.opt]: `${this.col},${this.val}`
         }
       })
-        .then(respond => {
-          this.reports = respond.data;
+        .then(respond => {         
           this.pager.pageCount = respond.last_page;
-          this.loading = false;
+          this.loadingStop();
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          this.loadingStop();
         });
     },
 

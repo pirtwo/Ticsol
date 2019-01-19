@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-2">
     <template slot="drawer">
 
@@ -81,7 +81,6 @@ export default {
 
   data() {
     return {
-      loading: false,
       frmBuilder: {},
       form: {
         name: "",
@@ -91,22 +90,22 @@ export default {
   },
 
   mounted() {
-    this.loading = true;
-    this.show({ resource: "form", id: this.id })
+    this.loadingStart();
+    this.fetchItem({ resource: "form", id: this.id })
       .then(respond => {
         this.form.name = respond.name;
         this.frmBuilder.actions.setData(JSON.stringify(respond.schema));
-        this.loading = false;
+        this.loadingStop();
       })
       .catch(error => {
         console.log(error);
-        this.loading = false;
+        this.loadingStop();
       });
   },
 
   methods: {
     ...mapActions({
-      show: "resource/show",
+      fetchItem: "resource/show",
       update: "resource/update"
     }),
 

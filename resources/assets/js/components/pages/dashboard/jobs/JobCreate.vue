@@ -218,7 +218,7 @@ export default {
   },
 
   created() {
-    this.clear("job");
+    
   },
 
   mounted() {
@@ -240,7 +240,6 @@ export default {
     ...mapActions({
       fetch: "resource/list",
       create: "resource/create",
-      clear: "resource/clearList"
     }),
 
     onSubmit(e) {

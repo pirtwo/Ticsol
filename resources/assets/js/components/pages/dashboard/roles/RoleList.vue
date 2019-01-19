@@ -1,10 +1,9 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-2">
-
-    <template slot="toolbar">      
+    <template slot="toolbar">
       <pagination-view 
         v-model="pager" 
         :page-count="pager.pageCount"/>
@@ -13,24 +12,26 @@
     <template slot="drawer">
       <ul class="v-menu">
         <li class="menu-title">Actions</li>
-        <li><router-link 
-          tag="button" 
-          class="btn btn-light" 
-          :to="{ name: 'roleCreate' }">New</router-link></li>
-        <li class="menu-title">Links</li>                
+        <li>
+          <router-link 
+            tag="button" 
+            class="btn btn-light" 
+            :to="{ name: 'roleCreate' }">New</router-link>
+        </li>
+        <li class="menu-title">Links</li>
       </ul>
     </template>
 
     <template slot="content">
-
-      <table-view 
-        class="table table-striped" 
-        v-model="selects" 
-        :data="jobs" 
-        :header="header" 
-        :selection="false" 
-        order-by="title" 
-        order="asc">
+      <table-view
+        class="table table-striped"
+        v-model="selects"
+        :data="roles"
+        :header="header"
+        :selection="false"
+        order-by="title"
+        order="asc"
+      >
         <template 
           slot="header" 
           slot-scope="{item}">
@@ -40,18 +41,18 @@
           slot="body" 
           slot-scope="{item}">
           <td>
-            <router-link 
-              class="btn btn-sm btn-light" 
-              :to="{ name : 'roleDetails', params : { id: item.id } }">
+            <router-link
+              class="btn btn-sm btn-light"
+              :to="{ name : 'roleDetails', params : { id: item.id } }"
+            >
               <i class="material-icons">visibility</i>
-            </router-link> 
+            </router-link>
           </td>
           <td>{{ item.name }}</td>
           <td>{{ item.created_at }}</td>
           <td>{{ item.updated_at }}</td>
-        </template> 
-      </table-view>     
-
+        </template>
+      </table-view>
     </template>
   </nav-view>
 </template>
@@ -62,9 +63,12 @@ import FilterView from "../../../framework/BaseFilter.vue";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "RoleList",
+
+  mixins: [pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -77,16 +81,14 @@ export default {
 
   data() {
     return {
-      jobs: [],
+      query: [],
+      selects: [],      
+      showFilter: false,
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },
-      loading: true,
-      selects: [],
-      query: [],
-      showFilter: false,
+      },      
       header: [
         { value: "", orderBy: "" },
         { value: "Title", orderBy: "name" },
@@ -103,12 +105,19 @@ export default {
     },
 
     query: function(value) {
-      console.log("update");
       console.log(value);
     }
   },
 
   computed: {
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    roles: function() {
+      return this.getList("role");
+    },
+
     columnList: function() {
       return [
         { key: "title", value: "Title" },
@@ -118,16 +127,16 @@ export default {
     }
   },
 
-  mounted() {    
+  mounted() {
     this.feedTable();
   },
 
   methods: {
-    ...mapActions({ fetch: "resource/list", logger: "core/pushLog" }),
+    ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-      this.loading = true;
-      this.fetch({
+      this.loadingStart();
+      this.fetchList({
         resource: "role",
         query: this.$queryBuilder(
           this.pager.page,
@@ -139,13 +148,12 @@ export default {
         )
       })
         .then(respond => {
-          this.jobs = respond.data;
           this.pager.pageCount = respond.last_page;
-          this.loading = false;
+          this.loadingStop();
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          this.loadingStop();
         });
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-2">
 
     <template slot="toolbar">
@@ -24,8 +24,7 @@
     <template slot="content">
 
       <table-view 
-        class="table table-striped" 
-        v-model="selects" 
+        class="table table-striped"         
         :data="contacts" 
         :header="header" 
         :selection="false" 
@@ -46,10 +45,10 @@
               <i class="material-icons">visibility</i>
             </router-link>  
           </td>
-          <td>{{ item.name }}</td>
+          <td>{{ `${item.firstname} ${item.lastname}` }}</td>
           <td>{{ item.group }}</td>
-          <td>{{ item.tel }}</td>
-          <td>{{ item.mobile }}</td>
+          <td>{{ item.telephone }}</td>
+          <td>{{ item.mobilephone }}</td>
         </template> 
       </table-view>
 
@@ -62,9 +61,12 @@ import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "ContactList",
+
+  mixins:[pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -76,14 +78,11 @@ export default {
 
   data() {
     return {
-      contacts: [],
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },
-      loading: true,
-      selects: [],
+      },      
       header: [
         { value: "", orderBy: "" },
         { value: "Name", orderBy: "name" },
@@ -101,16 +100,26 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    contacts: function(){
+      return this.getList("contact");
+    },
+  },
+
   mounted() {
     this.feedTable();
   },
 
   methods: {
-    ...mapActions({ fetch: "resource/list" }),
+    ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-      this.loading = true;
-      this.fetch({
+      this.loadingStart();
+      this.fetchList({
         resource: "contact",
         query: {
           page: this.pager.page,
@@ -118,22 +127,13 @@ export default {
           [this.opt]: `${this.col},${this.val}`
         }
       })
-        .then(respond => {
-          this.contacts = respond.data.map(obj => {
-            return {
-              id: obj.id,
-              group: obj.group,
-              name: obj.firstname + " " + obj.lastname,
-              tel: obj.telephone,
-              mobile: obj.mobilephone
-            };
-          });
+        .then(respond => {         
           this.pager.pageCount = respond.last_page;
-          this.loading = false;
+          this.loadingStop();
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          this.loadingStop();
         });
     }
   }
