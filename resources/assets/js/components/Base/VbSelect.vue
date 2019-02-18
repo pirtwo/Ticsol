@@ -50,7 +50,7 @@
           <slot :item="value">{{ value.value }}</slot>
         </li>
         <slot 
-          v-if="options.length != 0" 
+          v-if="options.length != 0"
           name="fixed-bottom"/>
         <slot 
           v-if="options.length === 0" 
@@ -70,7 +70,9 @@ export default {
   props: {
     value: {
       type: [Array, Object],
-      default: null
+      default: () => {
+        return {};
+      }
     },
     data: {
       type: Array,
@@ -124,6 +126,7 @@ export default {
       if (this.multi) {
         this.selects = [...value];
       } else {
+        if (!value) return;
         this.selects = [];
         this.selects.push(value);
       }
@@ -162,7 +165,7 @@ export default {
         if (this.selects.length === 0) return "";
         return `${this.selects.length} item selected`;
       } else {
-        if (this.selects[0] === undefined) return "";
+        if (!this.selects[0]) return "";
         return this.selects[0].value;
       }
     }
@@ -182,7 +185,7 @@ export default {
 
   methods: {
     selectHandler(item, event) {
-      if (this.multi) {        
+      if (this.multi) {
         if (!this.isSelected(item)) {
           this.selects.push(item);
           this.$emit("input", [...this.selects]);
