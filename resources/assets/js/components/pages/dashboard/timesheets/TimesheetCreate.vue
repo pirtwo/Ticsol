@@ -285,10 +285,10 @@ export default {
     onSubmit(event) {
       let timesheets = this.timesheetItems.map(item => {
         return {
-          job_id: item.job.id,
+          job_id: item.job.key,
           user_id: item.user_id,
           type: "timesheet",
-          status: "draft",
+          status: "submitted",
           break_length: item.break_length,
           start: item.date.day.value.slice(0, 10) + "T" + item.startTime,
           end: item.date.day.value.slice(0, 10) + "T" + item.endTime
@@ -301,12 +301,12 @@ export default {
     onSave(event) {
       let timesheets = this.timesheetItems.map(item => {
         return {
-          job_id: item.job_id,
-          user_id: item.user_id,
+          job_id: item.job.key,
+          user_id: item.user.id,
           type: "timesheet",
           break_length: item.break_length,
-          start: item.day.toString().slice(0, 10) + "T" + item.startTime,
-          end: item.day.toString().slice(0, 10) + "T" + item.endTime
+          start: item.date.day.toString().slice(0, 10) + "T" + item.startTime,
+          end: item.date.day.toString().slice(0, 10) + "T" + item.endTime
         };
       });
 
@@ -315,11 +315,15 @@ export default {
         data: { status: "draft", timesheets: timesheets }
       })
         .then(() => {
-          console.log("draft created successfuly.");
+          this.showMessage(
+            `Draft created successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
-          console.log(error.response);
+           this.showMessage(error.message, "danger");  
         });
+
       console.log(timesheets);
     },
 
@@ -335,8 +339,8 @@ export default {
           if (item.start >= day.addDays(-1) && item.end <= day) {
             let timesheet = {};
             timesheet.id = uuid();
-            timesheet.day = this.weekDays[i];    
-            timesheet.job = this.jobs.find(job => item.job.id == job.key);            
+            timesheet.date = this.weekDays[i];    
+            timesheet.job = this.jobs.find(job => job.key == item.job.id);            
             timesheet.request = item.request;                   
             timesheet.startTime = item.start.slice(11, 16);            
             timesheet.endTime = item.end.slice(11, 16);
@@ -355,8 +359,8 @@ export default {
           if (item.start <= day && item.end >= day) {
             let timesheet = {};
             timesheet.id = uuid();
-            timesheet.day = this.weekDays[i];       
-            timesheet.job = this.jobs.find(job => item.job.id == job.key);    
+            timesheet.date = this.weekDays[i];       
+            timesheet.job = this.jobs.find(job => job.key == item.job.id);          
             timesheet.request = item.request;                
             timesheet.startTime = item.start.slice(11, 16);            
             timesheet.endTime = item.end.slice(11, 16);
