@@ -35,7 +35,7 @@
       </button>
       <div class="dropdown-menu">                              
         <router-link 
-          :to="{ name : 'reqLeave'}" 
+          :to="{ name : 'leaveCreate'}" 
           class="dropdown-item">
           Leave
         </router-link>               

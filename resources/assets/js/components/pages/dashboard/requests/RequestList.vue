@@ -149,7 +149,7 @@ export default {
     },
 
     getRouteName(reqType){
-      if(reqType === 'leave') return 'reqLeave';
+      if(reqType === 'leave') return 'leaveDetails';
       else if(reqType === 'reimbursement') return 'reqLeave';
       else if(reqType === 'timesheet') return 'reqReimb';
     }

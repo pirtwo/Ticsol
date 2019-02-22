@@ -77,10 +77,16 @@ export const router = new VueRouter({
                             component: require('./components/pages/dashboard/requests/RequestList.vue'),
                         },
                         {
-                            props: true,
-                            name: 'reqLeave',
+                            name: 'leaveCreate',
                             meta: { requireAuth: true },
-                            path: 'leave/:id?',
+                            path: 'leave/create',
+                            component: require('./components/pages/dashboard/requests/LeaveRequest.vue'),
+                        },
+                        {
+                            props: true,
+                            name: 'leaveDetails',
+                            meta: { requireAuth: true },
+                            path: 'leave/details/:id?',
                             component: require('./components/pages/dashboard/requests/LeaveRequest.vue'),
                         },
                         {
