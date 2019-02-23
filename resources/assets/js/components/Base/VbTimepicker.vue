@@ -2,82 +2,112 @@
   <!-- vb-timepicker -->
   <div
     ref="vbTimepicker"
-    class="vb-timepicker">
+    class="vb-timepicker"
+  >
     <input
       type="text"
       class="vb-timepicker__input form-control"
       :value="inputText"
       @focus="dropdownStatus = true"
-      readonly>
-    <span class="vb-timepicker__btn-clear"/>
+      readonly
+    >
+    <span class="vb-timepicker__btn-clear" />
 
     <!-- dropdown -->
     <div
       ref="dropdown"
       class="vb-timepicker__dropdown"
-      v-show="dropdownStatus">
+      v-show="dropdownStatus"
+    >
       <ul
         v-if="groups[1] !== undefined"
-        class="vb-timepicker__dropdown__list">
-        <li class="vb-timepicker__dropdown__list__title">{{ showGroup(1) }}</li>
+        class="vb-timepicker__dropdown__list"
+      >
+        <li class="vb-timepicker__dropdown__list__title">
+          {{ showGroup(1) }}
+        </li>
         <li
           class="vb-timepicker__dropdown__list__option"
           v-for="n in hours"
           :key="n"
           :class="[{ 'vb-timepicker__dropdown__list__option--selected' : isSelected(n,1) }]"
-          @click="selectHandler(n, 1)">
+          @click="selectHandler(n, 1)"
+        >
           {{ toText(n, 1) }}
         </li>
       </ul>
       <ul
         v-if="groups[2] !== undefined"
-        class="vb-timepicker__dropdown__list">
-        <li class="vb-timepicker__dropdown__list__title">{{ showGroup(2) }}</li>
+        class="vb-timepicker__dropdown__list"
+      >
+        <li class="vb-timepicker__dropdown__list__title">
+          {{ showGroup(2) }}
+        </li>
         <li
           class="vb-timepicker__dropdown__list__option"
           v-for="n in mins"
           :key="n"
           :class="[{ 'vb-timepicker__dropdown__list__option--selected' : isSelected(n,2) }]"
-          @click="selectHandler(n, 2)">
+          @click="selectHandler(n, 2)"
+        >
           {{ toText(n, 2) }}
         </li>
       </ul>
       <ul
         v-if="groups[3] != undefined"
-        class="vb-timepicker__dropdown__list">
-        <li class="vb-timepicker__dropdown__list__title">{{ showGroup(3) }}</li>
+        class="vb-timepicker__dropdown__list"
+      >
+        <li class="vb-timepicker__dropdown__list__title">
+          {{ showGroup(3) }}
+        </li>
         <li
           class="vb-timepicker__dropdown__list__option"
           v-for="n in secs"
           :key="n"
           :class="[{ 'vb-timepicker__dropdown__list__option--selected' : isSelected(n,3) }]"
-          @click="selectHandler(n, 3)">
+          @click="selectHandler(n, 3)"
+        >
           {{ toText(n, 3) }}
         </li>
       </ul>
       <ul
         v-if="groups[4] !== undefined"
-        class="vb-timepicker__dropdown__list">
-        <li class="vb-timepicker__dropdown__list__title">{{ showGroup(4) }}</li>
+        class="vb-timepicker__dropdown__list"
+      >
+        <li class="vb-timepicker__dropdown__list__title">
+          {{ showGroup(4) }}
+        </li>
         <template v-if="this.groups[4] == 'a'">
           <li
             class="vb-timepicker__dropdown__list__option"
             :class="[{ 'vb-timepicker__dropdown__list__option--selected' : isSelected('am',4) }]"
-            @click="selectHandler('am', 4)">am</li>
+            @click="selectHandler('am', 4)"
+          >
+            am
+          </li>
           <li
             class="vb-timepicker__dropdown__list__option"
             :class="[{ 'vb-timepicker__dropdown__list__option--selected' : isSelected('pm',4) }]"
-            @click="selectHandler('pm', 4)">pm</li>
+            @click="selectHandler('pm', 4)"
+          >
+            pm
+          </li>
         </template>
         <template v-if="this.groups[4] == 'A'">
           <li
             class="vb-timepicker__dropdown__list__option"
             :class="[{ 'vb-timepicker__dropdown__list__option--selected' : isSelected('AM',4) }]"
-            @click="selectHandler('AM', 4)">AM</li>
+            @click="selectHandler('AM', 4)"
+          >
+            AM
+          </li>
           <li
             class="vb-timepicker__dropdown__list__option"
             :class="[{ 'vb-timepicker__dropdown__list__option--selected' : isSelected('PM',4) }]"
-            @click="selectHandler('PM', 4)">PM</li>
+            @click="selectHandler('PM', 4)"
+          >
+            PM
+          </li>
         </template>
       </ul>
     </div><!-- dropdown END -->

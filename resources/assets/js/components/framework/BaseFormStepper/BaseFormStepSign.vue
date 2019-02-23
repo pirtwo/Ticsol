@@ -1,13 +1,15 @@
 <template>
   <div 
     :id="'step-sign-' + stepNumber" 
-    class="step-sign">
+    class="step-sign"
+  >
     <slot>
       <button 
         class="btn" 
         type="button"
         :class="[value === stepNumber ? 'btn-success':'btn-primary']"  
-        @click="onClick">
+        @click="onClick"
+      >
         {{ stepNumber }}
       </button>
       <label>{{ label }}</label>

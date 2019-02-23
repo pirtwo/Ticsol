@@ -2,46 +2,61 @@
   <nav-view 
     :scrollbar="true" 
     :loading="isLoading" 
-    padding="p-2">
-
+    padding="p-2"
+  >
     <template slot="toolbar">
       <pagination-view 
         v-model="pager" 
-        :page-count="pager.pageCount"/>
+        :page-count="pager.pageCount"
+      />
     </template>
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li><router-link 
-          tag="button" 
-          class="btn btn-light" 
-          :to="{ name: 'activityCreate' }">New</router-link></li>
-        <li class="menu-title">Links</li>                
+        <li class="menu-title">
+          Actions
+        </li>
+        <li>
+          <router-link 
+            tag="button" 
+            class="btn btn-light" 
+            :to="{ name: 'activityCreate' }"
+          >
+            New
+          </router-link>
+        </li>
+        <li class="menu-title">
+          Links
+        </li>                
       </ul>
     </template>
 
     <template slot="content">
-
       <table-view 
         class="table table-striped"
         :data="reports" 
         :header="header" 
         :selection="false" 
         order-by="id" 
-        order="asc">
+        order="asc"
+      >
         <template 
           slot="header" 
-          slot-scope="{item}">
-          <div :data-orderBy="item.orderBy">{{ item.value }}</div>
+          slot-scope="{item}"
+        >
+          <div :data-orderBy="item.orderBy">
+            {{ item.value }}
+          </div>
         </template>
         <template 
           slot="body" 
-          slot-scope="{item}">
+          slot-scope="{item}"
+        >
           <td>
             <router-link 
               class="btn btn-sm btn-light" 
-              :to="{ name : 'activityDetails', params : { id: item.id } }">
+              :to="{ name : 'activityDetails', params : { id: item.id } }"
+            >
               <i class="material-icons">visibility</i>
             </router-link>                   
           </td>
@@ -50,7 +65,6 @@
           <td>{{ item.desc }}</td> 
         </template> 
       </table-view>
-
     </template>
   </nav-view>
 </template>

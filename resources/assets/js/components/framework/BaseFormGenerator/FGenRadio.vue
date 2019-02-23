@@ -7,7 +7,8 @@
           class="custom-control custom-radio" 
           v-for="(radio, index) in values" 
           :key="index"
-          :class="{ 'custom-control-inline' : inline }">            
+          :class="{ 'custom-control-inline' : inline }"
+        >            
           <input 
             class="custom-control-input" 
             type="radio" 
@@ -15,10 +16,12 @@
             :id="name + index"
             :checked="radio.value == value"
             :value="radio.value"            
-            @input="$emit('input', $event.target.value)">
+            @input="$emit('input', $event.target.value)"
+          >
           <label 
             class="custom-control-label" 
-            :for="name + index">{{ radio.label }}</label>
+            :for="name + index"
+          >{{ radio.label }}</label>
         </div>
       </div>
     </div>

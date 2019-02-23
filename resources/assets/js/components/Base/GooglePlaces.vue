@@ -3,7 +3,8 @@
     ref="autoComplete" 
     v-model="inputValue" 
     class="form-control" 
-    type="text">
+    type="text"
+  >
 </template>
 
 <script>

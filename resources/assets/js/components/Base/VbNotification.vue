@@ -1,14 +1,19 @@
 <template>
   <div :class="['alert-' + type, 'vb-notif alert d-flex flex-column']">
     <div class="d-flex align-items-center">
-      <vb-icon class="vb-notif__icon">{{ icon }}</vb-icon>
+      <vb-icon class="vb-notif__icon">
+        {{ icon }}
+      </vb-icon>
       <span class="vb-notif__title">{{ title }}</span>
     </div>
     <div class="flex-column">
-      <div class="vb-notif__msg">{{ message }}</div>
-      <div class="vb-notif__footer">{{ footer }}</div>
+      <div class="vb-notif__msg">
+        {{ message }}
+      </div>
+      <div class="vb-notif__footer">
+        {{ footer }}
+      </div>
     </div>
-    
   </div>
 </template>
 

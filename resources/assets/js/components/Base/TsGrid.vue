@@ -15,7 +15,7 @@
         <thead>
           <tr v-if="hasToolbar">
             <th :colspan="columns.length + 1">
-              <slot name="toolbar"/>
+              <slot name="toolbar" />
             </th>
           </tr>
           <tr>
@@ -23,63 +23,81 @@
               <button 
                 class="btn btn-sm" 
                 type="button" 
-                @click="onAdd">
-                <vb-icon :icon="'playlist_add'"/>
+                @click="onAdd"
+              >
+                <vb-icon :icon="'playlist_add'" />
               </button>
             </th>
             <th 
               v-for="column in columns" 
-              :key="column.key">{{ column.value }}</th>
+              :key="column.key"
+            >
+              {{ column.value }}
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr v-show="value.length < 1">
-            <td :colspan="columns.length + 1">No Record</td>
+            <td :colspan="columns.length + 1">
+              No Record
+            </td>
           </tr>
           <tr 
             v-for="(row, index) in value" 
-            :key="row.id">
+            :key="row.id"
+          >
             <td>
               <button 
                 class="btn btn-sm" 
                 type="button" 
-                @click="onEdit(copyRow(row), index)">
-                <vb-icon :icon="'edit'"/>
+                @click="onEdit(copyRow(row), index)"
+              >
+                <vb-icon :icon="'edit'" />
               </button>
               <button 
                 class="btn btn-sm" 
                 type="button" 
-                @click="deleteRow(row)">
-                <vb-icon :icon="'delete'"/>
+                @click="deleteRow(row)"
+              >
+                <vb-icon :icon="'delete'" />
               </button>
             </td>
-            <slot :item="row"/>
+            <slot :item="row" />
           </tr>
         </tbody>
 
         <ts-modal 
           :show.sync="modal" 
-          :title="modalTitle">
+          :title="modalTitle"
+        >
           <slot 
             name="grid-modal" 
-            :item="currentRow"/>
+            :item="currentRow"
+          />
           <template slot="footer">
             <button
               class="btn"
               type="button"
               v-show="mode === 'insert'"
               @click="insertRow(currentRow)"
-            >Insert</button>
+            >
+              Insert
+            </button>
             <button
               class="btn"
               type="button"
               v-show="mode === 'update'"
               @click="updateRow(currentRow, rowIndex)"
-            >Save</button>
+            >
+              Save
+            </button>
             <button 
               class="btn" 
               type="button" 
-              @click="hideModal">Cancel</button>
+              @click="hideModal"
+            >
+              Cancel
+            </button>
           </template>
         </ts-modal>
       </table>

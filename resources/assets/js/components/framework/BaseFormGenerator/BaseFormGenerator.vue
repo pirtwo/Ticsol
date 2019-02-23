@@ -6,7 +6,8 @@
       :key="index"        
       :value="formData[field.name]"   
       :is="componentName(field.type)"    
-      @input="updateForm(field.name, $event)"/>          
+      @input="updateForm(field.name, $event)"
+    />          
   </div>    
 </template>
 
@@ -17,6 +18,7 @@ import FGenTextbox from "./FGenTextbox.vue";
 import FGenTextarea from "./FGenTextarea.vue";
 import FGenCheckbox from "./FGenCheckbox.vue";
 import FGenSelectbox from "./FGenSelectbox.vue";
+import FGenNumber from "./FGenNumber.vue";
 
 export default {
   name: "BaseFormGenerator",
@@ -27,7 +29,8 @@ export default {
     FGenSelectbox,
     FGenDate,
     FGenCheckbox,
-    FGenRadio
+    FGenRadio,
+    FGenNumber
   },
 
   props: ["schema", "value"],
@@ -55,6 +58,8 @@ export default {
           return "FGenTextbox";
         case "date":
           return "FGenDate";
+        case "number":
+          return "FGenNumber";
         case "file":
           return "FGenFile";
         case "textarea":

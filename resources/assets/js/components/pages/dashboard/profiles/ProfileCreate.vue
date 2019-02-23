@@ -2,37 +2,46 @@
   <nav-view 
     :scrollbar="true" 
     :loading="isLoading" 
-    padding="p-2">
+    padding="p-2"
+  >
     <template slot="drawer">
-
-      <template slot="toolbar"/>
+      <template slot="toolbar" />
             
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">                        
+            @click="onSubmit"
+          >                        
             Save
           </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">                        
+            @click="onCancel"
+          >                        
             Cancel
           </button>
         </li>
-        <li class="menu-title">Links</li>
-        <li><router-link 
-          class="btn btn-link" 
-          :to="{ name: 'profileList' }">Profiles</router-link></li>
+        <li class="menu-title">
+          Links
+        </li>
+        <li>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name: 'profileList' }"
+          >
+            Profiles
+          </router-link>
+        </li>
       </ul>
-
     </template>
         
     <template slot="content">
-
       <div class="form-group">
         <div class="form-row">
           <label class="col-sm-2 col-form-lable">Profile Name</label>
@@ -42,7 +51,8 @@
               id="title" 
               type="text" 
               class="form-control" 
-              placeholder="enter name for profile...">
+              placeholder="enter name for profile..."
+            >
           </div>
         </div>
       </div>
@@ -52,7 +62,8 @@
         :disable-fields="['hidden', 'button', 'paragraph', 'header']" 
         :disabled-attrs="['className', 'value']" 
         :disabled-action-buttons="[]"
-        :control-order="[]"/>
+        :control-order="[]"
+      />
     </template>
   </nav-view>
 </template>

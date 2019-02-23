@@ -3,7 +3,8 @@
     <div class="form-row">
       <label 
         class="col-sm-2 col-form-label" 
-        :for="name">{{ label }}</label>
+        :for="name"
+      >{{ label }}</label>
       <div class="col">
         <select 
           class="form-control" 
@@ -12,15 +13,20 @@
           :title="description"
           :required="required"             
           :multiple="multiple"
-          @input="$emit('input', $event.target.value)">
+          @input="$emit('input', $event.target.value)"
+        >
           <option 
             disabled 
             value="" 
-            selected="true">{{ placeholder }}</option>
+            selected="true"
+          >
+            {{ placeholder }}
+          </option>
           <option 
             v-for="(option, index) in values" 
             :key="index" 
-            :value="option.value">
+            :value="option.value"
+          >
             {{ option.label }}
           </option>
         </select>

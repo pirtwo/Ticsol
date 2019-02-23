@@ -2,33 +2,50 @@
   <nav-view 
     :scrollbar="true" 
     :loading="isLoading" 
-    padding="p-5">
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li>
           <router-link 
             tag="button" 
             class="btn btn-light" 
-            :to="{ name: 'contactCreate' }">New</router-link>
+            :to="{ name: 'contactCreate' }"
+          >
+            New
+          </router-link>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">Save</button>
+            @click="onSubmit"
+          >
+            Save
+          </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">Cancel</button>
+            @click="onCancel"
+          >
+            Cancel
+          </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li class="menu-title">
+          Links
+        </li>
         <li>
           <router-link 
             class="btn btn-link" 
-            :to="{ name: 'contactList' }">Contacts</router-link>
+            :to="{ name: 'contactList' }"
+          >
+            Contacts
+          </router-link>
         </li>
       </ul>
     </template>
@@ -42,9 +59,14 @@
               <select 
                 v-model="form.group" 
                 class="custom-select" 
-                id="group">
-                <option value="user">User</option>
-                <option value="customer">Customer</option>
+                id="group"
+              >
+                <option value="user">
+                  User
+                </option>
+                <option value="customer">
+                  Customer
+                </option>
               </select>
             </div>
           </div>
@@ -58,7 +80,8 @@
                 v-model="form.firstname" 
                 type="text" 
                 class="form-control" 
-                id="firstname">
+                id="firstname"
+              >
             </div>
           </div>
         </div>
@@ -71,7 +94,8 @@
                 v-model="form.lastname" 
                 type="text" 
                 class="form-control" 
-                id="lastname">
+                id="lastname"
+              >
             </div>
           </div>
         </div>
@@ -84,7 +108,8 @@
                 v-model="form.telephone" 
                 type="tel" 
                 class="form-control" 
-                id="telephone">
+                id="telephone"
+              >
             </div>
           </div>
         </div>
@@ -97,7 +122,8 @@
                 v-model="form.mobilephone" 
                 type="tel" 
                 class="form-control" 
-                id="mobilephone">
+                id="mobilephone"
+              >
             </div>
           </div>
         </div>
@@ -117,7 +143,8 @@
                 >
                 <label 
                   class="custom-control-label" 
-                  for="isUser">Yes</label>
+                  for="isUser"
+                >Yes</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input
@@ -129,7 +156,8 @@
                 >
                 <label 
                   class="custom-control-label" 
-                  for="notUser">No</label>
+                  for="notUser"
+                >No</label>
               </div>
             </div>
           </div>
@@ -140,7 +168,8 @@
         v-model="form.addresses" 
         :columns="columns" 
         :has-toolbar="false"
-        @inserted="place = {}">
+        @inserted="place = {}"
+      >
         <template slot-scope="{ item }">
           <td>{{ item.number }}</td>
           <td>{{ item.street }}</td>
@@ -151,7 +180,8 @@
         </template>
         <template 
           slot="grid-modal" 
-          slot-scope="{ item }">
+          slot-scope="{ item }"
+        >
           <div class="p-2">
             <div class="form-group">
               <div class="form-row">
@@ -159,7 +189,8 @@
                 <div class="col-sm-9">
                   <goole-places 
                     :value="place" 
-                    @input="placeChange($event, item)"/>
+                    @input="placeChange($event, item)"
+                  />
                 </div>
               </div>
             </div>
@@ -257,7 +288,6 @@
           </div>
         </template>
       </ts-grid>
-
     </template>
   </nav-view>
 </template>

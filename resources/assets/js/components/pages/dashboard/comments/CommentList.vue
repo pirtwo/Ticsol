@@ -2,41 +2,53 @@
   <nav-view 
     :scrollbar="true" 
     :loading="isLoading" 
-    padding="p-5">
+    padding="p-5"
+  >
     <template slot="toolbar">
       <vb-pagination 
         v-model="pager" 
         :page-count="pager.pageCount" 
-        @input="changePage"/>
+        @input="changePage"
+      />
     </template>
 
-    <template slot="drawer"/>
+    <template slot="drawer" />
 
     <template slot="content">
-      <h6>{{ this.parentId !== null ? 'Reply to:' : 'Send New Comment' }}
+      <h6>
+        {{ this.parentId !== null ? 'Reply to:' : 'Send New Comment' }}
         <a 
           v-if="this.parentId !== null" 
-          :href="`#${this.parentId}`">{{ `@${this.getCreatorName(this.parentId)}` }}</a>
+          :href="`#${this.parentId}`"
+        >{{ `@${this.getCreatorName(this.parentId)}` }}</a>
       </h6>      
       <textarea 
         style="margin-bottom:10px;"
         class="form-control"
         v-model="comment" 
         name="comment" 
-        cols="30"/>
+        cols="30"
+      />
       <button 
         class="btn btn-default"
         type="button" 
-        @click="sendComment">Send</button>
+        @click="sendComment"
+      >
+        Send
+      </button>
       <button 
         v-show="this.parentId !== null"
         class="btn btn-default"
         type="button" 
-        @click="cancelReply">Cancel</button>
+        @click="cancelReply"
+      >
+        Cancel
+      </button>
       <ul class="comment-list">
         <li 
           v-for="parent in comments" 
-          :key="parent.id">
+          :key="parent.id"
+        >
           <vb-comment 
             name="VbComment"
             @reply="onReply"
@@ -49,10 +61,12 @@
           />
           <ul 
             class="reply-list" 
-            v-if="parent.reply_count > 0">
+            v-if="parent.reply_count > 0"
+          >
             <li 
               v-for="child in parent.childs" 
-              :key="child.id">
+              :key="child.id"
+            >
               <vb-comment 
                 name="VbComment"
                 :id="child.id"
@@ -60,7 +74,8 @@
                 :avatar="child.creator.meta.avatar"
                 :body="child.body"
                 :date="child.created_at"
-                :has-reply="false"/>
+                :has-reply="false"
+              />
             </li>
           </ul>
         </li>

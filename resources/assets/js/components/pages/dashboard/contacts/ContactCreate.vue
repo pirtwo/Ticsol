@@ -2,46 +2,55 @@
   <nav-view 
     :scrollbar="true" 
     :loading="isLoading" 
-    padding="p-5">
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="clearForm">
+            @click="clearForm"
+          >
             New
           </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">
+            @click="onSubmit"
+          >
             Submit
           </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">
+            @click="onCancel"
+          >
             Cancel
           </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li class="menu-title">
+          Links
+        </li>
         <li>
           <router-link 
             class="btn btn-link" 
-            :to="{ name: 'contactList' }">Contacts</router-link>
+            :to="{ name: 'contactList' }"
+          >
+            Contacts
+          </router-link>
         </li>
       </ul>
     </template>
 
     <template slot="content">
-
       <form>
-
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Group</label>
@@ -49,9 +58,14 @@
               <select 
                 v-model="form.group" 
                 class="custom-select" 
-                id="group">
-                <option value="user">User</option>
-                <option value="customer">Customer</option>
+                id="group"
+              >
+                <option value="user">
+                  User
+                </option>
+                <option value="customer">
+                  Customer
+                </option>
               </select>
             </div>
           </div>
@@ -65,7 +79,8 @@
                 v-model="form.firstname" 
                 type="text" 
                 class="form-control" 
-                id="firstname">
+                id="firstname"
+              >
             </div>
           </div>
         </div>
@@ -78,7 +93,8 @@
                 v-model="form.lastname" 
                 type="text" 
                 class="form-control" 
-                id="lastname">
+                id="lastname"
+              >
             </div>
           </div>
         </div>
@@ -91,7 +107,8 @@
                 v-model="form.telephone" 
                 type="tel" 
                 class="form-control" 
-                id="telephone">
+                id="telephone"
+              >
             </div>
           </div>
         </div>
@@ -104,7 +121,8 @@
                 v-model="form.mobilephone" 
                 type="tel" 
                 class="form-control" 
-                id="mobilephone">
+                id="mobilephone"
+              >
             </div>
           </div>
         </div>
@@ -113,7 +131,6 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Is a User</label>
             <div class="col-sm-10">
-
               <div class="custom-control custom-radio custom-control-inline">
                 <input 
                   type="radio" 
@@ -121,10 +138,12 @@
                   name="isUser" 
                   value="1" 
                   class="custom-control-input"
-                  checked>
+                  checked
+                >
                 <label 
                   class="custom-control-label" 
-                  for="isUser">Yes</label>
+                  for="isUser"
+                >Yes</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input 
@@ -132,16 +151,16 @@
                   id="notUser" 
                   name="isUser" 
                   value="0" 
-                  class="custom-control-input">
+                  class="custom-control-input"
+                >
                 <label 
                   class="custom-control-label" 
-                  for="notUser">No</label>
+                  for="notUser"
+                >No</label>
               </div>
-
             </div>
           </div>
         </div>
-
       </form>
 
       <ts-grid
@@ -149,7 +168,8 @@
         :columns="columns"
         :has-toolbar="false"
         @inserted="place = {}"
-        @modalHide="place = {}">
+        @modalHide="place = {}"
+      >
         <template slot-scope="{ item }">
           <td>{{ item.number }}</td>
           <td>{{ item.street }}</td>
@@ -160,7 +180,8 @@
         </template>
         <template 
           slot="grid-modal"
-          slot-scope="{ item }">
+          slot-scope="{ item }"
+        >
           <div class="p-2">  
             <div class="form-group">
               <div class="form-row">
@@ -168,7 +189,8 @@
                 <div class="col-sm-9">
                   <goole-places 
                     :value="place" 
-                    @input="placeChange($event, item)"/>
+                    @input="placeChange($event, item)"
+                  />
                 </div>
               </div>
             </div>
@@ -183,7 +205,8 @@
                     type="text" 
                     placeholder="please enter unit..."
                     class="form-control" 
-                    id="unit">
+                    id="unit"
+                  >
                 </div>
               </div>
             </div>
@@ -197,7 +220,8 @@
                     type="text" 
                     placeholder="please enter number..."
                     class="form-control" 
-                    id="number">
+                    id="number"
+                  >
                 </div>
               </div>
             </div>
@@ -211,7 +235,8 @@
                     type="text" 
                     placeholder="please enter street..."
                     class="form-control" 
-                    id="street">
+                    id="street"
+                  >
                 </div>
               </div>
             </div>
@@ -225,7 +250,8 @@
                     type="text" 
                     placeholder="please enter suburb..."
                     class="form-control" 
-                    id="suburb">
+                    id="suburb"
+                  >
                 </div>
               </div>
             </div>  
@@ -239,7 +265,8 @@
                     type="text" 
                     placeholder="please enter state..."
                     class="form-control" 
-                    id="unit">
+                    id="unit"
+                  >
                 </div>
               </div>
             </div>          
@@ -253,7 +280,8 @@
                     type="text" 
                     placeholder="please enter country..."
                     class="form-control" 
-                    id="country">
+                    id="country"
+                  >
                 </div>
               </div>
             </div>
@@ -267,15 +295,14 @@
                     type="text" 
                     placeholder="please enter post code..."
                     class="form-control" 
-                    id="postcode">
+                    id="postcode"
+                  >
                 </div>
               </div>
             </div>
-          </div>     
-          
+          </div>
         </template>          
-      </ts-grid>     
-
+      </ts-grid>
     </template>
   </nav-view>
 </template>

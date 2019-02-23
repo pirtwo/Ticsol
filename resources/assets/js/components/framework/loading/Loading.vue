@@ -2,8 +2,9 @@
   <div>
     <div 
       :class="[this.isLoading ? this.showClass : this.hideClass]" 
-      class="loading-box">
-      <span class="mif-loop2 ani-pulse"/> {{ this.loadingMsg }}
+      class="loading-box"
+    >
+      <span class="mif-loop2 ani-pulse" /> {{ this.loadingMsg }}
     </div>      
   </div>
 </template>

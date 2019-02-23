@@ -2,27 +2,41 @@
   <nav-view 
     :scrollbar="true" 
     :loading="isLoading" 
-    padding="p-5">
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li>
-          <button 
-            class="btn btn-light" 
-            @click="onSubmit">Save</button>
+        <li class="menu-title">
+          Actions
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">Cancel</button>
+            @click="onSubmit"
+          >
+            Save
+          </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li>
+          <button 
+            class="btn btn-light" 
+            @click="onCancel"
+          >
+            Cancel
+          </button>
+        </li>
+        <li class="menu-title">
+          Links
+        </li>
         <li>
           <router-link 
             class="btn btn-link" 
-            :to="{ name: 'jobList' }">Jobs</router-link>
+            :to="{ name: 'jobList' }"
+          >
+            Jobs
+          </router-link>
         </li>
       </ul>
     </template>
@@ -30,7 +44,8 @@
     <template slot="content">
       <form 
         class="needs-validation" 
-        novalidate>
+        novalidate
+      >
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Title</label>
@@ -126,7 +141,8 @@
               >
               <label 
                 class="custom-control-label" 
-                for="jobEnable">Enable</label>
+                for="jobEnable"
+              >Enable</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
               <input
@@ -139,7 +155,8 @@
               >
               <label 
                 class="custom-control-label" 
-                for="jobDisable">Disable</label>
+                for="jobDisable"
+              >Disable</label>
             </div>
           </div>
         </div>
@@ -147,7 +164,8 @@
 
       <form-gen 
         :schema="schema" 
-        v-model="form.meta"/>
+        v-model="form.meta"
+      />
     </template>
   </nav-view>
 </template>

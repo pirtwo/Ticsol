@@ -3,7 +3,8 @@
     ref="tsModal" 
     :class="[{ 'fade': animation }, 'modal']" 
     tabindex="-1" 
-    role="dialog">
+    role="dialog"
+  >
     <div
       :class="[{ 'modal-sm': size === 'sm', 'modal-lg': size === 'lg', 'modal-dialog-centered': centered }, 'modal-dialog']"
       role="document"
@@ -11,21 +12,24 @@
       <div class="modal-content">
         <div class="modal-header">
           <slot name="header">
-            <h5 class="modal-title">{{ title }}</h5>
+            <h5 class="modal-title">
+              {{ title }}
+            </h5>
             <button 
               type="button" 
               class="close" 
               data-dismiss="modal" 
-              aria-label="Close">
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </slot>
         </div>
         <div class="modal-body">
-          <slot/>
+          <slot />
         </div>
         <div class="modal-footer">
-          <slot name="footer"/>
+          <slot name="footer" />
         </div>
       </div>
     </div>

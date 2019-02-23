@@ -1,10 +1,10 @@
 <template>
   <page-layout 
     :header="false" 
-    :footer="false">   
-
+    :footer="false"
+  >
     <div class="wrap-content d-flex justify-content-center align-items-center">      
-      <router-view/>
+      <router-view />
     </div>
   </page-layout>
 </template>

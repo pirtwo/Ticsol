@@ -1,8 +1,9 @@
 <template>
   <div>
     <div 
-      class='g-recaptcha' 
-      id='g-recaptcha'/>    
+      class="g-recaptcha" 
+      id="g-recaptcha"
+    />    
   </div>
 </template>
 <script>

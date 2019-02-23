@@ -1,22 +1,33 @@
 <template>
   <div 
     :id="id"
-    class="vb-comment d-flex">    
+    class="vb-comment d-flex"
+  >    
     <img 
       class="vb-comment__avatar rounded-circle border"
       :src="avatar" 
-      :alt="`${username} avatar`">   
+      :alt="`${username} avatar`"
+    >   
     <div class="vb-comment__body d-flex flex-column flex-grow-1">
       <div class="d-flex align-items-baseline">
-        <div class="vb-comment__name">{{ username }}</div>
-        <div class="vb-comment__date">{{ date }}</div>
+        <div class="vb-comment__name">
+          {{ username }}
+        </div>
+        <div class="vb-comment__date">
+          {{ date }}
+        </div>
       </div>      
-      <div class="">{{ body }}</div>  
+      <div class="">
+        {{ body }}
+      </div>  
       <button 
         v-if="hasReply"
         type="button" 
         class="btn btn-sm btn-outline-primary ml-auto"
-        @click="onReply">reply</button>
+        @click="onReply"
+      >
+        reply
+      </button>
     </div>    
   </div>
 </template>

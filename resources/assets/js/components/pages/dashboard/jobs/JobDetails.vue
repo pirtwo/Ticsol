@@ -2,33 +2,50 @@
   <nav-view 
     :scrollbar="true" 
     :loading="isLoading" 
-    padding="p-5">
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li>
           <router-link 
             class="btn btn-light" 
             tag="button" 
-            :to="{ name:'jobCreate' }">New</router-link>
+            :to="{ name:'jobCreate' }"
+          >
+            New
+          </router-link>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSave">Save</button>
+            @click="onSave"
+          >
+            Save
+          </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">Cancel</button>
+            @click="onCancel"
+          >
+            Cancel
+          </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li class="menu-title">
+          Links
+        </li>
         <li>
           <router-link 
             class="btn btn-link" 
-            :to="{ name: 'jobList' }">Jobs</router-link>
+            :to="{ name: 'jobList' }"
+          >
+            Jobs
+          </router-link>
         </li>
         <li>
           <router-link
@@ -43,7 +60,9 @@
           <router-link
             class="btn btn-link"
             :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }"
-          >Comments</router-link>
+          >
+            Comments
+          </router-link>
         </li>
         <li>
           <router-link
@@ -51,7 +70,9 @@
             role="button"
             :aria-disabled="this.relatedActivities === null"
             :to="{ name: 'activityList', params : { col: 'id', opt: 'in', val: this.relatedActivities } }"
-          >Activity Reports</router-link>
+          >
+            Activity Reports
+          </router-link>
         </li>
         <li>
           <router-link
@@ -59,7 +80,9 @@
             role="button"
             :aria-disabled="this.relatedJobs === null"
             :to="{ name: 'jobList', params : { col: 'id', opt: 'in', val: this.relatedJobs } }"
-          >Related Jobs</router-link>
+          >
+            Related Jobs
+          </router-link>
         </li>
         <li>
           <router-link
@@ -67,7 +90,9 @@
             role="button"
             :aria-disabled="this.relatedRequests === null"
             :to="{ name: 'inbox', params : { col: 'job_id', opt: 'in', val: this.relatedRequests } }"
-          >Related Requests</router-link>
+          >
+            Related Requests
+          </router-link>
         </li>
         <li>
           <router-link
@@ -75,7 +100,9 @@
             role="button"
             :aria-disabled="this.relatedContacts === null"
             :to="{ name: 'contactList', params : { col: 'id', opt: 'in', val: this.relatedContacts } }"
-          >Related Contacts</router-link>
+          >
+            Related Contacts
+          </router-link>
         </li>
       </ul>
     </template>
@@ -83,7 +110,8 @@
     <template slot="content">
       <form 
         class="needs-validation" 
-        novalidate>
+        novalidate
+      >
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Title</label>
@@ -179,7 +207,8 @@
               >
               <label 
                 class="custom-control-label" 
-                for="jobEnable">Enable</label>
+                for="jobEnable"
+              >Enable</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
               <input
@@ -192,14 +221,16 @@
               >
               <label 
                 class="custom-control-label" 
-                for="jobDisable">Disable</label>
+                for="jobDisable"
+              >Disable</label>
             </div>
           </div>
         </div>
 
         <form-gen 
           :schema="schema" 
-          v-model="form.meta"/>
+          v-model="form.meta"
+        />
       </form>
     </template>
   </nav-view>

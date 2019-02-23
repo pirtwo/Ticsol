@@ -7,7 +7,8 @@
           class="custom-control custom-checkbox" 
           v-for="(checkbox, index) in values" 
           :key="index"
-          :class="{ 'custom-control-inline' : inline}">            
+          :class="{ 'custom-control-inline' : inline}"
+        >            
           <input 
             class="custom-control-input" 
             type="checkbox" 
@@ -15,10 +16,12 @@
             :id="name + index"
             :value="checkbox.value" 
             :checked="isChecked(checkbox.value)"
-            @input="update($event)">
+            @input="update($event)"
+          >
           <label 
             class="custom-control-label" 
-            :for="name + index">{{ checkbox.label }}</label>
+            :for="name + index"
+          >{{ checkbox.label }}</label>
         </div>
       </div>
     </div>

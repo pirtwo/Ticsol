@@ -3,7 +3,8 @@
     <div class="form-row">
       <label 
         class="col-sm-2 col-form-label" 
-        :for="name">{{ label }}</label>
+        :for="name"
+      >{{ label }}</label>
       <div class="col">
         <textarea 
           class="form-control"
@@ -14,7 +15,8 @@
           :required="required"
           :maxlength="maxlength"
           :placeholder="placeholder" 
-          @input="$emit('input', $event.target.value)"/>
+          @input="$emit('input', $event.target.value)"
+        />
       </div>        
     </div>   
   </div> 

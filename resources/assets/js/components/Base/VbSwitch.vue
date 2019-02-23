@@ -1,7 +1,8 @@
 <template>
   <label
     ref="vbSwitch"
-    :class="[size, style, 'vb-switch']">
+    :class="[size, style, 'vb-switch']"
+  >
     <input
       ref="input"
       type="checkbox"
@@ -19,8 +20,9 @@
       @mouseout="$emit('mouseout', $event)"
       @mouseover="$emit('mouseover', $event)"
       @mouseup="$emit('mouseup', $event)"
-      @input="onInput">
-    <span class="vb-switch__slider"/>
+      @input="onInput"
+    >
+    <span class="vb-switch__slider" />
   </label>
 </template>
 

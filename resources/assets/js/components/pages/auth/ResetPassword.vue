@@ -2,7 +2,8 @@
   <div class="wrap-auth shadow-sm">
     <img 
       src="/img/app.png" 
-      class="app-logo" >
+      class="app-logo"
+    >
 
     <form>
       <div class="form-group row">
@@ -16,7 +17,8 @@
             type="text" 
             class="form-control" 
             id="username" 
-            placeholder="Enter your username">
+            placeholder="Enter your username"
+          >
         </div>
       </div>
 
@@ -31,13 +33,14 @@
             type="email" 
             class="form-control" 
             id="email" 
-            placeholder="Enter your email">
+            placeholder="Enter your email"
+          >
         </div>
       </div>                                 
 
 
       <div class="form-group">
-        <captcha/>
+        <captcha />
       </div>
 
       <button class="btn btn-primary btn-block">

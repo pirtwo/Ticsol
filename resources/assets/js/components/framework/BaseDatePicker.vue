@@ -3,21 +3,33 @@
     <div 
       class="btn-group" 
       role="group" 
-      aria-label="select date">
+      aria-label="select date"
+    >
       <button 
         type="button" 
         class="btn btn-sm btn-secondary" 
-        @click="onBack" ><i class="material-icons">keyboard_arrow_left</i></button>
+        @click="onBack"
+      >
+        <i class="material-icons">keyboard_arrow_left</i>
+      </button>
       <button 
         type="button" 
         class="btn btn-sm btn-secondary" 
-        @click="onToday" >Today</button>
+        @click="onToday"
+      >
+        Today
+      </button>
       <button 
         type="button" 
         class="btn btn-sm btn-secondary" 
-        @click="onNext" ><i class="material-icons">keyboard_arrow_right</i></button>
+        @click="onNext"
+      >
+        <i class="material-icons">keyboard_arrow_right</i>
+      </button>
     </div>
-    <div class="vb-datepicker__range">{{ todayToText }}</div>
+    <div class="vb-datepicker__range">
+      {{ todayToText }}
+    </div>
   </div>
 </template>
 

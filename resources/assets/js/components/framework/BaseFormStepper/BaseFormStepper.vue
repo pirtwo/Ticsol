@@ -1,13 +1,13 @@
 <template>
   <div class="form-stepper">        
     <div class="stepper-signs d-flex justify-content-center">
-      <slot name="signs"/>
+      <slot name="signs" />
     </div>
     <div class="stepper-body">
-      <slot name="body"/>
+      <slot name="body" />
     </div>
     <div class="stepper-nav">
-      <slot name="nav"/>
+      <slot name="nav" />
     </div>        
   </div>
 </template>

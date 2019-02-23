@@ -2,38 +2,60 @@
   <nav-view 
     :scrollbar="true" 
     :loading="loading" 
-    padding="p-5">
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li>
-          <button class="btn btn-light">New</button>
+        <li class="menu-title">
+          Actions
         </li>
         <li>
-          <button class="btn btn-light">Suspend</button>
+          <button class="btn btn-light">
+            New
+          </button>
+        </li>
+        <li>
+          <button class="btn btn-light">
+            Suspend
+          </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">Submit</button>
+            @click="onSubmit"
+          >
+            Submit
+          </button>
         </li>
         <li>
-          <button class="btn btn-light">Cancel</button>
+          <button class="btn btn-light">
+            Cancel
+          </button>
         </li>
         <li>
-          <button class="btn btn-light">Print</button>
+          <button class="btn btn-light">
+            Print
+          </button>
         </li>
-        <li class="menu-title">Links</li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">Anuual Leave</router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">Sick Leave</router-link>
+        <li class="menu-title">
+          Links
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">Request History</router-link>
+          <router-link :to="{ name: 'jobList' }">
+            Anuual Leave
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            Sick Leave
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            Request History
+          </router-link>
         </li>
       </ul>
     </template>
@@ -47,15 +69,32 @@
               <select 
                 v-model="form.meta.leave_type" 
                 name="meta-leave_type" 
-                class="custom-select">
-                <option selected>please select leave type</option>
-                <option value="annual">Annual</option>
-                <option value="long service">Long Service</option>
-                <option value="sick">Sick</option>
-                <option value="bereavement">Bereavement</option>
-                <option value="maternity/paternity">Maternity/Paternity</option>
-                <option value="study">Study</option>
-                <option value="other">Other</option>
+                class="custom-select"
+              >
+                <option selected>
+                  please select leave type
+                </option>
+                <option value="annual">
+                  Annual
+                </option>
+                <option value="long service">
+                  Long Service
+                </option>
+                <option value="sick">
+                  Sick
+                </option>
+                <option value="bereavement">
+                  Bereavement
+                </option>
+                <option value="maternity/paternity">
+                  Maternity/Paternity
+                </option>
+                <option value="study">
+                  Study
+                </option>
+                <option value="other">
+                  Other
+                </option>
               </select>
             </div>
           </div>
@@ -75,17 +114,20 @@
                 >
                 <label 
                   class="custom-control-label" 
-                  for="display1">Days</label>
+                  for="display1"
+                >Days</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input 
                   type="radio" 
                   id="display2" 
                   name="display" 
-                  class="custom-control-input">
+                  class="custom-control-input"
+                >
                 <label 
                   class="custom-control-label" 
-                  for="display2">Hours</label>
+                  for="display2"
+                >Hours</label>
               </div>
             </div>
           </div>
@@ -99,7 +141,8 @@
                 v-model="form.meta.from" 
                 type="date" 
                 name="meta-from" 
-                class="form-control">
+                class="form-control"
+              >
             </div>
           </div>
         </div>
@@ -112,7 +155,8 @@
                 v-model="form.meta.till" 
                 type="date" 
                 name="meta-till" 
-                class="form-control">
+                class="form-control"
+              >
             </div>
           </div>
         </div>
@@ -123,7 +167,8 @@
             <div class="col-sm-10">
               <input 
                 type="text" 
-                class="form-control">
+                class="form-control"
+              >
             </div>
           </div>
         </div>
@@ -134,7 +179,8 @@
             <div class="col-sm-10">
               <input 
                 type="text" 
-                class="form-control">
+                class="form-control"
+              >
             </div>
           </div>
         </div>
@@ -165,10 +211,12 @@
                   name="Attachments" 
                   id="customFile" 
                   type="file" 
-                  class="custom-file-input">
+                  class="custom-file-input"
+                >
                 <label 
                   class="custom-file-label" 
-                  for="customFile">choose files</label>
+                  for="customFile"
+                >choose files</label>
               </div>
             </div>
           </div>

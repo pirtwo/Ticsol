@@ -1,5 +1,5 @@
 <template>
-  <div id="fb-editor"/>
+  <div id="fb-editor" />
 </template>
 
 <script>
@@ -55,7 +55,7 @@ export default {
           offset: { top: 5, bottom: "auto", right: "auto" }
         },
         showActionButtons: this.showActionButtons,
-        disabledActionButtons: this.showActionButtons
+        disabledActionButtons: this.disabledActionButtons
       })
       .promise.then(formBuilder => {
         this.$emit("input", formBuilder);

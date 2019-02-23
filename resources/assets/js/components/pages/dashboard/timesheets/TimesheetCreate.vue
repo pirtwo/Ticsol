@@ -2,36 +2,41 @@
   <nav-view 
     :scrollbar="true" 
     :loading="loading" 
-    padding="p-2">
-
+    padding="p-2"
+  >
     <template slot="toolbar">
       <date-picker 
         v-model="weekStart" 
-        range="Week"/>      
+        range="Week"
+      />      
     </template>
 
     <template slot="drawer">
-
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSave">                        
+            @click="onSave"
+          >                        
             Save
           </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">                        
+            @click="onSubmit"
+          >                        
             Submit
           </button>
         </li>        
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">                        
+            @click="onCancel"
+          >                        
             Cancel
           </button>
         </li>
@@ -39,53 +44,73 @@
           <button 
             type="button" 
             class="btn btn-light" 
-            @click="genFromSchedule(scheduleItems)">Generate</button>
+            @click="genFromSchedule(scheduleItems)"
+          >
+            Generate
+          </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li class="menu-title">
+          Links
+        </li>
       </ul>
-
     </template>
 
     <template slot="content">
-
       <div class="table-responsive">
         <table class="table table-hover table-light">
           <thead>
             <tr>         
-              <th/>               
-              <th scope="col">Day</th>
-              <th scope="col">Link</th>
-              <th scope="col">Job</th>
-              <th scope="col">Start Time</th>
-              <th scope="col">End Time</th>
-              <th scope="col">Break</th>
-              <th scope="col">Total</th>
+              <th />               
+              <th scope="col">
+                Day
+              </th>
+              <th scope="col">
+                Link
+              </th>
+              <th scope="col">
+                Job
+              </th>
+              <th scope="col">
+                Start Time
+              </th>
+              <th scope="col">
+                End Time
+              </th>
+              <th scope="col">
+                Break
+              </th>
+              <th scope="col">
+                Total
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr 
               v-for="(item, index) in timesheetItems" 
-              :key="index">
+              :key="index"
+            >
               <td>
                 <button 
                   v-show="!item.editMode" 
                   @click="item.editMode = true"
                   type="button" 
-                  class="btn btn-sm btn-light">
+                  class="btn btn-sm btn-light"
+                >
                   <i class="material-icons">edit</i>
                 </button>
                 <button 
                   v-show="item.editMode" 
                   @click="item.editMode = false"
                   type="button" 
-                  class="btn btn-sm btn-light">
+                  class="btn btn-sm btn-light"
+                >
                   <i class="material-icons">save</i>
                 </button>                                
               </td>
               <td>                                
                 {{ item.day }}
               </td>
-              <td/>
+              <td />
               <td>{{ item.job.title }}</td>
               <td>
                 <input 
@@ -93,7 +118,8 @@
                   class="form-control"
                   @change="totalTime(item)"
                   v-model="item.startTime" 
-                  v-show="item.editMode"> 
+                  v-show="item.editMode"
+                > 
                 <span v-show="!item.editMode">{{ item.startTime }}</span>
               </td>
               <td>
@@ -102,7 +128,8 @@
                   class="form-control"
                   @change="totalTime(item)"
                   v-model="item.endTime" 
-                  v-show="item.editMode"> 
+                  v-show="item.editMode"
+                > 
                 <span v-show="!item.editMode">{{ item.endTime }}</span>
               </td>
               <td>
@@ -112,7 +139,8 @@
                   class="form-control" 
                   @change="totalTime(item)"                              
                   v-model="item.break_length" 
-                  v-show="item.editMode"> 
+                  v-show="item.editMode"
+                > 
                 <span v-show="!item.editMode">{{ item.break_length }}</span>
               </td>
               <td>
@@ -126,8 +154,7 @@
       <div class="stats">
         <div>TOTAL: {{ this.showTotalTime }}</div>
         <div>STATUS: </div>
-      </div>     
-           
+      </div>
     </template>
   </nav-view>
 </template>

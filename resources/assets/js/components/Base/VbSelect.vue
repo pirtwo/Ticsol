@@ -1,7 +1,8 @@
 <template>
   <div 
     ref="vbSelect" 
-    class="vb-select">
+    class="vb-select"
+  >
     <input
       readonly
       ref="input"
@@ -25,7 +26,8 @@
     <div 
       ref="dropdown" 
       v-show="dropdownStatus" 
-      class="vb-select__dropdown">
+      class="vb-select__dropdown"
+    >
       <!-- searchbox -->
       <input
         ref="searchbox"
@@ -40,21 +42,26 @@
       <ul class="vb-select__dropdown__list">
         <slot 
           v-if="options.length != 0" 
-          name="fixed-top"/>
+          name="fixed-top"
+        />
         <li
           v-for="(value, index) in options"
           :key="index"
           :class="[{ 'vb-select__dropdown__list__option--selected': isSelected(value) }]"
           @click="selectHandler(value, $event)"
         >
-          <slot :item="value">{{ value.value }}</slot>
+          <slot :item="value">
+            {{ value.value }}
+          </slot>
         </li>
         <slot 
           v-if="options.length != 0" 
-          name="fixed-bottom"/>
+          name="fixed-bottom"
+        />
         <slot 
           v-if="options.length === 0" 
-          name="notfound-message"/>
+          name="notfound-message"
+        />
       </ul>
       <!-- END options -->
     </div>

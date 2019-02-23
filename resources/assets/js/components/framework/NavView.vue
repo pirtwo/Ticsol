@@ -1,91 +1,105 @@
 <template>  
-  <div class="wrap-drawer">      
-
+  <div class="wrap-drawer">
     <!-- drawer -->
     <div 
       class="drawer" 
-      :class="[showDrawer? 'open' : 'close']">
+      :class="[showDrawer? 'open' : 'close']"
+    >
       <div class="drawer-toolbar">
         <div 
           class="title text-center" 
-          v-if="drawerTitle !== '' ">{{ drawerTitle }}</div> 
-        <slot name="drawer-toolbar"/>
+          v-if="drawerTitle !== '' "
+        >
+          {{ drawerTitle }}
+        </div> 
+        <slot name="drawer-toolbar" />
       </div>     
       <div class="drawer-body">
-        <slot name="drawer"/>
+        <slot name="drawer" />
       </div> 
     </div>
 
     <!-- content -->
     <div class="wrap-content">
-
       <!-- loadingbox -->
       <div 
         class="wrap-loading" 
-        v-show="loading">
+        v-show="loading"
+      >
         <div class="loading-box shadow-sm"> 
           <div class="sk-cube-grid">
-            <div class="sk-cube sk-cube1"/>
-            <div class="sk-cube sk-cube2"/>
-            <div class="sk-cube sk-cube3"/>
-            <div class="sk-cube sk-cube4"/>
-            <div class="sk-cube sk-cube5"/>
-            <div class="sk-cube sk-cube6"/>
-            <div class="sk-cube sk-cube7"/>
-            <div class="sk-cube sk-cube8"/>
-            <div class="sk-cube sk-cube9"/>
+            <div class="sk-cube sk-cube1" />
+            <div class="sk-cube sk-cube2" />
+            <div class="sk-cube sk-cube3" />
+            <div class="sk-cube sk-cube4" />
+            <div class="sk-cube sk-cube5" />
+            <div class="sk-cube sk-cube6" />
+            <div class="sk-cube sk-cube7" />
+            <div class="sk-cube sk-cube8" />
+            <div class="sk-cube sk-cube9" />
           </div>               
-          <div class="caption">Loading, Please wait...</div>
+          <div class="caption">
+            Loading, Please wait...
+          </div>
         </div>
       </div>
 
       <!-- toolbar -->
-      <nav class="navbar navbar-light">                
-        <button 
-          class="btn btn-light btn-sm ml-auto" 
-          type="button" 
-          @click="onDrawer">
-          <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
-        </button>
-        <button 
-          class="btn btn-light btn-sm ml-auto" 
-          type="button" 
-          @click="clickBack">
-          <i class="material-icons">arrow_back</i>
-        </button>
-        <button 
-          class="btn btn-light btn-sm ml-auto" 
-          type="button" 
-          @click="clickForward">
-          <i class="material-icons">arrow_forward</i>
-        </button>
-        <button 
-          class="btn btn-light btn-sm ml-auto" 
-          type="button" 
-          @click="onFullscreen">
-          <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
-        </button>
+      <nav class="navbar navbar-light"> 
+        <div class="d-flex w-100">
+          <div class="flex-grow-1">        
+            <button 
+              class="btn btn-light btn-sm ml-auto" 
+              type="button" 
+              @click="onDrawer"
+            >
+              <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
+            </button>
+            <button 
+              class="btn btn-light btn-sm ml-auto" 
+              type="button" 
+              @click="clickBack"
+            >
+              <i class="material-icons">arrow_back</i>
+            </button>
+            <button 
+              class="btn btn-light btn-sm ml-auto" 
+              type="button" 
+              @click="clickForward"
+            >
+              <i class="material-icons">arrow_forward</i>
+            </button>
+            <button 
+              class="btn btn-light btn-sm ml-auto" 
+              type="button" 
+              @click="onFullscreen"
+            >
+              <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
+            </button>
 
-        <span class="navbar-brand">{{ menuTitle }}</span>
-        <div class="toolbar">
-          <slot name="toolbar"/>
+            <span class="navbar-brand">{{ menuTitle }}</span>
+          </div>  
+          <div class="toolbar">
+            <slot name="toolbar" />
+          </div> 
         </div>        
       </nav>
 
       <vb-snackbar          
         v-model="snackbar.show" 
-        :class="['snackbar', snackbar.theme]">
-        <span v-html="snackbar.message"/>
+        :class="['snackbar', snackbar.theme]"
+      >
+        <span v-html="snackbar.message" />
       </vb-snackbar>
 
       <div 
         class="content" 
         :class="[{ 'scrollbar-show' : scrollbar}, padding]"              
-        v-show="!loading">        
-        <slot name="content"/>
+        v-show="!loading"
+      >        
+        <slot name="content" />
       </div>            
     </div>
-
   </div>
 </template>
 

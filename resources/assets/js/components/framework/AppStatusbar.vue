@@ -1,52 +1,59 @@
 <template>
   <div 
     ref="statusbar" 
-    class="statusbar">
-
+    class="statusbar"
+  >
     <vb-dropdown 
       :btn-class="'btn-light'" 
       :menu-class="'dropdown-menu-right'" 
-      :menu-size="'md'">
+      :menu-size="'md'"
+    >
       <template slot="button">
-        <vb-icon class="icon">notifications</vb-icon>
+        <vb-icon class="icon">
+          notifications
+        </vb-icon>
         <span class="caption">NOTIFs</span>
         <span 
           class="badge badge-danger" 
-          v-show="unSeen > 0">{{ unSeen }}</span>
+          v-show="unSeen > 0"
+        >{{ unSeen }}</span>
       </template>
       <template slot="dropdown">
         <div class="statusbar__dropdown__controls">
           <button 
             class="btn btn-link" 
             type="button" 
-            @click="clearAll">clear all</button>
+            @click="clearAll"
+          >
+            clear all
+          </button>
         </div>
         <div 
           class="text-center" 
-          v-show="logs.length == 0">List is empty</div>
+          v-show="logs.length == 0"
+        >
+          List is empty
+        </div>
         <div class="statusbar__dropdown__list">
           <!-- list -->
           <ul class="list-group">
             <li 
               class="list-group-item list-group-item-action" 
               v-for="(value, index) in logList"
-              :key="index">
+              :key="index"
+            >
               <vb-notification 
                 :title="value.title"
                 :type="value.type" 
                 :icon="getIcon(value.type)" 
                 :message="value.message" 
-                :footer="value.footer"/>
+                :footer="value.footer"
+              />
             </li>
           </ul><!-- list END -->
         </div>
-            
       </template>
     </vb-dropdown>
-
-
-
-    
   </div>
 </template>
 

@@ -1,13 +1,14 @@
 <template>
   <div 
     class="popover" 
-    role="tooltip">
-    <div class="arrow"/>
+    role="tooltip"
+  >
+    <div class="arrow" />
     <h3 class="popover-header">
-      <slot name="title"/>
+      <slot name="title" />
     </h3>
     <div class="popover-body">
-      <slot name="body"/>
+      <slot name="body" />
     </div>
   </div>
 </template>

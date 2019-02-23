@@ -1,7 +1,8 @@
 <template>
   <div 
     class="wrap" 
-    ref="BaseAutoComplete">
+    ref="BaseAutoComplete"
+  >
     <input 
       v-model="input"          
       @change="debounceOnChange"
@@ -10,16 +11,19 @@
       :class="[{ 'list-open' : showList }, 'form-control']"
       :id="id" 
       :name="name" 
-      :placeholder="placeholder">
+      :placeholder="placeholder"
+    >
     <div 
       class="wrap-results" 
-      v-show="showList">
+      v-show="showList"
+    >
       <ul class="results">
         <li 
           class="result" 
           v-for="item in options" 
           :key="item.key"
-          @click="onSelect(item.key, item.value)">
+          @click="onSelect(item.key, item.value)"
+        >
           {{ item.value }}
         </li>
       </ul>

@@ -1,20 +1,23 @@
 <template>
   <div 
     ref="VbDropdown" 
-    class="dropdown">
+    class="dropdown"
+  >
     <button 
       :class="[btnClass, 'btn']" 
       type="button" 
       :id="id" 
       data-toggle="dropdown" 
       aria-haspopup="true" 
-      aria-expanded="false">
-      <slot name="button"/>
+      aria-expanded="false"
+    >
+      <slot name="button" />
     </button>
     <div 
       :class="[menuClass, menuSize, 'dropdown-menu']" 
-      :aria-labelledby="id">
-      <slot name="dropdown"/>
+      :aria-labelledby="id"
+    >
+      <slot name="dropdown" />
     </div>
   </div>
 </template>

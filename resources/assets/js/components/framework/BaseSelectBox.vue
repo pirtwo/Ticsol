@@ -1,9 +1,8 @@
 <template>
-
   <div 
     class="wrap" 
-    ref="BaseSelectBox">
-
+    ref="BaseSelectBox"
+  >
     <input 
       type="text" 
       :class="[inputSize, 'form-control select-value']"
@@ -12,12 +11,14 @@
       :name="name" 
       :id="id"
       :placeholder="placeholder" 
-      readonly>
+      readonly
+    >
 
     <button 
       type="button" 
       class="btn btn-sm btn-link" 
-      @click.stop="showList = !showList">
+      @click.stop="showList = !showList"
+    >
       <i class="material-icons">
         {{ showList? "expand_less": "expand_more" }}
       </i>
@@ -25,34 +26,35 @@
 
     <div 
       class="wrap-list" 
-      v-show="showList">
+      v-show="showList"
+    >
       <input 
         type="text" 
         name="" 
         class="searchbox form-control form-control-sm"
         v-model="query" 
         v-if="enableSearchbox"
-        :placeholder="searchPlaceholder">
+        :placeholder="searchPlaceholder"
+      >
             
       <ul class="select-options"> 
-        <slot name="default-options"/>           
+        <slot name="default-options" />           
         <li 
           v-for="item in options" 
           :key="item.key" 
           :class="[{'selected' : isSelected(item)}, 'select-option']"
-          @click="onSelect(item, $event)">
-
+          @click="onSelect(item, $event)"
+        >
           <input 
             type="checkbox" 
             v-if="multiSelect" 
-            :checked="isSelected(item)">                     
+            :checked="isSelected(item)"
+          >                     
           {{ item.value }}
         </li>
       </ul>
-    </div>     
-
+    </div>
   </div>
-
 </template>
 
 <script>

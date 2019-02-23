@@ -1,6 +1,5 @@
 <template>
   <div class="toolbar-top">
-
     <app-statusbar />
     
     <div class="dropdown">
@@ -11,7 +10,8 @@
         id="dropdownMenuLink" 
         data-toggle="dropdown"
         aria-haspopup="true" 
-        aria-expanded="false">
+        aria-expanded="false"
+      >
         <i class="icon material-icons">
           settings
         </i>
@@ -19,16 +19,20 @@
       </button>
       <div 
         class="dropdown-menu dropdown-menu-right" 
-        aria-labelledby="dropdownMenuLink">
+        aria-labelledby="dropdownMenuLink"
+      >
         <a 
           class="dropdown-item" 
-          href="#">Action</a>
+          href="#"
+        >Action</a>
         <a 
           class="dropdown-item" 
-          href="#">Another action</a>
+          href="#"
+        >Another action</a>
         <a 
           class="dropdown-item" 
-          href="#">Something else here</a>
+          href="#"
+        >Something else here</a>
       </div>
     </div>
 
@@ -40,20 +44,24 @@
         id="dropdownMenuLink" 
         data-toggle="dropdown"
         aria-haspopup="true" 
-        aria-expanded="false">
+        aria-expanded="false"
+      >
         <img 
           class="user-avatar rounded" 
           :src="avatar" 
-          alt="Avtar">
+          alt="Avtar"
+        >
         <span class="caption user-name">{{ userName }}</span>
       </button>
       <div 
         class="dropdown-menu dropdown-menu-right" 
-        aria-labelledby="dropdownMenuLink">
+        aria-labelledby="dropdownMenuLink"
+      >
         <a 
           class="dropdown-item" 
           href="#" 
-          @click.prevent="logoutHandler">Logout</a>        
+          @click.prevent="logoutHandler"
+        >Logout</a>        
       </div>
     </div>
   </div>

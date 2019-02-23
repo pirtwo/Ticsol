@@ -1,13 +1,14 @@
 <template>
   <page-layout 
     :header="true" 
-    :footer="true">
+    :footer="true"
+  >
     <template slot="header">
-      <iconbar-top/>
+      <iconbar-top />
     </template>
-    <router-view/>
+    <router-view />
     <template slot="footer">
-      <iconbar-bot/>
+      <iconbar-bot />
     </template>
   </page-layout>
 </template>

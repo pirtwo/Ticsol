@@ -3,7 +3,8 @@
     <div class="wrap-auth md-layout-item">
       <img 
         src="/img/app.png" 
-        class="app-logo" >
+        class="app-logo"
+      >
       <div class="text-center">
         <h3>You loged out successfuly</h3>
         <h5>Hope to see you soon :D</h5>

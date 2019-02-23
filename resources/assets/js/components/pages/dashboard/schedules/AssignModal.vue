@@ -1,6 +1,5 @@
 
 <template>
-  
   <!-- Modal -->
   <div 
     class="modal fade" 
@@ -8,31 +7,34 @@
     tabindex="-1" 
     role="dialog" 
     aria-labelledby="title" 
-    aria-hidden="true">
+    aria-hidden="true"
+  >
     <div 
       class="modal-dialog modal-dialog-centered" 
-      role="document">
-
+      role="document"
+    >
       <!-- Modal Content -->
       <div class="modal-content">
-
         <!-- Modal Header -->
         <div class="modal-header">
           <h5 
             class="modal-title" 
-            id="title">{{ view == 'user' ? 'Assign Job' : 'Assign User' }}</h5>
+            id="title"
+          >
+            {{ view == 'user' ? 'Assign Job' : 'Assign User' }}
+          </h5>
           <button 
             @click="onClose" 
             type="button" 
             class="close" 
-            aria-label="Close">
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div><!-- End Header -->
 
         <!-- Modal Body -->
         <div class="modal-body">
-          
           <form>
             <div class="form-group">
               <div class="form-row">
@@ -43,7 +45,8 @@
                     :name="view == 'user' ? 'user_id' : 'job_id'" 
                     class="form-control" 
                     type="text" 
-                    readonly>
+                    readonly
+                  >
                 </div>
               </div>              
             </div>
@@ -58,11 +61,15 @@
                     :multi="false"
                     :name="view == 'user' ? 'job_id' : 'user_id'"                    
                     :placeholder="view == 'user' ? 'please select job' : 'please select user'"
-                    search-placeholder="search...">
+                    search-placeholder="search..."
+                  >
                     <template 
                       slot="fixed-top" 
-                      v-if="view == 'user'">
-                      <li @click="onCreateJob"><i>-- CREATE NEW JOB --</i></li>
+                      v-if="view == 'user'"
+                    >
+                      <li @click="onCreateJob">
+                        <i>-- CREATE NEW JOB --</i>
+                      </li>
                       <hr>
                     </template>
                   </vb-select>
@@ -78,13 +85,15 @@
                     v-model="form.start" 
                     name="start" 
                     type="date" 
-                    class="form-control" >
+                    class="form-control"
+                  >
                 </div>
                 <div class="col">
                   <input 
                     v-model="form.startTime" 
                     type="time" 
-                    class="form-control" >                  
+                    class="form-control"
+                  >                  
                 </div>             
               </div>
             </div>
@@ -97,13 +106,15 @@
                     v-model="form.end" 
                     name="end" 
                     type="date" 
-                    class="form-control" >
+                    class="form-control"
+                  >
                 </div>
                 <div class="col">
                   <input 
                     v-model="form.endTime" 
                     type="time" 
-                    class="form-control" >
+                    class="form-control"
+                  >
                 </div>  
               </div>
             </div>            
@@ -113,7 +124,8 @@
                 <div class="row no-gutters">
                   <label 
                     class="col-sm-12" 
-                    for="status">Status</label> 
+                    for="status"
+                  >Status</label> 
                   <div class="col-sm-12">     
                     <div class="custom-control custom-radio custom-control-inline">
                       <input 
@@ -123,10 +135,12 @@
                         name="status" 
                         value="tentative" 
                         class="custom-control-input" 
-                        checked>
+                        checked
+                      >
                       <label 
                         class="custom-control-label" 
-                        for="Tentative">Tentative</label>
+                        for="Tentative"
+                      >Tentative</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
                       <input 
@@ -135,10 +149,12 @@
                         id="Confirmed" 
                         name="status" 
                         value="confirmed" 
-                        class="custom-control-input">
+                        class="custom-control-input"
+                      >
                       <label 
                         class="custom-control-label" 
-                        for="Confirmed">Confirmed</label>
+                        for="Confirmed"
+                      >Confirmed</label>
                     </div> 
                   </div>  
                 </div>                  
@@ -151,14 +167,15 @@
                     name="offsite" 
                     type="checkbox" 
                     class="custom-control-input" 
-                    id="offsite">
+                    id="offsite"
+                  >
                   <label 
                     class="custom-control-label" 
-                    for="offsite">Work Offsite</label>
+                    for="offsite"
+                  >Work Offsite</label>
                 </div> 
               </div>
             </div>
-            
           </form>                
         </div><!-- End Body -->
 
@@ -167,19 +184,22 @@
           <button 
             @click="onSubmit" 
             type="button" 
-            class="btn btn-success">Assign</button>
+            class="btn btn-success"
+          >
+            Assign
+          </button>
           <button 
             @click="onClose" 
             type="button" 
-            class="btn btn-secondary">Cancel</button>          
+            class="btn btn-secondary"
+          >
+            Cancel
+          </button>          
         </div><!-- End Footer -->
-        <job-modal v-model="jobModal"/>   
-
+        <job-modal v-model="jobModal" />
       </div><!-- End Content  -->
-    </div><!-- End Modal --> 
-      
-  </div>   
-
+    </div><!-- End Modal -->
+  </div>
 </template>
 
 <script>

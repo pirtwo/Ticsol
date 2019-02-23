@@ -2,14 +2,15 @@
   <nav-view 
     :scrollbar="true" 
     :loading="loading" 
-    padding="p-5">
-
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
-
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li>
           <button class="btn btn-light">                        
             New
@@ -23,7 +24,8 @@
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">                        
+            @click="onSubmit"
+          >                        
             Submit
           </button>
         </li>
@@ -37,19 +39,34 @@
             Print
           </button>
         </li>
-        <li class="menu-title">Links</li>
-        <li><router-link :to="{ name: 'jobList' }">Anuual Leave</router-link></li>
-        <li><router-link :to="{ name: 'jobList' }">Sick Leave</router-link></li>
-        <li><router-link :to="{ name: 'jobList' }">Reimbursement</router-link></li>
-        <li><router-link :to="{ name: 'jobList' }">History</router-link></li>
+        <li class="menu-title">
+          Links
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            Anuual Leave
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            Sick Leave
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            Reimbursement
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            History
+          </router-link>
+        </li>
       </ul>
-
     </template>
 
     <template slot="content">
-
       <form>
-
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Details</label>
@@ -59,7 +76,8 @@
                 name="meta-details" 
                 id="meta-details" 
                 class="form-control" 
-                rows="5"/>
+                rows="5"
+              />
             </div>
           </div>
         </div>
@@ -73,7 +91,8 @@
                 name="meta-amount" 
                 id="meta-amount"
                 type="text" 
-                class="form-control">
+                class="form-control"
+              >
             </div>
           </div>
         </div>
@@ -82,7 +101,6 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Incl/Excl</label>
             <div class="col-sm-10">
-
               <div class="custom-control custom-radio custom-control-inline">
                 <input 
                   v-model="form.meta.tax"
@@ -91,10 +109,12 @@
                   name="meta-tax"
                   value="Incl" 
                   class="custom-control-input" 
-                  checked>
+                  checked
+                >
                 <label 
                   class="custom-control-label" 
-                  for="meta-tax1">Incl</label>
+                  for="meta-tax1"
+                >Incl</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input 
@@ -103,12 +123,13 @@
                   id="meta-tax2" 
                   name="meta-tax" 
                   value="Excl" 
-                  class="custom-control-input">
+                  class="custom-control-input"
+                >
                 <label 
                   class="custom-control-label" 
-                  for="meta-tax2">Excl</label>
+                  for="meta-tax2"
+                >Excl</label>
               </div>
-
             </div>
           </div>
         </div>
@@ -122,7 +143,8 @@
                 name="meta-date"
                 id="meta-date" 
                 type="date" 
-                class="form-control">
+                class="form-control"
+              >
             </div>
           </div>
         </div>
@@ -170,17 +192,17 @@
                   name="Attachments" 
                   id="customFile" 
                   type="file" 
-                  class="custom-file-input">
+                  class="custom-file-input"
+                >
                 <label 
                   class="custom-file-label" 
-                  for="customFile">choose files</label>
+                  for="customFile"
+                >choose files</label>
               </div>
             </div>
           </div>
-        </div>    
-
+        </div>
       </form>
-          
     </template>
   </nav-view>
 </template>

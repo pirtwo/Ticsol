@@ -7,29 +7,44 @@
         class="pag-input pag-text" 
         @input="dbInput" 
         type="text" 
-        maxlength="3"> : {{ pageCount }}
+        maxlength="3"
+      > : {{ pageCount }}
       &nbsp; &nbsp; Rows: &nbsp;
       <select 
         v-model="perPage" 
         @change="perPageChange" 
-        class="pag-input pag-select">
+        class="pag-input pag-select"
+      >
         <option 
           value="10" 
-          selected>10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="200">200</option>
+          selected
+        >
+          10
+        </option>
+        <option value="20">
+          20
+        </option>
+        <option value="50">
+          50
+        </option>
+        <option value="100">
+          100
+        </option>
+        <option value="200">
+          200
+        </option>
       </select>         
     </div>
     <button 
       @click="dbBack" 
-      class="btn btn-sm btn-light">
+      class="btn btn-sm btn-light"
+    >
       <i class="material-icons">keyboard_arrow_left</i>
     </button>
     <button 
       @click="dbForward" 
-      class="btn btn-sm btn-light">
+      class="btn btn-sm btn-light"
+    >
       <i class="material-icons">keyboard_arrow_right</i>
     </button>
   </div>    

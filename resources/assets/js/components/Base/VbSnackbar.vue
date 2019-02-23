@@ -2,14 +2,16 @@
   <div 
     ref="vbSnackbar" 
     class="vb-snackbar"
-    v-show="value">
+    v-show="value"
+  >
     <div class="d-flex align-items-center">
-      <slot/>
+      <slot />
       <button 
         type="button" 
         class="close ml-auto" 
         aria-label="Close" 
-        @click="hideSnackbar">
+        @click="hideSnackbar"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

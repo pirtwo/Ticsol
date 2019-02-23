@@ -1,42 +1,54 @@
 <template>
   <nav-view 
     :scrollbar="false" 
-    :loading="isLoading">
+    :loading="isLoading"
+  >
     <template slot="toolbar">
       <date-picker 
         v-model="start" 
-        :range="range"/>
+        :range="range"
+      />
 
       <div 
         class="btn-group btn-group-sm" 
         role="group" 
-        aria-label="schedule range">
+        aria-label="schedule range"
+      >
         <button
           type="button"
           @click="range = 'Week'"
           :class="[{'active' : range === 'Week'} ,'btn btn-secondary']"
-        >Week</button>
+        >
+          Week
+        </button>
         <button
           type="button"
           @click="range = 'Month'"
           :class="[{'active' : range === 'Month'} ,'btn btn-secondary']"
-        >Month</button>
+        >
+          Month
+        </button>
       </div>
 
       <div 
         class="btn-group btn-group-sm" 
         role="group" 
-        aria-label="schedule view">
+        aria-label="schedule view"
+      >
         <button
           type="button"
           @click="view = 'user'"
           :class="[{'active' : view === 'user'} ,'btn btn-secondary']"
-        >Employee</button>
+        >
+          Employee
+        </button>
         <button
           type="button"
           @click="view = 'job'"
           :class="[{'active' : view === 'job'} ,'btn btn-secondary']"
-        >Jobs</button>
+        >
+          Jobs
+        </button>
       </div>
     </template>
 
@@ -54,17 +66,20 @@
     <template slot="drawer">
       <ul 
         id="dp-draggable" 
-        class="res-menu">
+        class="res-menu"
+      >
         <template v-if="view === 'job'">
           <template v-for="res in this.sidebarResources">
             <li 
               :key="res.id" 
               :data-id="res.id" 
-              class="res-user">
+              class="res-user"
+            >
               <a href="#">
                 <img 
                   :src="res.meta.avatar" 
-                  class="rounded">
+                  class="rounded"
+                >
                 <span class="caption">{{ res.name }}</span>
               </a>
             </li>
@@ -75,7 +90,8 @@
             <li 
               :key="res.id" 
               :data-id="res.id" 
-              class="res-job">
+              class="res-job"
+            >
               <a href="#">
                 <span class="caption">{{ res.title }}</span>
                 <br>
@@ -113,11 +129,13 @@
       <assign-modal 
         v-model="assignModal" 
         :event="event" 
-        :view="view"/>
+        :view="view"
+      />
       <update-modal 
         v-model="updateModal" 
         :event="event" 
-        :view="view"/>
+        :view="view"
+      />
     </template>
   </nav-view>
 </template>

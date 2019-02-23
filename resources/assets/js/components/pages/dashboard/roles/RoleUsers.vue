@@ -2,62 +2,66 @@
   <nav-view 
     :scrollbar="true" 
     :loading="loading" 
-    padding="p-5">
-
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
-
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSave">
+            @click="onSave"
+          >
             New
           </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSave">
+            @click="onSave"
+          >
             Save
           </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">
+            @click="onCancel"
+          >
             Cancel
           </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li class="menu-title">
+          Links
+        </li>
         <li>
-          <router-link :to="{ name: 'roleList' }">Role Maintenance</router-link>
+          <router-link :to="{ name: 'roleList' }">
+            Role Maintenance
+          </router-link>
         </li>
       </ul>
-
     </template>
 
     <template slot="content">
-
       <form class="needs-validation">
-
         <div class="form-group">
           <div class="form-row">
             <div class="col-sm-6">
               <div class="row">
                 <label class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
-
                   <input 
                     v-model="form.name" 
                     id="name" 
                     type="text" 
                     class="form-control" 
                     placeholder="role name" 
-                    readonly >
-
+                    readonly
+                  >
                 </div>
               </div>
             </div>
@@ -69,22 +73,22 @@
                     v-model="form.users" 
                     :data="userList" 
                     :multi="true"
-                    :placeholder="'Please select users...'">
+                    :placeholder="'Please select users...'"
+                  >
                     <template slot-scope="{ item }">
                       <img
                         :src="item.pic"
                         :alt="`${item.value}-avatar`"
                         class="rounded"
                         width="30"
-                        height="30">
+                        height="30"
+                      >
                       <span>&nbsp; {{ item.value }}</span>
-
                     </template>
                   </vb-select>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -94,19 +98,25 @@
           :header="header" 
           :selection="false"
           order-by="title" 
-          order="asc">
+          order="asc"
+        >
           <template 
             slot="header" 
-            slot-scope="{item}">
-            <div :data-orderBy="item.orderBy">{{ item.value }}</div>
+            slot-scope="{item}"
+          >
+            <div :data-orderBy="item.orderBy">
+              {{ item.value }}
+            </div>
           </template>
           <template 
             slot="body" 
-            slot-scope="{item}">
+            slot-scope="{item}"
+          >
             <td>
               <router-link 
                 class="btn btn-sm btn-light" 
-                :to="{ name : 'userDetails', params : { id: item.id } }">
+                :to="{ name : 'userDetails', params : { id: item.id } }"
+              >
                 <i class="material-icons">visibility</i>
               </router-link>
             </td>
@@ -116,16 +126,14 @@
                 v-for="item in item.roles" 
                 :key="item.id"
                 class="btn btn-sm btn-link" 
-                :to="{ name : 'roleDetails', params : { id: item.id } }">
+                :to="{ name : 'roleDetails', params : { id: item.id } }"
+              >
                 {{ item.name }}
               </router-link>
             </td>
           </template>
         </table-view>
-                
-
       </form>
-
     </template>
   </nav-view>
 </template>

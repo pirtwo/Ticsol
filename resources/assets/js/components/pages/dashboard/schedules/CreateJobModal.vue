@@ -1,7 +1,8 @@
 <template>
   <div 
     class="wrap-panel" 
-    v-show="show">    
+    v-show="show"
+  >    
     <div class="jobModal">
       <div class="panel-title">
         <span>Create Job</span>
@@ -9,13 +10,13 @@
           type="button" 
           class="close" 
           aria-label="Close" 
-          @click="onHide">
+          @click="onHide"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="panel-body">
         <form>
-                    
           <div class="form-group">
             <div class="form-row">
               <label class="col-sm-2 col-form-label col-form-label-sm">Title</label>
@@ -26,7 +27,8 @@
                   id="title" 
                   type="text" 
                   class="form-control form-control-sm" 
-                  placeholder="job title">
+                  placeholder="job title"
+                >
               </div>
             </div>
           </div>
@@ -41,7 +43,8 @@
                   id="code" 
                   type="text" 
                   class="form-control form-control-sm" 
-                  placeholder="display code">
+                  placeholder="display code"
+                >
               </div>
             </div>
           </div>
@@ -76,10 +79,12 @@
                     name="status" 
                     value="1" 
                     class="custom-control-input" 
-                    checked>
+                    checked
+                  >
                   <label 
                     class="custom-control-label" 
-                    for="jobEnable">Enable</label>
+                    for="jobEnable"
+                  >Enable</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input 
@@ -88,26 +93,29 @@
                     id="jobDisable" 
                     name="status" 
                     value="0" 
-                    class="custom-control-input">
+                    class="custom-control-input"
+                  >
                   <label 
                     class="custom-control-label" 
-                    for="jobDisable">Disable</label>
+                    for="jobDisable"
+                  >Disable</label>
                 </div>     
               </div>                   
             </div>
           </div>
-
         </form>
       </div>
       <div class="panel-footer">
         <button 
           class="btn btn-sm btn-success" 
-          @click="onSubmit">                        
+          @click="onSubmit"
+        >                        
           Save
         </button>
         <button 
           class="btn btn-sm btn-success" 
-          @click="onHide">                        
+          @click="onHide"
+        >                        
           Cancel
         </button>
       </div>

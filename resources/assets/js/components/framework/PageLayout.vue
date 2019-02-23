@@ -2,16 +2,18 @@
   <div class="container-fluid">
     <header 
       v-if="this.header" 
-      class="header">
-      <slot name="header"/>
+      class="header"
+    >
+      <slot name="header" />
     </header>    
     <main class="main">
-      <slot/>
+      <slot />
     </main>   
     <footer 
       v-if="this.footer" 
-      class="footer">
-      <slot name="footer"/>
+      class="footer"
+    >
+      <slot name="footer" />
     </footer>    
   </div>  
 </template>

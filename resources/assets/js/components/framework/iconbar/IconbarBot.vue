@@ -1,10 +1,10 @@
 <template>
   <div class="toolbar-bot">
-
     <router-link 
       :to="{ name : 'dash' }" 
       class="btn btn-light" 
-      role="button" >
+      role="button"
+    >
       <i class="icon material-icons">
         dashboard
       </i>
@@ -14,7 +14,8 @@
     <router-link 
       :to="{ name : 'inbox' }" 
       class="btn btn-light" 
-      role="button" >
+      role="button"
+    >
       <i class="icon material-icons">
         inbox
       </i>
@@ -27,7 +28,8 @@
         class="btn btn-light" 
         data-toggle="dropdown" 
         aria-haspopup="true" 
-        aria-expanded="false">
+        aria-expanded="false"
+      >
         <i class="icon material-icons">
           message
         </i>
@@ -36,12 +38,14 @@
       <div class="dropdown-menu">                              
         <router-link 
           :to="{ name : 'leaveCreate'}" 
-          class="dropdown-item">
+          class="dropdown-item"
+        >
           Leave
         </router-link>               
         <router-link 
           :to="{ name : 'reqReimb'}" 
-          class="dropdown-item">
+          class="dropdown-item"
+        >
           Reimbursement
         </router-link>                      
       </div>
@@ -50,7 +54,8 @@
     <router-link 
       :to="{ name : 'timesheet' }" 
       class="btn btn-light" 
-      role="button" >
+      role="button"
+    >
       <i class="icon material-icons">
         timer
       </i>
@@ -60,7 +65,8 @@
     <router-link 
       :to="{ name : 'scheduler' }" 
       class="btn btn-light" 
-      role="button" >
+      role="button"
+    >
       <i class="icon material-icons">
         calendar_today
       </i>
@@ -73,7 +79,8 @@
         class="btn btn-light" 
         data-toggle="dropdown" 
         aria-haspopup="true" 
-        aria-expanded="false">
+        aria-expanded="false"
+      >
         <i class="icon material-icons">
           more_horiz
         </i>
@@ -82,32 +89,36 @@
       <div class="dropdown-menu">                
         <router-link 
           :to="{ name : 'jobList'}" 
-          class="dropdown-item">
+          class="dropdown-item"
+        >
           Jobs
         </router-link> 
         <router-link 
           :to="{ name : 'roleList'}" 
-          class="dropdown-item">
+          class="dropdown-item"
+        >
           Roles
         </router-link>                
         <router-link 
           :to="{ name : 'profileList'}" 
-          class="dropdown-item">
+          class="dropdown-item"
+        >
           Job Profile
         </router-link>  
         <router-link 
           :to="{ name : 'contactList'}" 
-          class="dropdown-item">
+          class="dropdown-item"
+        >
           Contacts
         </router-link>      
         <router-link 
           :to="{ name : 'activityList'}" 
-          class="dropdown-item">
+          class="dropdown-item"
+        >
           Activities
         </router-link>           
       </div>
-    </div>   
-             
+    </div>
   </div>
 </template>
 <script>

@@ -2,50 +2,63 @@
   <nav-view
     :scrollbar="true" 
     :loading="loading" 
-    padding="p-5">
-
-    <template slot="toolbar"/>
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
-
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li><router-link 
-          class="btn btn-light" 
-          :to="{ name: 'activityCreate' }">New</router-link></li>
+        <li class="menu-title">
+          Actions
+        </li>
+        <li>
+          <router-link 
+            class="btn btn-light" 
+            :to="{ name: 'activityCreate' }"
+          >
+            New
+          </router-link>
+        </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onSubmit">                        
+            @click="onSubmit"
+          >                        
             Save
           </button>
         </li>
         <li>
           <button 
             class="btn btn-light" 
-            @click="onCancel">                        
+            @click="onCancel"
+          >                        
             Cancel
           </button>
         </li>
-        <li class="menu-title">Links</li>
-        <li><router-link 
-          class="btn btn-link" 
-          :to="{ name: 'activityList' }">Activities</router-link></li>
+        <li class="menu-title">
+          Links
+        </li>
         <li>
           <router-link 
             class="btn btn-link" 
-            :to="{ name : 'jobDetails', params : { id: currentActivity.job_id } }">
+            :to="{ name: 'activityList' }"
+          >
+            Activities
+          </router-link>
+        </li>
+        <li>
+          <router-link 
+            class="btn btn-link" 
+            :to="{ name : 'jobDetails', params : { id: currentActivity.job_id } }"
+          >
             Related Job
           </router-link> 
         </li>       
       </ul>
-
     </template>
 
     <template slot="content">
-            
       <form>
-
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Schedule Item</label>
@@ -72,13 +85,15 @@
                 id="from" 
                 v-model="form.fromDate" 
                 type="date" 
-                class="form-control" >
+                class="form-control"
+              >
             </div>
             <div class="col">
               <input 
                 v-model="form.fromTime" 
                 type="time" 
-                class="form-control" >
+                class="form-control"
+              >
             </div>
           </div>
         </div>
@@ -91,13 +106,15 @@
                 id="till" 
                 v-model="form.tillDate" 
                 type="date" 
-                class="form-control" >
+                class="form-control"
+              >
             </div>
             <div class="col">
               <input 
                 v-model="form.tillTime" 
                 type="time" 
-                class="form-control" >
+                class="form-control"
+              >
             </div>                        
           </div>
         </div>
@@ -111,15 +128,13 @@
                 v-model="form.desc" 
                 class="form-control" 
                 placeholder="write your report..." 
-                rows="7"/>
+                rows="7"
+              />
             </div>                      
           </div>
         </div>
-
       </form>
-
     </template>
-
   </nav-view>
 </template>
 

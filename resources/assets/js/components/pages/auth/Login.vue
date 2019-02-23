@@ -2,13 +2,15 @@
   <div class="wrap-auth shadow-sm">
     <img 
       src="/img/app.png" 
-      class="app-logo" >
+      class="app-logo"
+    >
 
     <form>
       <div 
         v-show="haveError" 
         class="alert alert-danger" 
-        role="alert">
+        role="alert"
+      >
         {{ errorMsg }}
       </div>
 
@@ -25,7 +27,8 @@
               type="text" 
               class="form-control" 
               id="username" 
-              placeholder="Enter your username">
+              placeholder="Enter your username"
+            >
           </div>
         </div>
       </div>
@@ -43,7 +46,8 @@
               type="password" 
               class="form-control" 
               id="password" 
-              placeholder="Enter your password">
+              placeholder="Enter your password"
+            >
           </div>
         </div>
       </div>
@@ -51,18 +55,19 @@
       <div class="form-group text-center">  
         <a 
           href="/resetpassword" 
-          class="btn btn-link d-block mx-auto">Forgot Password</a>                        
+          class="btn btn-link d-block mx-auto"
+        >Forgot Password</a>                        
       </div>
 
       <button 
         type="button" 
         class="btn btn-primary btn-block" 
-        @click="onSubmit">
+        @click="onSubmit"
+      >
         <i class="icon material-icons">exit_to_app</i>  
         <span>LOGIN</span>
       </button>    
     </form>
-    
   </div>
 </template>
 

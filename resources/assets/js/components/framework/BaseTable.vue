@@ -1,50 +1,53 @@
 <template>
-
   <table>
     <thead>
-      <slot name="toolbar"/>
+      <slot name="toolbar" />
       <th v-if="selection">
         <input 
           type="checkbox" 
-          @click.self="onSelectAll">
+          @click.self="onSelectAll"
+        >
       </th>
 
       <th 
         v-for="(value, index) in header" 
         :key="index" 
-        @click="toggleOrder(index, $event)">
+        @click="toggleOrder(index, $event)"
+      >
         <slot 
           name="header" 
-          :item="value">
+          :item="value"
+        >
           {{ value }}
           <!-- fallback content -->
         </slot>        
         <i 
           v-show="sortBy == value.orderBy" 
-          class="material-icons">{{ colOrder === "asc" ? "arrow_upward" : "arrow_downward" }}</i>        
+          class="material-icons"
+        >{{ colOrder === "asc" ? "arrow_upward" : "arrow_downward" }}</i>        
       </th>
-
     </thead>
 
     <tbody>
       <tr 
         v-for="(value, index) in list" 
-        :key="index">
+        :key="index"
+      >
         <td v-if="selection">
           <input 
             type="checkbox" 
-            @click="onSelect(index, $event)">
+            @click="onSelect(index, $event)"
+          >
         </td>
         <slot 
           name="body" 
-          :item="value">
+          :item="value"
+        >
           {{ value }}
         </slot>        
       </tr>
     </tbody>
-
   </table>
-
 </template>
 
 <script>
