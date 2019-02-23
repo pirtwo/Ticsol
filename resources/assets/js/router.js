@@ -15,31 +15,31 @@ export const router = new VueRouter({
             name: 'auth',
             redirect: { name: 'login' },
             meta: { requireAuth: false },
-            component: require('./components/pages/auth/Auth.vue'),
+            component: require('./components/pages/auth/Auth.vue').default,
             children: [
                 {
                     path: 'login',
                     name: 'login',
                     meta: { requireAuth: false },
-                    component: require('./components/pages/auth/Login.vue')
+                    component: require('./components/pages/auth/Login.vue').default
                 },
                 {
                     path: 'logout',
                     name: 'logout',
                     meta: { requireAuth: false },
-                    component: require('./components/pages/auth/Logout.vue')
+                    component: require('./components/pages/auth/Logout.vue').default
                 },
                 {
                     path: 'register',
                     name: 'register',
                     meta: { requireAuth: false },
-                    component: require('./components/pages/auth/Register.vue')
+                    component: require('./components/pages/auth/Register.vue').default
                 },
                 {
                     path: 'resetpassword',
                     name: 'resetpassword',
                     meta: { requireAuth: false },
-                    component: require('./components/pages/auth/ResetPassword.vue')
+                    component: require('./components/pages/auth/ResetPassword.vue').default
                 },
             ]
         },
@@ -50,7 +50,7 @@ export const router = new VueRouter({
             name: 'dash',
             meta: { requireAuth: true },
             redirect: { name: 'home' },
-            component: require('./components/pages/dashboard/Dashboard.vue'),
+            component: require('./components/pages/dashboard/Dashboard.vue').default,
             children: [
 
                 // Home
@@ -58,7 +58,7 @@ export const router = new VueRouter({
                     path: '/home',
                     name: 'home',
                     meta: { requireAuth: true },
-                    component: require('./components/pages/dashboard/Home.vue')
+                    component: require('./components/pages/dashboard/Home.vue').default
                 },
 
                 // Inbox & Requests 
@@ -67,34 +67,34 @@ export const router = new VueRouter({
                     name: 'request',
                     meta: { requireAuth: true },
                     redirect: { name: 'inbox' },
-                    component: require('./components/pages/dashboard/requests/Requests.vue'),
+                    component: require('./components/pages/dashboard/requests/Requests.vue').default,
                     children: [
                         {
                             props: true,
                             name: 'inbox',
                             meta: { requireAuth: true },   
                             path: '/inbox/:col?/:opt?/:val?',                                                     
-                            component: require('./components/pages/dashboard/requests/RequestList.vue'),
+                            component: require('./components/pages/dashboard/requests/RequestList.vue').default,
                         },
                         {
                             name: 'leaveCreate',
                             meta: { requireAuth: true },
                             path: 'leave/create',
-                            component: require('./components/pages/dashboard/requests/LeaveRequest.vue'),
+                            component: require('./components/pages/dashboard/requests/LeaveRequest.vue').default,
                         },
                         {
                             props: true,
                             name: 'leaveDetails',
                             meta: { requireAuth: true },
                             path: 'leave/details/:id?',
-                            component: require('./components/pages/dashboard/requests/LeaveRequest.vue'),
+                            component: require('./components/pages/dashboard/requests/LeaveRequest.vue').default,
                         },
                         {
                             props: true,
                             name: 'reqReimb',
                             meta: { requireAuth: true },
                             path: 'reimbursement/:id?',
-                            component: require('./components/pages/dashboard/requests/ReimbRequest.vue'),
+                            component: require('./components/pages/dashboard/requests/ReimbRequest.vue').default,
                         }
                     ]
                 },
@@ -104,7 +104,7 @@ export const router = new VueRouter({
                     path: '/hr',
                     name: 'hr',
                     meta: { requireAuth: true },
-                    component: require('./components/pages/dashboard/HRs/HRs.vue'),
+                    component: require('./components/pages/dashboard/HRs/HRs.vue').default,
                     children: [
 
                     ]
@@ -116,13 +116,13 @@ export const router = new VueRouter({
                     name: 'schedule',
                     meta: { requireAuth: true },
                     redirect: { name: 'scheduler' },
-                    component: require('./components/pages/dashboard/schedules/Schedules.vue'),
+                    component: require('./components/pages/dashboard/schedules/Schedules.vue').default,
                     children: [
                         {
                             path: '/scheduler',
                             name: 'scheduler',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/schedules/Scheduler.vue'),
+                            component: require('./components/pages/dashboard/schedules/Scheduler.vue').default,
                         }
                     ]
                 },
@@ -133,13 +133,13 @@ export const router = new VueRouter({
                     name: 'timesheet',
                     meta: { requireAuth: true },
                     redirect: { name: 'timesheetCreate' },
-                    component: require('./components/pages/dashboard/timesheets/TimeSheets.vue'),
+                    component: require('./components/pages/dashboard/timesheets/TimeSheets.vue').default,
                     children: [
                         {
                             path: 'create',
                             name: 'timesheetCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/timesheets/TimesheetCreate.vue'),
+                            component: require('./components/pages/dashboard/timesheets/TimesheetCreate.vue').default,
                         },
                     ]
                 },
@@ -150,27 +150,27 @@ export const router = new VueRouter({
                     name: 'job',
                     meta: { requireAuth: true },
                     redirect: { name: 'jobList' },
-                    component: require('./components/pages/dashboard/jobs/Jobs.vue'),
+                    component: require('./components/pages/dashboard/jobs/Jobs.vue').default,
                     children: [
                         {
                             path: 'list/:col?/:opt?/:val?',
                             name: 'jobList',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/jobs/JobList.vue'),
+                            component: require('./components/pages/dashboard/jobs/JobList.vue').default,
                         },
                         {
                             path: 'create',
                             name: 'jobCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/jobs/JobCreate.vue'),
+                            component: require('./components/pages/dashboard/jobs/JobCreate.vue').default,
                         },
                         {
                             path: ':id/details',
                             name: 'jobDetails',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/jobs/JobDetails.vue'),
+                            component: require('./components/pages/dashboard/jobs/JobDetails.vue').default,
                         },
                         {
                             path: ':id/related-jobs',
@@ -211,27 +211,27 @@ export const router = new VueRouter({
                     name: 'activity',
                     meta: { requireAuth: true },
                     redirect: { name: 'activityList' },
-                    component: require('./components/pages/dashboard/activities/Activity.vue'),
+                    component: require('./components/pages/dashboard/activities/Activity.vue').default,
                     children: [
                         {
                             path: 'list/:col?/:opt?/:val?',
                             name: 'activityList',
                             meta: { requireAuth: true },
                             props: true,
-                            component: require('./components/pages/dashboard/activities/ActivityList.vue'),
+                            component: require('./components/pages/dashboard/activities/ActivityList.vue').default,
                         },
                         {
                             path: 'create',
                             name: 'activityCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/activities/ActivityCreate.vue'),
+                            component: require('./components/pages/dashboard/activities/ActivityCreate.vue').default,
                         },
                         {
                             path: ':id/details',
                             name: 'activityDetails',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/activities/ActivityDetails.vue'),
+                            component: require('./components/pages/dashboard/activities/ActivityDetails.vue').default,
                         }
                     ]
                 },
@@ -242,27 +242,27 @@ export const router = new VueRouter({
                     name: 'contact',
                     meta: { requireAuth: true },
                     redirect: { name: 'contactList' },
-                    component: require('./components/pages/dashboard/contacts/Contacts.vue'),
+                    component: require('./components/pages/dashboard/contacts/Contacts.vue').default,
                     children: [
                         {
                             path: 'list/:col?/:opt?/:val?',
                             name: 'contactList',
                             meta: { requireAuth: true },
                             props: true,
-                            component: require('./components/pages/dashboard/contacts/ContactList.vue'),
+                            component: require('./components/pages/dashboard/contacts/ContactList.vue').default,
                         },
                         {
                             path: 'create',
                             name: 'contactCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/contacts/ContactCreate.vue'),
+                            component: require('./components/pages/dashboard/contacts/ContactCreate.vue').default,
                         },
                         {
                             path: ':id/details',
                             name: 'contactDetails',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/contacts/ContactDetails.vue'),
+                            component: require('./components/pages/dashboard/contacts/ContactDetails.vue').default,
                         }
                     ]
                 },
@@ -273,27 +273,27 @@ export const router = new VueRouter({
                     name: 'profile',
                     meta: { requireAuth: true },
                     redirect: { name: 'profileList' },
-                    component: require('./components/pages/dashboard/profiles/Profiles.vue'),
+                    component: require('./components/pages/dashboard/profiles/Profiles.vue').default,
                     children: [
                         {
                             path: 'list/:col?/:opt?/:val?',
                             name: 'profileList',
                             meta: { requireAuth: true },
                             props: true,
-                            component: require('./components/pages/dashboard/profiles/ProfileList.vue'),
+                            component: require('./components/pages/dashboard/profiles/ProfileList.vue').default,
                         },
                         {
                             path: 'create',
                             name: 'profileCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/profiles/ProfileCreate.vue'),
+                            component: require('./components/pages/dashboard/profiles/ProfileCreate.vue').default,
                         },
                         {
                             path: ':id/details',
                             name: 'profileDetails',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/profiles/ProfileDetails.vue'),
+                            component: require('./components/pages/dashboard/profiles/ProfileDetails.vue').default,
                         }
                     ]
                 },
@@ -304,34 +304,34 @@ export const router = new VueRouter({
                     name: 'role',
                     meta: { requireAuth: true },
                     redirect: { name: 'roleList' },
-                    component: require('./components/pages/dashboard/roles/Roles.vue'),
+                    component: require('./components/pages/dashboard/roles/Roles.vue').default,
                     children: [
                         {
                             path: 'list/:col?/:opt?/:val?',
                             name: 'roleList',
                             meta: { requireAuth: true },
                             props: true,
-                            component: require('./components/pages/dashboard/roles/RoleList.vue'),
+                            component: require('./components/pages/dashboard/roles/RoleList.vue').default,
                         },
                         {
                             path: 'create',
                             name: 'roleCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/roles/RoleCreate.vue'),
+                            component: require('./components/pages/dashboard/roles/RoleCreate.vue').default,
                         },
                         {
                             path: ':id/details',
                             name: 'roleDetails',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/roles/RoleDetails.vue'),
+                            component: require('./components/pages/dashboard/roles/RoleDetails.vue').default,
                         },
                         {
                             path: ':id/users',
                             name: 'roleUsers',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/roles/RoleUsers.vue'),
+                            component: require('./components/pages/dashboard/roles/RoleUsers.vue').default,
                         },
                     ]
                 },
@@ -342,14 +342,14 @@ export const router = new VueRouter({
                     name: 'comments',
                     meta: { requireAuth: true },
                     redirect: { name: 'roleList' },
-                    component: require('./components/pages/dashboard/comments/Comments.vue'),
+                    component: require('./components/pages/dashboard/comments/Comments.vue').default,
                     children: [
                         {
                             path: '/comments/:entity/:id',
                             name: 'commentList',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/comments/CommentList.vue'),
+                            component: require('./components/pages/dashboard/comments/CommentList.vue').default,
                         }]
                 },
             ]
