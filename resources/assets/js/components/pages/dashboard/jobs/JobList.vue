@@ -86,8 +86,7 @@ export default {
   props: ["col", "opt", "val"],
 
   data() {
-    return {
-      jobs: [],
+    return {      
       pager: {
         page: 1,
         perPage: 10,
@@ -119,6 +118,14 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    jobs: function(){
+      return this.getList("job");
+    },
+
     columnList: function() {
       return [
         { key: "title", value: "Title" },
@@ -148,8 +155,7 @@ export default {
           this.query
         )
       })
-        .then(respond => {
-          this.jobs = respond.data;
+        .then(respond => {          
           this.pager.pageCount = respond.last_page;
           this.loading = false;
         })

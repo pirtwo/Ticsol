@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-2">
     <template slot="drawer">
 
@@ -75,7 +75,6 @@ export default {
 
   data() {
     return {
-      loading: false,
       frmBuilder: {},
       form: {
         name: "",

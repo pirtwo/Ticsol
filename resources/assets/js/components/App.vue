@@ -6,12 +6,12 @@
 import { mapActions } from "vuex";
 export default {
   created() {       
-    //this.subscribeForNotifs();   
+    this.goRealTime();   
   },
 
   methods:{
     ...mapActions({
-      subscribeForNotifs: 'user/subscribeForNotifications'
+      goRealTime: 'core/goRealTime'
     })
   }
 };

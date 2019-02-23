@@ -1,7 +1,7 @@
 <template>
   <nav-view 
     :scrollbar="true" 
-    :loading="loading" 
+    :loading="isLoading" 
     padding="p-2">
 
     <template slot="toolbar">
@@ -61,9 +61,12 @@ import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "JobList",
+
+  mixins:[pageMixin],
 
   components: {
     "nav-view": NavView,
@@ -75,14 +78,12 @@ export default {
 
   data() {
     return {
-      profiles: [],
+      selects: [],
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },
-      loading: true,
-      selects: [],
+      },      
       header: [
         { value: "", orderBy: "" },
         { value: "Title", orderBy: "name" },
@@ -99,16 +100,26 @@ export default {
     }
   },
 
+  computed:{
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    profiles:function(){
+      return this.getList("form");
+    }
+  },
+
   mounted() {
     this.feedTable();
   },
 
   methods: {
-    ...mapActions({ fetch: "resource/list" }),
+    ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-      this.loading = true;
-      this.fetch({
+      this.loadingStart();
+      this.fetchList({
         resource: "form",
         query: {
           page: this.pager.page,
@@ -116,14 +127,13 @@ export default {
           [this.opt]: `${this.col},${this.val}`
         }
       })
-        .then(respond => {
-          this.profiles = respond.data;
+        .then(respond => {          
           this.pager.pageCount = respond.last_page;
-          this.loading = false;
+          this.loadingStop();
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          this.loadingStop();
         });
     }
   }

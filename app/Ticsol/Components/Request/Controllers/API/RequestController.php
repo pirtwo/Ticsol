@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Request as RequestModel;
+use App\Ticsol\Components\Request\Events;
 use App\Ticsol\Components\Request\Requests;
 use App\Ticsol\Components\Request\Repository;
 use App\Ticsol\Components\Request\Notifications;
@@ -72,7 +73,7 @@ class RequestController extends Controller
             $req->status = 'submitted';
             $req->fill($request->all());
             $req->save();
-            $request->user()->notify(new Notifications\RequestCreated($request->user(), $req));
+            event(new Events\RequestCreated($req));
             return $req;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
@@ -114,6 +115,7 @@ class RequestController extends Controller
             }
 
             $req->update($request->all());
+            event(new Events\RequestUpdated($req));
             return $req;
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);

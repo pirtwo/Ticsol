@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Form;
+use App\Ticsol\Components\Form\Events;
 use App\Ticsol\Components\Form\Requests;
 use App\Ticsol\Components\Form\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
@@ -70,8 +71,8 @@ class FormController extends Controller
             $form->creator_id = $request->user()->id;
             $form->fill($request->all());
             $form->save();
+            event(new Events\FormCreated($form));
             return $form;
-
         } catch (AuthorizationException $e) {
             return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);
         } catch (\Exception $e) {
@@ -115,10 +116,10 @@ class FormController extends Controller
             }
 
             $this->authorize('update', $form);
-
+            
             $form->update($request->all());
+            event(new Events\FormUpdated($form));
             return $form;
-
         } catch (AuthorizationException $e) {
             return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);
         } catch (\Exception $e) {

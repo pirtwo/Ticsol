@@ -9,6 +9,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Job;
+use App\Ticsol\Components\Job\Events;
 use App\Ticsol\Components\Job\Requests;
 use App\Ticsol\Components\Job\Repository;
 use App\Ticsol\Base\Criteria\CommonCriteria;
@@ -91,6 +92,7 @@ class JobController extends Controller
                 DB::rollback();                
                 return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
+            event(new Events\JobCreated($job));
             return $job;
         } catch (AuthorizationException $e) {
             return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);  
@@ -151,12 +153,13 @@ class JobController extends Controller
                     $job->contacts()->sync($request->input('contacts'));
                 }   
 
-                DB::commit();
+                DB::commit();                
                 
             }catch(\Exception $e){                
                 DB::rollback();                
                 return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }   
+            event(new Events\JobUpdated($job));
             return $job;
         } catch (AuthorizationException $e) {
             return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);       

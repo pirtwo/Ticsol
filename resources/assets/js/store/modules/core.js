@@ -1,3 +1,4 @@
+import Pusher from 'pusher-js';
 import * as MUTATIONS from "../mutation-types";
 
 export const coreModule = {
@@ -6,6 +7,11 @@ export const coreModule = {
 
     state: {
         logs: [],
+
+        connection:{
+            previous: '',
+            current: ''
+        },
 
         ui: {
             fullscreen: false,
@@ -130,6 +136,11 @@ export const coreModule = {
             state.logs = [];
         },
 
+        [MUTATIONS.APP_CONNECTION](state, payload){
+            state.connection.previous = payload.previous;
+            state.connection.current = payload.current;
+        },
+
         [MUTATIONS.APP_LOADING](state, payload) {
             state.loading.show = payload.show;
             state.loading.message = payload.message;
@@ -187,11 +198,7 @@ export const coreModule = {
         clearLog({ commit }) {
             commit(MUTATIONS.APP_LOG_CLEAR);
         },
-
-        loading({ commit }, { show = true, message = "Loading Please Wait..." }) {
-            commit(MUTATIONS.APP_LOADING, { show, message });
-        },
-
+       
         fullscreen({ commit }, { enable }) {
             commit(MUTATIONS.APP_FULLSCREEN, enable);
         },
@@ -213,21 +220,59 @@ export const coreModule = {
         },
 
         snackbar({ commit }, { show, message, theme = '', fixed = false, timeout = 300 }) {
+            commit(MUTATIONS.APP_SNACKBAR, { show: false, message: '', theme: theme });
             commit(MUTATIONS.APP_SNACKBAR, { show, message, theme, fixed, timeout });
             if (!fixed) {
                 setTimeout(() => {
                     commit(MUTATIONS.APP_SNACKBAR, { show: false, message: '', theme: theme });
                 }, timeout);
             }
-        },
+        },    
+        
+        goRealTime({state, dispatch, commit, rootState}){
+            if (!rootState.user.isAuth) return
 
-        header({ commit }, { show, height }) {
-            commit(MUTATIONS.APP_HEADER, { show, height });
-        },
+            let user = rootState.user;
+            let pusher = new Pusher("8cf467561b944c1668e0", {
+                cluster: "ap2",
+                authEndpoint: '/broadcasting/auth',
+                auth: {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + user.token.value
+                    }
+                }
+            });
+            
+            let notifChannel = pusher.subscribe(`private-App.Users.${user.info.id}`);
+            notifChannel.bind("User.Update", (data) => {
+                dispatch('resource/onClientUpdate', data.resName, { root: true });
+            });
 
-        footer({ commit }, { show, height }) {
-            commit(MUTATIONS.APP_FOOTER, { show, height });
-        },
+            let clientChannel = pusher.subscribe(`private-App.Clients.${user.info.client_id}`);
+            clientChannel.bind("Client.Update", (data) => {
+                dispatch('resource/onClientUpdate', data.resName, { root: true });
+            });
+
+            pusher.connection.bind('state_change', (state) => {
+                commit(MUTATIONS.APP_CONNECTION, state);
+            });
+
+            notifChannel.bind('pusher:subscription_succeeded', () => {
+                console.log('subscribed to notification channel successfuly.');
+            });
+            notifChannel.bind('pusher:subscription_error', () => {
+                console.log('subscribe to notification channel failed.');
+            });
+
+            clientChannel.bind('pusher:subscription_succeeded', () => {
+                console.log('subscribed to client channel successfuly.');
+            });
+
+            clientChannel.bind('pusher:subscription_error', () => {
+                console.log('subscribe to client channel failed.');
+            });
+        }
 
     }
 
