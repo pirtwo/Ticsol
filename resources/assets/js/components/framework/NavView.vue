@@ -94,8 +94,7 @@
 
       <div 
         class="content" 
-        :class="[{ 'scrollbar-show' : scrollbar}, padding]"              
-        v-show="!loading"
+        :class="[{ 'scrollbar-show' : scrollbar}, padding]"          
       >        
         <slot name="content" />
       </div>            
@@ -320,7 +319,8 @@ i.material-icons {
   width: 100%;
   height: 100%;
   position: absolute;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(34, 34, 34, 0.1);
+  z-index: 100;
 }
 
 .loading-box {
@@ -333,7 +333,7 @@ i.material-icons {
   position: relative;
   border-radius: 5px;
   transform: translate(-50%, -80%);
-  background-color: rgba(72, 72, 72, 0.8);
+  background-color: rgba(44, 44, 44, 0.9);
 }
 
 .wrap-loading .md-progress-spinner {
