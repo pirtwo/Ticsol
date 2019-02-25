@@ -62,7 +62,6 @@
           </td>
           <td>{{ dateToString(item.from) }}</td>
           <td>{{ dateToString(item.till) }}</td>
-          <td>{{ item.desc }}</td> 
         </template> 
       </table-view>
     </template>
@@ -99,8 +98,7 @@ export default {
       header: [
         { value: "", orderBy: "" },
         { value: "From", orderBy: "from" },
-        { value: "Till", orderBy: "till" },
-        { value: "Report", orderBy: "report" }
+        { value: "Till", orderBy: "till" }
       ],
       order: "asc"
     };
