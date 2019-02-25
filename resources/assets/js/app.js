@@ -2,6 +2,7 @@
 require('./bootstrap');
 
 import Vue from 'vue';
+import Vuelidate from 'vuelidate';
 import { sync } from 'vuex-router-sync';
 import { store } from './store/store.js';
 import { router } from './router.js';
@@ -14,6 +15,7 @@ import VueBase from './plugin/vue-base-plugin';
 Vue.use(formFeedback);
 Vue.use(queryBuilder);
 Vue.use(VueBase);
+Vue.use(Vuelidate);
 
 sync(store, router);
 
