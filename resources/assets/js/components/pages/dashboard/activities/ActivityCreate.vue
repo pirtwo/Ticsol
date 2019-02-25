@@ -100,15 +100,12 @@
         </div>
 
         <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Report</label>                        
-            <div class="col-sm-10">
-              <textarea 
-                id="desc" 
-                v-model="form.desc" 
-                class="form-control" 
-                placeholder="write your report..." 
-                rows="7"
+          <div class="form-row">                                  
+            <div class="col-sm-12">
+              <editor 
+                v-model="form.desc"
+                api-key="he51k5qf4qe8668k9rgkie9c13j01h43fh61m72chuvv93ip" 
+                :init="{height: 300, plugins: 'print table image link advlist', toolbar: 'undo redo | formatselect | fontselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat'}"
               />
             </div>                      
           </div>
@@ -120,6 +117,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import Editor from '@tinymce/tinymce-vue';
 import NavView from "../../../framework/NavView.vue";
 import Selectbox from "../../../framework/BaseSelectBox.vue";
 
@@ -128,7 +126,8 @@ export default {
 
   components: {
     "nav-view": NavView,
-    "select-box": Selectbox
+    "select-box": Selectbox,
+    "editor": Editor
   },
 
   data() {
