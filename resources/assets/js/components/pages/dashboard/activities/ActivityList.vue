@@ -60,6 +60,7 @@
               <i class="material-icons">visibility</i>
             </router-link>                   
           </td>
+          <td>{{ item.job.title }}</td>
           <td>{{ dateToString(item.from) }}</td>
           <td>{{ dateToString(item.till) }}</td>
         </template> 
@@ -97,6 +98,7 @@ export default {
       },      
       header: [
         { value: "", orderBy: "" },
+        { value: "Job", orderBy: "job" },
         { value: "From", orderBy: "from" },
         { value: "Till", orderBy: "till" }
       ],
@@ -134,7 +136,7 @@ export default {
         query: {
           page: this.pager.page,
           perPage: this.pager.perPage,
-          with: "schedule",
+          with: "schedule,job",
           [this.opt]: `${this.col},${this.val}`
         }
       })

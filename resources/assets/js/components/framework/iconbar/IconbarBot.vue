@@ -91,31 +91,49 @@
           :to="{ name : 'jobList'}" 
           class="dropdown-item"
         >
-          Jobs
+          <i class="icon material-icons">
+            work
+          </i>Jobs
+        </router-link> 
+        <router-link 
+          :to="{ name : 'profileList'}" 
+          class="dropdown-item"
+        >
+          <i class="icon material-icons">
+            assignment
+          </i>Job Profiles
+        </router-link>  
+        <router-link 
+          :to="{ name : 'userList'}" 
+          class="dropdown-item"
+        >
+          <i class="icon material-icons">
+            people
+          </i>Users
         </router-link> 
         <router-link 
           :to="{ name : 'roleList'}" 
           class="dropdown-item"
         >
-          Roles
-        </router-link>                
-        <router-link 
-          :to="{ name : 'profileList'}" 
-          class="dropdown-item"
-        >
-          Job Profile
-        </router-link>  
+          <i class="icon material-icons">
+            verified_user
+          </i>Roles
+        </router-link>         
         <router-link 
           :to="{ name : 'contactList'}" 
           class="dropdown-item"
         >
-          Contacts
+          <i class="icon material-icons">
+            contact_mail
+          </i>Contacts
         </router-link>      
         <router-link 
           :to="{ name : 'activityList'}" 
           class="dropdown-item"
         >
-          Activities
+          <i class="icon material-icons">
+            description
+          </i>Activity Reports
         </router-link>           
       </div>
     </div>
@@ -127,4 +145,9 @@ export default {
 };
 </script>
 <style scoped>
+.dropdown-item i{
+  color: inherit !important;
+  margin-right: 5px;
+  vertical-align: top;
+}
 </style>
