@@ -1,7 +1,7 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="isLoading" 
+  <nav-view
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-5"
   >
     <template slot="toolbar" />
@@ -11,26 +11,33 @@
         <li class="menu-title">
           Actions
         </li>
-        <li>
-          <router-link 
-            class="btn btn-light" 
-            tag="button" 
-            :to="{ name:'jobCreate' }"
+        <li v-if="!this.id">
+          <button
+            class="btn btn-light"
+            @click="clearForm"
           >
             New
-          </router-link>
+          </button>
         </li>
-        <li>
-          <button 
-            class="btn btn-light" 
+        <li v-if="!this.id">
+          <button
+            class="btn btn-light"
+            @click="onSubmit"
+          >
+            Submit
+          </button>
+        </li>
+        <li v-if="this.id">
+          <button
+            class="btn btn-light"
             @click="onSave"
           >
             Save
           </button>
         </li>
         <li>
-          <button 
-            class="btn btn-light" 
+          <button
+            class="btn btn-light"
             @click="onCancel"
           >
             Cancel
@@ -40,14 +47,14 @@
           Links
         </li>
         <li>
-          <router-link 
-            class="btn btn-link" 
+          <router-link
+            class="btn btn-link"
             :to="{ name: 'jobList' }"
           >
             Jobs
           </router-link>
         </li>
-        <li>
+        <li v-if="this.id">
           <router-link
             class="btn btn-link"
             :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }"
@@ -56,7 +63,7 @@
             Items
           </router-link>
         </li>
-        <li>
+        <li v-if="this.id">
           <router-link
             class="btn btn-link"
             :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }"
@@ -64,7 +71,7 @@
             Comments
           </router-link>
         </li>
-        <li>
+        <li v-if="this.id">
           <router-link
             :class="[{'disabled' : this.relatedActivities === null}, 'btn btn-link' ]"
             role="button"
@@ -74,7 +81,7 @@
             Activity Reports
           </router-link>
         </li>
-        <li>
+        <li v-if="this.id">
           <router-link
             :class="[{'disabled' : this.relatedJobs === null}, 'btn btn-link' ]"
             role="button"
@@ -84,7 +91,7 @@
             Related Jobs
           </router-link>
         </li>
-        <li>
+        <li v-if="this.id">
           <router-link
             :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]"
             role="button"
@@ -94,7 +101,7 @@
             Related Requests
           </router-link>
         </li>
-        <li>
+        <li v-if="this.id">
           <router-link
             :class="[{'disabled' : this.relatedContacts === null}, 'btn btn-link' ]"
             role="button"
@@ -108,21 +115,24 @@
     </template>
 
     <template slot="content">
-      <form 
-        class="needs-validation" 
-        novalidate
-      >
+      <form class="needs-validation">
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Title</label>
             <div class="col-sm-10">
               <input
-                v-model="form.title"
+                v-model="$v.form.title.$model"
                 id="title"
                 type="text"
-                class="form-control"
+                :class="[{'is-invalid' : $v.form.title.$error } ,'form-control']"
                 placeholder="job title"
               >
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.title.required"
+              >
+                Please enter a title.
+              </div>
             </div>
           </div>
         </div>
@@ -132,12 +142,18 @@
             <label class="col-sm-2 col-form-lable">Code</label>
             <div class="col-sm-10">
               <input
-                v-model="form.code"
+                v-model="$v.form.code.$model"
                 id="code"
                 type="text"
-                class="form-control"
+                :class="[{'is-invalid' : $v.form.code.$error } ,'form-control']"
                 placeholder="display code"
               >
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.code.required"
+              >
+                Please enter a code.
+              </div>
             </div>
           </div>
         </div>
@@ -193,7 +209,7 @@
 
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-12 col-form-lable">Status</label>
+            <label class="col-sm-2 col-form-lable">Status</label>
 
             <div class="custom-control custom-radio custom-control-inline">
               <input
@@ -205,8 +221,8 @@
                 class="custom-control-input"
                 checked
               >
-              <label 
-                class="custom-control-label" 
+              <label
+                class="custom-control-label"
                 for="jobEnable"
               >Enable</label>
             </div>
@@ -219,16 +235,16 @@
                 value="0"
                 class="custom-control-input"
               >
-              <label 
-                class="custom-control-label" 
+              <label
+                class="custom-control-label"
                 for="jobDisable"
               >Disable</label>
             </div>
           </div>
         </div>
 
-        <form-gen 
-          :schema="schema" 
+        <form-gen
+          :schema="schema"
           v-model="form.meta"
         />
       </form>
@@ -238,12 +254,13 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { required } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import NavView from "../../../framework/NavView.vue";
 import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue";
 
 export default {
-  name: "JobDetails",
+  name: "JobModify",
 
   mixins: [PageMixin],
 
@@ -271,10 +288,20 @@ export default {
     };
   },
 
+  validations: {
+    form: {
+      title: { required },
+      code: { required }
+    }
+  },
+
   watch: {
     "form.profile": function(value) {
       if (value.key) {
-        this.schema = this.getList("form", item => item.id == value.key)[0].schema;
+        this.schema = this.getList(
+          "form",
+          item => item.id == value.key
+        )[0].schema;
       }
     }
   },
@@ -339,63 +366,119 @@ export default {
     }
   },
 
-  created() {    
+  beforeRouteUpdate(to, from, next) {
+    this.$data = {};
   },
 
   mounted() {
     this.loadingStart();
-    let p1 = this.fetch({
-      resource: "job",
-      query: { with: "childs,contacts,requests,activities" }
-    });
-    let p2 = this.fetch({ resource: "form" });
-    let p3 = this.fetch({ resource: "contact" });
-    Promise.all([p1, p2, p3])
-      .then(() => {
-        this.currentJob = this.getList("job", item => item.id == this.id)[0];
-        this.form.title = this.currentJob.title;
-        this.form.code = this.currentJob.code;
-
-        this.form.parent =
-          this.currentJob.parent_id !== null
-            ? this.jobs.find(item => item.key == this.currentJob.parent_id)
-            : {};
-
-        this.form.profile =
-          this.currentJob.form_id !== null
-            ? this.profiles.find(item => item.key == this.currentJob.form_id)
-            : {};
-
-        this.form.contacts = this.contacts.filter(item =>
-          this.currentJob.contacts.find(elm => elm.id === item.key)
-        );
-
-        this.form.meta = this.currentJob.meta;
-
-        this.schema =
-          this.currentJob.form_id !== null
-            ? this.getList(
-                "form",
-                item => item.id == this.currentJob.form_id
-              )[0].schema
-            : null;
-
-        this.loadingStop();
-      })
-      .catch(error => {
-        console.log(error);
+    if (this.id) {
+      let p1 = this.fetch({
+        resource: "job",
+        query: { with: "childs,contacts,requests,activities" }
       });
+      let p2 = this.fetch({ resource: "form" });
+      let p3 = this.fetch({ resource: "contact" });
+      Promise.all([p1, p2, p3])
+        .then(() => {
+          this.currentJob = this.getList("job", item => item.id == this.id)[0];
+          this.form.title = this.currentJob.title;
+          this.form.code = this.currentJob.code;
+
+          this.form.parent =
+            this.currentJob.parent_id !== null
+              ? this.jobs.find(item => item.key == this.currentJob.parent_id)
+              : {};
+
+          this.form.profile =
+            this.currentJob.form_id !== null
+              ? this.profiles.find(item => item.key == this.currentJob.form_id)
+              : {};
+
+          this.form.contacts = this.contacts.filter(item =>
+            this.currentJob.contacts.find(elm => elm.id === item.key)
+          );
+
+          this.form.meta = this.currentJob.meta;
+
+          this.schema =
+            this.currentJob.form_id !== null
+              ? this.getList(
+                  "form",
+                  item => item.id == this.currentJob.form_id
+                )[0].schema
+              : null;
+
+          this.loadingStop();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      let p1 = this.fetch({ resource: "job" });
+      let p2 = this.fetch({ resource: "form" });
+      let p3 = this.fetch({ resource: "contact" });
+      Promise.all([p1, p2, p3])
+        .then(() => {
+          this.loadingStop();
+        })
+        .catch(error => {
+          this.loadingStop();
+          this.showMessage(error.message, "danger");
+        });
+    }
   },
 
   methods: {
     ...mapActions({
-      update: "resource/update",
       fetch: "resource/list",
+      create: "resource/create",
+      update: "resource/update",      
     }),
+
+    onSubmit(e) {      
+      e.preventDefault();
+      e.target.disabled = true;      
+
+      this.$v.$touch();
+      if(this.$v.$invalid) {
+        e.target.disabled = false;        
+        return;
+      }
+
+      let form = {};
+      form.title = this.form.title;
+      form.code = this.form.code;
+      form.isactive = this.form.isactive;
+      form.parent_id = this.form.parent.key;
+      form.form_id = this.form.profile.key;
+      form.contacts = this.form.contacts.map(item => item.key);
+      form.meta = this.form.meta;
+
+      this.create({ resource: "job", data: form })
+        .then(respond => {
+          e.target.disabled = false;
+          this.showMessage(
+            `Job <b>${form.title}</b> created successfuly.`,
+            "success"
+          );
+        })
+        .catch(error => {
+          e.target.disabled = false;
+          this.showMessage(error.message, "danger");
+          this.$formFeedback(error.response.data.errors);
+        });
+    },
 
     onSave(e) {
       e.preventDefault();
       e.target.disabled = true;
+
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
 
       let form = {};
       form.title = this.form.title;
@@ -417,8 +500,20 @@ export default {
         .catch(error => {
           e.target.disabled = false;
           this.showMessage(error.message, "danger");
-          this.$formFeedback(error.response.data.errors);          
+          this.$formFeedback(error.response.data.errors);
         });
+    },
+
+    clearForm() {
+      this.schema = "";
+      this.form.title= "";
+      this.form.code= "";
+      this.form.isactive= 1;
+      this.form.parent= {};
+      this.form.profile= {};
+      this.form.contacts= [];
+      this.form.meta= null;     
+      this.$v.form.$reset();
     },
 
     onCancel(e) {
