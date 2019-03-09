@@ -459,6 +459,7 @@ export default {
         start: arg.start,
         end: arg.end
       });
+      this.dayPilot.clearSelection();
     },
 
     eventClickHandler(arg) {

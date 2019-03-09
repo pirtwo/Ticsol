@@ -54,11 +54,19 @@
             </router-link> 
           </td>
           <td> 
-            <img :src="item.meta.avatar" alt="user-avatar" width="40" height="40">
+            <img
+              :src="item.meta.avatar"
+              alt="user-avatar"
+              width="40"
+              height="40"
+            >
             {{ item.name }}
           </td>
           <td>
-            <span v-for="contact in item.contacts" :key="contact.id">
+            <span
+              v-for="contact in item.contacts"
+              :key="contact.id"
+            >
               <router-link 
                 class="btn btn-sm btn-link" 
                 :to="{ name : 'contactDetails', params : { id: contact.id } }"
@@ -68,7 +76,10 @@
             </span>
           </td>
           <td>
-            <span v-for="role in item.roles" :key="role.id">
+            <span
+              v-for="role in item.roles"
+              :key="role.id"
+            >
               <router-link 
                 class="btn btn-sm btn-link" 
                 :to="{ name : 'roleDetails', params : { id: role.id } }"

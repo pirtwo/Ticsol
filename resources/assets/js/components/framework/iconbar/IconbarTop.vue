@@ -57,11 +57,24 @@
         class="dropdown-menu dropdown-menu-right" 
         aria-labelledby="dropdownMenuLink"
       >
+        <router-link 
+          :to="{ name : 'userProfile'}" 
+          class="dropdown-item"
+        >
+          <i class="icon material-icons">
+            account_circle
+          </i>Profile
+        </router-link> 
+        <div class="dropdown-divider" />     
         <a 
           class="dropdown-item" 
           href="#" 
           @click.prevent="logoutHandler"
-        >Logout</a>        
+        >
+          <i class="icon material-icons">
+            exit_to_app
+          </i>Log out
+        </a>        
       </div>
     </div>
   </div>
@@ -117,5 +130,11 @@ export default {
 
 .dropdown {
   display: inline-block !important;
+}
+
+.dropdown-item i{
+  color: inherit !important;
+  margin-right: 5px;
+  vertical-align: top;
 }
 </style>

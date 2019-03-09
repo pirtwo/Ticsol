@@ -271,7 +271,13 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             props: true,
                             component: require('./components/pages/dashboard/users/UserList.vue').default,
-                        }
+                        },
+                        {
+                            path: 'profile',
+                            name: 'userProfile',
+                            meta: { requireAuth: true },                            
+                            component: require('./components/pages/dashboard/users/UserProfile.vue').default,
+                        },
                     ]
                 },
 
