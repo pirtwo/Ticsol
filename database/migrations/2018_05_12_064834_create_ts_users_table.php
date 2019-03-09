@@ -22,6 +22,8 @@ class CreateTsUsersTable extends Migration
 
             // Attributes
             $table->string('name');
+            $table->string("firstname");
+            $table->string("lastname");
             $table->string('email')
                 ->unique();
             $table->string('password');            

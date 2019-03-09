@@ -21,7 +21,8 @@ class CreateTsSchedulesTable extends Migration
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('job_id');     
+            $table->unsignedInteger('job_id')
+                ->nullable();     
             
             // Attributes
             $table->string('type');

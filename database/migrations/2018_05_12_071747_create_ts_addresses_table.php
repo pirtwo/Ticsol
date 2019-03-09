@@ -28,6 +28,7 @@ class CreateTsAddressesTable extends Migration
             $table->string('number');
             $table->string('street');
             $table->string('suburb');
+            $table->string('state');
             $table->string('country');
             $table->string('postcode');            
             $table->softDeletes();
