@@ -1,14 +1,7 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="loading" 
-    padding="p-2"
-  >
+  <nav-view :scrollbar="true" :loading="loading" padding="p-2">
     <template slot="toolbar">
-      <date-picker 
-        v-model="weekStart" 
-        range="Week"
-      />      
+      <date-picker v-model="weekStart" range="Week"/>
     </template>
 
     <template slot="drawer">
@@ -17,143 +10,132 @@
           Actions
         </li>
         <li>
-          <button 
-            class="btn btn-light" 
-            @click="onSave"
-          >                        
-            Save
-          </button>
+          <button class="btn btn-light" @click="onSave">Save</button>
         </li>
         <li>
-          <button 
-            class="btn btn-light" 
-            @click="onSubmit"
-          >                        
-            Submit
-          </button>
-        </li>        
-        <li>
-          <button 
-            class="btn btn-light" 
-            @click="onCancel"
-          >                        
-            Cancel
-          </button>
+          <button class="btn btn-light" @click="onSubmit">Submit</button>
         </li>
         <li>
-          <button 
-            type="button" 
-            class="btn btn-light" 
+          <button class="btn btn-light" @click="onCancel">Cancel</button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-light"
             @click="genFromSchedule(scheduleItems)"
-          >
-            Generate
-          </button>
-        </li>
-        <li class="menu-title">
-          Links
+          >Generate</button>
         </li>
       </ul>
     </template>
 
     <template slot="content">
-      <div class="table-responsive">
-        <table class="table table-hover table-light">
-          <thead>
-            <tr>         
-              <th />               
-              <th scope="col">
-                Day
-              </th>
-              <th scope="col">
-                Link
-              </th>
-              <th scope="col">
-                Job
-              </th>
-              <th scope="col">
-                Start Time
-              </th>
-              <th scope="col">
-                End Time
-              </th>
-              <th scope="col">
-                Break
-              </th>
-              <th scope="col">
-                Total
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr 
-              v-for="(item, index) in timesheetItems" 
-              :key="index"
-            >
-              <td>
-                <button 
-                  v-show="!item.editMode" 
-                  @click="item.editMode = true"
-                  type="button" 
-                  class="btn btn-sm btn-light"
-                >
-                  <i class="material-icons">edit</i>
-                </button>
-                <button 
-                  v-show="item.editMode" 
-                  @click="item.editMode = false"
-                  type="button" 
-                  class="btn btn-sm btn-light"
-                >
-                  <i class="material-icons">save</i>
-                </button>                                
-              </td>
-              <td>                                
-                {{ item.day }}
-              </td>
-              <td />
-              <td>{{ item.job.title }}</td>
-              <td>
-                <input 
-                  type="time" 
-                  class="form-control"
-                  @change="totalTime(item)"
-                  v-model="item.startTime" 
-                  v-show="item.editMode"
-                > 
-                <span v-show="!item.editMode">{{ item.startTime }}</span>
-              </td>
-              <td>
-                <input 
-                  type="time" 
-                  class="form-control"
-                  @change="totalTime(item)"
-                  v-model="item.endTime" 
-                  v-show="item.editMode"
-                > 
-                <span v-show="!item.editMode">{{ item.endTime }}</span>
-              </td>
-              <td>
-                <!-- <vb-timepicker v-model="item.break_length" :format="'HH:mm'" v-show="item.editMode"/> -->
-                <input 
-                  type="text"  
-                  class="form-control" 
-                  @change="totalTime(item)"                              
-                  v-model="item.break_length" 
-                  v-show="item.editMode"
-                > 
-                <span v-show="!item.editMode">{{ item.break_length }}</span>
-              </td>
-              <td>
-                {{ item.total }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <ts-grid 
+        v-model="timesheetItems" 
+        :columns="columns" 
+        :has-toolbar="false">
+        <template slot-scope="{ item }">
+          <td>{{ item.date.value }}</td>
+          <td>
+            <router-link 
+              v-if="item.request !== undefined"
+              class="btn btn-sm btn-link" 
+              :to="{ name : 'jobDetails', params : { id: item.request.id } }">
+              <i class="material-icons">request</i>
+            </router-link>
+          </td>
+          <td>
+            <router-link 
+              class="btn btn-sm btn-link" 
+              :to="{ name : 'jobDetails', params : { id: item.job.key } }">
+              <span>{{ item.job.value }}</span>
+            </router-link>            
+          </td>
+          <td>{{ item.startTime }}</td>
+          <td>{{ item.endTime }}</td>
+          <td>{{ item.break_length }}</td>
+          <td>{{ totalTime(item) }}</td>
+        </template>
+        <template 
+          slot="grid-modal" 
+          slot-scope="{ item }">
+
+          <div class="p-2">
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Day</label>
+                <div class="col-sm-10">
+                  <vb-select
+                    v-model="item.date"
+                    :data="weekDays"
+                    id="parent_id"
+                    name="jobParent"
+                    placeholder="Select day..."
+                    search-placeholder="search..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Job</label>
+                <div class="col-sm-10">
+                  <vb-select
+                    v-model="item.job"
+                    :data="jobs"
+                    id="parent_id"
+                    name="jobParent"
+                    placeholder="Select job..."
+                    search-placeholder="search..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Start</label>
+                <div class="col-sm-10">
+                  <input
+                    class="form-control" 
+                    v-model="item.startTime"
+                    type="time"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">End</label>
+                <div class="col-sm-10">
+                  <input
+                    class="form-control" 
+                    v-model="item.endTime"
+                    type="time"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">Break</label>
+                <div class="col-sm-10">
+                  <ts-timepicker 
+                    class="form-control" 
+                    v-model="item.break_length" />
+                </div>
+              </div>
+            </div>
+           
+          </div>
+        </template>
+      </ts-grid>
 
       <div class="stats">
         <div>TOTAL: {{ this.showTotalTime }}</div>
-        <div>STATUS: </div>
+        <div>STATUS:</div>
       </div>
     </template>
   </nav-view>
@@ -162,46 +144,68 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/BaseTable.vue";
 import DatePicker from "../../../framework/BaseDatePicker.vue";
+import pageMixin from "../../../../mixins/page-mixin";
+import uuid from '../../../../utils/uuid';
+import TsTimepickerVue from '../../../Base/TsTimepicker.vue';
 
 export default {
   name: "TimesheetCreate",
 
+  mixins: [pageMixin],
+
   components: {
     "nav-view": NavView,
-    "table-view": TableView,
-    "date-picker": DatePicker
+    "date-picker": DatePicker,
+    "ts-timepicker": TsTimepickerVue
   },
 
   data() {
     return {
-      loading: false,
-      selects: [],
+      loading: false,      
+      weekEnd: "",
+      weekStart: "",
       scheduleItems: [],
       timesheetItems: [],
-      weekStart: "",
-      weekEnd: ""
+      columns: [
+        { key: "day", value: "Day" },
+        { key: "link", value: "Link" },
+        { key: "job", value: "Job" },
+        { key: "start-time", value: "Start Time" },
+        { key: "end-time", value: "End Time" },
+        { key: "break", value: "Break" },
+        { key: "total", value: "Total" }
+      ],
+      
     };
   },
 
   watch: {
     weekStart: function(value) {
       this.weekEnd = value.addDays(7);
-      this.fetchItems();
+      this.fetchLists();
     }
   },
 
   computed: {
     ...mapGetters({
-      userId: "user/getId"
+      userId: "user/getId",
+      getList: "resource/getList"
     }),
 
+    jobs: function(){
+      return this.getList("job").map(item => { return { key: item.id, value: item.title } });
+    },
+
     weekDays: function() {
-      let days = [];
       let day = this.weekStart;
+      let days = [];      
       for (let i = 0; i < 7; i++) {
-        days.push(day);
+        let item = {};           
+        item.key = i;
+        item.value = day.toString("ddd dd MMM");
+        item.day = day;               
+        days.push(item);
         day = day.addDays(1);
       }
       return days;
@@ -209,34 +213,44 @@ export default {
 
     showTotalTime: function() {
       let total = "00:00:00";
+      let itemTotal = "";
       this.timesheetItems.forEach(item => {
-        total = this.addTime(total, item.total);
+        itemTotal = this.subTime(
+          this.subTime(item.endTime, item.startTime),
+          item.break_length
+        );
+        total = this.addTime(total, itemTotal);
       });
       return total;
     }
   },
 
   created() {
-    this.weekStart = DayPilot.Date.today().firstDayOfWeek();
-    this.weekEnd = this.weekStart.addDays(7);
+    this.weekStart = 
+      DayPilot.Date.today().firstDayOfWeek();
+    this.weekEnd = 
+      this.weekStart.addDays(7);
   },
 
-  mounted() {
-    //this.fetchItems();
+  mounted() {  
+    this.loadingStart();
+    this.fetchList({resource: "job"}).then(()=>{
+      this.loadingStop();
+    });
   },
 
   methods: {
     ...mapActions({
-      fetch: "resource/list",
+      fetchList: "resource/list",
       create: "resource/create"
     }),
 
-    fetchItems() {
-      this.loading = true;
+    fetchLists() {
+      this.loadingStart();
       this.scheduleItems = [];
       this.timesheetItems = [];
 
-      let p1 = this.fetch({
+      let p1 = this.fetchList({
         resource: "timesheet",
         query: {
           inRange: `${this.weekStart},${this.weekEnd}`,
@@ -245,10 +259,10 @@ export default {
       }).then(data => {
         console.log("p1 finished...");
         this.genFromTimesheet(data);
-        this.loading = false;
+        this.loadingStop();
       });
 
-      let p2 = this.fetch({
+      let p2 = this.fetchList({
         resource: "schedule",
         query: {
           eq: `user_id,${this.userId}`,
@@ -262,7 +276,7 @@ export default {
 
       Promise.all([p1, p2])
         .then(() => {
-          this.loading = false;
+          this.loadingStop();
         })
         .catch(error => {
           console.log(error);
@@ -272,13 +286,13 @@ export default {
     onSubmit(event) {
       let timesheets = this.timesheetItems.map(item => {
         return {
-          job_id: item.job_id,
+          job_id: item.job.key,
           user_id: item.user_id,
           type: "timesheet",
-          status: "draft",
+          status: "submitted",
           break_length: item.break_length,
-          start: item.startDate + "T" + item.startTime,
-          end: item.endDate + "T" + item.endTime
+          start: item.date.day.value.slice(0, 10) + "T" + item.startTime,
+          end: item.date.day.value.slice(0, 10) + "T" + item.endTime
         };
       });
       console.log(timesheets);
@@ -288,12 +302,12 @@ export default {
     onSave(event) {
       let timesheets = this.timesheetItems.map(item => {
         return {
-          job_id: item.job_id,
-          user_id: item.user_id,
+          job_id: item.job.key,
+          user_id: item.user.id,
           type: "timesheet",
           break_length: item.break_length,
-          start: item.startDate + "T" + item.startTime,
-          end: item.endDate + "T" + item.endTime
+          start: item.date.day.toString().slice(0, 10) + "T" + item.startTime,
+          end: item.date.day.toString().slice(0, 10) + "T" + item.endTime
         };
       });
 
@@ -302,11 +316,15 @@ export default {
         data: { status: "draft", timesheets: timesheets }
       })
         .then(() => {
-          console.log("draft created successfuly.");
+          this.showMessage(
+            `Draft created successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
-          console.log(error.response);
+           this.showMessage(error.message, "danger");  
         });
+
       console.log(timesheets);
     },
 
@@ -317,20 +335,18 @@ export default {
     genFromTimesheet(data) {
       let day = null;
       for (let i = 0; i < 7; i++) {
-        day = this.weekDays[i];
+        day = this.weekDays[i].day;
         data.forEach(item => {
           if (item.start >= day.addDays(-1) && item.end <= day) {
-            item.day = day.toString("ddd dd MMM");
-            item.startDate = day.toString().slice(0, 10);
-            item.startTime = item.start.slice(11, 16);
-            item.endDate = day.toString().slice(0, 10);
-            item.endTime = item.end.slice(11, 16);
-            item.editMode = false;
-            item.total = this.subTime(
-              this.subTime(item.endTime, item.startTime),
-              item.break_length
-            );
-            this.timesheetItems.push(Object.assign({}, item));
+            let timesheet = {};
+            timesheet.id = uuid();
+            timesheet.date = this.weekDays[i];    
+            timesheet.job = this.jobs.find(job => job.key == item.job.id);            
+            timesheet.request = item.request;                   
+            timesheet.startTime = item.start.slice(11, 16);            
+            timesheet.endTime = item.end.slice(11, 16);
+            timesheet.break_length = item.break_length;            
+            this.timesheetItems.push(timesheet);
           }
         });
       }
@@ -339,20 +355,18 @@ export default {
     genFromSchedule(data) {
       let day = null;
       for (let i = 0; i < 7; i++) {
-        day = this.weekDays[i];
+        day = this.weekDays[i].day;
         data.forEach(item => {
           if (item.start <= day && item.end >= day) {
-            item.day = day.toString("ddd dd MMM");
-            item.startDate = day.toString().slice(0, 10);
-            item.startTime = item.start.slice(11, 16);
-            item.endDate = day.toString().slice(0, 10);
-            item.endTime = item.start.slice(11, 16);
-            item.editMode = false;
-            item.total = this.subTime(
-              this.subTime(item.endTime, item.startTime),
-              item.break_length
-            );
-            this.timesheetItems.push(Object.assign({}, item));
+            let timesheet = {};
+            timesheet.id = uuid();
+            timesheet.date = this.weekDays[i];       
+            timesheet.job = this.jobs.find(job => job.key == item.job.id);          
+            timesheet.request = item.request;                
+            timesheet.startTime = item.start.slice(11, 16);            
+            timesheet.endTime = item.end.slice(11, 16);
+            timesheet.break_length = item.break_length;            
+            this.timesheetItems.push(timesheet);
           }
         });
       }
@@ -361,12 +375,18 @@ export default {
     totalTime(item) {
       let workHour = this.subTime(item.endTime, item.startTime);
       item.total = this.subTime(workHour, item.break_length);
+      return item.total;
     },
 
-    subTime(a, b) {
+    subTime(a, b) {      
       let time1 = {},
         time2 = {};
       let hour, min, sec;
+
+      if(!a || !b){
+        a = '00:00:00';
+        b = '00:00:00';
+      }
 
       time1.raw = a.split(":");
       time2.raw = b.split(":");
@@ -406,6 +426,11 @@ export default {
       let time1 = {},
         time2 = {};
       let hour, min, sec;
+
+      if(!a || !b){
+        a = '00:00:00';
+        b = '00:00:00';
+      }
 
       time1.raw = a.split(":");
       time2.raw = b.split(":");

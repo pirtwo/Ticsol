@@ -32,7 +32,7 @@ class UpdateTimesheet extends FormRequest
             'timesheets.*.type'          => 'required_with:timesheets|string|in:timesheet',  
             'timesheets.*.start'         => 'required_with:timesheets|date',
             'timesheets.*.end'           => 'required_with:timesheets|date',            
-            'timesheets.*.break_length'  => 'required_with:timesheets|numeric'
+            'timesheets.*.break_length'  => 'required_with:timesheets|string'
         ];
     }
 
