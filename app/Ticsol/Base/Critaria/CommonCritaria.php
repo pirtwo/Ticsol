@@ -10,183 +10,106 @@ class CommonCriteria extends Criteria
 {
     protected $request;
 
-    /**
-     * Query string, CNT.
-     * - Format: [colName],[pattern]
-     * @var string
-     */
-    protected $contains;
-
-    /**
-     * Query string, NCNT.
-     * - Format: [colName],[pattern]
-     * @var string
-     */
-    protected $notContains;
-
-    /**
-     * Query string, EQ.
-     * - Format: [colName],[value]
-     * @var string
-     */
-    protected $equals;
-
-    /**
-     * Query string, NEQ.
-     * - Format: [colName],[value]
-     * @var string
-     */
-    protected $notEquals;
-
-    /**
-     * Query string, GT.
-     * - Format: [colName],[value]
-     * @var string
-     */
-    protected $greaterThan;
-
-    /**
-     * Query string, LT.
-     * - Format: [colName],[value]
-     * @var string
-     */
-    protected $lessThan;
-
-    /**
-     * Query string, GTE.
-     * - Format: [colName],[value]
-     * @var string
-     */
-    protected $greaterThanOrEqual;
-
-    /**
-     * Query string, LTE.
-     * - Format: [colName],[value]
-     * @var string
-     */
-    protected $lessThanOrEqual;
-
-    /**
-     * Query string, BTW.
-     * - Format: [colName],[value1],[value2]
-     * @var string
-     */
-    protected $between;
-
-    /**
-     * Query string, NBTW.
-     * - Format: [colName],[value1],[value2]
-     * @var string
-     */
-    protected $notBetween;
-
-    /**
-     * Query string, In.
-     * - Format: [colName],[value1,value2,...]
-     * @var string
-     */
-    protected $in;
-
-    /**
-     * Query string, orderby.
-     * - Format: [colName],[ase or desc]
-     * @var string
-     */
-    protected $orderby;
-
-    /**
-     * Query string, groupby.
-     * - Format: [colName1,colName2,...]
-     * @var string
-     */
-    protected $groupby;
-
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->contains =
-        $request->query('cnt') != null ? explode(',', $request->query('cnt')) : null;
-        $this->notContains =
-        $request->query('ncnt') != null ? explode(',', $request->query('ncnt')) : null;
-        $this->equals =
-        $request->query('eq') != null ? explode(',', $request->query('eq')) : null;
-        $this->notEquals =
-        $request->query('neq') != null ? explode(',', $request->query('neq')) : null;
-        $this->lessThan =
-        $request->query('lt') != null ? explode(',', $request->query('lt')) : null;
-        $this->greaterThan =
-        $request->query('gt') != null ? explode(',', $request->query('gt')) : null;
-        $this->lessThanOrEqual =
-        $request->query('lte') != null ? explode(',', $request->query('lte')) : null;
-        $this->greaterThanOrEqual =
-        $request->query('gte') != null ? explode(',', $request->query('gte')) : null;
-        $this->between =
-        $request->query('btw') != null ? explode(',', $request->query('btw')) : null;
-        $this->notBetween =
-        $request->query('nbtw') != null ? explode(',', $request->query('nbtw')) : null;
-        $this->in =
-        $request->query('in') != null ? explode(',', $request->query('in')) : null;
-        $this->orderby =
-        $request->query('orderby') != null ? explode(',', $request->query('orderby')) : null;
-        $this->groupby =
-        $request->query('groupby') != null ? explode(',', $request->query('groupby')) : null;
     }
 
     public function apply($model, IRepository $repository)
     {
+        $query = explode('&', $this->request->server->get('QUERY_STRING'));
+        $query = \preg_replace("/\%20/", " ", $query);
+        $subQuery = [];
 
-        if ($this->contains != null) {
-            $model->where($this->contains[0], 'like', '%' . $this->contains[1] . '%');
+        if ($query[0] == "") {
+            return $model;
         }
 
-        if ($this->notContains != null) {
-            $model->where($this->notContains[0], 'not like', '%' . $this->notContains[1] . '%');
-        }
-
-        if ($this->equals != null) {
-            $model->where($this->equals[0], '=', $this->equals[1]);
-        }
-
-        if ($this->notEquals != null) {
-            $model->where($this->notEquals[0], '!=', $this->notEquals[1]);
-        }
-
-        if ($this->lessThan != null) {
-            $model->where($this->lessThan[0], '<', $this->lessThan[1]);
-        }
-
-        if ($this->greaterThan != null) {
-            $model->where($this->greaterThan[0], '>', $this->greaterThan[1]);
-        }
-
-        if ($this->lessThanOrEqual != null) {
-            $model->where($this->lessThanOrEqual[0], '<=', $this->lessThanOrEqual[1]);
-        }
-
-        if ($this->greaterThanOrEqual != null) {
-            $model->where($this->greaterThanOrEqual[0], '>=', $this->greaterThanOrEqual[1]);
-        }
-
-        if ($this->between != null) {
-            $model->whereBetween($this->between[0], [$this->between[1], $this->between[2]]);
-        }
-
-        if ($this->notBetween != null) {
-            $model->whereNotBetween($this->notBetween[0], [$this->notBetween[1], $this->notBetween[2]]);
-        }
-
-        if ($this->in != null) {                  
-            $model->whereIn($this->in[0], \array_slice($this->in, 1));
-        }
-
-        if ($this->orderby != null) {
-            $model->orderBy($this->orderby[0], $this->orderby[1]);
-        }
-
-        if ($this->groupby != null) {
-            $model->groupBy($this->groupby);
+        foreach ($query as $key => $value) {
+            $subQuery = \explode("=", $value);
+            $operator = $subQuery[0];
+            $subset = explode(",", $subQuery[1]);
+            if ($operator == "cnt") {
+                //$model->where($subset[0], 'like', '%' . $subset[1] . '%');
+                $this->operation($model, "where", $subset[0], "like", '%' . $subset[1] . '%');
+            } elseif ($operator == "ncnt") {
+                //$model->where($subset[0], 'not like', '%' . $subset[1] . '%');
+                $this->operation($model, "where", $subset[0], "not like", '%' . $subset[1] . '%');
+            } elseif ($operator == "eq") {
+                $this->operation($model, "where", $subset[0], "=", $subset[1]);
+            } elseif ($operator == "neq") {
+                //$model->where($subset[0], '!=', $subset[1]);
+                $this->operation($model, "where", $subset[0], "!=", $subset[1]);
+            } elseif ($operator == "lt") {
+                //$model->where($subset[0], '<', $subset[1]);
+                $this->operation($model, "where", $subset[0], "<", $subset[1]);
+            } elseif ($operator == "gt") {
+                //$model->where($subset[0], '>', $subset[1]);
+                $this->operation($model, "where", $subset[0], ">", $subset[1]);
+            } elseif ($operator == "lte") {
+                //$model->where($subset[0], '<=', $subset[1]);
+                $this->operation($model, "where", $subset[0], "<=", $subset[1]);
+            } elseif ($operator == "gte") {
+                //$model->where($subset[0], '>=', $subset[1]);
+                $this->operation($model, "where", $subset[0], ">=", $subset[1]);
+            } elseif ($operator == "btw") {
+                //$model->whereBetween($subset[0], [$subset[1], $subset[2]]);
+                $this->operation($model, "whereBetween", $subset[0], "", [$subset[1], $subset[2]]);
+            } elseif ($operator == "nbtw") {
+                //$model->whereNotBetween($subset[0], [$subset[1], $subset[2]]);
+                $this->operation($model, "whereNotBetween", $subset[0], "", [$subset[1], $subset[2]]);
+            } elseif ($operator == "in") {
+                //$model->whereIn($subset[0], \array_slice($subset, 1));
+                $this->operation($model, "whereIn", $subset[0], "", \array_slice($subset, 1));
+            } elseif ($operator == "orderby") {
+                //$model->orderBy($subset[0], $subset[1]);
+                $this->operation($model, "orderBy", $subset[0], "", $subset[1]);
+            } elseif ($operator == "groupby") {
+                //$model->groupBy($subset[0]);
+                $this->operation($model, "groupBy", $subset[0], "", []);
+            }
         }
 
         return $model;
     }
+
+    protected function operation($model, $func, $column, $operation, $values)
+    {
+        if (\strpos($column, ".")) {
+            $decodedColumn = \explode(".", $column);
+            $fieldName = $decodedColumn[\sizeof($decodedColumn) - 1];
+            $entityRelation = \implode(".", \array_slice($decodedColumn, 1, \sizeof($decodedColumn) - 2));
+
+            $model->whereHas($entityRelation, function ($q) use ($func, $fieldName, $operation, $values) {
+                if ($func == "where") {
+                    $q->where($fieldName, $operation, $values);
+                } else if ($func == "whereBetween") {
+                    $q->whereBetween($fieldName, $values);
+                } else if ($func == "whereNotBetween") {
+                    $q->whereNotBetween($fieldName, $values);
+                } else if ($func == "whereIn") {
+                    $q->whereIn($fieldName, $values);
+                } else if ($func == "orderBy") {
+                    $q->orderBy($fieldName, $values);
+                } elseif ($func == "groupBy") {
+                    $q->groupBy($fieldName);
+                }
+            });
+        } else {
+            if ($func == "where") {
+                $model->where($column, $operation, $values);
+            } else if ($func == "whereBetween") {
+                $model->whereBetween($column, $values);
+            } else if ($func == "whereNotBetween") {
+                $model->whereNotBetween($column, $values);
+            } else if ($func == "whereIn") {
+                $model->whereIn($column, $values);
+            } else if ($func == "orderBy") {
+                $model->orderBy($column, $values);
+            } elseif ($func == "groupBy") {
+                $model->groupBy($column);
+            }
+        }
+    }
+
 }

@@ -1,14 +1,21 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="isLoading" 
+  <nav-view
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-2"
   >
     <template slot="toolbar">
-      <pagination-view 
-        v-model="pager" 
+      <pagination-view
+        v-model="pager"
         :page-count="pager.pageCount"
       />
+      <button
+        type="button"
+        class="btn btn-light btn-sm mr-auto"
+        @click="showFilter = true"
+      >
+        <i class="material-icons">filter_list</i>
+      </button>
     </template>
 
     <template slot="drawer">
@@ -17,9 +24,9 @@
           Actions
         </li>
         <li>
-          <router-link 
-            tag="button" 
-            class="btn btn-light" 
+          <router-link
+            tag="button"
+            class="btn btn-light"
             :to="{ name: 'profileCreate' }"
           >
             New
@@ -27,45 +34,50 @@
         </li>
         <li class="menu-title">
           Links
-        </li>                
+        </li>
       </ul>
     </template>
 
     <template slot="content">
-      <table-view 
-        class="table table-striped" 
-        v-model="selects" 
-        :data="profiles" 
-        :header="header" 
-        :selection="false" 
-        order-by="name" 
+      <table-view
+        class="table table-striped"
+        :data="profiles"
+        :header="header"
+        :selection="false"
+        order-by="name"
         order="asc"
       >
-        <template 
-          slot="header" 
+        <template
+          slot="header"
           slot-scope="{item}"
         >
           <div :data-orderBy="item.orderBy">
             {{ item.value }}
           </div>
         </template>
-        <template 
-          slot="body" 
+        <template
+          slot="body"
           slot-scope="{item}"
         >
           <td>
-            <router-link 
-              class="btn btn-sm btn-light" 
+            <router-link
+              class="btn btn-sm btn-light"
               :to="{ name : 'profileDetails', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>
-            </router-link> 
+            </router-link>
           </td>
           <td>{{ item.name }}</td>
           <td>{{ item.created_at }}</td>
           <td>{{ item.updated_at }}</td>
-        </template> 
+        </template>
       </table-view>
+      <ts-filter
+        v-model="query"
+        :show.sync="showFilter"
+        :columns="filterColumns"
+        @apply="feedTable"
+      />
     </template>
   </nav-view>
 </template>
@@ -75,16 +87,16 @@ import { mapGetters, mapActions } from "vuex";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
-import pageMixin from '../../../../mixins/page-mixin';
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "JobList",
 
-  mixins:[pageMixin],
+  mixins: [pageMixin],
 
   components: {
     "nav-view": NavView,
-    "table-view": TableView,
+    "table-view": TableView,    
     "pagination-view": PaginationView
   },
 
@@ -92,12 +104,13 @@ export default {
 
   data() {
     return {
-      selects: [],
+      query: [],
+      showFilter: false,
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },      
+      },
       header: [
         { value: "", orderBy: "" },
         { value: "Title", orderBy: "name" },
@@ -114,13 +127,36 @@ export default {
     }
   },
 
-  computed:{
+  computed: {
     ...mapGetters({
       getList: "resource/getList"
     }),
 
-    profiles:function(){
+    profiles: function() {
       return this.getList("form");
+    },
+
+    filterColumns: function() {
+      return [
+        {
+          key: "name",
+          value: "Name",
+          type: "string",
+          placeholder: "Search for Name..."
+        },
+        {
+          key: "form.jobs.title",
+          value: "Jobs\\Title",
+          type: "string",
+          placeholder: "Search for Jobs\\Title..."
+        },        
+        {
+          key: "form.jobs.code",
+          value: "Jobs\\Code",
+          type: "string",
+          placeholder: "Search for Jobs\\Code..."
+        }
+      ];
     }
   },
 
@@ -133,15 +169,18 @@ export default {
 
     feedTable() {
       this.loadingStart();
+      if (this.opt)
+        this.query.push({ opt: this.opt, col: this.col, val: this.val });
       this.fetchList({
         resource: "form",
-        query: {
-          page: this.pager.page,
-          perPage: this.pager.perPage,
-          [this.opt]: `${this.col},${this.val}`
-        }
+        query: this.$queryBuilder(
+          this.pager.page,
+          this.pager.perPage,
+          [],
+          this.query
+        )
       })
-        .then(respond => {          
+        .then(respond => {
           this.pager.pageCount = respond.last_page;
           this.loadingStop();
         })

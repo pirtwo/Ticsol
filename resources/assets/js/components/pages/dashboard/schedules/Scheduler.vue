@@ -1,17 +1,18 @@
 <template>
-  <nav-view 
-    :scrollbar="false" 
+  <nav-view
+    :scrollbar="false"
     :loading="isLoading"
   >
     <template slot="toolbar">
-      <date-picker 
-        v-model="start" 
+      <date-picker
+        v-model="start"
         :range="range"
+        @input="fetchData"
       />
 
-      <div 
-        class="btn-group btn-group-sm" 
-        role="group" 
+      <div
+        class="btn-group btn-group-sm"
+        role="group"
         aria-label="schedule range"
       >
         <button
@@ -30,9 +31,9 @@
         </button>
       </div>
 
-      <div 
-        class="btn-group btn-group-sm" 
-        role="group" 
+      <div
+        class="btn-group btn-group-sm mr-1"
+        role="group"
         aria-label="schedule view"
       >
         <button
@@ -50,12 +51,20 @@
           Jobs
         </button>
       </div>
+
+      <button
+        type="button"
+        class="btn btn-light btn-sm mr-auto"
+        @click="showFilter = true"
+      >
+        <i class="material-icons">filter_list</i>
+      </button>
     </template>
 
     <template slot="drawer-toolbar">
       <div class="p-2">
         <input
-          v-model="query"
+          v-model="sidebarQuery"
           type="text"
           class="form-control form-control-sm"
           placeholder="search here..."
@@ -64,20 +73,20 @@
     </template>
 
     <template slot="drawer">
-      <ul 
-        id="dp-draggable" 
+      <ul
+        id="dp-draggable"
         class="res-menu"
       >
         <template v-if="view === 'job'">
           <template v-for="res in this.sidebarResources">
-            <li 
-              :key="res.id" 
-              :data-id="res.id" 
+            <li
+              :key="res.id"
+              :data-id="res.id"
               class="res-user"
             >
               <a href="#">
-                <img 
-                  :src="res.meta.avatar" 
+                <img
+                  :src="res.meta.avatar"
                   class="rounded"
                 >
                 <span class="caption">{{ res.name }}</span>
@@ -87,9 +96,9 @@
         </template>
         <template v-else>
           <template v-for="res in this.sidebarResources">
-            <li 
-              :key="res.id" 
-              :data-id="res.id" 
+            <li
+              :key="res.id"
+              :data-id="res.id"
               class="res-job"
             >
               <a href="#">
@@ -126,15 +135,22 @@
         :resource="scheduleResources"
       />
 
-      <assign-modal 
-        v-model="assignModal" 
-        :event="event" 
+      <assign-modal
+        v-model="assignModal"
+        :event="event"
         :view="view"
       />
-      <update-modal 
-        v-model="updateModal" 
-        :event="event" 
+      <update-modal
+        v-model="updateModal"
+        :event="event"
         :view="view"
+      />
+
+      <ts-filter
+        v-model="query"
+        :show.sync="showFilter"
+        :columns="filterColumns"
+        @apply="fetchData"
       />
     </template>
   </nav-view>
@@ -164,10 +180,12 @@ export default {
 
   data: function() {
     return {
+      query: [],
+      showFilter: false,
       event: null,
       view: "user",
       range: "Month",
-      query: "",
+      sidebarQuery: "",
       start: DayPilot.Date.today().firstDayOfMonth(),
       assignModal: false,
       updateModal: false
@@ -188,22 +206,36 @@ export default {
       return this.range ? "Month" : "Week";
     },
 
+    startDate: function() {
+      return this.start.toString("yyyy-MM-dd");
+    },
+
+    endDate: function() {
+      return this.range
+        ? this.start.addMonths(1).toString("yyyy-MM-dd")
+        : this.start.addDays(7).toString("yyyy-MM-dd");
+    },
+
     sidebarResources: function() {
       if (this.view === "user") {
-        if (this.query != "")
+        if (this.sidebarQuery != "")
           return this.getList(
             "job",
             item =>
-              item.title.toLowerCase().indexOf(this.query.toLowerCase()) > -1 ||
-              item.code.toLowerCase().indexOf(this.query.toLowerCase()) > -1
+              item.title
+                .toLowerCase()
+                .indexOf(this.sidebarQuery.toLowerCase()) > -1 ||
+              item.code.toLowerCase().indexOf(this.sidebarQuery.toLowerCase()) >
+                -1
           );
         return this.getList("job");
       } else {
-        if (this.query != "")
+        if (this.sidebarQuery != "")
           return this.getList(
             "user",
             item =>
-              item.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1
+              item.name.toLowerCase().indexOf(this.sidebarQuery.toLowerCase()) >
+              -1
           );
         return this.getList("user");
       }
@@ -243,19 +275,70 @@ export default {
           return { id: item.id, name: item.title, code: item.code };
         });
       }
+    },
+
+    filterColumns: function() {
+      return [
+        {
+          key: "start",
+          value: "Schedule\\Start-Date",
+          type: "date",
+          placeholder: "Search for Start-Date..."
+        },
+        {
+          key: "end",
+          value: "Schedule\\End-Date",
+          type: "date",
+          placeholder: "Search for End-Date..."
+        },
+        {
+          key: "schedule.job.title",
+          value: "Schedule\\Job\\Title",
+          type: "string",
+          placeholder: "Search for Job\\Title..."
+        },
+        {
+          key: "schedule.job.code",
+          value: "Schedule\\Job\\Code",
+          type: "string",
+          placeholder: "Search for Job\\code..."
+        },
+        {
+          key: "schedule.job.parent.title",
+          value: "Schedule\\Job\\Parent\\Title",
+          type: "string",
+          placeholder: "Search for Job\\code..."
+        },
+        {
+          key: "schedule.user.firstname",
+          value: "Schedule\\User\\Firstname",
+          type: "string",
+          placeholder: "Search for User\\Firstname..."
+        },
+        {
+          key: "schedule.user.lastname",
+          value: "Schedule\\User\\Lastname",
+          type: "string",
+          placeholder: "Search for User\\Lastname..."
+        }
+      ];
     }
   },
 
-  mounted() {
-    this.start = DayPilot.Date.today()
-      .firstDayOfMonth()
-      .toString("yyyy-MM-dd");
+  mounted() {    
+    let query = [];
+      query.push({
+        opt: "inRange",
+        col: "",
+        val: `${this.startDate},${this.endDate}`
+      });
+
     this.loadingStart();
     let p1 = this.fetchList({ resource: "user" });
     let p2 = this.fetchList({ resource: "job" });
     let p3 = this.fetchList({
       resource: "schedule",
-      query: { with: "user,job" }
+      query: this.$queryBuilder(null, null, ["user", "job"], query)
     });
     Promise.all([p1, p2, p3])
       .then(() => {
@@ -289,6 +372,29 @@ export default {
         };
         window.DayPilot.Scheduler.makeDraggable(item);
       }
+    },
+
+    fetchData() {
+      let query = [...this.query];
+      query.push({
+        opt: "inRange",
+        col: "",
+        val: `${this.startDate},${this.endDate}`
+      });
+
+      this.loadingStart();
+      this.fetchList({
+        resource: "schedule",
+        query: this.$queryBuilder(null, null, ["user", "job"], query)
+      })
+        .then(() => {
+          this.makeDraggable();
+          this.loadingStop();
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingStop();
+        });
     },
 
     // DP Handlers

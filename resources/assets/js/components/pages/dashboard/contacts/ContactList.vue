@@ -9,6 +9,13 @@
         v-model="pager" 
         :page-count="pager.pageCount"
       />
+      <button
+        type="button"
+        class="btn btn-light btn-sm mr-auto"
+        @click="showFilter = true"
+      >
+        <i class="material-icons">filter_list</i>
+      </button>
     </template>
 
     <template slot="drawer">
@@ -61,11 +68,17 @@
             </router-link>  
           </td>
           <td>{{ `${item.firstname} ${item.lastname}` }}</td>
-          <td>{{ item.group }}</td>
-          <td>{{ item.telephone }}</td>
-          <td>{{ item.mobilephone }}</td>
+          <td>{{ item.group.toUpperCase() }}</td>
+          <td>{{ item.telephone ? item.telephone : "-" }}</td>
+          <td>{{ item.mobilephone ? item.mobilephone : "-" }}</td>
         </template> 
       </table-view>
+      <ts-filter
+        v-model="query"
+        :show.sync="showFilter"
+        :columns="filterColumns"
+        @apply="feedTable"
+      />
     </template>
   </nav-view>
 </template>
@@ -84,14 +97,16 @@ export default {
 
   components: {
     "nav-view": NavView,
-    "table-view": TableView,
-    "pagination-view": PaginationView
+    "table-view": TableView,    
+    "pagination-view": PaginationView,    
   },
 
   props: ["col", "opt", "val"],
 
   data() {
     return {
+      query: [],
+      showFilter: false,
       pager: {
         page: 1,
         perPage: 10,
@@ -122,6 +137,47 @@ export default {
     contacts: function(){
       return this.getList("contact");
     },
+
+    filterColumns: function() {
+      return [
+        {
+          key: "firstname",
+          value: "Firstname",
+          type: "string",
+          placeholder: "Search for Firstname..."
+        },
+        {
+          key: "lastname",
+          value: "Lastname",
+          type: "string",
+          placeholder: "Search for Lastname..."
+        },
+        {
+          key: "group",
+          value: "group",
+          type: "string",
+          placeholder: "Search for Group..."
+        },
+        {
+          key: "contact.addresses.street",
+          value: "Address\\Street",
+          type: "string",
+          placeholder: "Search for Contact\\Addresses\\Street..."
+        },
+        {
+          key: "contact.addresses.state",
+          value: "Contact\\State",
+          type: "string",
+          placeholder: "Search for Contact\\Addresses\\State..."
+        },
+        {
+          key: "contact.addresses.country",
+          value: "Contacts\\Country",
+          type: "string",
+          placeholder: "Search for Contact\\Addresses\\Country..."
+        }
+      ];
+    }
   },
 
   mounted() {
@@ -133,14 +189,17 @@ export default {
 
     feedTable() {
       this.loadingStart();
+      if (this.opt)
+        this.query.push({ opt: this.opt, col: this.col, val: this.val });
       this.fetchList({
         resource: "contact",
-        query: {
-          page: this.pager.page,
-          perPage: this.pager.perPage,
-          [this.opt]: `${this.col},${this.val}`
-        }
-      })
+        query: this.$queryBuilder(
+          this.pager.page,
+          this.pager.perPage,
+          [],
+          this.query
+        )
+      })      
         .then(respond => {         
           this.pager.pageCount = respond.last_page;
           this.loadingStop();

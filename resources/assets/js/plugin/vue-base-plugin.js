@@ -9,6 +9,8 @@ import VbNotification from '../components/Base/VbNotification.vue'
 import VbPagination from '../components/Base/VbPagination.vue'
 import TsModal from '../components/Base/TsModal.vue'
 import TsGrid from '../components/Base/TsGrid.vue'
+import TsFilter from '../components/Base/TsFilter.vue'
+
 
 const VueBase = {
     install(Vue, options) {        
@@ -23,6 +25,7 @@ const VueBase = {
         Vue.component('vb-pagination', VbPagination); 
         Vue.component('ts-modal', TsModal);
         Vue.component('ts-grid', TsGrid);
+        Vue.component('ts-filter', TsFilter);
     }
 }
 
