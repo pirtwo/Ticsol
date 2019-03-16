@@ -217,7 +217,8 @@ export default {
       this.dayPilot.update();
     },
 
-    startDate: function(value) {
+    startDate: function(value) {      
+      this.dayPilot.days = this.getDays();
       this.dayPilot.startDate = value;
       this.dayPilot.update();
     }
@@ -318,9 +319,9 @@ export default {
       }
     });
 
-    dp.onBeforeTimeHeaderRender = function(args) {
+    dp.onBeforeTimeHeaderRender = function(args) {      
       if (args.header.level === 0) {
-        if (args.header.start.getDayOfWeek() == 0) {
+        if (args.header.start.getDayOfWeek() == 0 && (args.header.start.getMonth() == args.header.end.getMonth())) {
           args.header.html =
             "<span class='header_weekDay_weekRange'>" +
             args.header.start.getDay() +
@@ -378,9 +379,9 @@ export default {
         case "Week":
           return 7;
         case "Month":
-          return window.DayPilot.Date.today().daysInMonth();
+          return this.startDate.daysInMonth();
         case "Year":
-          return window.DayPilot.Date.today().daysInYear();
+          return this.startDate.daysInYear();
         default:
           throw new Error("Invalid range for dayPilot.");
       }
