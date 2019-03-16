@@ -1,55 +1,50 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="isLoading" 
+  <nav-view
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-5"
   >
     <template slot="toolbar">
-      <vb-pagination 
-        v-model="pager" 
-        :page-count="pager.pageCount" 
+      <vb-pagination
+        v-model="pager"
+        :page-count="pager.pageCount"
         @input="changePage"
       />
     </template>
 
-    <template slot="drawer" />
+    <template slot="drawer">
+      <ul class="v-menu">
+        <li class="menu-title">
+          Actions
+        </li>
+        <li>
+          <button
+            class="btn btn-light"
+            @click="sendModal = true"
+          >
+            New
+          </button>
+        </li>       
+        <li>
+          <button
+            class="btn btn-light"
+          >
+            Cancel
+          </button>
+        </li>
+        <li class="menu-title">
+          Links
+        </li>       
+      </ul>
+    </template>
 
     <template slot="content">
-      <h6>
-        {{ this.parentId !== null ? 'Reply to:' : 'Send New Comment' }}
-        <a 
-          v-if="this.parentId !== null" 
-          :href="`#${this.parentId}`"
-        >{{ `@${this.getCreatorName(this.parentId)}` }}</a>
-      </h6>      
-      <textarea 
-        style="margin-bottom:10px;"
-        class="form-control"
-        v-model="comment" 
-        name="comment" 
-        cols="30"
-      />
-      <button 
-        class="btn btn-default"
-        type="button" 
-        @click="sendComment"
-      >
-        Send
-      </button>
-      <button 
-        v-show="this.parentId !== null"
-        class="btn btn-default"
-        type="button" 
-        @click="cancelReply"
-      >
-        Cancel
-      </button>
       <ul class="comment-list">
-        <li 
-          v-for="parent in comments" 
+        <li
+          v-for="parent in comments"
           :key="parent.id"
         >
-          <vb-comment 
+          <vb-comment
             name="VbComment"
             @reply="onReply"
             :id="parent.id"
@@ -59,15 +54,15 @@
             :date="parent.created_at"
             :has-reply="true"
           />
-          <ul 
-            class="reply-list" 
+          <ul
+            class="reply-list"
             v-if="parent.reply_count > 0"
           >
-            <li 
-              v-for="child in parent.childs" 
+            <li
+              v-for="child in parent.childs"
               :key="child.id"
             >
-              <vb-comment 
+              <vb-comment
                 name="VbComment"
                 :id="child.id"
                 :username="child.creator.name"
@@ -79,59 +74,113 @@
             </li>
           </ul>
         </li>
-      </ul>      
+      </ul>
+      <!-- Send Modal -->
+      <ts-modal
+        :show.sync="sendModal"
+        @hidden="cancelModal"
+      >
+        <template slot="header">
+          <h5 class="modal-title">
+            <span v-if="parentId">
+              Reply to
+              <b>{{ getCreatorName(parentId) }}</b>
+            </span>
+            <span v-else>Send Comment</span>
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </template>
+        <editor
+          v-model="comment"
+          :init="{height: 300, menubar: false, statusbar: false}"
+          api-key="he51k5qf4qe8668k9rgkie9c13j01h43fh61m72chuvv93ip"
+          plugins="bbcode code"
+          toolbar="newdocument | undo redo | cut copy paste pastetext | selectall | code"
+        />
+        <template slot="footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="sendComment"
+          >
+            Send
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="cancelModal"
+          >
+            Cancel
+          </button>
+        </template>
+      </ts-modal>
     </template>
   </nav-view>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import PageMixin from '../../../../mixins/page-mixin.js';
+import PageMixin from "../../../../mixins/page-mixin.js";
 import NavView from "../../../framework/NavView.vue";
+import Editor from "@tinymce/tinymce-vue";
 
 export default {
   name: "CommentList",
 
-  mixins:[PageMixin],
+  mixins: [PageMixin],
 
   components: {
-    "nav-view": NavView
+    "nav-view": NavView,
+    editor: Editor
   },
 
   props: ["entity", "id"],
 
   data() {
     return {
-      comment: "",        
+      comment: "",
       parentId: null,
+      sendModal: false,
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },
+      }
     };
   },
 
-  computed:{
+  computed: {
     ...mapGetters({
       getList: "resource/getList"
     }),
 
-    comments: function(){
+    comments: function() {
       return this.getList("comment");
-    },
+    }
   },
 
   mounted() {
     this.loadingStart();
+    $(document).on("focusin", function(e) {
+      if ($(e.target).closest(".tox-dialog").length) {
+        e.stopImmediatePropagation();
+      }
+    });
     this.loadComments()
-      .then(respond => {        
-        this.pager.pageCount = respond.last_page;      
+      .then(respond => {
+        this.pager.pageCount = respond.last_page;
         this.loadingStop();
       })
       .catch(error => {
         this.loadingStop();
-        this.showMessage(error.message, 'danger');
+        this.showMessage(error.message, "danger");
       });
   },
 
@@ -141,23 +190,22 @@ export default {
       create: "resource/create"
     }),
 
-    changePage() {   
+    changePage() {
       this.loadingStart();
       this.loadComments()
-        .then(respond => {          
-          this.pager.pageCount = respond.last_page; 
-          this.loadingStop();          
+        .then(respond => {
+          this.pager.pageCount = respond.last_page;
+          this.loadingStop();
         })
         .catch(error => {
           this.loadingStop();
-          this.showMessage(error.message, 'danger');
+          this.showMessage(error.message, "danger");
         });
     },
 
-    loadComments() {   
-      this.cancelReply();   
+    loadComments() {      
       return this.fetchList({
-        resource: 'comment',
+        resource: "comment",
         query: {
           id: this.id,
           entity: this.entity,
@@ -167,36 +215,45 @@ export default {
       });
     },
 
-    getCreatorName(commentId){
-      return this.comments.find(item=>item.id === commentId).creator.name;
+    getCreatorName(commentId) {
+      if(!commentId) return "";
+      return this.comments.find(item => item.id === commentId).creator.name;
     },
 
-    onReply(parentId){
-      this.parentId = parentId;      
+    onReply(parentId) {      
+      this.sendModal = true;
+      this.parentId = parentId;
     },
 
-    cancelReply(){
+    cancelModal() {      
+      this.comment = "";
+      this.parentId = null;      
+      this.sendModal = false;
+    },
+
+    sendComment() {      
+      let comment =
+        this.entity == "job"
+          ? {
+              entity: "job",
+              parent_id: this.parentId,
+              body: this.comment,
+              job_id: this.id
+            }
+          : {
+              entity: "request",
+              parent_id: this.parentId,
+              body: this.comment,
+              request_id: this.id
+            };
       this.parentId = null;
-    },
-
-    sendComment() {
-      let form = this.entity == 'job' ? {
-          entity: 'job',
-          parent_id: this.parentId,
-          body: this.comment,
-          job_id: this.id,          
-      }:{
-          entity: 'request',
-          parent_id: this.parentId,
-          body: this.comment,          
-          request_id: this.id
-      };
-      this.create({resource: "comment", data: form})
+      this.sendModal = false;
+      this.create({ resource: "comment", data: comment })
         .then(data => {
-          this.showMessage('Your comment submited successfuly.', 'success');
+          this.showMessage("Your comment submited successfuly.", "success");
         })
         .catch(error => {
-          this.showMessage(error.message, 'danger');
+          this.showMessage(error.message, "danger");
         });
     }
   }
@@ -204,14 +261,13 @@ export default {
 </script>
 
 <style scoped>
-.comment-list{
+.comment-list {
   list-style: none;
   margin: 0px;
-  margin-top: 45px;
   padding: 0px;
 }
 
-.reply-list{
+.reply-list {
   list-style: none;
   margin-left: 50px;
   padding-left: 30px;

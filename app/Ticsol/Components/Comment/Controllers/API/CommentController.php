@@ -81,13 +81,14 @@ class CommentController extends Controller
             $comment = new Comment();
             $comment->client_id = $request->user()->client_id;
             $comment->creator_id = $request->user()->id; 
-
+            
             if($request->input('entity') == 'job'){
-                $comment->fill($request->only('body', 'parent_id', 'job_id'));
+                $comment->fill($request->only('parent_id', 'job_id'));
             }
             else if($request->input('entity') == 'request'){
-                $comment->fill($request->only('body', 'parent_id', 'request_id'));
+                $comment->fill($request->only('parent_id', 'request_id'));
             }
+            $comment->body = \strip_tags($request->input('body'));
 
             $comment->save();
             event(new Events\CommentCreated($comment));    

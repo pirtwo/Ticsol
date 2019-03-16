@@ -4,7 +4,7 @@
     class="vb-comment d-flex"
   >    
     <img 
-      class="vb-comment__avatar rounded-circle border"
+      class="vb-comment__avatar rounded border"
       :src="avatar" 
       :alt="`${username} avatar`"
     >   
@@ -16,18 +16,34 @@
         <div class="vb-comment__date">
           {{ date }}
         </div>
+        <button 
+          v-if="hasReply"
+          type="button" 
+          class="btn btn-sm btn-link ml-auto"
+          @click="onReply"
+        >
+          reply
+        </button>
+        <button 
+          v-if="hasReply"
+          type="button" 
+          class="btn btn-sm btn-link"
+          @click="onReply"
+        >
+          edit
+        </button>
+        <button 
+          v-if="hasReply"
+          type="button" 
+          class="btn btn-sm btn-link"
+          @click="onReply"
+        >
+          delete
+        </button>
       </div>      
       <div class="">
-        {{ body }}
-      </div>  
-      <button 
-        v-if="hasReply"
-        type="button" 
-        class="btn btn-sm btn-outline-primary ml-auto"
-        @click="onReply"
-      >
-        reply
-      </button>
+        {{ body }}  
+      </div>       
     </div>    
   </div>
 </template>
