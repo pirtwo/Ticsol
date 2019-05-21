@@ -11,7 +11,7 @@ export const router = new VueRouter({
 
         // Auth 
         {
-            path: '/app',
+            path: '/',
             name: 'auth',
             redirect: { name: 'login' },
             meta: { requireAuth: false },
@@ -46,7 +46,7 @@ export const router = new VueRouter({
 
         // Dashboard
         {
-            path: '/app/dash',
+            path: '/dash',
             name: 'dash',
             meta: { requireAuth: true },
             redirect: { name: 'home' },
@@ -55,7 +55,7 @@ export const router = new VueRouter({
 
                 // Home
                 {
-                    path: '/app/home',
+                    path: '/home',
                     name: 'home',
                     meta: { requireAuth: true },
                     component: require('./components/pages/dashboard/Home.vue').default
@@ -345,10 +345,10 @@ export const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     let state = store.state.user;
     if (to.meta.requireAuth === true && state.isAuth === false) {
-        next('/app');
+        next('/');
     }
     if (to.meta.requireAuth === false && state.isAuth === true) {
-        next('/app/home');
+        next('/home');
     } else {
         next();
     }

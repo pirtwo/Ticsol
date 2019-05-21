@@ -17,26 +17,17 @@ class CommonCriteria extends Criteria
     }
 
     public function apply($model, IRepository $repository)
-    {
-        Log::emergency("Path:" . $this->request->path());
-        Log::emergency("Host:" . $this->request->getHost());
-        Log::emergency("Laravel Query:" . \json_encode($this->request->query()));
-        Log::emergency("Raw Query" . $this->request->server->get('QUERY_STRING'));
-        $query = explode('&', $this->request->server->get('QUERY_STRING'));
-        
+    {        
+        $query = explode('&', $this->request->server->get('QUERY_STRING'));        
         $query = preg_replace("/\%20/", " ", $query);
         $subQuery = [];
 
-        if ($query[0] == "") {
-            Log::emergency("Exit common criteria section");
+        if ($query[0] == "") {            
             return $model;
-        }
-
-        Log::emergency("continue common criteria section");
+        }        
 
         foreach ($query as $key => $value) {
-            $subQuery = explode("=", $value);
-            Log::emergency("subQuery is:" . implode(",", $query));
+            $subQuery = explode("=", $value);            
             $operator = $subQuery[0];
             $subset = explode(",", $subQuery[1]);
             if ($operator == "cnt") {

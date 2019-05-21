@@ -9,6 +9,13 @@
         v-model="pager" 
         :page-count="pager.pageCount"
       />
+      <button
+        type="button"
+        class="btn btn-light btn-sm mr-auto"
+        @click="showFilter = true"
+      >
+        <i class="material-icons">filter_list</i>
+      </button>
     </template>
 
     <template slot="drawer">
@@ -33,8 +40,7 @@
 
     <template slot="content">
       <table-view
-        class="table table-striped"
-        v-model="selects"
+        class="table table-striped"        
         :data="roles"
         :header="header"
         :selection="false"
@@ -66,13 +72,18 @@
           <td>{{ item.updated_at }}</td>
         </template>
       </table-view>
+      <ts-filter
+        v-model="query"
+        :show.sync="showFilter"
+        :columns="filterColumns"
+        @apply="feedTable"
+      />
     </template>
   </nav-view>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import FilterView from "../../../framework/BaseFilter.vue";
 import NavView from "../../../framework/NavView.vue";
 import TableView from "../../../framework/BaseTable.vue";
 import PaginationView from "../../../framework/BasePagination.vue";
@@ -86,7 +97,6 @@ export default {
   components: {
     "nav-view": NavView,
     "table-view": TableView,
-    "filter-view": FilterView,
     "pagination-view": PaginationView
   },
 
@@ -94,8 +104,7 @@ export default {
 
   data() {
     return {
-      query: [],
-      selects: [],      
+      query: [],           
       showFilter: false,
       pager: {
         page: 1,
@@ -131,11 +140,20 @@ export default {
       return this.getList("role");
     },
 
-    columnList: function() {
+    filterColumns: function() {
       return [
-        { key: "title", value: "Title" },
-        { key: "code", value: "Code" },
-        { key: "isactive", value: "Active" }
+        {
+          key: "name",
+          value: "Title",
+          type: "string",
+          placeholder: "Search for title..."
+        },
+        {
+          key: "creator",
+          value: "Creator",
+          type: "string",
+          placeholder: "Search for code..."
+        },        
       ];
     }
   },
@@ -148,20 +166,20 @@ export default {
     ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-      this.loadingStart();
+       this.loadingStart();
+      if (this.opt)
+        this.query.push({ opt: this.opt, col: this.col, val: this.val });
       this.fetchList({
         resource: "role",
         query: this.$queryBuilder(
           this.pager.page,
           this.pager.perPage,
-          this.opt,
-          this.col,
-          this.val,
+          [],
           this.query
         )
       })
         .then(respond => {
-          this.pager.pageCount = respond.last_page;
+          this.pager.pageCount = respond.last_page ? respond.last_page : 1;
           this.loadingStop();
         })
         .catch(error => {
