@@ -345,10 +345,10 @@ export const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     let state = store.state.user;
     if (to.meta.requireAuth === true && state.isAuth === false) {
-        next('/');
+        next('/app');
     }
     if (to.meta.requireAuth === false && state.isAuth === true) {
-        next('/home');
+        next('/app/home');
     } else {
         next();
     }

@@ -106781,11 +106781,11 @@ router.beforeEach(function (to, from, next) {
   var state = _store_store_js__WEBPACK_IMPORTED_MODULE_2__["store"].state.user;
 
   if (to.meta.requireAuth === true && state.isAuth === false) {
-    next('/');
+    next('/app');
   }
 
   if (to.meta.requireAuth === false && state.isAuth === true) {
-    next('/home');
+    next('/app/home');
   } else {
     next();
   }

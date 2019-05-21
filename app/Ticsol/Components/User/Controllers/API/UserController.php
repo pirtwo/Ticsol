@@ -32,21 +32,22 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 15;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
+            // $page =
+            // $request->query('page') ?? null;
+            // $perPage =
+            // $request->query('perPage') ?? 15;
+            // $with =
+            // $request->query('with') != null ? explode(',', $request->query('with')) : [];
                         
-            $this->repository->pushCriteria(new CommonCriteria($request));   
-            $this->repository->pushCriteria(new ClientCriteria($request));
+            // $this->repository->pushCriteria(new CommonCriteria($request));   
+            // $this->repository->pushCriteria(new ClientCriteria($request));
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
+            // if ($page == null) {
+            //     return $this->repository->all($with);
+            // } else {
+            //     return $this->repository->paginate($perPage, $with);
+            // }
+            return response()->json(['message' => "hello world"], 200);
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
