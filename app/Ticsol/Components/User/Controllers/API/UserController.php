@@ -39,7 +39,7 @@ class UserController extends Controller
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
                         
-            //$this->repository->pushCriteria(new CommonCriteria($request));   
+            $this->repository->pushCriteria(new CommonCriteria($request));   
             $this->repository->pushCriteria(new ClientCriteria($request));
 
             if ($page == null) {
