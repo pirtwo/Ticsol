@@ -5,6 +5,7 @@ namespace App\Ticsol\Base\Criteria;
 use App\Ticsol\Base\Criteria\Criteria;
 use App\Ticsol\Base\Repository\Contract\IRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CommonCriteria extends Criteria
 {
@@ -18,15 +19,20 @@ class CommonCriteria extends Criteria
     public function apply($model, IRepository $repository)
     {
         $query = explode('&', $this->request->server->get('QUERY_STRING'));
+        Log::emergency("Query is:" . implode("&", $query));
         $query = preg_replace("/\%20/", " ", $query);
         $subQuery = [];
 
         if ($query[0] == "") {
+            Log::emergency("Exit common criteria section");
             return $model;
         }
 
+        Log::emergency("continue common criteria section");
+
         foreach ($query as $key => $value) {
             $subQuery = explode("=", $value);
+            Log::emergency("subQuery is:" . implode(",", $query));
             $operator = $subQuery[0];
             $subset = explode(",", $subQuery[1]);
             if ($operator == "cnt") {
