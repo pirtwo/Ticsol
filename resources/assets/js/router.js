@@ -46,7 +46,7 @@ export const router = new VueRouter({
 
         // Dashboard
         {
-            path: 'app/dash',
+            path: '/app/dash',
             name: 'dash',
             meta: { requireAuth: true },
             redirect: { name: 'home' },

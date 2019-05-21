@@ -106445,7 +106445,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     }]
   }, // Dashboard
   {
-    path: 'app/dash',
+    path: '/app/dash',
     name: 'dash',
     meta: {
       requireAuth: true
