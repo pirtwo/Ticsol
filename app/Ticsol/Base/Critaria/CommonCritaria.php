@@ -17,8 +17,8 @@ class CommonCriteria extends Criteria
 
     public function apply($model, IRepository $repository)
     {
-        $query = \explode('&', $this->request->server->get('QUERY_STRING'));
-        $query = \preg_replace("/\%20/", " ", $query);
+        $query = explode('&', $this->request->server->get('QUERY_STRING'));
+        $query = preg_replace("/\%20/", " ", $query);
         $subQuery = [];
 
         if ($query[0] == "") {
@@ -26,9 +26,9 @@ class CommonCriteria extends Criteria
         }
 
         foreach ($query as $key => $value) {
-            $subQuery = \explode("=", $value);
+            $subQuery = explode("=", $value);
             $operator = $subQuery[0];
-            $subset = \explode(",", $subQuery[1]);
+            $subset = explode(",", $subQuery[1]);
             if ($operator == "cnt") {
                 //$model->where($subset[0], 'like', '%' . $subset[1] . '%');
                 $this->operation($model, "where", $subset[0], "like", '%' . $subset[1] . '%');
@@ -60,7 +60,7 @@ class CommonCriteria extends Criteria
                 $this->operation($model, "whereNotBetween", $subset[0], "", [$subset[1], $subset[2]]);
             } elseif ($operator == "in") {
                 //$model->whereIn($subset[0], \array_slice($subset, 1));
-                $this->operation($model, "whereIn", $subset[0], "", \array_slice($subset, 1));
+                $this->operation($model, "whereIn", $subset[0], "", array_slice($subset, 1));
             } elseif ($operator == "orderby") {
                 //$model->orderBy($subset[0], $subset[1]);
                 $this->operation($model, "orderBy", $subset[0], "", $subset[1]);
@@ -75,10 +75,10 @@ class CommonCriteria extends Criteria
 
     protected function operation($model, $func, $column, $operation, $values)
     {
-        if (\strpos($column, ".")) {
-            $decodedColumn = \explode(".", $column);
-            $fieldName = $decodedColumn[\sizeof($decodedColumn) - 1];
-            $entityRelation = \implode(".", \array_slice($decodedColumn, 1, \sizeof($decodedColumn) - 2));
+        if (strpos($column, ".")) {
+            $decodedColumn = explode(".", $column);
+            $fieldName = $decodedColumn[sizeof($decodedColumn) - 1];
+            $entityRelation = implode(".", array_slice($decodedColumn, 1, sizeof($decodedColumn) - 2));
 
             $model->whereHas($entityRelation, function ($q) use ($func, $fieldName, $operation, $values) {
                 if ($func == "where") {
