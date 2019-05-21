@@ -17,7 +17,7 @@ class CommonCriteria extends Criteria
 
     public function apply($model, IRepository $repository)
     {
-        $query = explode('&', $this->request->server->get('QUERY_STRING'));
+        $query = \explode('&', $this->request->server->get('QUERY_STRING'));
         $query = \preg_replace("/\%20/", " ", $query);
         $subQuery = [];
 
@@ -28,7 +28,7 @@ class CommonCriteria extends Criteria
         foreach ($query as $key => $value) {
             $subQuery = \explode("=", $value);
             $operator = $subQuery[0];
-            $subset = explode(",", $subQuery[1]);
+            $subset = \explode(",", $subQuery[1]);
             if ($operator == "cnt") {
                 //$model->where($subset[0], 'like', '%' . $subset[1] . '%');
                 $this->operation($model, "where", $subset[0], "like", '%' . $subset[1] . '%');
