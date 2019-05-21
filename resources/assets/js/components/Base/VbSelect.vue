@@ -56,7 +56,8 @@
         </li>
         <slot 
           v-if="options.length != 0"
-          name="fixed-bottom"/>
+          name="fixed-bottom"
+        />
         <slot 
           v-if="options.length === 0" 
           name="notfound-message"

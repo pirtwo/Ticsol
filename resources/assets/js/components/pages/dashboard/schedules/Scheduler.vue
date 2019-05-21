@@ -198,20 +198,12 @@ export default {
       dpHeight: "core/getUiContentHeight"
     }),
 
-    dpView: function() {
-      return this.view ? "user" : "job";
-    },
-
-    dpRange: function() {
-      return this.range ? "Month" : "Week";
-    },
-
     startDate: function() {
       return this.start.toString("yyyy-MM-dd");
     },
 
     endDate: function() {
-      return this.range
+      return this.range === "Month"
         ? this.start.addMonths(1).toString("yyyy-MM-dd")
         : this.start.addDays(7).toString("yyyy-MM-dd");
     },

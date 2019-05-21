@@ -100,22 +100,20 @@
                         style="vertical-align: bottom;"
                       />
                     </button>
-                    <button
-                      type="button"
-                      class="btn btn-outline-primary"
-                      title="toggle filter list"
-                      @click="showFilters = !showFilters"
-                    >
-                      <vb-icon
-                        icon="list"
-                        style="vertical-align: bottom;"
-                      />
-                    </button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>         
+          </div> 
+
+          <div>
+            <i class="text-muted">
+              {{ `${this.filters.length > 0 ? this.filters.length : "No"} filter added.` }}
+              <button type="button" class="btn btn-link" @click="showFilters = !showFilters">
+                <i>{{ this.showFilters ? "hide filters" : "show filters" }}</i>                
+              </button>
+            </i>
+          </div>        
 
           <div
             v-show="showFilters"

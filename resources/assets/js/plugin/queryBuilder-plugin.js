@@ -2,14 +2,14 @@
 
 const queryBuilder = {
     install(Vue, options) {
-        Vue.prototype.$queryBuilder = function (page, perpage, operator, column, value, filters) {            
+        Vue.prototype.$queryBuilder = function (page, perpage, withThe, filters) {
             let query = '?';
-            query += page != null ? `page=${page}` : '';
-            query += perpage != null ? `&perPage=${perpage}` : '';
-            query += operator != undefined ? `&${operator}=${column},${value}` : '';            
+            query += page ? `page=${page}` : '';
+            query += perpage ? `&perPage=${perpage}` : '';
+            query += withThe.length > 0 ? `${page ? "&" : ""}with=${withThe.reduce((acc, cur) => acc + "," + cur)}` : '';
             filters.forEach(item => {
-                query += `&${item.opt}=${item.col},${item.val}`;
-            });            
+                query += `&${item.opt}=${item.col}${item.col ? "," : ""}${item.val}`;
+            });
             return query;
         }
     }

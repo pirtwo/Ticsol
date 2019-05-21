@@ -76,7 +76,7 @@
           />
           <template slot="footer">
             <button
-              class="btn"
+              class="btn btn-primary"
               type="button"
               v-show="mode === 'insert'"
               @click="insertRow(currentRow)"
@@ -84,7 +84,7 @@
               Insert
             </button>
             <button
-              class="btn"
+              class="btn btn-primary"
               type="button"
               v-show="mode === 'update'"
               @click="updateRow(currentRow, rowIndex)"
@@ -92,7 +92,7 @@
               Save
             </button>
             <button 
-              class="btn" 
+              class="btn btn-primary" 
               type="button" 
               @click="hideModal"
             >

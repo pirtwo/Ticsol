@@ -11,7 +11,7 @@ export const router = new VueRouter({
 
         // Auth 
         {
-            path: '/',
+            path: '/app',
             name: 'auth',
             redirect: { name: 'login' },
             meta: { requireAuth: false },
@@ -46,7 +46,7 @@ export const router = new VueRouter({
 
         // Dashboard
         {
-            path: '/dash',
+            path: 'app/dash',
             name: 'dash',
             meta: { requireAuth: true },
             redirect: { name: 'home' },
@@ -55,7 +55,7 @@ export const router = new VueRouter({
 
                 // Home
                 {
-                    path: '/home',
+                    path: '/app/home',
                     name: 'home',
                     meta: { requireAuth: true },
                     component: require('./components/pages/dashboard/Home.vue').default

@@ -96,9 +96,9 @@ class Job extends Model
     }
 
     /**
-     * Assosiated form to current job.
+     * Assosiated profile to current job.
      */
-    public function form()
+    public function profile()
     {
         return $this->belongsTo(Form::class, 'form_id');
     }

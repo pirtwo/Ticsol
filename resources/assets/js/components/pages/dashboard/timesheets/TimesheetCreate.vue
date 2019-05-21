@@ -1,7 +1,14 @@
 <template>
-  <nav-view :scrollbar="true" :loading="loading" padding="p-2">
+  <nav-view
+    :scrollbar="true"
+    :loading="loading"
+    padding="p-2"
+  >
     <template slot="toolbar">
-      <date-picker v-model="weekStart" range="Week"/>
+      <date-picker
+        v-model="weekStart"
+        range="Week"
+      />
     </template>
 
     <template slot="drawer">
@@ -10,20 +17,37 @@
           Actions
         </li>
         <li>
-          <button class="btn btn-light" @click="onSave">Save</button>
+          <button
+            class="btn btn-light"
+            @click="onSave"
+          >
+            Save
+          </button>
         </li>
         <li>
-          <button class="btn btn-light" @click="onSubmit">Submit</button>
+          <button
+            class="btn btn-light"
+            @click="onSubmit"
+          >
+            Submit
+          </button>
         </li>
         <li>
-          <button class="btn btn-light" @click="onCancel">Cancel</button>
+          <button
+            class="btn btn-light"
+            @click="onCancel"
+          >
+            Cancel
+          </button>
         </li>
         <li>
           <button
             type="button"
             class="btn btn-light"
             @click="genFromSchedule(scheduleItems)"
-          >Generate</button>
+          >
+            Generate
+          </button>
         </li>
       </ul>
     </template>
@@ -32,21 +56,25 @@
       <ts-grid 
         v-model="timesheetItems" 
         :columns="columns" 
-        :has-toolbar="false">
+        :has-toolbar="false"
+      >
         <template slot-scope="{ item }">
-          <td>{{ item.date.value }}</td>
+          <td>{{ item.date ? item.date.value : "" }}</td>
           <td>
             <router-link 
               v-if="item.request !== undefined"
               class="btn btn-sm btn-link" 
-              :to="{ name : 'jobDetails', params : { id: item.request.id } }">
+              :to="{ name : 'jobDetails', params : { id: item.request.id } }"
+            >
               <i class="material-icons">request</i>
             </router-link>
           </td>
           <td>
             <router-link 
+              v-if="item.job"
               class="btn btn-sm btn-link" 
-              :to="{ name : 'jobDetails', params : { id: item.job.key } }">
+              :to="{ name : 'jobDetails', params : { id: item.job.key } }"
+            >
               <span>{{ item.job.value }}</span>
             </router-link>            
           </td>
@@ -57,8 +85,8 @@
         </template>
         <template 
           slot="grid-modal" 
-          slot-scope="{ item }">
-
+          slot-scope="{ item }"
+        >
           <div class="p-2">
             <div class="form-group">
               <div class="form-row">
@@ -124,11 +152,11 @@
                 <div class="col-sm-10">
                   <ts-timepicker 
                     class="form-control" 
-                    v-model="item.break_length" />
+                    v-model="item.break_length"
+                  />
                 </div>
               </div>
             </div>
-           
           </div>
         </template>
       </ts-grid>
@@ -165,6 +193,7 @@ export default {
       loading: false,      
       weekEnd: "",
       weekStart: "",
+      requestId: "",
       scheduleItems: [],
       timesheetItems: [],
       columns: [
@@ -240,7 +269,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
+    ...mapActions({      
       fetchList: "resource/list",
       create: "resource/create"
     }),
@@ -287,7 +316,7 @@ export default {
       let timesheets = this.timesheetItems.map(item => {
         return {
           job_id: item.job.key,
-          user_id: item.user_id,
+          user_id: this.userId,
           type: "timesheet",
           status: "submitted",
           break_length: item.break_length,
@@ -303,7 +332,7 @@ export default {
       let timesheets = this.timesheetItems.map(item => {
         return {
           job_id: item.job.key,
-          user_id: item.user.id,
+          user_id: this.userId,
           type: "timesheet",
           break_length: item.break_length,
           start: item.date.day.toString().slice(0, 10) + "T" + item.startTime,

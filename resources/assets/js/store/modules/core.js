@@ -1,6 +1,9 @@
 import Pusher from 'pusher-js';
 import * as MUTATIONS from "../mutation-types";
 
+const PUSHER_KEY = '89a2d9bf477c44775c9a';
+const PUSHER_CCLUSTER = 'ap1';
+
 export const coreModule = {
 
     namespaced: true,
@@ -233,8 +236,8 @@ export const coreModule = {
             if (!rootState.user.isAuth) return
 
             let user = rootState.user;
-            let pusher = new Pusher("8cf467561b944c1668e0", {
-                cluster: "ap2",
+            let pusher = new Pusher(PUSHER_KEY, {
+                cluster: PUSHER_CCLUSTER,
                 authEndpoint: '/broadcasting/auth',
                 auth: {
                     headers: {
