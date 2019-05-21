@@ -72432,7 +72432,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "wrap-auth shadow-sm" }, [
-    _c("img", { staticClass: "app-logo", attrs: { src: "/img/app.png" } }),
+    _c("img", { staticClass: "app-logo", attrs: { src: "/app/img/app.png" } }),
     _vm._v(" "),
     _c("form", [
       _c(
