@@ -21,7 +21,7 @@ class CommonCriteria extends Criteria
         $query = preg_replace("/\%20/", " ", $query);
         $subQuery = [];
 
-        if ($query[0] == "") {
+        if (!isset($query[0])) {
             return $model;
         }
 
