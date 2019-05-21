@@ -38,7 +38,7 @@ class UserController extends Controller
             $request->query('perPage') ?? 15;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-                        
+                   
             $this->repository->pushCriteria(new CommonCriteria($request));   
             $this->repository->pushCriteria(new ClientCriteria($request));
 

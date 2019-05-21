@@ -18,8 +18,12 @@ class CommonCriteria extends Criteria
 
     public function apply($model, IRepository $repository)
     {
+        Log::emergency("Path:" . $this->request->path());
+        Log::emergency("Host:" . $this->request->getHost());
+        Log::emergency("Laravel Query:" . \json_encode($this->request->query()));
+        Log::emergency("Raw Query" . $this->request->server->get('QUERY_STRING'));
         $query = explode('&', $this->request->server->get('QUERY_STRING'));
-        Log::emergency("Query is:" . implode("&", $query));
+        
         $query = preg_replace("/\%20/", " ", $query);
         $subQuery = [];
 
