@@ -1,14 +1,14 @@
 
-export const AUTH_LOGIN = 'app/api/login';
-export const AUTH_LOGOUT = 'app/api/logout';
-export const AUTH_REGISTER = 'app/api/register';
-export const AUTH_PASSWORD_RESET = 'app/api/passwordreset';
+export const AUTH_LOGIN = '/app/api/login';
+export const AUTH_LOGOUT = '/app/api/logout';
+export const AUTH_REGISTER = '/app/api/register';
+export const AUTH_PASSWORD_RESET = '/app/api/passwordreset';
 
-export const USER_LIST = 'app/api/user';
-export const USER_SHOW = 'app/api/user/show';
-export const USER_INFO = 'app/api/user/info';
-export const USER_UPDATE = 'app/api/user/update';
-export const USER_DELETE = 'app/api/user/delete';
+export const USER_LIST = '/app/api/user';
+export const USER_SHOW = '/app/api/user/show';
+export const USER_INFO = '/app/api/user/info';
+export const USER_UPDATE = '/app/api/user/update';
+export const USER_DELETE = '/app/api/user/delete';
 
 export const ROLE_LIST = '/api/role';
 export const ROLE_SHOW = '/api/role/show';
