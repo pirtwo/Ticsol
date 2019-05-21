@@ -106183,6 +106183,7 @@ var coreModule = {
           }
         }
       });
+      pusher_js__WEBPACK_IMPORTED_MODULE_0___default.a.logToConsole = true;
       var notifChannel = pusher.subscribe("private-App.Users.".concat(user.info.id));
       notifChannel.bind("User.Update", function (data) {
         dispatch('resource/onClientUpdate', data.resName, {
@@ -106524,10 +106525,8 @@ var userModule = {
       return new Promise(function (resolve, reject) {
         _api_http__WEBPACK_IMPORTED_MODULE_1__["api"].post(_api_resources__WEBPACK_IMPORTED_MODULE_2__["AUTH_LOGIN"], payload, null, true, false).then(function (respond) {
           commit(_mutation_types__WEBPACK_IMPORTED_MODULE_3__["USER_AUTH_TOKEN"], respond.data);
-          commit(_mutation_types__WEBPACK_IMPORTED_MODULE_3__["USER_AUTH_SUCCESS"]);
-          dispatch('core/goRealTime', null, {
-            root: true
-          });
+          commit(_mutation_types__WEBPACK_IMPORTED_MODULE_3__["USER_AUTH_SUCCESS"]); //dispatch('core/goRealTime', null, { root: true });
+
           resolve("success");
         }).catch(function (error) {
           console.log(error);

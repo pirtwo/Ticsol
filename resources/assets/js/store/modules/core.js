@@ -235,7 +235,8 @@ export const coreModule = {
         goRealTime({state, dispatch, commit, rootState}){
             if (!rootState.user.isAuth) return
 
-            let user = rootState.user;
+            let user = rootState.user;            
+
             let pusher = new Pusher(PUSHER_KEY, {
                 cluster: PUSHER_CCLUSTER,
                 authEndpoint: '/broadcasting/auth',
@@ -246,6 +247,8 @@ export const coreModule = {
                     }
                 }
             });
+
+            Pusher.logToConsole = true;
             
             let notifChannel = pusher.subscribe(`private-App.Users.${user.info.id}`);
             notifChannel.bind("User.Update", (data) => {
