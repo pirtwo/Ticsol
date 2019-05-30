@@ -56,8 +56,7 @@ class CreateTsRequestsTable extends Migration
 
             $table->foreign('job_id')
                 ->references('id')
-                ->on('ts_jobs')
-                ->onDelete('cascade');
+                ->on('ts_jobs');
                 
             $table->foreign('schedule_id')
                 ->references('id')

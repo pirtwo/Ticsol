@@ -16,8 +16,7 @@ class AddFormsForeignKeyToJobs extends Migration
         Schema::table('ts_jobs', function (Blueprint $table) {
             $table->foreign('form_id')
                 ->references('id')
-                ->on('ts_forms')
-                ->onDelete('cascade');
+                ->on('ts_forms');
         });
     }
 

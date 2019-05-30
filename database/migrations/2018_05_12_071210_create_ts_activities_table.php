@@ -19,7 +19,8 @@ class CreateTsActivitiesTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id');            
+            $table->unsignedInteger('creator_id')
+                ->nullable();            
             $table->unsignedInteger('schedule_id');
             $table->unsignedInteger('job_id');
 
@@ -41,8 +42,7 @@ class CreateTsActivitiesTable extends Migration
 
             $table->foreign('creator_id')
                 ->references('id')
-                ->on('ts_users')
-                ->onDelete('cascade');
+                ->on('ts_users');
 
             $table->foreign('schedule_id')
                 ->references('id')

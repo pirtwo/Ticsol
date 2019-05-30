@@ -19,7 +19,8 @@ class CreateTsAclsTable extends Migration
             // Keys
             $table->increments('id');            
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id');
+            $table->unsignedInteger('creator_id')
+                ->nullable();
             $table->unsignedInteger('role_id');
             $table->unsignedInteger('resource_id');
             $table->unsignedInteger('permission_id');
@@ -40,8 +41,7 @@ class CreateTsAclsTable extends Migration
 
             $table->foreign('creator_id')
                 ->references('id')
-                ->on('ts_users')
-                ->onDelete('cascade');
+                ->on('ts_users');
 
             $table->foreign('role_id')
                 ->references('id')

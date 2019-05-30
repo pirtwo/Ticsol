@@ -18,6 +18,7 @@ class CreateTsPasswordResetTable extends Migration
             
             // Keys
             $table->increments('id');
+            $table->unsignedInteger('client_id');
             $table->unsignedInteger('user_id');
             
             // Attributes
@@ -27,6 +28,11 @@ class CreateTsPasswordResetTable extends Migration
         });
         
         Schema::table('ts_password_reset', function (Blueprint $table) {
+            
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('ts_clients')
+                ->onDelete('cascade');
             
             $table->foreign('user_id')
                 ->references('id')

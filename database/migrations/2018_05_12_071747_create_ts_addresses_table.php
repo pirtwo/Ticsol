@@ -19,7 +19,8 @@ class CreateTsAddressesTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id');
+            $table->unsignedInteger('creator_id')
+                ->nullable();
             $table->unsignedInteger('contact_id');
 
             // Attributes
@@ -44,8 +45,7 @@ class CreateTsAddressesTable extends Migration
                 
             $table->foreign('creator_id')
                 ->references('id')
-                ->on('ts_users')
-                ->onDelete('cascade');
+                ->on('ts_users');
 
             $table->foreign('contact_id')
                 ->references('id')

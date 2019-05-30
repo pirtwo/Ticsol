@@ -19,7 +19,8 @@ class CreateTsInvitationsTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id');
+            $table->unsignedInteger('creator_id')
+                ->nullable();
             
             // Attributes
             $table->string('email');
@@ -36,8 +37,7 @@ class CreateTsInvitationsTable extends Migration
 
             $table->foreign('creator_id')
                 ->references('id')
-                ->on('ts_users')
-                ->onDelete('cascade');
+                ->on('ts_users');
         });
     }
 
