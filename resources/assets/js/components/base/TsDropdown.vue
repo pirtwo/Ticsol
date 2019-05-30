@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "VbDropdown",
+  name: "TsDropdown",
 
   props: ["id", "btnClass", "menuClass", "menuSize"],
 

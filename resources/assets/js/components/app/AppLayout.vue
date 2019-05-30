@@ -23,7 +23,7 @@ import _ from "lodash";
 import { mapActions } from "vuex";
 
 export default {
-  name: "PageLayout",
+  name: "AppLayout",
   
   props: {
     header: {

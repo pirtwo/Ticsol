@@ -1,13 +1,13 @@
 <template>
   <div 
     ref="vbSelect" 
-    class="vb-select"
+    class="ts-select"
   >
     <input
       readonly
       ref="input"
       type="text"
-      :class="[`form-control-${size}`,'vb-select__input form-control']"
+      :class="[`form-control-${size}`,'ts-select__input form-control']"
       :value="inputText"
       :placeholder="placeholder"
       @focus="focusHandler"
@@ -16,7 +16,7 @@
     <!-- toggole btn-->
     <button
       type="button"
-      class="vb-select__toggleBtn btn btn-sm btn-link"
+      class="ts-select__toggleBtn btn btn-sm btn-link"
       @click="dropdownStatus = !dropdownStatus"
     >
       <i class="material-icons">{{ dropdownStatus ? 'expand_less' : 'expand_more' }}</i>
@@ -26,20 +26,20 @@
     <div 
       ref="dropdown" 
       v-show="dropdownStatus" 
-      class="vb-select__dropdown"
+      class="ts-select__dropdown"
     >
       <!-- searchbox -->
       <input
         ref="searchbox"
         type="text"
-        class="vb-select__dropdown__search form-control form-control-sm"
+        class="ts-select__dropdown__search form-control form-control-sm"
         v-model="searchQuery"
         v-if="searchEnable"
         :placeholder="searchPlaceholder"
       >
       <!-- END searchbox -->
       <!-- options-->
-      <ul class="vb-select__dropdown__list">
+      <ul class="ts-select__dropdown__list">
         <slot 
           v-if="options.length != 0" 
           name="fixed-top"
@@ -47,7 +47,7 @@
         <li
           v-for="(value, index) in options"
           :key="index"
-          :class="[{ 'vb-select__dropdown__list__option--selected': isSelected(value) }]"
+          :class="[{ 'ts-select__dropdown__list__option--selected': isSelected(value) }]"
           @click="selectHandler(value, $event)"
         >
           <slot :item="value">
@@ -67,7 +67,7 @@
     </div>
     <!-- END dropdown-->
   </div>
-  <!-- END vb-select -->
+  <!-- END ts-select -->
 </template>
 
 <script>
@@ -149,11 +149,11 @@ export default {
 
     dropdownStatus: function(value) {
       if (value) {
-        this.$refs.dropdown.classList.remove("vb-select__dropdown--close");
-        this.$refs.dropdown.classList.add("vb-select__dropdown--open");
+        this.$refs.dropdown.classList.remove("ts-select__dropdown--close");
+        this.$refs.dropdown.classList.add("ts-select__dropdown--open");
       } else {
-        this.$refs.dropdown.classList.remove("vb-select__dropdown--open");
-        this.$refs.dropdown.classList.add("vb-select__dropdown--close");
+        this.$refs.dropdown.classList.remove("ts-select__dropdown--open");
+        this.$refs.dropdown.classList.add("ts-select__dropdown--close");
       }
       this.searchQuery = "";
     }
@@ -249,27 +249,27 @@ export default {
 </script>
 
 <style scoped>
-.vb-select {
+.ts-select {
   position: relative;
 }
 
-.vb-select__input {
+.ts-select__input {
   cursor: pointer;
   background-color: white;
 }
 
-.vb-select__toggleBtn {
+.ts-select__toggleBtn {
   top: 0px;
   right: 0px;
   height: 100%;
   position: absolute;
 }
 
-.vb-select__toggleBtn i {
+.ts-select__toggleBtn i {
   line-height: 100%;
 }
 
-.vb-select__dropdown {
+.ts-select__dropdown {
   display: block;
   overflow: show;
   position: absolute;
@@ -285,13 +285,13 @@ export default {
   border-radius: 0px 0px 5px 5px;
 }
 
-.vb-select__dropdown--open {
+.ts-select__dropdown--open {
   animation-name: dropdown-open;
   animation-duration: 0.3s;
   opacity: 1;
 }
 
-.vb-select__dropdown--close {
+.ts-select__dropdown--close {
   animation-name: dropdown-close;
   animation-duration: 0.3s;
   opacity: 0;
@@ -319,7 +319,7 @@ export default {
   }
 }
 
-.vb-select__dropdown__list {
+.ts-select__dropdown__list {
   margin-top: 10px;
   max-height: 150px;
   padding-left: 0px;
@@ -330,7 +330,7 @@ export default {
   list-style-type: none;
 }
 
-.vb-select__dropdown__list li {
+.ts-select__dropdown__list li {
   text-align: left;
   cursor: pointer;
   margin: 0px 5px;
@@ -338,16 +338,16 @@ export default {
   border-radius: 0px;
 }
 
-.vb-select__dropdown__list li:last-child {
+.ts-select__dropdown__list li:last-child {
   margin-bottom: 5px;
 }
 
-.vb-select__dropdown__list li:hover {
+.ts-select__dropdown__list li:hover {
   color: white;
   background-color: rgba(41, 62, 129, 0.671);
 }
 
-.vb-select__dropdown__list__option--selected {
+.ts-select__dropdown__list__option--selected {
   background-color: rgba(0, 0, 0, 0.1);
 }
 </style>

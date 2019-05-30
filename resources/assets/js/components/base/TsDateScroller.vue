@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: "BaseDatePicker",
+  name: "TsDateScroller",
 
   props: {
     value: {

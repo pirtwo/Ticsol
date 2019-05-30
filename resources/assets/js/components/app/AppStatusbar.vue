@@ -3,15 +3,15 @@
     ref="statusbar" 
     class="statusbar"
   >
-    <vb-dropdown 
+    <ts-dropdown 
       :btn-class="'btn-light'" 
       :menu-class="'dropdown-menu-right'" 
       :menu-size="'md'"
     >
       <template slot="button">
-        <vb-icon class="icon">
+        <ts-icon class="icon">
           notifications
-        </vb-icon>
+        </ts-icon>
         <span class="caption">NOTIFs</span>
         <span 
           class="badge badge-danger" 
@@ -42,7 +42,7 @@
               v-for="(value, index) in logList"
               :key="index"
             >
-              <vb-notification 
+              <ts-notification 
                 :title="value.title"
                 :type="value.type" 
                 :icon="getIcon(value.type)" 
@@ -53,7 +53,7 @@
           </ul><!-- list END -->
         </div>
       </template>
-    </vb-dropdown>
+    </ts-dropdown>
   </div>
 </template>
 

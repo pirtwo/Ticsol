@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: 'VbSwitch',
+  name: 'TsSwitch',
 
   props: {
     id: {

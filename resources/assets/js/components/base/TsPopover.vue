@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "VbPopover",
+  name: "TsPopover",
 
   props: ["container", "delay", "title", "body"]
 };

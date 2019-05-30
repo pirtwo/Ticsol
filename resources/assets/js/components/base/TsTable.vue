@@ -52,7 +52,7 @@
 
 <script>
 export default {
-  name: "BaseTable",
+  name: "TsTable",
   props: {
     data: {
       type: Array,

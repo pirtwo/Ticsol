@@ -81,10 +81,10 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Statusbar from "../../framework/AppStatusbar.vue";
+import Statusbar from "../app/AppStatusbar";
 
 export default {
-  name: "IconbarTop",
+  name: "AppIconbarTop",
 
   components: {
     "app-statusbar": Statusbar

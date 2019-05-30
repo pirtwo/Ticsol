@@ -54,7 +54,7 @@
 import _ from "lodash";
 
 export default {
-  name: "PaginationView",
+  name: "TsPagination",
 
   data() {
     return {

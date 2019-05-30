@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'VbIcon',
+  name: 'TsIcon',
 
   props:['icon']
 }

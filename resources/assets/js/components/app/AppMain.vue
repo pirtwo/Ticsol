@@ -85,12 +85,12 @@
         </div>        
       </nav>
 
-      <vb-snackbar          
+      <ts-snackbar          
         v-model="snackbar.show" 
         :class="['snackbar', snackbar.theme]"
       >
         <span v-html="snackbar.message" />
-      </vb-snackbar>
+      </ts-snackbar>
 
       <div 
         class="content" 
@@ -106,7 +106,7 @@
 import _ from "lodash";
 import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "NavView",
+  name: "AppMain",
 
   props: {
     scrollbar: {

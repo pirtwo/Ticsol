@@ -1,9 +1,9 @@
 <template>
   <div :class="['alert-' + type, 'vb-notif alert d-flex flex-column']">
     <div class="d-flex align-items-center">
-      <vb-icon class="vb-notif__icon">
+      <ts-icon class="vb-notif__icon">
         {{ icon }}
-      </vb-icon>
+      </ts-icon>
       <span class="vb-notif__title">{{ title }}</span>
     </div>
     <div class="flex-column">
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "VbNotification",
+  name: "TsNotification",
   props: ["icon", "type", "title", "message", "footer"]
 };
 </script>

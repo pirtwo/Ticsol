@@ -141,7 +141,7 @@
 </template>
 <script>
 export default {
-  name: "IconbarTop"
+  name: "AppIconbarTop"
 };
 </script>
 <style scoped>

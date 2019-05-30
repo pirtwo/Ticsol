@@ -1,7 +1,7 @@
 <template>
   <div 
     ref="vbSnackbar" 
-    class="vb-snackbar"
+    class="ts-snackbar"
     v-show="value"
   >
     <div class="d-flex align-items-center">
@@ -39,13 +39,13 @@ export default {
   methods: {
     showSnackbar() {
       this.$emit("show");
-      //this.$refs.vbSnackbar.classList.remove("vb-snackbar--hide");
-      //this.$refs.vbSnackbar.classList.add("vb-snackbar--show");
+      //this.$refs.vbSnackbar.classList.remove("ts-snackbar--hide");
+      //this.$refs.vbSnackbar.classList.add("ts-snackbar--show");
     },
 
     hideSnackbar() {      
-      //this.$refs.vbSnackbar.classList.remove("vb-snackbar--show");
-      //this.$refs.vbSnackbar.classList.add("vb-snackbar--hide");          
+      //this.$refs.vbSnackbar.classList.remove("ts-snackbar--show");
+      //this.$refs.vbSnackbar.classList.add("ts-snackbar--hide");          
       this.$emit("input", false);
       this.$emit("hide");
     }
@@ -54,24 +54,24 @@ export default {
 </script>
 
 <style scoped>
-.vb-snackbar {
+.ts-snackbar {
   visibility: visible;
   border-radius: 0px;  
   z-index: 10;
 }
 
-.vb-snackbar__close {
+.ts-snackbar__close {
   padding: 5px;
   cursor: pointer;
 }
 
-.vb-snackbar--show {
+.ts-snackbar--show {
   visibility: visible;
   opacity: 1;
   animation: fadein 0.3s;
 }
 
-.vb-snackbar--hide {
+.ts-snackbar--hide {
   visibility: hidden;
   opacity: 0;
   animation: fadeout 0.3s;
