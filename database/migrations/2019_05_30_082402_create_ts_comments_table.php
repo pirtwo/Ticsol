@@ -14,11 +14,11 @@ class CreateTsCommentsTable extends Migration
     public function up()
     {
         Schema::create('ts_comments', function (Blueprint $table) {
-            
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id');
+            $table->unsignedInteger('creator_id')
+                ->nullable();
             $table->unsignedInteger('job_id')
                 ->nullable();
             $table->unsignedInteger('parent_id')
@@ -27,9 +27,9 @@ class CreateTsCommentsTable extends Migration
                 ->nullable();
             
             // Attributes
-            $table->mediumText('body');            
+            $table->mediumText('body');   
+            $table->softDeletes();         
             $table->timestamps();
-
         });
 
         Schema::table('ts_comments', function (Blueprint $table) {            
@@ -41,8 +41,7 @@ class CreateTsCommentsTable extends Migration
 
             $table->foreign('creator_id')
                 ->references('id')
-                ->on('ts_users')
-                ->onDelete('cascade');  
+                ->on('ts_users');
             
             $table->foreign('job_id')
                 ->references('id')
