@@ -11,6 +11,8 @@ export const coreModule = {
     state: {
         logs: [],
 
+        theme: 'default',
+
         connection:{
             previous: '',
             current: ''
@@ -41,22 +43,6 @@ export const coreModule = {
             show: true,
             height: 0
         },
-
-        header: {
-            show: true,
-            height: 0
-        },
-
-        footer: {
-            show: true,
-            height: 0
-        },
-
-        loading: {
-            show: false,
-            message: ''
-        }
-
     },
 
     getters: {
@@ -105,29 +91,9 @@ export const coreModule = {
             return state.toolbar.height;
         },
 
-        getHeaderStatus(state) {
-            return state.header.show;
-        },
-
-        getHeaderHeight(state) {
-            return state.header.height;
-        },
-
-        getFooterStatus(state) {
-            return state.footer.show;
-        },
-
-        getFooterHeight(state) {
-            return state.footer.height;
-        },
-
-        getLoadingStatus(state) {
-            return state.loading.show;
-        },
-
-        getLoadingMessage(state) {
-            return state.loading.message;
-        }
+        getTheme(state){
+            return state.theme;
+        } 
     },
 
     mutations: {
@@ -144,9 +110,8 @@ export const coreModule = {
             state.connection.current = payload.current;
         },
 
-        [MUTATIONS.APP_LOADING](state, payload) {
-            state.loading.show = payload.show;
-            state.loading.message = payload.message;
+        [MUTATIONS.APP_THEME](state, payload) {
+            state.theme = payload;
         },
 
         [MUTATIONS.APP_FULLSCREEN](state, isFullScreen) {
@@ -179,18 +144,7 @@ export const coreModule = {
             state.snackbar.theme = payload.theme;
             state.snackbar.fixed = payload.fixed;
             state.snackbar.timeout = payload.timeout;
-        },
-
-        [MUTATIONS.APP_HEADER](state, payload) {
-            state.header.show = payload.show;
-            state.header.height = payload.height;
-        },
-
-        [MUTATIONS.APP_FOOTER](state, payload) {
-            state.footer.show = payload.show;
-            state.footer.height = payload.height;
         }
-
     },
 
     actions: {
@@ -221,7 +175,7 @@ export const coreModule = {
         toolbar({ commit }, { height, show }) {
             commit(MUTATIONS.APP_TOOLBAR, { show, height });
         },
-
+       
         snackbar({ commit }, { show, message, theme = '', fixed = false, timeout = 300 }) {
             commit(MUTATIONS.APP_SNACKBAR, { show: false, message: '', theme: theme });
             commit(MUTATIONS.APP_SNACKBAR, { show, message, theme, fixed, timeout });
@@ -230,7 +184,11 @@ export const coreModule = {
                     commit(MUTATIONS.APP_SNACKBAR, { show: false, message: '', theme: theme });
                 }, timeout);
             }
-        },    
+        }, 
+        
+        theme({ commit }, payload){
+            commit(MUTATIONS.APP_THEME, payload.toLowerCase());
+        },
         
         goRealTime({state, dispatch, commit, rootState}){
             if (!rootState.user.isAuth) return
@@ -248,7 +206,7 @@ export const coreModule = {
                 }
             });
 
-            Pusher.logToConsole = true;
+            //Pusher.logToConsole = true;
             
             let notifChannel = pusher.subscribe(`private-App.Users.${user.info.id}`);
             notifChannel.bind("User.Update", (data) => {
@@ -279,7 +237,5 @@ export const coreModule = {
                 console.log('subscribe to client channel failed.');
             });
         }
-
     }
-
 }
