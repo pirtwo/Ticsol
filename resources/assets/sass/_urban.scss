@@ -1,0 +1,40 @@
+$urban-background: '';
+$urban-primary-color: #FFFFFF;
+$urban-secondary-color: #FFFFFF;
+
+$urban-primary-bgColor: rgba(217, 191, 154, 0.5);
+$urban-secondary-bgColor: rgba(217, 191, 154, 0.7);
+
+$urban-primary-fontColor: rgba(18, 22, 23, 0.9);
+$urban-secondary-fontColor: #121617;
+
+#app.urban{
+  background-image: url("~/img/theme/Urban.jpg");
+  font-family: $app-primary-font;
+  color: $urban-primary-fontColor;
+
+  .main .wrap-drawer .wrap-content .navbar,
+  .main .wrap-drawer .wrap-content .content,
+  .main .wrap-drawer .drawer .drawer-toolbar {   
+    background-color: $urban-primary-bgColor;
+  }
+
+  .main .wrap-drawer .drawer .drawer-body {
+    background-color: $urban-secondary-bgColor;
+  }
+
+  .main .wrap-drawer .wrap-content .loading-box{
+    background-color: $urban-secondary-bgColor;
+  }
+
+  .toolbar-top .btn,
+  .toolbar-bot .btn {
+    color: $urban-primary-fontColor;
+    background-color: $urban-primary-bgColor !important;
+  }
+
+  // Daypilot settings
+  .scheduler_green_main{
+    font-family: $app-secondary-font !important;
+  }
+}

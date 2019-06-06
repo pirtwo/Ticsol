@@ -1,0 +1,40 @@
+$jungle-background: '';
+$jungle-primary-color: #00627A;
+$jungle-secondary-color: #00627A;
+
+$jungle-primary-bgColor: rgba(255, 250, 229, 0.4);
+$jungle-secondary-bgColor: rgba(255, 250, 229, 0.6);
+
+$jungle-primary-fontColor: rgba(2, 14, 15, 0.9);
+$jungle-secondary-fontColor: #020E0F;
+
+#app.jungle{
+  background-image: url("~/img/theme/Jungle.jpg");
+  font-family: $app-primary-font;
+  color: $jungle-primary-fontColor;
+
+  .main .wrap-drawer .wrap-content .navbar,
+  .main .wrap-drawer .wrap-content .content,
+  .main .wrap-drawer .drawer .drawer-toolbar {   
+    background-color: $jungle-primary-bgColor;
+  }
+
+  .main .wrap-drawer .drawer .drawer-body {
+    background-color: $jungle-secondary-bgColor;
+  }
+
+  .main .wrap-drawer .wrap-content .loading-box{
+    background-color: $jungle-secondary-bgColor;
+  }
+
+  .toolbar-top .btn,
+  .toolbar-bot .btn {
+    color: $jungle-primary-fontColor;
+    background-color: $jungle-primary-bgColor !important;
+  }
+
+  // Daypilot settings
+  .scheduler_green_main{
+    font-family: $app-secondary-font !important;
+  }
+}
