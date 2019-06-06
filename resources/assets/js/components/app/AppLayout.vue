@@ -54,8 +54,8 @@ export default {
     }),
 
     resizeHandler() {
-      let head = $(".header").outerHeight(true) | 0;
-      let foot = $(".footer").outerHeight(true) | 0;
+      let head = $(".header").outerHeight(true) || 0;
+      let foot = $(".footer").outerHeight(true) || 0;
       let contentHeight = $(window).height() - (head + foot);
       let toolbarHeight = $(".navbar").outerHeight(true);
 

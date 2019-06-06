@@ -17,7 +17,7 @@
             class="modal-title"
             id="filter"
           >
-            <vb-icon
+            <ts-icon
               icon="filter_list"
               style="vertical-align: text-bottom;"
             />Filter
@@ -95,7 +95,7 @@
                       title="Add filter to list"
                       @click="addFilter"
                     >
-                      <vb-icon
+                      <ts-icon
                         icon="playlist_add"
                         style="vertical-align: bottom;"
                       />
@@ -109,7 +109,11 @@
           <div>
             <i class="text-muted">
               {{ `${this.filters.length > 0 ? this.filters.length : "No"} filter added.` }}
-              <button type="button" class="btn btn-link" @click="showFilters = !showFilters">
+              <button
+                type="button"
+                class="btn btn-link"
+                @click="showFilters = !showFilters"
+              >
                 <i>{{ this.showFilters ? "hide filters" : "show filters" }}</i>                
               </button>
             </i>

@@ -1,40 +1,17 @@
 <template>
   <div class="toolbar-top">
     <app-statusbar />
-    
-    <div class="dropdown">
-      <button 
-        class="btn btn-light" 
-        type="buttom" 
-        role="button" 
-        id="dropdownMenuLink" 
-        data-toggle="dropdown"
-        aria-haspopup="true" 
-        aria-expanded="false"
-      >
-        <i class="icon material-icons">
-          settings
-        </i>
-        <span class="caption">SETTINGS</span>
-      </button>
-      <div 
-        class="dropdown-menu dropdown-menu-right" 
-        aria-labelledby="dropdownMenuLink"
-      >
-        <a 
-          class="dropdown-item" 
-          href="#"
-        >Action</a>
-        <a 
-          class="dropdown-item" 
-          href="#"
-        >Another action</a>
-        <a 
-          class="dropdown-item" 
-          href="#"
-        >Something else here</a>
-      </div>
-    </div>
+
+    <router-link 
+      :to="{ name : 'settingModify' }" 
+      class="btn btn-light" 
+      role="button"
+    >
+      <i class="icon material-icons">
+        settings
+      </i>
+      <span class="caption">SETTINGS</span>
+    </router-link>
 
     <div class="dropdown">
       <button 

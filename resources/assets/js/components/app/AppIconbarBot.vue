@@ -43,7 +43,7 @@
           Leave
         </router-link>               
         <router-link 
-          :to="{ name : 'reqReimb'}" 
+          :to="{ name : 'reimbCreate'}" 
           class="dropdown-item"
         >
           Reimbursement

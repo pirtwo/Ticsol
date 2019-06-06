@@ -1,43 +1,41 @@
-<template>  
+<template>
   <div class="wrap-drawer">
     <!-- drawer -->
-    <div 
-      class="drawer" 
+    <div
+      class="drawer"
       :class="[showDrawer? 'open' : 'close']"
     >
-      <div class="drawer-toolbar">
-        <div 
-          class="title text-center" 
+      <div
+        v-if="drawerToolbar"
+        class="drawer-toolbar"
+      >
+        <div
+          class="title text-center"
           v-if="drawerTitle !== '' "
         >
           {{ drawerTitle }}
-        </div> 
+        </div>
         <slot name="drawer-toolbar" />
-      </div>     
+      </div>
       <div class="drawer-body">
         <slot name="drawer" />
-      </div> 
+      </div>
     </div>
 
     <!-- content -->
     <div class="wrap-content">
       <!-- loadingbox -->
-      <div 
-        class="wrap-loading" 
+      <div
+        class="wrap-loading"
         v-show="loading"
       >
-        <div class="loading-box shadow-sm"> 
-          <div class="sk-cube-grid">
-            <div class="sk-cube sk-cube1" />
-            <div class="sk-cube sk-cube2" />
-            <div class="sk-cube sk-cube3" />
-            <div class="sk-cube sk-cube4" />
-            <div class="sk-cube sk-cube5" />
-            <div class="sk-cube sk-cube6" />
-            <div class="sk-cube sk-cube7" />
-            <div class="sk-cube sk-cube8" />
-            <div class="sk-cube sk-cube9" />
-          </div>               
+        <div class="loading-box shadow-sm">
+          <div
+            class="spinner-border"
+            role="status"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
           <div class="caption">
             Loading, Please wait...
           </div>
@@ -45,59 +43,59 @@
       </div>
 
       <!-- toolbar -->
-      <nav class="navbar navbar-light"> 
+      <nav class="navbar navbar-light">
         <div class="d-flex w-100">
-          <div class="flex-grow-1">        
-            <button 
-              class="btn btn-light btn-sm ml-auto" 
-              type="button" 
+          <div class="flex-grow-1">
+            <button
+              class="btn btn-light btn-sm ml-auto"
+              type="button"
               @click="onDrawer"
             >
               <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
             </button>
-            <button 
-              class="btn btn-light btn-sm ml-auto" 
-              type="button" 
+            <button
+              class="btn btn-light btn-sm ml-auto"
+              type="button"
               @click="clickBack"
             >
               <i class="material-icons">arrow_back</i>
             </button>
-            <button 
-              class="btn btn-light btn-sm ml-auto" 
-              type="button" 
+            <button
+              class="btn btn-light btn-sm ml-auto"
+              type="button"
               @click="clickForward"
             >
               <i class="material-icons">arrow_forward</i>
             </button>
-            <button 
-              class="btn btn-light btn-sm ml-auto" 
-              type="button" 
+            <button
+              class="btn btn-light btn-sm ml-auto"
+              type="button"
               @click="onFullscreen"
             >
               <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
             </button>
 
             <span class="navbar-brand">{{ menuTitle }}</span>
-          </div>  
+          </div>
           <div class="toolbar">
             <slot name="toolbar" />
-          </div> 
-        </div>        
+          </div>
+        </div>
       </nav>
 
-      <ts-snackbar          
-        v-model="snackbar.show" 
+      <ts-snackbar
+        v-model="snackbar.show"
         :class="['snackbar', snackbar.theme]"
       >
         <span v-html="snackbar.message" />
       </ts-snackbar>
 
-      <div 
-        class="content" 
-        :class="[{ 'scrollbar-show' : scrollbar}, padding]"          
-      >        
+      <div
+        class="content"
+        :class="[{ 'scrollbar-show' : scrollbar}, padding]"
+      >
         <slot name="content" />
-      </div>            
+      </div>
     </div>
   </div>
 </template>
@@ -113,11 +111,15 @@ export default {
       type: Boolean,
       default: true
     },
-    menuTitle: {
+    drawerToolbar: {
+      type: Boolean,
+      default: false
+    },
+    drawerTitle: {
       type: String,
       default: ""
     },
-    drawerTitle: {
+    menuTitle: {
       type: String,
       default: ""
     },
@@ -145,14 +147,14 @@ export default {
     ...mapGetters({
       snackbar: "core/getSnackbar",
       fullscreen: "core/getUiFullscreen",
-      showDrawer: "core/getDrawerStatus",      
-      contentHeight: "core/getUiContentHeight",
+      showDrawer: "core/getDrawerStatus",
+      contentHeight: "core/getUiContentHeight"
     }),
 
     enablePadding: function() {
       return this.padding !== "";
     }
-  },  
+  },
 
   mounted() {
     this.$nextTick(this.setContentHeight);
@@ -234,10 +236,10 @@ export default {
 
 .content {
   position: relative;
-  background-color: rgba(255, 255, 255, 0.8);
+  //background-color: rgba(255, 255, 255, 0.8);
 }
 
-.snackbar{
+.snackbar {
   position: absolute;
   left: 0px;
   top: 55px;
@@ -272,14 +274,13 @@ export default {
 
 .drawer-toolbar {
   flex: 0 1 auto;
-  margin-bottom: 0px;
-  background-color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 5px;
 }
 
 .drawer-body {
   flex: 1 1 auto;
   overflow-y: auto;
-  background-color: rgba(255, 255, 255, 0.95);
+  //background-color: rgba(255, 255, 255, 0.95);
 }
 
 .drawer .title {
@@ -292,7 +293,7 @@ export default {
   height: 50px;
   margin-bottom: 5px;
   display: -webkit-box !important;
-  background-color: rgba(255, 255, 255, 0.8);
+  //background-color: rgba(255, 255, 255, 0.8);
 }
 
 .navbar .btn,
@@ -310,7 +311,7 @@ i.material-icons {
   line-height: 1.2;
 }
 
-.toolbar{
+.toolbar {
   display: flex;
 }
 
@@ -325,25 +326,27 @@ i.material-icons {
 
 .loading-box {
   left: 50%;
-  top: 50%;
-  width: 200px;
+  top: 45%;
+  width: 17vw;
   height: auto;
-  padding: 10px;
-  color: white;
+  padding: 1vw;
   position: relative;
-  border-radius: 5px;
+  border-radius: 0px;
   transform: translate(-50%, -80%);
-  background-color: rgba(44, 44, 44, 0.9);
+  //background-color: rgba(44, 44, 44, 0.9);
 }
 
-.wrap-loading .md-progress-spinner {
-  margin-left: 40%;
-  margin-right: auto;
+.loading-box .spinner-border {
+  width: 2vw;
+  height: 2vw;
+  border: 0.4vw solid currentColor;
+  border-right-color: transparent;
 }
 
 .wrap-loading .caption {
-  width: 100%;
-  display: block;
+  margin-left: 10px;
+  display: inline;
   text-align: center;
+  vertical-align: super;
 }
 </style>

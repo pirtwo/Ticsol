@@ -25,7 +25,7 @@
                 type="button" 
                 @click="onAdd"
               >
-                <vb-icon :icon="'playlist_add'" />
+                <ts-icon :icon="'playlist_add'" />
               </button>
             </th>
             <th 
@@ -52,19 +52,22 @@
                 type="button" 
                 @click="onEdit(copyRow(row), index)"
               >
-                <vb-icon :icon="'edit'" />
+                <ts-icon :icon="'edit'" />
               </button>
               <button 
                 class="btn btn-sm" 
                 type="button" 
                 @click="deleteRow(row)"
               >
-                <vb-icon :icon="'delete'" />
+                <ts-icon :icon="'delete'" />
               </button>
             </td>
             <slot :item="row" />
           </tr>
         </tbody>
+        <tfoot>
+          <slot name="footer" />
+        </tfoot>
 
         <ts-modal 
           :show.sync="modal" 
