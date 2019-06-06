@@ -24,7 +24,6 @@ class Request extends Model
         'job_id',
         'form_id',
         'assigned_id',
-        'schedule_id',
 
         // leave, reimbursement, timesheet
         'type',
@@ -94,22 +93,14 @@ class Request extends Model
     public function form()
     {
         return $this->belongsTo(Form::class, 'form_id');
-    }
-
-    /**
-     * Assosiated schedule item to current request.
-     */
-    public function schedule()
-    {
-        return $this->belongsTo(Schedule::class, 'schedule_id');
-    }
+    }    
 
     /**
      * Assosiated timesheets to current request.
      */
-    public function timesheets()
+    public function timesheet()
     {
-        return $this->hasMany(Schedule::class);
+        return $this->hasOne(Timesheet::class);
     }
 
     #endregion

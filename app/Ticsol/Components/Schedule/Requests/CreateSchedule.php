@@ -27,10 +27,10 @@ class CreateSchedule extends FormRequest
             'user_id'       => 'required|numeric',
             'job_id'        => 'required|numeric',
             'type'          => 'required|string|in:schedule',
-            'event_type'    => 'required|string|in:leave,unavailable hours,scheduled,RDO',
+            'event_type'    => 'required|string|in:leave,unavailable,scheduled,RDO',
             'status'        => 'required|string|in:tentative,confirmed',            
             'start'         => 'required|date',
-            'end'           => 'required|date',
+            'end'           => 'required|date|after:start',
             'offsite'       => 'nullable|boolean',
             'break_length'  => 'required|numeric'
         ];

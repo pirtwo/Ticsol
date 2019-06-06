@@ -4,8 +4,10 @@ namespace App\Ticsol\Components\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
+use App\Ticsol\Components\Models\Schedule;
 use App\Ticsol\Components\Models\Request as RequestModel;
 use App\Ticsol\Components\Request\Events;
 use App\Ticsol\Components\Request\Requests;
@@ -42,21 +44,21 @@ class RequestController extends Controller
             $request->query('perPage') ?? 20;
             $with =
             $request->query('with') != null ? explode(',', $request->query('with')) : [];
-           
+
             $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new RequestCriteria($request));    
-            $this->repository->pushCriteria(new ClientCriteria($request)); 
+            $this->repository->pushCriteria(new RequestCriteria($request));
+            $this->repository->pushCriteria(new ClientCriteria($request));
 
             if ($page == null) {
                 return $this->repository->all($with);
             } else {
                 return $this->repository->paginate($perPage, $with);
             }
-            
+
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
-    }    
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -67,14 +69,43 @@ class RequestController extends Controller
     public function store(Requests\CreateRequest $request)
     {
         try {
-            $req = new RequestModel();            
-            $req->client_id = $request->user()->client_id;
-            $req->user_id = $request->user()->id;
-            $req->status = 'submitted';
-            $req->fill($request->all());
-            $req->save();
+            $req = new RequestModel(); 
+            $client_id = $request->user()->client_id;            
+            $user_id = $request->user()->id;          
+
+            DB::beginTransaction();
+
+            try {
+                $req->client_id = $client_id;
+                $req->user_id = $user_id;               
+                $req->fill($request->all());
+                $req->save();
+
+                if ($request->input('type') == 'leave') {
+                    $schedule = new Schedule();
+                    $schedule->client_id = $client_id;
+                    $schedule->creator_id = $user_id;
+                    $schedule->fill([                                          
+                        'user_id' => $request->user()->id,
+                        'status' => 'tentative',
+                        'type' => 'schedule',
+                        'event_type' => 'leave',                        
+                        'start' => $request->input('meta.from'),
+                        'end' => $request->input('meta.till'),
+                    ]);
+                    $schedule->save();
+                }
+                
+                DB::commit();
+                
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            }
+
             event(new Events\RequestCreated($req));
             return $req;
+
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -97,7 +128,7 @@ class RequestController extends Controller
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
-    }    
+    }
 
     /**
      * Update the specified resource in storage.

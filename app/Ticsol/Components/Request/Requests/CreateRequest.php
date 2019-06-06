@@ -24,13 +24,14 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_id'            => 'nullable|integer',
-            'form_id'           => 'nullable|integer',
-            'assigned_id'       => 'required|integer',
-            'schedule_id'       => 'nullable|integer',
-            'type'              => 'required|string|in:leave,reimbursement,timesheet',            
+            'job_id'            => 'required_if:type,reimbursement|integer|exists:ts_jobs,id',
+            'form_id'           => 'nullable|integer|exists:ts_forms,id',
+            'assigned_id'       => 'required|integer|exists:ts_users,id',
+            'schedule_id'       => 'nullable|integer|exists:ts_schedules,id',
+            'type'              => 'required|string|in:leave,reimbursement',            
+            'status'            => 'required|string|in:submitted',            
             
-            // Leave
+            // Leave            
             'meta.leave_type'   => 'required_if:type,leave|string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
             'meta.from'         => 'required_if:type,leave|date',
             'meta.till'         => 'required_if:type,leave|date|after:meta.from',

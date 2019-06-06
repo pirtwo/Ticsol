@@ -21,7 +21,7 @@ class Schedule extends Model
         'user_id',
         'job_id',
         'parent_id',
-        'request_id',
+        'timesheet_id',
         'status',
         'type',
         'event_type',
@@ -106,12 +106,12 @@ class Schedule extends Model
     }
 
     /**
-     * Assosiated job to current schedule item.
+     * Assosiated timesheet to current schedule item.
      */
-    public function request()
+    public function timesheet()
     {
-        return $this->belongsTo(Request::class, 'request_id');
-    }
+        return $this->belongsTo(Timesheet::class, 'timesheet_id');
+    }    
 
     /**
      * Current schedule item activities.
