@@ -1,17 +1,40 @@
 <template>
-  <router-view /> 
+  <router-view />
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  created() {       
-    this.goRealTime();   
+  watch:{
+    getTheme: function(val){
+      let elm = document.getElementById('app');
+      elm.className = val;
+    }
   },
 
-  methods:{
+  computed: {
+    ...mapGetters({
+      getTheme: "core/getTheme"
+    })
+  },
+
+  mounted(){
+    this.$nextTick(() => {
+
+      // set theme on document
+      let elm = document.getElementById('app');
+      elm.className = this.getTheme;
+
+      // connect to pusher
+      this.goRealTime();
+
+      console.log('app is ready...');      
+    });
+  },
+
+  methods: {
     ...mapActions({
-      goRealTime: 'core/goRealTime'
+      goRealTime: "core/goRealTime"
     })
   }
 };
