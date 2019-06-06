@@ -155,6 +155,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import uuid from '../../../../utils/uuid';
 import BaseDayPilot from "../schedules/BaseDayPilot.vue";
 import AssignModal from "../schedules/AssignModal.vue";
 import UpdateModal from "../schedules/UpdateModal.vue";
@@ -181,7 +182,12 @@ export default {
       sidebarQuery: "",
       start: DayPilot.Date.today().firstDayOfMonth(),
       assignModal: false,
-      updateModal: false
+      updateModal: false,
+      leaveJob: {
+        id: uuid(),
+        name: 'LEAVE',
+        code: 'LEAVE-SYS'
+      }
     };
   },
 
@@ -234,17 +240,19 @@ export default {
             resource: item.user_id,
             start: new DayPilot.Date(item.start),
             end: new DayPilot.Date(item.end),
-            text: item.job.title
+            text: item.job ? item.job.title : this.leaveJob.name,
+            type: item.event_type
           };
         });
       else {
         return this.getList("schedule").map(item => {
           return {
             id: item.id,
-            resource: item.job_id,
+            resource: item.event_type === 'leave' ? this.leaveJob.id : item.job_id,
             start: new DayPilot.Date(item.start),
             end: new DayPilot.Date(item.end),
-            text: item.user.name
+            text: item.user.name,
+            type: item.event_type
           };
         });
       }
@@ -256,9 +264,9 @@ export default {
           return { id: item.id, name: item.name, avatar: item.meta.avatar };
         });
       else {
-        return this.getList("job").map(item => {
+        return [this.leaveJob].concat(this.getList("job").map(item => {
           return { id: item.id, name: item.title, code: item.code };
-        });
+        }));
       }
     },
 
@@ -311,7 +319,7 @@ export default {
   },
 
   mounted() {
-    let query = [];
+    let query = [];    
     query.push({
       opt: "inRange",
       col: "",

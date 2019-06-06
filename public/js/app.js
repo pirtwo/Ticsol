@@ -2709,6 +2709,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6086,6 +6127,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -8361,6 +8410,73 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8926,6 +9042,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -9103,6 +9257,88 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9539,6 +9775,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -9673,8 +9952,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -11708,7 +11985,11 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     dp.onBeforeEventRender = function (args) {
-      args.data.html = "<div class=''>".concat(args.data.text, "</div>\n        <div class=''>").concat(args.data.start.toString('hh:mm'), "</div>\n        <div class=''>").concat(args.data.end.toString('hh:mm'), "</div>");
+      var item = dp.events.list.find(function (item) {
+        return item.id == args.data.id;
+      });
+      args.data.cssClass = item.type;
+      args.data.html = "\n        <div class=''>".concat(args.data.text, "</div>\n        <div class=''>").concat(args.data.start.toString('hh:mm'), "</div>\n        <div class=''>").concat(args.data.end.toString('hh:mm'), "</div>");
     };
 
     dp.init();
@@ -12147,10 +12428,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _schedules_BaseDayPilot_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../schedules/BaseDayPilot.vue */ "./resources/assets/js/components/pages/dashboard/schedules/BaseDayPilot.vue");
-/* harmony import */ var _schedules_AssignModal_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../schedules/AssignModal.vue */ "./resources/assets/js/components/pages/dashboard/schedules/AssignModal.vue");
-/* harmony import */ var _schedules_UpdateModal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../schedules/UpdateModal.vue */ "./resources/assets/js/components/pages/dashboard/schedules/UpdateModal.vue");
-/* harmony import */ var _mixins_page_mixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../mixins/page-mixin */ "./resources/assets/js/mixins/page-mixin.js");
+/* harmony import */ var _utils_uuid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../utils/uuid */ "./resources/assets/js/utils/uuid.js");
+/* harmony import */ var _schedules_BaseDayPilot_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../schedules/BaseDayPilot.vue */ "./resources/assets/js/components/pages/dashboard/schedules/BaseDayPilot.vue");
+/* harmony import */ var _schedules_AssignModal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../schedules/AssignModal.vue */ "./resources/assets/js/components/pages/dashboard/schedules/AssignModal.vue");
+/* harmony import */ var _schedules_UpdateModal_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../schedules/UpdateModal.vue */ "./resources/assets/js/components/pages/dashboard/schedules/UpdateModal.vue");
+/* harmony import */ var _mixins_page_mixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../mixins/page-mixin */ "./resources/assets/js/mixins/page-mixin.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -12318,10 +12600,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
+
 
 
 
@@ -12329,11 +12608,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Scheduler",
-  mixins: [_mixins_page_mixin__WEBPACK_IMPORTED_MODULE_4__["default"]],
+  mixins: [_mixins_page_mixin__WEBPACK_IMPORTED_MODULE_5__["default"]],
   components: {
-    "day-pilot": _schedules_BaseDayPilot_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    "assign-modal": _schedules_AssignModal_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    "update-modal": _schedules_UpdateModal_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    "day-pilot": _schedules_BaseDayPilot_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    "assign-modal": _schedules_AssignModal_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    "update-modal": _schedules_UpdateModal_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
@@ -12345,7 +12624,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sidebarQuery: "",
       start: DayPilot.Date.today().firstDayOfMonth(),
       assignModal: false,
-      updateModal: false
+      updateModal: false,
+      leaveJob: {
+        id: Object(_utils_uuid__WEBPACK_IMPORTED_MODULE_1__["default"])(),
+        name: 'LEAVE',
+        code: 'LEAVE-SYS'
+      }
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
@@ -12374,22 +12658,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     scheduleEvents: function scheduleEvents() {
+      var _this2 = this;
+
       if (this.view === "user") return this.getList("schedule").map(function (item) {
         return {
           id: item.id,
           resource: item.user_id,
           start: new DayPilot.Date(item.start),
           end: new DayPilot.Date(item.end),
-          text: item.job.title
+          text: item.job ? item.job.title : _this2.leaveJob.name,
+          type: item.event_type
         };
       });else {
         return this.getList("schedule").map(function (item) {
           return {
             id: item.id,
-            resource: item.job_id,
+            resource: item.event_type === 'leave' ? _this2.leaveJob.id : item.job_id,
             start: new DayPilot.Date(item.start),
             end: new DayPilot.Date(item.end),
-            text: item.user.name
+            text: item.user.name,
+            type: item.event_type
           };
         });
       }
@@ -12402,13 +12690,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           avatar: item.meta.avatar
         };
       });else {
-        return this.getList("job").map(function (item) {
+        return [this.leaveJob].concat(this.getList("job").map(function (item) {
           return {
             id: item.id,
             name: item.title,
             code: item.code
           };
-        });
+        }));
       }
     },
     filterColumns: function filterColumns() {
@@ -12451,7 +12739,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     var query = [];
     query.push({
@@ -12471,13 +12759,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       query: this.$queryBuilder(null, null, ["user", "job"], query)
     });
     Promise.all([p1, p2, p3]).then(function () {
-      _this2.makeDraggable();
+      _this3.makeDraggable();
 
-      _this2.stopLoading();
+      _this3.stopLoading();
     }).catch(function (error) {
       console.log(error);
 
-      _this2.stopLoading();
+      _this3.stopLoading();
     });
   },
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
@@ -12502,7 +12790,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     fetchData: function fetchData() {
-      var _this3 = this;
+      var _this4 = this;
 
       var query = _toConsumableArray(this.query);
 
@@ -12516,13 +12804,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         resource: "schedule",
         query: this.$queryBuilder(null, null, ["user", "job"], query)
       }).then(function () {
-        _this3.makeDraggable();
+        _this4.makeDraggable();
 
-        _this3.stopLoading();
+        _this4.stopLoading();
       }).catch(function (error) {
         console.log(error);
 
-        _this3.stopLoading();
+        _this4.stopLoading();
       });
     },
     // DP Handlers
@@ -12549,7 +12837,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(event);
     },
     draggHandler: function draggHandler(event) {
-      var _this4 = this;
+      var _this5 = this;
 
       console.log("drag");
       console.log(event);
@@ -12567,15 +12855,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         resource: "schedule",
         data: item
       }).then(function (respond) {
-        _this4.showMessage("Event created successfuly.", "success");
+        _this5.showMessage("Event created successfuly.", "success");
 
-        _this4.$emit("input", false);
+        _this5.$emit("input", false);
       }).catch(function (error) {
-        _this4.showMessage(error.message, "danger");
+        _this5.showMessage(error.message, "danger");
       });
     },
     moveHandler: function moveHandler(event) {
-      var _this5 = this;
+      var _this6 = this;
 
       console.log("move");
       console.log(event);
@@ -12588,13 +12876,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           end: event.newEnd
         }
       }).then(function () {
-        _this5.showMessage("Event updated successfuly.", "success");
+        _this6.showMessage("Event updated successfuly.", "success");
       }).catch(function (error) {
-        _this5.showMessage(error.message, "danger");
+        _this6.showMessage(error.message, "danger");
       });
     },
     resizeHandler: function resizeHandler(event) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.update({
         resource: "schedule",
@@ -12604,9 +12892,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           end: event.newEnd
         }
       }).then(function () {
-        _this6.showMessage("Event updated successfuly.", "success");
+        _this7.showMessage("Event updated successfuly.", "success");
       }).catch(function (error) {
-        _this6.showMessage(error.message, "danger");
+        _this7.showMessage(error.message, "danger");
       });
     }
   })
@@ -13100,6 +13388,83 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -67375,7 +67740,9 @@ var render = function() {
               [
                 _vm.drawerTitle !== ""
                   ? _c("div", { staticClass: "title text-center" }, [
-                      _vm._v(_vm._s(_vm.drawerTitle))
+                      _vm._v(
+                        "\n        " + _vm._s(_vm.drawerTitle) + "\n      "
+                      )
                     ])
                   : _vm._e(),
                 _vm._v(" "),
@@ -67522,7 +67889,9 @@ var staticRenderFns = [
         _c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "caption" }, [_vm._v("Loading, Please wait...")])
+      _c("div", { staticClass: "caption" }, [
+        _vm._v("\n          Loading, Please wait...\n        ")
+      ])
     ])
   }
 ]
@@ -70443,9 +70812,13 @@ var render = function() {
     [
       _c("template", { slot: "drawer" }, [
         _c("ul", { staticClass: "v-menu" }, [
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Actions")]),
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Actions\n      ")
+          ]),
           _vm._v(" "),
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Links")])
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Links\n      ")
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -72549,7 +72922,9 @@ var render = function() {
       _vm._v(" "),
       _c("template", { slot: "drawer" }, [
         _c("ul", { staticClass: "v-menu" }, [
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Actions")]),
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Actions\n      ")
+          ]),
           _vm._v(" "),
           !this.id
             ? _c("li", [
@@ -72559,7 +72934,7 @@ var render = function() {
                     staticClass: "btn btn-light",
                     on: { click: _vm.clearForm }
                   },
-                  [_vm._v("New")]
+                  [_vm._v("\n          New\n        ")]
                 )
               ])
             : _vm._e(),
@@ -72569,7 +72944,7 @@ var render = function() {
                 _c(
                   "button",
                   { staticClass: "btn btn-light", on: { click: _vm.onSubmit } },
-                  [_vm._v("Submit")]
+                  [_vm._v("\n          Submit\n        ")]
                 )
               ])
             : _vm._e(),
@@ -72579,7 +72954,7 @@ var render = function() {
                 _c(
                   "button",
                   { staticClass: "btn btn-light", on: { click: _vm.onSave } },
-                  [_vm._v("Save")]
+                  [_vm._v("\n          Save\n        ")]
                 )
               ])
             : _vm._e(),
@@ -72588,11 +72963,13 @@ var render = function() {
             _c(
               "button",
               { staticClass: "btn btn-light", on: { click: _vm.onCancel } },
-              [_vm._v("Cancel")]
+              [_vm._v("\n          Cancel\n        ")]
             )
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Links")]),
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Links\n      ")
+          ]),
           _vm._v(" "),
           _c(
             "li",
@@ -72603,7 +72980,7 @@ var render = function() {
                   staticClass: "btn btn-link",
                   attrs: { to: { name: "jobCreate" } }
                 },
-                [_vm._v("New")]
+                [_vm._v("\n          New\n        ")]
               )
             ],
             1
@@ -72618,7 +72995,7 @@ var render = function() {
                   staticClass: "btn btn-link",
                   attrs: { to: { name: "jobList" } }
                 },
-                [_vm._v("Jobs")]
+                [_vm._v("\n          Jobs\n        ")]
               )
             ],
             1
@@ -72661,7 +73038,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Comments")]
+                    [_vm._v("\n          Comments\n        ")]
                   )
                 ],
                 1
@@ -72692,7 +73069,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Activity Reports")]
+                    [_vm._v("\n          Activity Reports\n        ")]
                   )
                 ],
                 1
@@ -72723,7 +73100,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Related Jobs")]
+                    [_vm._v("\n          Related Jobs\n        ")]
                   )
                 ],
                 1
@@ -72754,7 +73131,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Related Requests")]
+                    [_vm._v("\n          Related Requests\n        ")]
                   )
                 ],
                 1
@@ -72785,7 +73162,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Related Contacts")]
+                    [_vm._v("\n          Related Contacts\n        ")]
                   )
                 ],
                 1
@@ -72841,7 +73218,9 @@ var render = function() {
                   _vm._v(" "),
                   !_vm.$v.form.title.required
                     ? _c("div", { staticClass: "invalid-feedback" }, [
-                        _vm._v("Please enter a title.")
+                        _vm._v(
+                          "\n              Please enter a title.\n            "
+                        )
                       ])
                     : _vm._e()
                 ])
@@ -72890,7 +73269,9 @@ var render = function() {
                   _vm._v(" "),
                   !_vm.$v.form.code.required
                     ? _c("div", { staticClass: "invalid-feedback" }, [
-                        _vm._v("Please enter a code.")
+                        _vm._v(
+                          "\n              Please enter a code.\n            "
+                        )
                       ])
                     : _vm._e()
                 ])
@@ -73350,7 +73731,9 @@ var render = function() {
           _c("template", { slot: "toolbar" }),
           _vm._v(" "),
           _c("ul", { staticClass: "v-menu" }, [
-            _c("li", { staticClass: "menu-title" }, [_vm._v("Actions")]),
+            _c("li", { staticClass: "menu-title" }, [
+              _vm._v("\n        Actions\n      ")
+            ]),
             _vm._v(" "),
             !this.id
               ? _c("li", [
@@ -73360,7 +73743,7 @@ var render = function() {
                       staticClass: "btn btn-light",
                       on: { click: _vm.clearForm }
                     },
-                    [_vm._v("New")]
+                    [_vm._v("\n          New\n        ")]
                   )
                 ])
               : _vm._e(),
@@ -73373,7 +73756,7 @@ var render = function() {
                       staticClass: "btn btn-light",
                       on: { click: _vm.onSubmit }
                     },
-                    [_vm._v("Submit")]
+                    [_vm._v("\n          Submit\n        ")]
                   )
                 ])
               : _vm._e(),
@@ -73383,7 +73766,7 @@ var render = function() {
                   _c(
                     "button",
                     { staticClass: "btn btn-light", on: { click: _vm.onSave } },
-                    [_vm._v("Save")]
+                    [_vm._v("\n          Save\n        ")]
                   )
                 ])
               : _vm._e(),
@@ -73392,11 +73775,13 @@ var render = function() {
               _c(
                 "button",
                 { staticClass: "btn btn-light", on: { click: _vm.onCancel } },
-                [_vm._v("Cancel")]
+                [_vm._v("\n          Cancel\n        ")]
               )
             ]),
             _vm._v(" "),
-            _c("li", { staticClass: "menu-title" }, [_vm._v("Links")]),
+            _c("li", { staticClass: "menu-title" }, [
+              _vm._v("\n        Links\n      ")
+            ]),
             _vm._v(" "),
             _c(
               "li",
@@ -73407,7 +73792,7 @@ var render = function() {
                     staticClass: "btn btn-link",
                     attrs: { to: { name: "profileList" } }
                   },
-                  [_vm._v("Profiles")]
+                  [_vm._v("\n          Profiles\n        ")]
                 )
               ],
               1
@@ -73459,7 +73844,9 @@ var render = function() {
                 _vm._v(" "),
                 !_vm.$v.form.name.required
                   ? _c("div", { staticClass: "invalid-feedback" }, [
-                      _vm._v("Profile name is required")
+                      _vm._v(
+                        "\n            Profile name is required\n          "
+                      )
                     ])
                   : _vm._e()
               ])
@@ -73553,39 +73940,51 @@ var render = function() {
       _vm._v(" "),
       _c("template", { slot: "drawer" }, [
         _c("ul", { staticClass: "v-menu" }, [
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Actions")]),
-          _vm._v(" "),
-          _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("New")])
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Actions\n      ")
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Suspend")])
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          New\n        ")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          Suspend\n        ")
+            ])
           ]),
           _vm._v(" "),
           _c("li", [
             _c(
               "button",
               { staticClass: "btn btn-light", on: { click: _vm.onSubmit } },
-              [_vm._v("Submit")]
+              [_vm._v("\n          Submit\n        ")]
             )
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Cancel")])
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          Cancel\n        ")
+            ])
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Print")])
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          Print\n        ")
+            ])
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Links")]),
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Links\n      ")
+          ]),
           _vm._v(" "),
           _c(
             "li",
             [
               _c("router-link", { attrs: { to: { name: "jobList" } } }, [
-                _vm._v("Anuual Leave")
+                _vm._v("\n          Anuual Leave\n        ")
               ])
             ],
             1
@@ -73595,7 +73994,7 @@ var render = function() {
             "li",
             [
               _c("router-link", { attrs: { to: { name: "jobList" } } }, [
-                _vm._v("Sick Leave")
+                _vm._v("\n          Sick Leave\n        ")
               ])
             ],
             1
@@ -73605,7 +74004,7 @@ var render = function() {
             "li",
             [
               _c("router-link", { attrs: { to: { name: "jobList" } } }, [
-                _vm._v("Request History")
+                _vm._v("\n          Request History\n        ")
               ])
             ],
             1
@@ -73657,35 +74056,39 @@ var render = function() {
                   },
                   [
                     _c("option", { attrs: { selected: "" } }, [
-                      _vm._v("please select leave type")
+                      _vm._v(
+                        "\n                please select leave type\n              "
+                      )
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "annual" } }, [
-                      _vm._v("Annual")
+                      _vm._v("\n                Annual\n              ")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "long service" } }, [
-                      _vm._v("Long Service")
+                      _vm._v("\n                Long Service\n              ")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "sick" } }, [
-                      _vm._v("Sick")
+                      _vm._v("\n                Sick\n              ")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "bereavement" } }, [
-                      _vm._v("Bereavement")
+                      _vm._v("\n                Bereavement\n              ")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "maternity/paternity" } }, [
-                      _vm._v("Maternity/Paternity")
+                      _vm._v(
+                        "\n                Maternity/Paternity\n              "
+                      )
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "study" } }, [
-                      _vm._v("Study")
+                      _vm._v("\n                Study\n              ")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "other" } }, [
-                      _vm._v("Other")
+                      _vm._v("\n                Other\n              ")
                     ])
                   ]
                 )
@@ -73945,39 +74348,51 @@ var render = function() {
       _vm._v(" "),
       _c("template", { slot: "drawer" }, [
         _c("ul", { staticClass: "v-menu" }, [
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Actions")]),
-          _vm._v(" "),
-          _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("New")])
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Actions\n      ")
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Suspend")])
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          New\n        ")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          Suspend\n        ")
+            ])
           ]),
           _vm._v(" "),
           _c("li", [
             _c(
               "button",
               { staticClass: "btn btn-light", on: { click: _vm.onSubmit } },
-              [_vm._v("Submit")]
+              [_vm._v("\n          Submit\n        ")]
             )
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Cancel")])
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          Cancel\n        ")
+            ])
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("button", { staticClass: "btn btn-light" }, [_vm._v("Print")])
+            _c("button", { staticClass: "btn btn-light" }, [
+              _vm._v("\n          Print\n        ")
+            ])
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Links")]),
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Links\n      ")
+          ]),
           _vm._v(" "),
           _c(
             "li",
             [
               _c("router-link", { attrs: { to: { name: "jobList" } } }, [
-                _vm._v("Anuual Leave")
+                _vm._v("\n          Anuual Leave\n        ")
               ])
             ],
             1
@@ -73987,7 +74402,7 @@ var render = function() {
             "li",
             [
               _c("router-link", { attrs: { to: { name: "jobList" } } }, [
-                _vm._v("Sick Leave")
+                _vm._v("\n          Sick Leave\n        ")
               ])
             ],
             1
@@ -73997,7 +74412,7 @@ var render = function() {
             "li",
             [
               _c("router-link", { attrs: { to: { name: "jobList" } } }, [
-                _vm._v("Reimbursement")
+                _vm._v("\n          Reimbursement\n        ")
               ])
             ],
             1
@@ -74007,7 +74422,7 @@ var render = function() {
             "li",
             [
               _c("router-link", { attrs: { to: { name: "jobList" } } }, [
-                _vm._v("History")
+                _vm._v("\n          History\n        ")
               ])
             ],
             1
@@ -74385,13 +74800,7 @@ var render = function() {
         [
           _c("ts-table", {
             staticClass: "table table-striped",
-            attrs: {
-              data: _vm.requests,
-              header: _vm.header,
-              selection: false,
-              "order-by": "type",
-              order: "asc"
-            },
+            attrs: { data: _vm.requests, header: _vm.header, selection: false },
             scopedSlots: _vm._u([
               {
                 key: "header",
@@ -78247,13 +78656,15 @@ var render = function() {
       _vm._v(" "),
       _c("template", { slot: "drawer" }, [
         _c("ul", { staticClass: "v-menu" }, [
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Actions")]),
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Actions\n      ")
+          ]),
           _vm._v(" "),
           _c("li", [
             _c(
               "button",
               { staticClass: "btn btn-light", on: { click: _vm.onSave } },
-              [_vm._v("Save")]
+              [_vm._v("\n          Save\n        ")]
             )
           ]),
           _vm._v(" "),
@@ -78268,7 +78679,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("Submit")]
+              [_vm._v("\n          Submit\n        ")]
             )
           ]),
           _vm._v(" "),
@@ -78284,7 +78695,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("Generate")]
+              [_vm._v("\n          Generate\n        ")]
             )
           ]),
           _vm._v(" "),
@@ -78292,11 +78703,13 @@ var render = function() {
             _c(
               "button",
               { staticClass: "btn btn-light", on: { click: _vm.onCancel } },
-              [_vm._v("Cancel")]
+              [_vm._v("\n          Cancel\n        ")]
             )
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "menu-title" }, [_vm._v("Links")]),
+          _c("li", { staticClass: "menu-title" }, [
+            _vm._v("\n        Links\n      ")
+          ]),
           _vm._v(" "),
           this.timesheet
             ? _c(
@@ -78313,7 +78726,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Comments")]
+                    [_vm._v("\n          Comments\n        ")]
                   )
                 ],
                 1
@@ -78591,11 +79004,19 @@ var render = function() {
                                   _c(
                                     "div",
                                     { staticClass: "ts-status__lable" },
-                                    [_vm._v("STATUS")]
+                                    [
+                                      _vm._v(
+                                        "\n                  STATUS\n                "
+                                      )
+                                    ]
                                   ),
                                   _vm._v(" "),
                                   _c("div", { staticClass: "ts-status__val" }, [
-                                    _vm._v(_vm._s(this.status.toUpperCase()))
+                                    _vm._v(
+                                      "\n                  " +
+                                        _vm._s(this.status.toUpperCase()) +
+                                        "\n                "
+                                    )
                                   ])
                                 ]
                               ),
@@ -78610,16 +79031,22 @@ var render = function() {
                                   _c(
                                     "div",
                                     { staticClass: "ts-status__lable" },
-                                    [_vm._v("TOTAL")]
+                                    [
+                                      _vm._v(
+                                        "\n                  TOTAL\n                "
+                                      )
+                                    ]
                                   ),
                                   _vm._v(" "),
                                   _c("div", { staticClass: "ts-status__val" }, [
                                     _vm._v(
-                                      _vm._s(
-                                        this.totalHours.slice(0, 5) == "00:00"
-                                          ? ""
-                                          : this.totalHours.slice(0, 5)
-                                      )
+                                      "\n                  " +
+                                        _vm._s(
+                                          this.totalHours.slice(0, 5) == "00:00"
+                                            ? ""
+                                            : this.totalHours.slice(0, 5)
+                                        ) +
+                                        "\n                "
                                     )
                                   ])
                                 ]
@@ -78722,7 +79149,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: { click: _vm.onSubmit }
                   },
-                  [_vm._v("Submitt")]
+                  [_vm._v("\n          Submitt\n        ")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -78736,7 +79163,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Cancel")]
+                  [_vm._v("\n          Cancel\n        ")]
                 )
               ])
             ],

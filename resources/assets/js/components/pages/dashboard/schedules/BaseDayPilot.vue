@@ -351,7 +351,10 @@ export default {
     };
 
     dp.onBeforeEventRender = function(args) {
-      args.data.html = `<div class=''>${args.data.text}</div>
+      let item = dp.events.list.find(item => item.id == args.data.id);
+      args.data.cssClass = item.type;
+      args.data.html = `
+        <div class=''>${args.data.text}</div>
         <div class=''>${ args.data.start.toString('hh:mm') }</div>
         <div class=''>${ args.data.end.toString('hh:mm') }</div>`;
     };
