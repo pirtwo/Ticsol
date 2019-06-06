@@ -25,9 +25,16 @@ class CommentCriteria extends Criteria
         if($this->entity == 'job'){
             $model->where('job_id', $this->id);
         }
-        if($this->entity == 'request'){
+        else if($this->entity == 'request'){
             $model->where('request_id', $this->id);
+        } 
+        else if($this->entity == 'timesheet'){
+            $model->where('timesheet_id', $this->id);
         }
+        else{
+            return $model;
+        }
+        
         $model->where('parent_id', null)->orderby('created_at', 'desc');
 
         return $model;

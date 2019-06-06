@@ -22,7 +22,8 @@ class Comment extends Model
     protected $fillable = [ 
         'job_id',          
         'parent_id',
-        'request_id',     
+        'request_id',   
+        'timesheet_id',   
         'creator_id', 
         'body',        
     ];
@@ -73,6 +74,14 @@ class Comment extends Model
     public function request()
     {
         return $this->belongsTo(Request::class, 'request_id');
+    }
+
+    /**
+     * Assosiated timesheet to current comment.
+     */
+    public function timesheet()
+    {
+        return $this->belongsTo(Request::class, 'timesheet_id');
     }
 
     /**

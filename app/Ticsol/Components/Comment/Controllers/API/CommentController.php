@@ -87,7 +87,10 @@ class CommentController extends Controller
             }
             else if($request->input('entity') == 'request'){
                 $comment->fill($request->only('parent_id', 'request_id'));
+            }else if($request->input('entity') == 'timesheet'){
+                $comment->fill($request->only('parent_id', 'timesheet_id'));
             }
+            
             $comment->body = \strip_tags($request->input('body'));
 
             $comment->save();

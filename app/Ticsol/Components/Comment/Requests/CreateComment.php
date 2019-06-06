@@ -25,9 +25,10 @@ class CreateComment extends FormRequest
     {
         return [
             'body'              => 'required|string',   
-            'entity'            => 'required|string|in:job,request',         
+            'entity'            => 'required|string|in:job,request,timesheet',         
             'job_id'            => 'required_if:entity,job|integer|exists:ts_jobs,id',
             'request_id'        => 'required_if:entity,request|integer|exists:ts_requests,id', 
+            'timesheet_id'      => 'required_if:entity,timesheet|integer|exists:ts_timesheets,id', 
             'parent_id'         => 'nullable|integer|exists:ts_comments,id',          
         ];
     }
