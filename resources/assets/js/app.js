@@ -11,10 +11,10 @@ import App from "./components/App.vue";
 /* plugins */
 import formFeedback from './plugin/formFeedback-plugin.js';
 import queryBuilder from './plugin/queryBuilder-plugin';
-import VueBase from './plugin/vue-base-plugin';
+import TicsolVue from './plugin/ticsol-vue-plugin';
 Vue.use(formFeedback);
 Vue.use(queryBuilder);
-Vue.use(VueBase);
+Vue.use(TicsolVue);
 Vue.use(Vuelidate);
 
 sync(store, router);

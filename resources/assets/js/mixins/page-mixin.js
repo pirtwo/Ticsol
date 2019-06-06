@@ -42,11 +42,11 @@ export default {
             });
         },
 
-        loadingStart() {
+        startLoading() {
             this.isLoading = true;
         },
 
-        loadingStop() {
+        stopLoading() {
             this.isLoading = false;
         }
     }

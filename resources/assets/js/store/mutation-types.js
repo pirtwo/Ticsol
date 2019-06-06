@@ -3,6 +3,7 @@
 export const APP_CONNECTION = "APP_CONNECTION";
 export const APP_LOG_PUSH = "APP_ERRORS_PUSH";
 export const APP_LOG_CLEAR = "APP_ERRORS_CLEAR";
+export const APP_THEME = "APP_THEME";
 export const APP_LOADING = "APP_LOADING";
 export const APP_DRAWER = "APP_DRAWER";
 export const APP_TOOLBAR = "APP_TOOLBAR";

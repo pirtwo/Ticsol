@@ -32,7 +32,11 @@ export const userModule = {
 
         getAvatar(state) {
             if (state.info === null) return '';
-            return state.info.meta.avatar;
+            if (state.info.meta.avatar) {
+                return state.info.meta.avatar;
+            } else {
+                return '/img/avatar/default.png';
+            }
         },
 
         getSettings(state) {
