@@ -33,16 +33,16 @@ class CreateTsTimesheetsTable extends Migration
         
         Schema::table('ts_timesheets', function(Blueprint $table) {
             $table->foreign('client_id')
-                ->refrence('id')
+                ->references('id')
                 ->on('ts_clients')
                 ->onDelete('cascade');
 
             $table->foreign('creator_id')
-                ->refrence('id')
+                ->references('id')
                 ->on('ts_users');
             
             $table->foreign('request_id')
-                ->refrence('id')
+                ->references('id')
                 ->on('ts_requests');
         });
         

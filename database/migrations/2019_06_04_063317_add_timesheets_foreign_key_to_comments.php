@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTimesheetsForeignKeyToSchedules extends Migration
+class AddTimesheetsForeignKeyToComments extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddTimesheetsForeignKeyToSchedules extends Migration
      */
     public function up()
     {
-        Schema::table('ts_schedules', function (Blueprint $table) {
+        Schema::table('ts_comments', function (Blueprint $table) {
             $table->unsignedInteger('timesheet_id')
-                ->after('job_id')
+                ->after('request_id')
                 ->nullable();
 
             $table->foreign('timesheet_id')

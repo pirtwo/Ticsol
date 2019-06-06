@@ -23,9 +23,7 @@ class CreateTsRequestsTable extends Migration
             $table->unsignedInteger('assigned_id')
                 ->nullable();
             $table->unsignedInteger('job_id')
-                ->nullable();            
-            $table->unsignedInteger('schedule_id')
-                ->nullable();
+                ->nullable(); 
             $table->unsignedInteger('form_id')
                 ->nullable();
 
@@ -56,11 +54,7 @@ class CreateTsRequestsTable extends Migration
 
             $table->foreign('job_id')
                 ->references('id')
-                ->on('ts_jobs');
-                
-            $table->foreign('schedule_id')
-                ->references('id')
-                ->on('ts_schedules');
+                ->on('ts_jobs');                
         });
     }
 
