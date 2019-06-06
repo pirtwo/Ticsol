@@ -86,16 +86,22 @@ export const router = new VueRouter({
                             props: true,
                             name: 'leaveDetails',
                             meta: { requireAuth: true },
-                            path: 'leave/details/:id?',
+                            path: 'leave/:id/details',
                             component: require('./components/pages/dashboard/requests/LeaveRequest.vue').default,
                         },
                         {
-                            props: true,
-                            name: 'reqReimb',
+                            name: 'reimbCreate',
                             meta: { requireAuth: true },
-                            path: 'reimbursement/:id?',
+                            path: 'reimbursement',
                             component: require('./components/pages/dashboard/requests/ReimbRequest.vue').default,
-                        }
+                        },
+                        {
+                            props: true,
+                            name: 'reimbDetails',
+                            meta: { requireAuth: true },
+                            path: 'reimbursement/:id/details',
+                            component: require('./components/pages/dashboard/requests/ReimbRequest.vue').default,
+                        },
                     ]
                 },               
 
@@ -128,8 +134,15 @@ export const router = new VueRouter({
                             path: 'create',
                             name: 'timesheetCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/timesheets/TimesheetCreate.vue').default,
+                            component: require('./components/pages/dashboard/timesheets/TimesheetModify.vue').default,
                         },
+                        {
+                            path: ':id/:start/:end/details',
+                            name: 'timesheetDetails',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/timesheets/TimesheetModify.vue').default,
+                        }  
                     ]
                 },
 
@@ -333,6 +346,22 @@ export const router = new VueRouter({
                             props: true,
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/comments/CommentList.vue').default,
+                        }]
+                },
+
+                // Settings
+                {
+                    path: '/settings',
+                    name: 'settings',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'roleList' },
+                    component: require('./components/pages/dashboard/Settings/Settings.vue').default,
+                    children: [
+                        {
+                            path: '/settings',
+                            name: 'settingModify',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/Settings/SettingModify.vue').default,
                         }]
                 },
             ]
