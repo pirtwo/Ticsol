@@ -1,12 +1,12 @@
-
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
-
 .scheduler_green_main 
 {
     border: 1px solid rgba(000,000,000,0.1);
     font-size: 10px;
-	font-family: 'Roboto Mono' !important;
-	background-color: rgba(255,255,255,0.7);		
+		background-color: rgba(255,255,255,0.7);		
+}
+
+.scheduler_green_event{
+	height: auto !important;
 }
 
 .scheduler_green_event_inner  
@@ -15,7 +15,7 @@
 	font-size: 12px;
 	color: #ffffff;
 	padding: 6px;
-	height: auto;
+	height: auto !important;
 	
 	color: #ffffff;
 	background: #a2c200;
