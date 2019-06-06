@@ -17,10 +17,8 @@ class Contact extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'client_id',
-        'user_id',        
-        'creator_id',
+    protected $fillable = [        
+        'user_id',
         'group',
         'firstname',
         'lastname',

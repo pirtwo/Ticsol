@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Contact;
+use App\Ticsol\Components\Models\Address;
 use App\Ticsol\Components\Contact\Events;
 use App\Ticsol\Components\Contact\Requests;
 use App\Ticsol\Components\Contact\Repository;
@@ -64,34 +65,43 @@ class ContactController extends Controller
     public function store(Requests\ContactCreate $request)
     {
         try {
-            $creatorId = $request->user()->id;
-            $clientId = $request->user()->client_id;
 
             $contact = new contact();
-            $contact->client_id = $clientId;
-            $contact->creator_id = $creatorId;
-            $contact->fill($request->all());
+            $creatorId = 
+                $request->user()->id;
+            $clientId = 
+                $request->user()->client_id;
 
             DB::beginTransaction();
 
             try {
+                $contact->client_id = $clientId;
+                $contact->creator_id = $creatorId;
+                $contact->fill($request->all());
                 $contact->save();
+
                 if ($request->filled('addresses')) {
-                    $addresses = $request->input('addresses');
-                    foreach ($addresses as &$address) {
-                        $address['client_id'] = $clientId;
-                        $address['creator_id'] = $creatorId;
-                    }
-                    $contact->addresses()->createMany($addresses);
+                    $items = $request->input('addresses');
+                    foreach ($items as &$item) {
+                        $address = new Address();                        
+                        $address->client_id = $clientId;
+                        $address->creator_id = $creatorId;
+                        $address->fill($item);
+                        $address->contact()->associate($contact);
+                        $address->save();
+                    }                    
                 }
+
+                DB::commit();
+
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-
-            DB::commit();
+            
             event(new Events\ContactCreated($contact));
             return $contact;
+
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }
@@ -128,9 +138,10 @@ class ContactController extends Controller
     {
         try
         {
+            $contact = $this->repository->findBy('id', $id);
             $creatorId = $request->user()->id;
             $clientId = $request->user()->client_id;
-            $contact = $this->repository->findBy('id', $id);
+            
             if ($contact == null) {
                 throw new NotFound();
             }
@@ -139,26 +150,31 @@ class ContactController extends Controller
 
             try {
                 $contact->update($request->all());
-                $contact->addresses()->delete();
-                if ($request->filled('addresses')) {
-                    $addresses = $request->input('addresses');
-                    foreach ($addresses as &$address) {
-                        $address['client_id'] = $clientId;
-                        $address['creator_id'] = $creatorId;
-                        unset($address['deleted_at']);
-                        unset($address['created_at']);
-                        unset($address['updated_at']);                        
-                    }
-                    $contact->addresses()->createMany($addresses);
+                
+                if ($request->has('addresses')) {
+                    $items = $request->input('addresses');
+                    $contact->addresses()->delete();
+
+                    foreach ($items as &$item) {
+                        $address = new Address();
+                        $address->client_id = $clientId;
+                        $address->creator_id = $creatorId;
+                        $address->fill($item);
+                        $address->contact()->associate($contact);
+                        $address->save();                
+                    }                    
                 }
+
+                DB::commit();
+
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-
-            DB::commit();
+            
             event(new Events\ContactUpdated($contact));
             return $contact;
+
         } catch (\Exception $e) {
             return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
         }

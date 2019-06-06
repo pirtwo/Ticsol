@@ -18,13 +18,12 @@ class Address extends Model
      * @var array
      */
     protected $fillable = [        
-        'contact_id',
-        'client_id',
-        'creator_id',
+        'contact_id',        
         'unit',
         'number',
         'street',
         'suburb',
+        'state',
         'country',
         'postcode',
     ];

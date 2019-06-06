@@ -35,6 +35,7 @@ class ContactCreate extends FormRequest
             'addresses.*.number'    => 'required_with:addresses|string',
             'addresses.*.street'    => 'required_with:addresses|string',
             'addresses.*.suburb'    => 'required_with:addresses|string',
+            'addresses.*.state'     => 'required_with:addresses|string',
             'addresses.*.country'   => 'required_with:addresses|string',
             'addresses.*.postcode'  => 'required_with:addresses|string',
         ];

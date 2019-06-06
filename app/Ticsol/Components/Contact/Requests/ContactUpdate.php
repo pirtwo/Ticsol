@@ -24,7 +24,20 @@ class ContactUpdate extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id'               => 'nullable|numeric|exists:ts_users,id',
+            'group'                 => 'nullable|string|in:user,customer',
+            'firstname'             => 'nullable|string',
+            'lastname'              => 'nullable|string',
+            'telephone'             => 'nullable|string',
+            'mobilephone'           => 'nullable|string',
+            'addresses'             => 'nullable|array',
+            'addresses.*.unit'      => 'nullable|string',
+            'addresses.*.number'    => 'required_with:addresses|string',
+            'addresses.*.street'    => 'required_with:addresses|string',
+            'addresses.*.suburb'    => 'required_with:addresses|string',
+            'addresses.*.state'     => 'required_with:addresses|string',
+            'addresses.*.country'   => 'required_with:addresses|string',
+            'addresses.*.postcode'  => 'required_with:addresses|string',
         ];
     }
 
