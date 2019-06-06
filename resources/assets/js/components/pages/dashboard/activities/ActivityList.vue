@@ -1,11 +1,11 @@
 <template>
-  <nav-view 
+  <app-main 
     :scrollbar="true" 
     :loading="isLoading" 
     padding="p-2"
   >
     <template slot="toolbar">
-      <pagination-view 
+      <ts-pagination 
         v-model="pager" 
         :page-count="pager.pageCount"
       />
@@ -32,7 +32,7 @@
     </template>
 
     <template slot="content">
-      <table-view 
+      <ts-table 
         class="table table-striped"
         :data="reports" 
         :header="header" 
@@ -64,16 +64,13 @@
           <td>{{ dateToString(item.from) }}</td>
           <td>{{ dateToString(item.till) }}</td>
         </template> 
-      </table-view>
+      </ts-table>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/BaseTable.vue";
-import PaginationView from "../../../framework/BasePagination.vue";
 import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
@@ -82,9 +79,6 @@ export default {
   mixins:[pageMixin],
 
   components: {
-    "nav-view": NavView,
-    "table-view": TableView,
-    "pagination-view": PaginationView
   },
 
   props: ["col", "opt", "val"],
@@ -130,7 +124,7 @@ export default {
     ...mapActions({ fetch: "resource/list" }),
 
     feedTable() {
-      this.loadingStart();
+      this.startLoading();
       this.fetch({
         resource: "activity",
         query: {
@@ -142,11 +136,11 @@ export default {
       })
         .then(respond => {         
           this.pager.pageCount = respond.last_page;
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     },
 

@@ -1,5 +1,5 @@
 <template>
-  <nav-view
+  <app-main
     :scrollbar="true"
     :loading="isLoading"
     padding="p-5"
@@ -133,7 +133,7 @@
       <br>
       <hr>
 
-      <ts-datepicker
+      <ts-datescroller
         v-model="weekStart"
         range="Week"
       />
@@ -313,26 +313,22 @@
         </template>
       </ts-modal>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { required } from "vuelidate/lib/validators";
-import NavView from "../../../framework/NavView.vue";
 import pageMixin from "../../../../mixins/page-mixin";
-import DPCalendarVue from "../../../Base/DPCalendar.vue";
-import BaseDatePickerVue from "../../../framework/BaseDatePicker.vue";
+import DPCalendarVue from "../../../base/DPCalendar.vue";
 
 export default {
   name: "UserList",
 
   mixins: [pageMixin],
 
-  components: {
-    "nav-view": NavView,
+  components: {    
     calendar: DPCalendarVue,
-    "ts-datepicker": BaseDatePickerVue
   },
 
   data() {

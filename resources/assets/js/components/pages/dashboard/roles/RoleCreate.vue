@@ -1,5 +1,5 @@
 <template>
-  <nav-view 
+  <app-main 
     :scrollbar="true" 
     :loading="isLoading" 
     padding="p-5"
@@ -228,12 +228,11 @@
         </div>
       </form>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import NavView from "../../../framework/NavView.vue";
 import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
@@ -242,7 +241,6 @@ export default {
   mixins:[pageMixin],
 
   components: {
-    "nav-view": NavView
   },
 
   data() {

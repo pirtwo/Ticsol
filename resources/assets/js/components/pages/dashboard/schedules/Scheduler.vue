@@ -1,10 +1,11 @@
 <template>
-  <nav-view
+  <app-main
+    :drawer-toolbar="true"
     :scrollbar="false"
     :loading="isLoading"
   >
     <template slot="toolbar">
-      <date-picker
+      <ts-datescroller
         v-model="start"
         :range="range"
         @input="fetchData"
@@ -84,13 +85,11 @@
               :data-id="res.id"
               class="res-user"
             >
-              <a href="#">
-                <img
-                  :src="res.meta.avatar"
-                  class="rounded"
-                >
-                <span class="caption">{{ res.name }}</span>
-              </a>
+              <img
+                :src="res.meta.avatar"
+                class="rounded"
+              >
+              <span class="caption">{{ res.name }}</span>
             </li>
           </template>
         </template>
@@ -101,11 +100,9 @@
               :data-id="res.id"
               class="res-job"
             >
-              <a href="#">
-                <span class="caption">{{ res.title }}</span>
-                <br>
-                <span class="caption">Code: {{ res.code }}</span>
-              </a>
+              <span class="caption">{{ res.title }}</span>
+              <br>
+              <span class="caption">Code: {{ res.code }}</span>
             </li>
           </template>
         </template>
@@ -130,7 +127,7 @@
         :time-header-auto-fit="false"
         :time-header-height="35"
         :height="dpHeight"
-        :event-height="45"
+        :event-height="57"
         :events="scheduleEvents"
         :resource="scheduleResources"
       />
@@ -153,13 +150,11 @@
         @apply="fetchData"
       />
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import DatePicker from "../../../framework/BaseDatePicker.vue";
 import BaseDayPilot from "../schedules/BaseDayPilot.vue";
 import AssignModal from "../schedules/AssignModal.vue";
 import UpdateModal from "../schedules/UpdateModal.vue";
@@ -171,9 +166,7 @@ export default {
   mixins: [pageMixin],
 
   components: {
-    "nav-view": NavView,
     "day-pilot": BaseDayPilot,
-    "date-picker": DatePicker,
     "assign-modal": AssignModal,
     "update-modal": UpdateModal
   },
@@ -239,8 +232,8 @@ export default {
           return {
             id: item.id,
             resource: item.user_id,
-            start: item.start,
-            end: item.end,
+            start: new DayPilot.Date(item.start),
+            end: new DayPilot.Date(item.end),
             text: item.job.title
           };
         });
@@ -249,8 +242,8 @@ export default {
           return {
             id: item.id,
             resource: item.job_id,
-            start: item.start,
-            end: item.end,
+            start: new DayPilot.Date(item.start),
+            end: new DayPilot.Date(item.end),
             text: item.user.name
           };
         });
@@ -317,15 +310,15 @@ export default {
     }
   },
 
-  mounted() {    
+  mounted() {
     let query = [];
-      query.push({
-        opt: "inRange",
-        col: "",
-        val: `${this.startDate},${this.endDate}`
-      });
+    query.push({
+      opt: "inRange",
+      col: "",
+      val: `${this.startDate},${this.endDate}`
+    });
 
-    this.loadingStart();
+    this.startLoading();
     let p1 = this.fetchList({ resource: "user" });
     let p2 = this.fetchList({ resource: "job" });
     let p3 = this.fetchList({
@@ -335,11 +328,11 @@ export default {
     Promise.all([p1, p2, p3])
       .then(() => {
         this.makeDraggable();
-        this.loadingStop();
+        this.stopLoading();
       })
       .catch(error => {
         console.log(error);
-        this.loadingStop();
+        this.stopLoading();
       });
   },
 
@@ -374,18 +367,18 @@ export default {
         val: `${this.startDate},${this.endDate}`
       });
 
-      this.loadingStart();
+      this.startLoading();
       this.fetchList({
         resource: "schedule",
         query: this.$queryBuilder(null, null, ["user", "job"], query)
       })
         .then(() => {
           this.makeDraggable();
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     },
 

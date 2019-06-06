@@ -1,11 +1,11 @@
 <template>
-  <nav-view 
+  <app-main 
     :scrollbar="true" 
     :loading="isLoading" 
     padding="p-2"
   >
     <template slot="toolbar">
-      <pagination-view 
+      <ts-pagination
         v-model="pager" 
         :page-count="pager.pageCount"
       />
@@ -39,7 +39,7 @@
     </template>
 
     <template slot="content">
-      <table-view
+      <ts-table
         class="table table-striped"        
         :data="roles"
         :header="header"
@@ -71,7 +71,7 @@
           <td>{{ item.created_at }}</td>
           <td>{{ item.updated_at }}</td>
         </template>
-      </table-view>
+      </ts-table>
       <ts-filter
         v-model="query"
         :show.sync="showFilter"
@@ -79,14 +79,11 @@
         @apply="feedTable"
       />
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/BaseTable.vue";
-import PaginationView from "../../../framework/BasePagination.vue";
 import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
@@ -95,9 +92,6 @@ export default {
   mixins: [pageMixin],
 
   components: {
-    "nav-view": NavView,
-    "table-view": TableView,
-    "pagination-view": PaginationView
   },
 
   props: ["col", "opt", "val"],
@@ -166,7 +160,7 @@ export default {
     ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-       this.loadingStart();
+       this.startLoading();
       if (this.opt)
         this.query.push({ opt: this.opt, col: this.col, val: this.val });
       this.fetchList({
@@ -180,11 +174,11 @@ export default {
       })
         .then(respond => {
           this.pager.pageCount = respond.last_page ? respond.last_page : 1;
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     }
   }

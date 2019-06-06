@@ -1,19 +1,16 @@
 <template>
-  <page-layout 
+  <app-layout 
     :header="false" 
     :footer="false"
   >
     <div class="wrap-content d-flex justify-content-center align-items-center">      
       <router-view />
     </div>
-  </page-layout>
+  </app-layout>
 </template>
 <script>
-import PageLayout from "../../framework/PageLayout.vue";
-export default {
-  components: {
-    "page-layout": PageLayout
-  }
+
+export default {  
 };
 </script>
 

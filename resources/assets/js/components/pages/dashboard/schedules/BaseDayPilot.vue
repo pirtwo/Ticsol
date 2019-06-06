@@ -1,5 +1,5 @@
 <template>
-  <div id="dp" />  
+  <div id="dp" />
 </template>
 
 <script>
@@ -20,12 +20,16 @@ export default {
     },
     resource: {
       type: Array,
-      default: ()=>{return []},
+      default: () => {
+        return [];
+      },
       required: true
     },
     events: {
       type: Array,
-      default: ()=>{return []},
+      default: () => {
+        return [];
+      },
       required: true
     },
     message: {
@@ -177,10 +181,10 @@ export default {
     };
   },
 
-   watch: {
+  watch: {
     height: function(value) {
       if (this.dayPilot.height !== undefined) {
-        this.dayPilot.height = value - this.timeHeaderHeight * 2 - 4;
+        this.dayPilot.height = value - this.timeHeaderHeight * 2;
         this.dayPilot.update();
       }
     },
@@ -190,16 +194,14 @@ export default {
         this.dayPilot.resources = value;
         this.dayPilot.update();
         this.makeDraggable();
-      }
-      //console.log('resource update...');
+      }      
     },
 
     events: function(value) {
       if (this.dayPilot.events !== undefined) {
         this.dayPilot.events.list = value;
         this.dayPilot.update();
-      }
-      //console.log('event update...');
+      }      
     },
 
     message: function(value) {
@@ -217,7 +219,7 @@ export default {
       this.dayPilot.update();
     },
 
-    startDate: function(value) {      
+    startDate: function(value) {
       this.dayPilot.days = this.getDays();
       this.dayPilot.startDate = value;
       this.dayPilot.update();
@@ -228,14 +230,14 @@ export default {
     let dp = (this.dayPilot = new DayPilot.Scheduler("dp"));
 
     dp.theme = "scheduler_green";
-    dp.width = "100%";
+    //dp.width = "100%";
     dp.height = this.height - this.timeHeaderHeight * 2 - 4;
     dp.heightSpec = "Fixed";
     dp.resources = this.resource;
     dp.events.list = this.events;
 
     dp.durationBarVisible = true;
-    dp.durationBarMode = "PercentComplete";
+    dp.durationBarMode = "Duration";
 
     // Time Axies
     dp.days = this.days || this.getDays();
@@ -257,6 +259,7 @@ export default {
     dp.autoScroll = this.autoScroll;
 
     // Events
+    dp.eventMarginBottom = 0;
     dp.eventHeight = this.eventHeight;
     dp.floatingEvents = this.floatingLable;
     dp.eventMovingStartEndEnabled = this.movingLable;
@@ -269,6 +272,7 @@ export default {
     dp.eventStackingLineHeight = this.eventStackLineHeight;
 
     // Rows
+    dp.rowMarginBottom = 20;
     dp.rowHeaderHideIconEnabled = true;
     dp.rowHeaderWidth = 120;
     dp.rowHeaderWidthMarginLeft = 0;
@@ -281,47 +285,31 @@ export default {
     dp.timeRangeSelectedHandling = "Enabled";
     dp.eventMoveHandling = "Update";
     dp.eventResizeHandling = "Update";
+    dp.eventResizedHandling = "Update";
     dp.eventDeleteHandling = "Disabled";
     dp.eventClickHandling = "Update";
     dp.eventHoverHandling = "Disabled";
 
     // Event Handlers
-    dp.onEventMoved = this.eventMoveHandler;
-    dp.onEventClicked = this.eventClickHandler;
-    dp.onEventResized = this.eventResizeHandler;
-    dp.onEventDeleted = this.eventDeleteHandler;
-    dp.onTimeRangeSelected = this.eventCreateHandler;
+    dp.onEventMoved = this.eventMovedHandler;
+    dp.onEventClicked = this.eventClickedHandler;
+    dp.onEventResize = this.eventResizeHandler;
+    dp.onEventResized = this.eventResizedHandler;
+    dp.onEventDeleted = this.eventDeletedHandler;    
+    dp.onTimeRangeSelected = this.eventCreatedHandler;
 
     // dp.onEventMove = this.eventMoveHandler;
     // dp.onEventClicke = this.eventClickHandler;
     // dp.onEventResize = this.eventResizeHandler;
     // dp.onEventDelete = this.eventDeleteHandler;
-    // dp.onTimeRangeSelect = this.eventCreateHandler;
+    // dp.onTimeRangeSelect = this.eventCreateHandler;    
 
-    dp.contextMenu = new window.DayPilot.Menu({
-      items: [
-        {
-          text: "Delete",
-          onClick: function(args) {
-            var dp = args.source.calendar;
-            dp.events.remove(args.source);
-          }
-        }
-      ]
-    });
-
-    dp.bubble = new window.DayPilot.Bubble({
-      onLoad: function(args) {
-        // if event object doesn't specify "bubbleHtml" property
-        // this onLoad handler will be called to provide the bubble HTML
-        //console.log(args);
-        args.html = "Event details";
-      }
-    });
-
-    dp.onBeforeTimeHeaderRender = function(args) {      
+    dp.onBeforeTimeHeaderRender = function(args) {
       if (args.header.level === 0) {
-        if (args.header.start.getDayOfWeek() == 0 && (args.header.start.getMonth() == args.header.end.getMonth())) {
+        if (
+          args.header.start.getDayOfWeek() == 0 &&
+          args.header.start.getMonth() == args.header.end.getMonth()
+        ) {
           args.header.html =
             "<span class='header_weekDay_weekRange'>" +
             args.header.start.getDay() +
@@ -363,14 +351,15 @@ export default {
     };
 
     dp.onBeforeEventRender = function(args) {
-      args.data.html =
-        `<span class='event_title'>${args.data.text}</span>`;
+      args.data.html = `<div class=''>${args.data.text}</div>
+        <div class=''>${ args.data.start.toString('hh:mm') }</div>
+        <div class=''>${ args.data.end.toString('hh:mm') }</div>`;
     };
 
     dp.init();
     this.makeDraggable();
   },
-  
+
   methods: {
     getDays() {
       switch (this.range) {
@@ -453,18 +442,16 @@ export default {
       }
     },
 
-    eventCreateHandler(arg) {
-      //console.log(arg);
+    eventCreatedHandler(arg) {      
       this.$emit("range-selected", {
         resourceId: arg.resource,
         start: arg.start,
-        end: arg.end
+        end: arg.end.addDays(-1)
       });
       this.dayPilot.clearSelection();
     },
 
-    eventClickHandler(arg) {
-      //console.log(arg);
+    eventClickedHandler(arg) {      
       if (arg.e.isEvent) {
         this.$emit("event-clicked", {
           eventId: arg.e.id(),
@@ -476,8 +463,8 @@ export default {
       }
     },
 
-    eventMoveHandler(arg) {
-      //console.log(arg);
+    eventMovedHandler(arg) {   
+      console.log(arg);   
       if (arg.external) {
         this.$emit("event-dragged", {
           eventId: arg.e.id(),
@@ -504,7 +491,32 @@ export default {
       });
     },
 
-    eventResizeHandler(arg) {      
+    eventResizeHandler(arg) {
+      console.log(arg);
+      if (arg.e.start() !== arg.newStart) {         
+        arg.newStart =
+          arg.newStart.toString().substr(0, 10) +
+          "T" +
+          arg.e
+            .start()
+            .toString()
+            .substr(11);
+      }
+
+      if (arg.e.end() !== arg.newEnd) {        
+        arg.newEnd = arg.newEnd.addDays(-1);
+        arg.newEnd = new DayPilot.Date(
+          arg.newEnd.toString().substr(0, 10) +
+          "T" +
+          arg.e
+            .end()
+            .toString()
+            .substr(11));
+      } 
+    },
+
+    eventResizedHandler(arg) {
+      console.log(arg);
       this.$emit("event-resized", {
         eventId: arg.e.id(),
         newStart: arg.newStart,
@@ -512,7 +524,7 @@ export default {
       });
     },
 
-    eventDeleteHandler(arg) {
+    eventDeletedHandler(arg) {
       console.log("delete event...");
       this.$emit("event-deleted", {});
     }

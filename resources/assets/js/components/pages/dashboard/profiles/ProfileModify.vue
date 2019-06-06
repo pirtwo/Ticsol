@@ -1,5 +1,5 @@
 <template>
-  <nav-view
+  <app-main
     :scrollbar="true"
     :loading="isLoading"
     padding="p-2"
@@ -34,7 +34,7 @@
           >
             Save
           </button>
-        </li>        
+        </li>
         <li>
           <button
             class="btn btn-light"
@@ -87,14 +87,13 @@
         :control-order="[]"
       />
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { required } from "vuelidate/lib/validators";
-import NavView from "../../../framework/NavView.vue";
-import FormBuilder from "../../../framework/FormBuilder.vue";
+import FormBuilder from "../../../base/FormBuilder.vue";
 import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
@@ -103,7 +102,6 @@ export default {
   mixins: [pageMixin],
 
   components: {
-    "nav-view": NavView,
     "form-builder": FormBuilder
   },
 
@@ -125,40 +123,42 @@ export default {
     }
   },
 
-  beforeRouteUpdate(to, from, next) {
-    this.$data = {};
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.clearForm();
+    });
   },
 
   mounted() {
     if (this.id) {
-      this.loadingStart();
+      this.startLoading();
       this.fetchItem({ resource: "form", id: this.id })
         .then(respond => {
           this.form.name = respond.name;
           this.frmBuilder.actions.setData(JSON.stringify(respond.schema));
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     }
   },
 
   methods: {
-    ...mapActions({      
+    ...mapActions({
       create: "resource/create",
       update: "resource/update",
-      fetchItem: "resource/show",
+      fetchItem: "resource/show"
     }),
 
     onSubmit(e) {
-      e.preventDefault();      
+      e.preventDefault();
       e.target.disabled = true;
 
       this.$v.$touch();
-      if(this.$v.$invalid) {
-        e.target.disabled = false;        
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
         return;
       }
 
@@ -173,7 +173,7 @@ export default {
         })
         .catch(error => {
           e.target.disabled = false;
-          this.showMessage(error.message, "danger");  
+          this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
         });
     },
@@ -206,7 +206,7 @@ export default {
 
     clearForm() {
       this.form.name = "";
-      this.form.schema = "";      
+      this.form.schema = "";
       this.$v.form.$reset();
     },
 

@@ -1,5 +1,5 @@
 <template>
-  <nav-view
+  <app-main
     :scrollbar="true"
     :loading="isLoading"
     padding="p-5"
@@ -45,6 +45,14 @@
         </li>
         <li class="menu-title">
           Links
+        </li>
+        <li>
+          <router-link
+            class="btn btn-link"
+            :to="{ name: 'jobCreate' }"
+          >
+            New
+          </router-link>
         </li>
         <li>
           <router-link
@@ -162,7 +170,7 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Parent</label>
             <div class="col-sm-10">
-              <vb-select
+              <ts-select
                 v-model="form.parent"
                 :data="jobs"
                 id="parent_id"
@@ -178,7 +186,7 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Profile</label>
             <div class="col-sm-10">
-              <vb-select
+              <ts-select
                 v-model="form.profile"
                 :data="profiles"
                 id="form_id"
@@ -194,7 +202,7 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Contacts</label>
             <div class="col-sm-10">
-              <vb-select
+              <ts-select
                 v-model="form.contacts"
                 :data="contacts"
                 :multi="true"
@@ -249,15 +257,14 @@
         />
       </form>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
-import NavView from "../../../framework/NavView.vue";
-import FormGen from "../../../framework/BaseFormGenerator/BaseFormGenerator.vue";
+import FormGen from "../../../base/formGenerator/BaseFormGenerator";
 
 export default {
   name: "JobModify",
@@ -265,7 +272,6 @@ export default {
   mixins: [PageMixin],
 
   components: {
-    "nav-view": NavView,
     "form-gen": FormGen
   },
 
@@ -366,12 +372,14 @@ export default {
     }
   },
 
-  beforeRouteUpdate(to, from, next) {
-    this.$data = {};
+  beforeRouteEnter(to, from, next) {    
+    next(vm => {
+      vm.clearForm();
+    });
   },
 
   mounted() {
-    this.loadingStart();
+    this.startLoading();
     if (this.id) {
       let p1 = this.fetch({
         resource: "job",
@@ -409,7 +417,7 @@ export default {
                 )[0].schema
               : null;
 
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
@@ -420,10 +428,10 @@ export default {
       let p3 = this.fetch({ resource: "contact" });
       Promise.all([p1, p2, p3])
         .then(() => {
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
-          this.loadingStop();
+          this.stopLoading();
           this.showMessage(error.message, "danger");
         });
     }
@@ -433,16 +441,16 @@ export default {
     ...mapActions({
       fetch: "resource/list",
       create: "resource/create",
-      update: "resource/update",      
+      update: "resource/update"
     }),
 
-    onSubmit(e) {      
+    onSubmit(e) {
       e.preventDefault();
-      e.target.disabled = true;      
+      e.target.disabled = true;
 
       this.$v.$touch();
-      if(this.$v.$invalid) {
-        e.target.disabled = false;        
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
         return;
       }
 
@@ -506,13 +514,13 @@ export default {
 
     clearForm() {
       this.schema = "";
-      this.form.title= "";
-      this.form.code= "";
-      this.form.isactive= 1;
-      this.form.parent= {};
-      this.form.profile= {};
-      this.form.contacts= [];
-      this.form.meta= null;     
+      this.form.title = "";
+      this.form.code = "";
+      this.form.isactive = 1;
+      this.form.parent = {};
+      this.form.profile = {};
+      this.form.contacts = [];
+      this.form.meta = null;
       this.$v.form.$reset();
     },
 

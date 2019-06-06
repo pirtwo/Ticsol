@@ -1,11 +1,11 @@
 <template>
-  <nav-view
+  <app-main
     :scrollbar="true"
     :loading="isLoading"
     padding="p-5"
   >
     <template slot="toolbar">
-      <vb-pagination
+      <ts-pagination
         v-model="pager"
         :page-count="pager.pageCount"
         @input="changePage"
@@ -44,7 +44,7 @@
           v-for="parent in comments"
           :key="parent.id"
         >
-          <vb-comment
+          <ts-comment
             name="VbComment"
             @reply="onReply"
             :id="parent.id"
@@ -62,7 +62,7 @@
               v-for="child in parent.childs"
               :key="child.id"
             >
-              <vb-comment
+              <ts-comment
                 name="VbComment"
                 :id="child.id"
                 :username="child.creator.name"
@@ -122,13 +122,12 @@
         </template>
       </ts-modal>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import PageMixin from "../../../../mixins/page-mixin.js";
-import NavView from "../../../framework/NavView.vue";
 import Editor from "@tinymce/tinymce-vue";
 
 export default {
@@ -137,7 +136,6 @@ export default {
   mixins: [PageMixin],
 
   components: {
-    "nav-view": NavView,
     editor: Editor
   },
 
@@ -167,7 +165,7 @@ export default {
   },
 
   mounted() {
-    this.loadingStart();
+    this.startLoading();
     $(document).on("focusin", function(e) {
       if ($(e.target).closest(".tox-dialog").length) {
         e.stopImmediatePropagation();
@@ -176,10 +174,10 @@ export default {
     this.loadComments()
       .then(respond => {
         this.pager.pageCount = respond.last_page;
-        this.loadingStop();
+        this.stopLoading();
       })
       .catch(error => {
-        this.loadingStop();
+        this.stopLoading();
         this.showMessage(error.message, "danger");
       });
   },
@@ -191,14 +189,14 @@ export default {
     }),
 
     changePage() {
-      this.loadingStart();
+      this.startLoading();
       this.loadComments()
         .then(respond => {
           this.pager.pageCount = respond.last_page;
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
-          this.loadingStop();
+          this.stopLoading();
           this.showMessage(error.message, "danger");
         });
     },

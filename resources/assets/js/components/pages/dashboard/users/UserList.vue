@@ -1,11 +1,11 @@
 <template>
-  <nav-view 
+  <app-main 
     :scrollbar="true" 
     :loading="isLoading" 
     padding="p-2"
   >
     <template slot="toolbar">
-      <pagination-view 
+      <ts-pagination 
         v-model="pager" 
         :page-count="pager.pageCount"
       />
@@ -24,7 +24,7 @@
     </template>
 
     <template slot="content">
-      <table-view 
+      <ts-table 
         class="table table-striped" 
         v-model="selects" 
         :data="users" 
@@ -89,16 +89,13 @@
             </span>
           </td>
         </template> 
-      </table-view>
+      </ts-table>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/BaseTable.vue";
-import PaginationView from "../../../framework/BasePagination.vue";
 import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
@@ -106,10 +103,7 @@ export default {
 
   mixins:[pageMixin],
 
-  components: {
-    "nav-view": NavView,
-    "table-view": TableView,
-    "pagination-view": PaginationView
+  components: {    
   },
 
   props: ["col", "opt", "val"],
@@ -156,7 +150,7 @@ export default {
     ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-      this.loadingStart();
+      this.startLoading();
       this.fetchList({
         resource: "user",
         query: {
@@ -168,11 +162,11 @@ export default {
       })
         .then(respond => {          
           this.pager.pageCount = respond.last_page;
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     }
   }

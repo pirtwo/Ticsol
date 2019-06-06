@@ -1,5 +1,5 @@
 <template>
-  <nav-view 
+  <app-main 
     :scrollbar="true" 
     :loading="isLoading" 
     padding="p-5"
@@ -31,6 +31,9 @@
           Links
         </li>
         <li>
+          <router-link :to="{ name: 'roleList' }">
+            Roles
+          </router-link>
           <router-link :to="{ name: 'roleUsers', param:{ id: this.id } }">
             Assigned Users
           </router-link>
@@ -65,13 +68,13 @@
                   type="checkbox" 
                   class="custom-control-input" 
                   id="create-profile" 
-                  value="create-job_profile"
+                  value="full-job_profile"
                 >
                 <label 
                   class="custom-control-label" 
                   for="create-profile"
                 >
-                  Can Create Job Profile</label>
+                  Can Create/Maintain Job Profile</label>
               </div>
 
               <div class="custom-control custom-checkbox">
@@ -233,12 +236,11 @@
         </div>
       </form>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import NavView from "../../../framework/NavView.vue";
 import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
@@ -247,7 +249,7 @@ export default {
   mixins:[pageMixin],
 
   components: {
-    "nav-view": NavView
+    
   },
 
   props: ["id"],
@@ -262,16 +264,16 @@ export default {
   },
   
   mounted() {
-    this.loadingStart();
+    this.startLoading();
     this.fetchItem({ resource: "role", id: this.id, query: { with: "permissions" } })
       .then(data => {
         this.form.name = data.name;
         this.form.permissions = data.permissions.map(item => item.name);
-        this.loadingStop();
+        this.stopLoading();
       })
       .catch(error => {
         console.log(error);
-        this.loadingStop();
+        this.stopLoading();
       });
   },
 

@@ -1,7 +1,7 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="loading" 
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-5"
   >
     <template slot="toolbar" />
@@ -12,30 +12,30 @@
           Actions
         </li>
         <li>
-          <button class="btn btn-light">                        
+          <button class="btn btn-light">
             New
           </button>
         </li>
         <li>
-          <button class="btn btn-light">                        
+          <button class="btn btn-light">
             Suspend
           </button>
         </li>
         <li>
-          <button 
-            class="btn btn-light" 
+          <button
+            class="btn btn-light"
             @click="onSubmit"
-          >                        
+          >
             Submit
           </button>
         </li>
         <li>
-          <button class="btn btn-light">                        
+          <button class="btn btn-light">
             Cancel
           </button>
         </li>
         <li>
-          <button class="btn btn-light">                        
+          <button class="btn btn-light">
             Print
           </button>
         </li>
@@ -71,11 +71,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Details</label>
             <div class="col-sm-10">
-              <textarea 
+              <textarea
                 v-model="form.meta.details"
-                name="meta-details" 
-                id="meta-details" 
-                class="form-control" 
+                name="meta-details"
+                id="meta-details"
+                class="form-control"
                 rows="5"
               />
             </div>
@@ -86,11 +86,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Amount</label>
             <div class="col-sm-10">
-              <input 
+              <input
                 v-model="form.meta.amount"
-                name="meta-amount" 
+                name="meta-amount"
                 id="meta-amount"
-                type="text" 
+                type="text"
                 class="form-control"
               >
             </div>
@@ -102,31 +102,31 @@
             <label class="col-sm-2 col-form-label">Incl/Excl</label>
             <div class="col-sm-10">
               <div class="custom-control custom-radio custom-control-inline">
-                <input 
+                <input
                   v-model="form.meta.tax"
-                  type="radio" 
-                  id="meta-tax1" 
+                  type="radio"
+                  id="meta-tax1"
                   name="meta-tax"
-                  value="Incl" 
-                  class="custom-control-input" 
+                  value="Incl"
+                  class="custom-control-input"
                   checked
                 >
-                <label 
-                  class="custom-control-label" 
+                <label
+                  class="custom-control-label"
                   for="meta-tax1"
                 >Incl</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input 
+                <input
                   v-model="form.meta.tax"
-                  type="radio" 
-                  id="meta-tax2" 
-                  name="meta-tax" 
-                  value="Excl" 
+                  type="radio"
+                  id="meta-tax2"
+                  name="meta-tax"
+                  value="Excl"
                   class="custom-control-input"
                 >
-                <label 
-                  class="custom-control-label" 
+                <label
+                  class="custom-control-label"
                   for="meta-tax2"
                 >Excl</label>
               </div>
@@ -138,11 +138,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Date</label>
             <div class="col-sm-10">
-              <input 
+              <input
                 v-model="form.meta.date"
                 name="meta-date"
-                id="meta-date" 
-                type="date" 
+                id="meta-date"
+                type="date"
                 class="form-control"
               >
             </div>
@@ -153,13 +153,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Expense To</label>
             <div class="col-sm-10">
-              <select-box
-                v-model="form.job_id"
+              <ts-select
+                v-model="form.job"
                 :data="jobs"
-                :multi-select="false" 
                 id="job_id"
-                name="job_id"                                                                                                                                              
-                placeholder="please select job"
+                placeholder="please select the job..."
                 search-placeholder="search..."
               />
             </div>
@@ -170,13 +168,11 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Approver</label>
             <div class="col-sm-10">
-              <select-box
-                v-model="form.assigned_id"
+              <ts-select
+                v-model="form.approver"
                 :data="users"
-                :multi-select="false" 
                 id="assigned_id"
-                name="assigned_id"                                                                                                                                              
-                placeholder="please selet approver"
+                placeholder="please selet the approver..."
                 search-placeholder="search..."
               />
             </div>
@@ -188,14 +184,14 @@
             <label class="col-sm-2 col-form-label">Attachments</label>
             <div class="col-sm-10">
               <div class="custom-file">
-                <input 
-                  name="Attachments" 
-                  id="customFile" 
-                  type="file" 
+                <input
+                  name="Attachments"
+                  id="customFile"
+                  type="file"
                   class="custom-file-input"
                 >
-                <label 
-                  class="custom-file-label" 
+                <label
+                  class="custom-file-label"
                   for="customFile"
                 >choose files</label>
               </div>
@@ -204,28 +200,26 @@
         </div>
       </form>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import Selectbox from "../../../framework/BaseSelectBox.vue";
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "ReimbRequest",
-  components: {
-    "nav-view": NavView,
-    "select-box": Selectbox
-  },
+
+  mixins: [pageMixin],
+
+  props: ["id"],
 
   data() {
     return {
-      loading: false,
+      currRequest: {},
       form: {
-        job_id: "",
-        assigned_id: "",
-        type: 'reimbursement',
+        job: {},
+        approver: {},
         meta: {
           tax: "Incl",
           date: "",
@@ -254,42 +248,76 @@ export default {
     }
   },
 
-  created() {
-    this.clear("job");
-    this.clear("user");
+  beforeRouteEnter(to, from, next) {    
+    next(vm => {
+      vm.clearForm();
+    });
   },
 
   mounted() {
-    this.loading = true;
-    let p1 = this.fetch({ resource: "job" });
-    let p2 = this.fetch({ resource: "user" });
-    Promise.all([p1, p2])
+    this.startLoading();
+    let p1 = this.list({ resource: "job" });
+    let p2 = this.list({ resource: "user" });
+    let p3 = new Promise(resolve => resolve());
+    if (this.id)
+      p3 = this.show({ resource: "request", id: this.id }).then(data => {
+        this.currRequest = data;
+      });
+
+    Promise.all([p1, p2, p3])
       .then(() => {
-        this.loading = false;
+        if (this.id) {
+          this.form.job = this.jobs.find(
+            item => item.key === this.currRequest.job_id
+          );
+          this.form.approver = this.users.find(
+            item => item.key === this.currRequest.assigned_id
+          );
+          this.form.meta.tax = this.currRequest.meta.tax;
+          this.form.meta.amount = this.currRequest.meta.amount;
+          this.form.meta.date = this.currRequest.meta.date;
+          this.form.meta.details = this.currRequest.meta.details;
+        }
+        this.stopLoading();
       })
       .catch(error => {
         console.log(error);
+        this.stopLoading();
       });
   },
 
   methods: {
     ...mapActions({
-      fetch: "resource/list",
-      clear: "resource/clearList",
+      list: "resource/list",
+      show: "resource/show",
       create: "resource/create"
     }),
 
     onSubmit(e) {
-      console.log(JSON.stringify(this.form));
-      this.create({ resource: "request", data: this.form })
+      let form = {};
+
+      form.type = "reimbursement";
+      form.status = "submitted";
+      form.job_id = this.form.job.key;
+      form.assigned_id = this.form.approver.key;
+      form.meta = this.form.meta;
+
+      this.create({ resource: "request", data: form })
         .then(() => {
-          console.log('request created successfuly.')
-          this.$router.push({ name: "inbox" });
+          this.showMessage(
+            `Reimbursement request created successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
-          console.log(error.response);
+          console.log(error);
+          this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
         });
+    },
+
+    clearForm(){
+      
     }
   }
 };

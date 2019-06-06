@@ -1,12 +1,12 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="isLoading" 
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-2"
   >
     <template slot="toolbar">
-      <pagination-view 
-        v-model="pager" 
+      <ts-pagination
+        v-model="pager"
         :page-count="pager.pageCount"
       />
     </template>
@@ -23,77 +23,85 @@
         </li>
         <li class="menu-title">
           Links
-        </li>                
+        </li>
       </ul>
     </template>
 
     <template slot="content">
-      <table-view 
-        class="table table-striped"        
-        :data="requests" 
-        :header="header" 
-        :selection="false" 
-        order-by="type" 
+      <ts-table
+        class="table table-striped"
+        :data="requests"
+        :header="header"
+        :selection="false"
+        order-by="type"
         order="asc"
       >
-        <template 
-          slot="header" 
+        <template
+          slot="header"
           slot-scope="{item}"
         >
           <div :data-orderBy="item.orderBy">
             {{ item.value }}
           </div>
         </template>
-        <template 
-          slot="body" 
+        <template
+          slot="body"
           slot-scope="{item}"
         >
           <td>
-            <router-link 
-              class="btn btn-sm btn-light" 
-              :to="{ name : getRouteName(item.type), params : { id: item.id } }"
+            <router-link
+              v-if="item.type === 'timesheet'"
+              class="btn btn-sm btn-light"
+              :to="{ name : 'timesheetDetails', params : { id: item.timesheet.id, start: item.timesheet.week_start, end: item.timesheet.week_end } }"
             >
               <i class="material-icons">visibility</i>
-            </router-link> 
+            </router-link>
+            <router-link
+              v-if="item.type === 'leave'"
+              class="btn btn-sm btn-light"
+              :to="{ name : 'leaveDetails', params : { id: item.id } }"
+            >
+              <i class="material-icons">visibility</i>
+            </router-link>
+            <router-link
+              v-if="item.type === 'reimbursement'"
+              class="btn btn-sm btn-light"
+              :to="{ name : 'reimbDetails', params : { id: item.id } }"
+            >
+              <i class="material-icons">visibility</i>
+            </router-link>
           </td>
           <td>{{ item.type }}</td>
           <td>{{ item.assigned === null ? "None" : item.assigned.name }}</td>
           <td>{{ item.status }}</td>
           <td>{{ summary(item) }}</td>
           <td>{{ item.created_at }}</td>
-        </template> 
-      </table-view>
+        </template>
+      </ts-table>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/BaseTable.vue";
-import PaginationView from "../../../framework/BasePagination.vue";
-import pageMixin from '../../../../mixins/page-mixin';
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "RequestList",
 
-  mixins:[pageMixin],
+  mixins: [pageMixin],
 
-  components: {
-    "nav-view": NavView,
-    "table-view": TableView,
-    "pagination-view": PaginationView
-  },
+  components: {},
 
   props: ["col", "opt", "val"],
 
   data() {
-    return {     
+    return {
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },      
+      },
       header: [
         { value: "", orderBy: "" },
         { value: "Type", orderBy: "type" },
@@ -112,14 +120,14 @@ export default {
     }
   },
 
-  computed:{
+  computed: {
     ...mapGetters({
       getList: "resource/getList"
     }),
 
     requests: function() {
       return this.getList("request");
-    },
+    }
   },
 
   mounted() {
@@ -130,23 +138,23 @@ export default {
     ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-      this.loadingStart();
+      this.startLoading();
       this.fetchList({
         resource: "request",
         query: {
           page: this.pager.page,
           perPage: this.pager.perPage,
-          with: "job,assigned,schedule",
+          with: "job,assigned,timesheet",
           [this.opt]: `${this.col},${this.val}`
         }
       })
-        .then(respond => {          
+        .then(respond => {
           this.pager.pageCount = respond.last_page;
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     },
 
@@ -157,21 +165,22 @@ export default {
           86400000
         ).toFixed(0);
 
-        return `From: ${item.meta.from} - Till: ${item.meta.till}  Days: ${days}`;
+        return `From: ${item.meta.from} - Till: ${
+          item.meta.till
+        }  Days: ${days}`;
       } else if (item.type === "reimbursement") {
         return `${item.meta.date} - $${item.meta.amount}`;
+      }else if(item.type === "timesheet"){
+        let from = new DayPilot.Date(item.timesheet.week_start).toString('dd/MM/yyyy');
+        let till = new DayPilot.Date(item.timesheet.week_end).toString('dd/MM/yyyy');
+        let hours = item.timesheet.total_hours.slice(0,2);
+        return `${from} - ${till}, ${hours} Hours`;
       }
     },
 
-    getDate(date){
+    getDate(date) {
       let d = new DayPilot.Date(Date.UTC(date));
       return d.toDateLocal();
-    },
-
-    getRouteName(reqType){
-      if(reqType === 'leave') return 'leaveDetails';
-      else if(reqType === 'reimbursement') return 'reqLeave';
-      else if(reqType === 'timesheet') return 'reqReimb';
     }
   }
 };

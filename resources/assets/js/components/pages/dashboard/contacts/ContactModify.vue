@@ -1,5 +1,5 @@
 <template>
-  <nav-view
+  <app-main
     :scrollbar="true"
     :loading="isLoading"
     padding="p-5"
@@ -98,7 +98,7 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">User</label>
             <div class="col-sm-10">
-              <vb-select
+              <ts-select
                 v-model="user"
                 :data="users"
                 :multi="false"
@@ -118,7 +118,7 @@
                   >
                   <span>&nbsp; {{ item.value }}</span>
                 </template>
-              </vb-select>
+              </ts-select>
               <div
                 class="invalid-feedback"
                 v-if="!$v.form.user_id.required"
@@ -220,6 +220,7 @@
           <td>{{ item.street }}</td>
           <td>{{ item.suburb }}</td>
           <td>{{ item.unit }}</td>
+          <td>{{ item.state }}</td>
           <td>{{ item.country }}</td>
           <td>{{ item.postcode }}</td>
         </template>
@@ -306,7 +307,7 @@
                 <label class="col-sm-2 col-form-lable">State</label>
                 <div class="col-sm-10">
                   <input
-                    v-model="item.unit"
+                    v-model="item.state"
                     type="text"
                     placeholder="please enter state..."
                     class="form-control"
@@ -349,13 +350,12 @@
         </template>
       </ts-grid>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
-import NavView from "../../../framework/NavView.vue";
 import pageMixin from "../../../../mixins/page-mixin";
 import GooglePlaces from "../../../Base/GooglePlaces.vue";
 
@@ -365,7 +365,6 @@ export default {
   mixins: [pageMixin],
 
   components: {
-    "nav-view": NavView,
     "goole-places": GooglePlaces
   },
 
@@ -389,8 +388,9 @@ export default {
         { key: 2, value: "Street" },
         { key: 3, value: "Suburb" },
         { key: 4, value: "Unit" },
-        { key: 5, value: "Country" },
-        { key: 6, value: "Post Code" }
+        { key: 5, value: "State" },
+        { key: 6, value: "Country" },
+        { key: 7, value: "Post Code" }
       ]
     };
   },
@@ -435,32 +435,34 @@ export default {
     }
   },
 
-  beforeRouteUpdate(to, from, next) {
-    this.$data = {};
+  beforeRouteEnter(to, from, next) {    
+    next(vm => {
+      vm.clearForm();
+    });
   },
 
   mounted() {
-    this.loadingStart();
+    this.startLoading();
     if (this.id) {
       let p1 = this.fetchItem({
         id: this.id,
         resource: "contact",
         query: { with: "addresses" }
       }).then(respond => {
-        this.loadingStop();
+        this.stopLoading();
         this.form = Object.assign({}, this.form, respond);
       });
       let p2 = this.fetchList({ resource: "user" })
         .then(() => {
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
-          this.loadingStop();
+          this.stopLoading();
           console.log(error);
         });
       Promise.all([p1, p2])
         .then(() => {
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
@@ -468,10 +470,10 @@ export default {
     } else {
       this.fetchList({ resource: "user" })
         .then(() => {
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
-          this.loadingStop();
+          this.stopLoading();
           console.log(error);
         });
     }
@@ -488,6 +490,8 @@ export default {
     placeChange(place, item) {
       this.$set(item, "number", place.street_number);
       this.$set(item, "street", place.route);
+      this.$set(item, "suburb", place.locality);
+      this.$set(item, "state", place.administrative_area_level_1);
       this.$set(item, "country", place.country);
       this.$set(item, "postcode", place.postal_code);
     },

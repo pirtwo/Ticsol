@@ -1,5 +1,5 @@
 <template>
-  <page-layout 
+  <app-layout 
     :header="true" 
     :footer="false"
   >
@@ -55,17 +55,14 @@
         </router-link>
       </div>
     </div>
-  </page-layout>
+  </app-layout>
 </template>
 
 <script>
-import PageLayout from "../../framework/PageLayout.vue";
-import IconbarTop from "../../framework/iconbar/IconbarTop.vue";
 export default {
   name: "Home",
   components: {
-    "page-layout": PageLayout,
-    "iconbar-top": IconbarTop
+    
   }
 };
 </script>

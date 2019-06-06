@@ -1,40 +1,76 @@
 <template>
-  <app-main :scrollbar="true" :loading="isLoading" padding="p-2">
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
+    padding="p-2"
+  >
     <template slot="toolbar">
-      <ts-datescroller v-if="!id" v-model="weekStart" @input="fetchLists" range="Week"/>
+      <ts-datescroller
+        v-if="!id"
+        v-model="weekStart"
+        @input="fetchLists"
+        range="Week"
+      />
     </template>
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li>
-          <button class="btn btn-light" @click="onSave">Save</button>
+        <li class="menu-title">
+          Actions
         </li>
         <li>
-          <button class="btn btn-light" @click="approverModal = true">Submit</button>
+          <button
+            class="btn btn-light"
+            @click="onSave"
+          >
+            Save
+          </button>
+        </li>
+        <li>
+          <button
+            class="btn btn-light"
+            @click="approverModal = true"
+          >
+            Submit
+          </button>
         </li>
         <li>
           <button
             type="button"
             class="btn btn-light"
             @click="genFromSchedule(scheduleItems)"
-          >Generate</button>
+          >
+            Generate
+          </button>
         </li>
         <li>
-          <button class="btn btn-light" @click="onCancel">Cancel</button>
+          <button
+            class="btn btn-light"
+            @click="onCancel"
+          >
+            Cancel
+          </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li class="menu-title">
+          Links
+        </li>
         <li v-if="this.timesheet">
           <router-link
             class="btn btn-link"
             :to="{ name: 'commentList', params : { entity: 'timesheet', id: this.timesheet.id } }"
-          >Comments</router-link>
+          >
+            Comments
+          </router-link>
         </li>
       </ul>
     </template>
 
     <template slot="content">
-      <ts-grid v-model="timesheetItems" :columns="columns" :has-toolbar="false">
+      <ts-grid
+        v-model="timesheetItems"
+        :columns="columns"
+        :has-toolbar="false"
+      >
         <template slot-scope="{ item }">
           <td>{{ item.date ? item.date.value : "" }}</td>
           <td>
@@ -51,7 +87,10 @@
           <td>{{ item.break_length.slice(0,5) }}</td>
           <td>{{ workHours(item).slice(0,5) }}</td>
         </template>
-        <template slot="grid-modal" slot-scope="{ item }">
+        <template
+          slot="grid-modal"
+          slot-scope="{ item }"
+        >
           <div class="p-2">
             <div class="form-group">
               <div class="form-row">
@@ -89,7 +128,11 @@
               <div class="form-row">
                 <label class="col-sm-2 col-form-lable">Start</label>
                 <div class="col-sm-10">
-                  <input class="form-control" v-model="item.startTime" type="time">
+                  <input
+                    class="form-control"
+                    v-model="item.startTime"
+                    type="time"
+                  >
                 </div>
               </div>
             </div>
@@ -98,7 +141,11 @@
               <div class="form-row">
                 <label class="col-sm-2 col-form-lable">End</label>
                 <div class="col-sm-10">
-                  <input class="form-control" v-model="item.endTime" type="time">
+                  <input
+                    class="form-control"
+                    v-model="item.endTime"
+                    type="time"
+                  >
                 </div>
               </div>
             </div>
@@ -107,7 +154,10 @@
               <div class="form-row">
                 <label class="col-sm-2 col-form-lable">Break</label>
                 <div class="col-sm-10">
-                  <ts-timepicker class="form-control" v-model="item.break_length"/>
+                  <ts-timepicker
+                    class="form-control"
+                    v-model="item.break_length"
+                  />
                 </div>
               </div>
             </div>
@@ -115,17 +165,29 @@
         </template>
         <template slot="footer">
           <tr>
-            <td v-if="timesheetItems.length > 0" colspan="7" class="table-status">
+            <td
+              v-if="timesheetItems.length > 0"
+              colspan="7"
+              class="table-status"
+            >
               <div class="ts-status d-flex flex-column">
                 <div class="d-flex flex-row justify-content-end">
-                  <div class="ts-status__lable">STATUS</div>
-                  <div class="ts-status__val">{{ this.status.toUpperCase() }}</div>
+                  <div class="ts-status__lable">
+                    STATUS
+                  </div>
+                  <div class="ts-status__val">
+                    {{ this.status.toUpperCase() }}
+                  </div>
                 </div>
                 <div class="d-flex flex-row justify-content-end">
-                  <div class="ts-status__lable">TOTAL</div>
+                  <div class="ts-status__lable">
+                    TOTAL
+                  </div>
                   <div
                     class="ts-status__val"
-                  >{{ this.totalHours.slice(0,5) == '00:00' ? '' : this.totalHours.slice(0,5) }}</div>
+                  >
+                    {{ this.totalHours.slice(0,5) == '00:00' ? '' : this.totalHours.slice(0,5) }}
+                  </div>
                 </div>
               </div>
             </td>
@@ -134,7 +196,10 @@
       </ts-grid>
 
       <!-- Approver Modal -->
-      <ts-modal title="Chose Approver" :show.sync="approverModal">
+      <ts-modal
+        title="Chose Approver"
+        :show.sync="approverModal"
+      >
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-12 col-form-lable">Approver</label>
@@ -164,8 +229,20 @@
           </div>
         </div>
         <template slot="footer">
-          <button type="button" class="btn btn-primary" @click="onSubmit">Submitt</button>
-          <button type="button" class="btn btn-primary" @click="approverModal = false">Cancel</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="onSubmit"
+          >
+            Submitt
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="approverModal = false"
+          >
+            Cancel
+          </button>
         </template>
       </ts-modal>
     </template>

@@ -53,7 +53,7 @@
             <div class="form-row">
               <label class="col-sm-2 col-form-label col-form-label-sm">Parent</label>
               <div class="col-sm-10">
-                <vb-select
+                <ts-select
                   v-model="form.parent"
                   :size="'sm'"
                   :data="jobs"
@@ -125,13 +125,11 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Selectbox from "../../../framework/BaseSelectBox.vue";
 
 export default {
   name: "CreateJobModal",
 
   components: {
-    "select-box": Selectbox
   },
 
   props: {

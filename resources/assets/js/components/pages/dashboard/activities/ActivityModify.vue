@@ -1,5 +1,5 @@
 <template>
-  <nav-view
+  <app-main
     :scrollbar="true"
     :loading="isLoading"
     padding="p-5"
@@ -71,7 +71,7 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Schedule</label>
             <div class="col-sm-10">
-              <vb-select
+              <ts-select
                 v-model="scheduleItem"
                 :data="scheduleItems"                            
                 id="schedule_id"
@@ -164,14 +164,13 @@
         </div>
       </form>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import Editor from "@tinymce/tinymce-vue";
-import NavView from "../../../framework/NavView.vue";
 import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
@@ -180,7 +179,6 @@ export default {
   mixins: [pageMixin],
 
   components: {
-    "nav-view": NavView,
     editor: Editor
   },
 
@@ -248,7 +246,7 @@ export default {
   },
 
   mounted() {
-    this.loadingStart();
+    this.startLoading();
     if (this.id) {
       let activity = null;
       let p1 = this.fetchList({ resource: "schedule", query: { with: "job" } });
@@ -269,20 +267,20 @@ export default {
           this.form.tillDate = activity.till.slice(0, 10);
           this.form.tillTime = activity.till.slice(11, 16);
           this.form.desc = activity.desc;
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     } else {
       this.fetchList({ resource: "schedule", query: { with: "job" } })
         .then(() => {
-          this.loadingStop();
+          this.stopLoading();
         })
         .catch(error => {
           console.log(error);
-          this.loadingStop();
+          this.stopLoading();
         });
     }
   },

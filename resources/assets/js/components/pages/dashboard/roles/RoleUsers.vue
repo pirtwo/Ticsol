@@ -1,5 +1,5 @@
 <template>
-  <nav-view 
+  <app-main 
     :scrollbar="true" 
     :loading="loading" 
     padding="p-5"
@@ -10,15 +10,7 @@
       <ul class="v-menu">
         <li class="menu-title">
           Actions
-        </li>
-        <li>
-          <button 
-            class="btn btn-light" 
-            @click="onSave"
-          >
-            New
-          </button>
-        </li>
+        </li>        
         <li>
           <button 
             class="btn btn-light" 
@@ -40,7 +32,10 @@
         </li>
         <li>
           <router-link :to="{ name: 'roleList' }">
-            Role Maintenance
+            Roles
+          </router-link>
+          <router-link :to="{ name : 'roleDetails', params : { id: this.id } }">
+            Permissions
           </router-link>
         </li>
       </ul>
@@ -69,7 +64,7 @@
               <div class="row">
                 <label class="col-sm-2 col-form-label">Users</label>
                 <div class="col-sm-10">
-                  <vb-select 
+                  <ts-select 
                     v-model="form.users" 
                     :data="userList" 
                     :multi="true"
@@ -85,14 +80,14 @@
                       >
                       <span>&nbsp; {{ item.value }}</span>
                     </template>
-                  </vb-select>
+                  </ts-select>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <table-view 
+        <ts-table
           class="table table-striped" 
           :data="roleUsers" 
           :header="header" 
@@ -132,23 +127,19 @@
               </router-link>
             </td>
           </template>
-        </table-view>
+        </ts-table>
       </form>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import TableView from "../../../framework/BaseTable.vue";
 
 export default {
   name: "RoleUsers",
 
   components: {
-    "nav-view": NavView,
-    "table-view": TableView
   },
 
   props: ["id"],
@@ -232,6 +223,7 @@ export default {
         resource: "role",
         id: this.id,
         data: {
+          name: this.form.name,
           users: this.form.users.map(item => item.key)
         }
       })

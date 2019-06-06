@@ -1,7 +1,7 @@
 <template>
-  <nav-view 
-    :scrollbar="true" 
-    :loading="loading" 
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-5"
   >
     <template slot="toolbar" />
@@ -22,8 +22,8 @@
           </button>
         </li>
         <li>
-          <button 
-            class="btn btn-light" 
+          <button
+            class="btn btn-light"
             @click="onSubmit"
           >
             Submit
@@ -66,9 +66,9 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Leave Type</label>
             <div class="col-sm-10">
-              <select 
-                v-model="form.meta.leave_type" 
-                name="meta-leave_type" 
+              <select
+                v-model="form.meta.leave_type"
+                name="meta-leave_type"
                 class="custom-select"
               >
                 <option selected>
@@ -112,20 +112,20 @@
                   class="custom-control-input"
                   checked
                 >
-                <label 
-                  class="custom-control-label" 
+                <label
+                  class="custom-control-label"
                   for="display1"
                 >Days</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input 
-                  type="radio" 
-                  id="display2" 
-                  name="display" 
+                <input
+                  type="radio"
+                  id="display2"
+                  name="display"
                   class="custom-control-input"
                 >
-                <label 
-                  class="custom-control-label" 
+                <label
+                  class="custom-control-label"
                   for="display2"
                 >Hours</label>
               </div>
@@ -137,10 +137,10 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">From</label>
             <div class="col-sm-10">
-              <input 
-                v-model="form.meta.from" 
-                type="date" 
-                name="meta-from" 
+              <input
+                v-model="form.meta.from"
+                type="date"
+                name="meta-from"
                 class="form-control"
               >
             </div>
@@ -151,10 +151,10 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Return</label>
             <div class="col-sm-10">
-              <input 
-                v-model="form.meta.till" 
-                type="date" 
-                name="meta-till" 
+              <input
+                v-model="form.meta.till"
+                type="date"
+                name="meta-till"
                 class="form-control"
               >
             </div>
@@ -165,8 +165,8 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Days Requested</label>
             <div class="col-sm-10">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 class="form-control"
               >
             </div>
@@ -177,8 +177,8 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Days Remaining</label>
             <div class="col-sm-10">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 class="form-control"
               >
             </div>
@@ -189,13 +189,12 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Approver</label>
             <div class="col-sm-10">
-              <select-box
-                v-model="form.assigned_id"
+              <ts-select
+                v-model="form.approver"
                 :data="users"
                 :multi-select="false"
                 id="assigned_id"
-                name="assigned_id"
-                placeholder="please selet approver"
+                placeholder="please selet the approver..."
                 search-placeholder="search..."
               />
             </div>
@@ -207,14 +206,14 @@
             <label class="col-sm-2 col-form-label">Attachments</label>
             <div class="col-sm-10">
               <div class="custom-file">
-                <input 
-                  name="Attachments" 
-                  id="customFile" 
-                  type="file" 
+                <input
+                  name="Attachments"
+                  id="customFile"
+                  type="file"
                   class="custom-file-input"
                 >
-                <label 
-                  class="custom-file-label" 
+                <label
+                  class="custom-file-label"
                   for="customFile"
                 >choose files</label>
               </div>
@@ -223,31 +222,25 @@
         </div>
       </form>
     </template>
-  </nav-view>
+  </app-main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import NavView from "../../../framework/NavView.vue";
-import Selectbox from "../../../framework/BaseSelectBox.vue";
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "LeaveRequest",
 
-  components: {
-    "nav-view": NavView,
-    "select-box": Selectbox
-  },
+  mixins: [pageMixin],
 
   props: ["id"],
 
   data() {
     return {
-      loading: false,
       currentReq: {},
       form: {
-        type: "leave",
-        assigned_id: "",
+        approver: {},
         attachments: "",
         meta: {
           leave_type: "",
@@ -270,47 +263,74 @@ export default {
     }
   },
 
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.clearForm();
+    });
+  },
+
   mounted() {
-    this.loading = true;
+    this.startLoading();
     let p1;
     let p2;
     if (this.id) {
-      p1 = this.fetchItem({ resource: "request", id: this.id }).then(data => {
-         this.form.meta.leave_type = data.meta.leave_type;
-         this.form.meta.from = data.meta.from;
-         this.form.meta.till = data.meta.till;
-         console.log(data);
+      p1 = this.show({ resource: "request", id: this.id }).then(data => {
+        this.currentReq = data;
       });
     } else {
       p1 = new Promise(resolve => resolve());
     }
-    p2 = this.fetchList({ resource: "user" });
+    p2 = this.list({ resource: "user" });
 
     Promise.all([p1, p2])
       .then(() => {
-        this.loading = false;
+        if (this.id) {
+          this.form.meta.leave_type = this.currentReq.meta.leave_type;
+          this.form.meta.from = this.currentReq.meta.from;
+          this.form.meta.till = this.currentReq.meta.till;
+          this.form.approver = this.users.find(
+            item => item.key === this.currentReq.assigned_id
+          );
+        }
+        this.stopLoading();
       })
       .catch(error => {
         console.log(error);
+        this.stopLoading();
       });
   },
 
   methods: {
     ...mapActions({
-      fetchList: "resource/list",
-      fetchItem: "resource/show",
+      list: "resource/list",
+      show: "resource/show",
       create: "resource/create"
     }),
 
     onSubmit(event) {
-      this.create({ resource: "request", data: this.form })
+      let form = {};
+
+      // populate form
+      form.type = "leave";
+      form.status = "submitted";
+      form.assigned_id = this.form.approver.key;
+      form.meta = this.form.meta;
+
+      this.create({ resource: "request", data: form })
         .then(respond => {
-          console.log("Request created sucessfuly.");
+          this.showMessage(`Leave request created successfuly.`, "success");
         })
         .catch(error => {
           console.log(error.response);
+          this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
         });
+    },
+
+    clearForm() {
+      this.currentReq = {};
+      this.form.approver = {};
+      this.form.meta = {};
     }
   }
 };

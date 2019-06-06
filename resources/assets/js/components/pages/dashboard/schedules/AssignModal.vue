@@ -55,7 +55,7 @@
               <div class="form-row">
                 <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }}</label>
                 <div class="col">
-                  <vb-select
+                  <ts-select
                     v-model="form.event_id"
                     :data="eventList"
                     :multi="false"
@@ -72,7 +72,7 @@
                       </li>
                       <hr>
                     </template>
-                  </vb-select>
+                  </ts-select>
                 </div>
               </div>              
             </div>           
