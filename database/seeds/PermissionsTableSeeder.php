@@ -21,6 +21,10 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
+            'name' => 'reject'
+        ]);
+
+        Permission::create([
             'name' => 'list'
         ]);
 

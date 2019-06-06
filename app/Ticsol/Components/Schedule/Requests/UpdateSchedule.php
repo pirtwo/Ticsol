@@ -27,10 +27,10 @@ class UpdateSchedule extends FormRequest
             'user_id'       => 'numeric|exists:ts_users,id',
             'job_id'        => 'numeric|exists:ts_jobs,id',
             'type'          => 'string|in:schedule',
-            'event_type'    => 'string|in:leave,unavailable hours,scheduled,RDO',
+            'event_type'    => 'string|in:leave,unavailable,scheduled,RDO',
             'status'        => 'string|in:tentative,confirmed',            
             'start'         => 'date',
-            'end'           => 'date',
+            'end'           => 'date|after:start',
             'offsite'       => 'boolean',
             'break_length'  => 'numeric'
         ];

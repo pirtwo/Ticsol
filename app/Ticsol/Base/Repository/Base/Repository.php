@@ -79,7 +79,19 @@ abstract class Repository implements IRepository, ICriteria
     }
 
     /**
+     * @param array $with
+     * @param array $columns
+     * @return mixed
+     */
+    public function first($with = [], $columns = array('*'))
+    {
+        $this->applyCriteria();
+        return $this->model->with($with)->first($columns);
+    }
+
+    /**
      * @param $id
+     * @param array $with
      * @param array $columns
      * @return mixed
      */
