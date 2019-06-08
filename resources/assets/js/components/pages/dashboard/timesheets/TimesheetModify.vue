@@ -582,6 +582,10 @@ export default {
       return items;
     },
 
+    clearForm(){
+
+    },
+
     workHours(item) {
       let workHour = this.subTime(item.endTime, item.startTime);
       item.total = this.subTime(workHour, item.break_length);

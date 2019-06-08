@@ -33,8 +33,6 @@
         :data="requests"
         :header="header"
         :selection="false"
-        order-by="type"
-        order="asc"
       >
         <template
           slot="header"
