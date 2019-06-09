@@ -1,66 +1,37 @@
 <template>
-  <app-main
-    :scrollbar="true"
-    :loading="isLoading"
-    padding="p-5"
-  >
-    <template slot="toolbar" />
+  <app-main :scrollbar="true" :loading="isLoading" padding="p-5">
+    <template slot="toolbar"/>
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">
-          Actions
+        <li class="menu-title">Actions</li>
+        <li>
+          <button class="btn btn-light">New</button>
         </li>
         <li>
-          <button class="btn btn-light">
-            New
-          </button>
+          <button class="btn btn-light">Suspend</button>
         </li>
         <li>
-          <button class="btn btn-light">
-            Suspend
-          </button>
+          <button class="btn btn-light" @click="onSubmit">Submit</button>
         </li>
         <li>
-          <button
-            class="btn btn-light"
-            @click="onSubmit"
-          >
-            Submit
-          </button>
+          <button class="btn btn-light">Cancel</button>
         </li>
         <li>
-          <button class="btn btn-light">
-            Cancel
-          </button>
+          <button class="btn btn-light">Print</button>
+        </li>
+        <li class="menu-title">Links</li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">Anuual Leave</router-link>
         </li>
         <li>
-          <button class="btn btn-light">
-            Print
-          </button>
-        </li>
-        <li class="menu-title">
-          Links
+          <router-link :to="{ name: 'jobList' }">Sick Leave</router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">
-            Anuual Leave
-          </router-link>
+          <router-link :to="{ name: 'jobList' }">Reimbursement</router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">
-            Sick Leave
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">
-            Reimbursement
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">
-            History
-          </router-link>
+          <router-link :to="{ name: 'jobList' }">History</router-link>
         </li>
       </ul>
     </template>
@@ -75,9 +46,15 @@
                 v-model="form.meta.details"
                 name="meta-details"
                 id="meta-details"
-                class="form-control"
+                :class="[{'is-invalid' : $v.form.meta.details.$error } ,'form-control']"
                 rows="5"
               />
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.meta.details.required"
+              >
+                Please enter a description.
+              </div>
             </div>
           </div>
         </div>
@@ -91,8 +68,28 @@
                 name="meta-amount"
                 id="meta-amount"
                 type="text"
-                class="form-control"
+                :class="[{'is-invalid' : $v.form.meta.amount.$error } ,'form-control']"
               >
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.meta.amount.required"
+              >
+                Please enter a amount.
+              </div>
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.meta.amount.decimal"
+              >
+                Value must be a number.
+              </div>
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.meta.amount.between"
+              >
+                Value must be btween 
+                {{ $v.form.meta.amount.$params.between.min }} and 
+                {{ $v.form.meta.amount.$params.between.max }}
+              </div>
             </div>
           </div>
         </div>
@@ -111,10 +108,7 @@
                   class="custom-control-input"
                   checked
                 >
-                <label
-                  class="custom-control-label"
-                  for="meta-tax1"
-                >Incl</label>
+                <label class="custom-control-label" for="meta-tax1">Incl</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input
@@ -125,10 +119,7 @@
                   value="Excl"
                   class="custom-control-input"
                 >
-                <label
-                  class="custom-control-label"
-                  for="meta-tax2"
-                >Excl</label>
+                <label class="custom-control-label" for="meta-tax2">Excl</label>
               </div>
             </div>
           </div>
@@ -143,8 +134,14 @@
                 name="meta-date"
                 id="meta-date"
                 type="date"
-                class="form-control"
+                :class="[{'is-invalid' : $v.form.meta.date.$error } ,'form-control']"
               >
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.meta.date.required"
+              >
+                Please select a date.
+              </div>
             </div>
           </div>
         </div>
@@ -156,10 +153,17 @@
               <ts-select
                 v-model="form.job"
                 :data="jobs"
+                :class="[{'is-invalid' : $v.form.job.$error } ,'form-control']"
                 id="job_id"
                 placeholder="please select the job..."
                 search-placeholder="search..."
               />
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.job.required"
+              >
+                Please select a job.
+              </div>
             </div>
           </div>
         </div>
@@ -171,10 +175,17 @@
               <ts-select
                 v-model="form.approver"
                 :data="users"
+                :class="[{'is-invalid' : $v.form.approver.$error } ,'form-control']"
                 id="assigned_id"
                 placeholder="please selet the approver..."
                 search-placeholder="search..."
               />
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.approver.required"
+              >
+                Please select a approver.
+              </div>
             </div>
           </div>
         </div>
@@ -184,16 +195,8 @@
             <label class="col-sm-2 col-form-label">Attachments</label>
             <div class="col-sm-10">
               <div class="custom-file">
-                <input
-                  name="Attachments"
-                  id="customFile"
-                  type="file"
-                  class="custom-file-input"
-                >
-                <label
-                  class="custom-file-label"
-                  for="customFile"
-                >choose files</label>
+                <input name="Attachments" id="customFile" type="file" class="custom-file-input">
+                <label class="custom-file-label" for="customFile">choose files</label>
               </div>
             </div>
           </div>
@@ -205,6 +208,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { required, decimal, between } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
@@ -230,6 +234,19 @@ export default {
     };
   },
 
+  validations: {
+    form: {
+      job: { required },
+      approver: { required },
+      meta: {
+        tax: { required },
+        date: { required },
+        details: { required },
+        amount: { required, decimal, between: between(0, 1000000) }
+      }
+    }
+  },
+
   computed: {
     ...mapGetters({
       getList: "resource/getList"
@@ -248,7 +265,7 @@ export default {
     }
   },
 
-  beforeRouteEnter(to, from, next) {    
+  beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
     });
@@ -294,8 +311,18 @@ export default {
     }),
 
     onSubmit(e) {
-      let form = {};
+      e.preventDefault();
+      e.target.disabled = true;
 
+      // validate form
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
+
+      // populate form data
+      let form = {};
       form.type = "reimbursement";
       form.status = "submitted";
       form.job_id = this.form.job.key;
@@ -316,8 +343,12 @@ export default {
         });
     },
 
-    clearForm(){
-      
+    clearForm() {
+      this.currentReq = {};
+      this.form.job = {};
+      this.form.approver = {};
+      this.form.meta = {};
+      this.$v.form.$reset();
     }
   }
 };
