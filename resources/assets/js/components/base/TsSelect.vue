@@ -248,9 +248,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .ts-select {
   position: relative;
+  padding: 0px;
+}
+
+.is-invalid {
+  padding-right: 4rem !important;
+  background-position: center right 2rem;
+}
+
+.is-invalid .ts-select__input{
+  border: 0px !important;
+  box-shadow: none !important;
+  height: calc(1.5em + 0.75rem - 2px);
 }
 
 .ts-select__input {
