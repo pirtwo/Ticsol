@@ -26,7 +26,7 @@ export default {
       elm.className = this.getTheme;
 
       // connect to pusher
-      this.goRealTime();
+      this.connectToChannels();
 
       console.log('app is ready...');      
     });
@@ -34,7 +34,7 @@ export default {
 
   methods: {
     ...mapActions({
-      goRealTime: "core/goRealTime"
+      connectToChannels: "core/connectToChannels"
     })
   }
 };

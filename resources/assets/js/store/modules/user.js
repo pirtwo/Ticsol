@@ -85,8 +85,7 @@ export const userModule = {
                 api.post(URLs.AUTH_LOGIN, payload, null, true, false)
                     .then(respond => {
                         commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
-                        commit(MUTATIONS.USER_AUTH_SUCCESS);
-                        //dispatch('core/goRealTime', null, { root: true });
+                        commit(MUTATIONS.USER_AUTH_SUCCESS);                        
                         resolve("success");
                     }).catch(error => {
                         console.log(error);
@@ -108,7 +107,7 @@ export const userModule = {
         info({ commit, dispatch }) {
             return new Promise((resolve, reject) => {
                 api.get(URLs.USER_INFO, null).then(respond => {
-                    commit(MUTATIONS.USER_INFO, respond.data);
+                    commit(MUTATIONS.USER_INFO, respond.data);                    
                     resolve(respond.data);
                 }).catch(error => {
                     console.log(error);

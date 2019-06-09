@@ -190,7 +190,7 @@ export const coreModule = {
             commit(MUTATIONS.APP_THEME, payload.toLowerCase());
         },
         
-        goRealTime({state, dispatch, commit, rootState}){
+        connectToChannels({state, dispatch, commit, rootState}){
             if (!rootState.user.isAuth) return
 
             let user = rootState.user;            

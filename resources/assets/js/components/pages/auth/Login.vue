@@ -90,7 +90,8 @@ export default {
     ...mapActions({
       login: "user/login",
       logout: "user/logout",
-      info: "user/info"
+      info: "user/info",
+      channels: "core/connectToChannels"
     }),
     onSubmit() {
       this.haveError = false;
@@ -98,7 +99,9 @@ export default {
         .then(respond => {
           console.log("login success");
           this.info().then(data => {
-            console.log("info success");           
+            console.log("info success"); 
+            this.channels();     
+            console.log("connecting to channels...");      
             this.$router.push("/home");
           });
         })
