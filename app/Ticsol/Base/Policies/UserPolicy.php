@@ -9,21 +9,30 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    protected $full;
+    protected $list;
+    protected $view;
+    protected $create;
+    protected $update;
+    protected $delete;
+
     public function before($user, $ability)
     {
         $roles = $user->load('roles.permissions')->roles;
         foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'full-form')) {
-                return true;
-            }
+            $this->full = $role->permissions->contains('name', 'full-user');
+            $this->list = $role->permissions->contains('name', 'list-user');
+            $this->view = $role->permissions->contains('name', 'view-user');
+            $this->create = $role->permissions->contains('name', 'create-user');
+            $this->update = $role->permissions->contains('name', 'update-user');
+            $this->delete = $role->permissions->contains('name', 'delete-user');
         }
     }
 
     /**
-     * Determine whether the user can view the list of form.
+     * Determine whether the user can view the list of users.
      *
      * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Ticsol\Components\Models\Form  $form
      * @return mixed
      */
     function list(User $user) {
@@ -39,7 +48,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        return $user->client_id == $model->client_id;
     }
 
     /**
@@ -50,7 +59,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        //
+        return $this->full || $this->create;
     }
 
     /**
@@ -62,7 +71,11 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
+        if ($model->client_id != $user->client_id) {
+            return false;
+        }
+
+        return $user->id == $model->id;
     }
 
     /**
@@ -74,6 +87,22 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        //
+        return false;
+    }
+
+    /**
+     * Determine whether the user can activate/deactivate the model.
+     *
+     * @param  \App\Ticsol\Components\Models\User  $user
+     * @param  \App\User  $model
+     * @return mixed
+     */
+    public function activation(User $user, User $model)
+    {
+        if ($model->client_id != $user->client_id) {
+            return false;
+        }
+
+        return $this->full || $this->update;
     }
 }

@@ -10,13 +10,26 @@ class RolePolicy
 {
     use HandlesAuthorization;
 
+    protected $owner;
+    protected $full;
+    protected $list;
+    protected $view;
+    protected $create;
+    protected $update;
+    protected $delete;
+
     public function before($user, $ability)
     {
+        $this->owner = $user->isowner;
+        
         $roles = $user->load('roles.permissions')->roles;
         foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'full-role')) {
-                return true;
-            }
+            $this->full = $role->permissions->contains('name', 'full-role');
+            $this->list = $role->permissions->contains('name', 'list-role');
+            $this->view = $role->permissions->contains('name', 'view-role');
+            $this->create = $role->permissions->contains('name', 'create-role');
+            $this->update = $role->permissions->contains('name', 'update-role');
+            $this->delete = $role->permissions->contains('name', 'delete-role');
         }
     }
 
@@ -35,12 +48,12 @@ class RolePolicy
      * Determine whether the user can view the role.
      *
      * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Role  $role
+     * @param  \App\Ticsol\Components\Models\Role  $role
      * @return mixed
      */
     public function view(User $user, Role $role)
     {
-        return true;
+        return $role->client_id == $user->client_id;
     }
 
     /**
@@ -51,45 +64,38 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'create-role')) {
-                return true;
-            }
-        }
+        return $this->owner || $this->full || $this->create;
     }
 
     /**
      * Determine whether the user can update the role.
      *
      * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Role  $role
+     * @param  \App\Ticsol\Components\Models\Role  $role
      * @return mixed
      */
     public function update(User $user, Role $role)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'update-role')) {
-                return true;
-            }
+        if ($role->client_id != $user->client_id) {
+            return false;
         }
+
+        return $this->owner || $this->full || $this->update;
     }
 
     /**
      * Determine whether the user can delete the role.
      *
      * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Role  $role
+     * @param  \App\Ticsol\Components\Models\Role  $role
      * @return mixed
      */
     public function delete(User $user, Role $role)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'delete-role')) {
-                return true;
-            }
+        if ($role->client_id != $user->client_id) {
+            return false;
         }
+
+        return $this->owner || $this->full || $this->delete;
     }
 }

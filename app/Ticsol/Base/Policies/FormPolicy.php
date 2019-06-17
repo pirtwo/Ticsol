@@ -10,13 +10,23 @@ class FormPolicy
 {
     use HandlesAuthorization;
 
+    protected $full;
+    protected $list;
+    protected $view;
+    protected $create;
+    protected $update;
+    protected $delete;
+
     public function before($user, $ability)
     {
         $roles = $user->load('roles.permissions')->roles;
         foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'full-job_profile')) {
-                return true;
-            }
+            $this->full = $role->permissions->contains('name', 'full-job_profile');
+            $this->list = $role->permissions->contains('name', 'list-job_profile');
+            $this->view = $role->permissions->contains('name', 'view-job_profile');
+            $this->create = $role->permissions->contains('name', 'create-job_profile');
+            $this->update = $role->permissions->contains('name', 'update-job_profile');
+            $this->delete = $role->permissions->contains('name', 'delete-job_profile');
         }
     }
 
@@ -40,7 +50,7 @@ class FormPolicy
      */
     public function view(User $user, Form $form)
     {
-        return true;
+        return $form->client_id == $user->client_id;
     }
 
     /**
@@ -51,12 +61,7 @@ class FormPolicy
      */
     public function create(User $user)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'create-job_profile')) {
-                return true;
-            }
-        }
+        return $this->full || $this->create;
     }
 
     /**
@@ -68,12 +73,11 @@ class FormPolicy
      */
     public function update(User $user, Form $form)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'update-job_profile')) {
-                return true;
-            }
+        if ($form->client_id != $user->client_id) {
+            return false;
         }
+
+        return $this->full || $this->update;
     }
 
     /**
@@ -85,11 +89,10 @@ class FormPolicy
      */
     public function delete(User $user, Form $form)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'delete-job_profile')) {
-                return true;
-            }
+        if ($form->client_id != $user->client_id) {
+            return false;
         }
+        
+        return $this->full || $this->delete;
     }
 }

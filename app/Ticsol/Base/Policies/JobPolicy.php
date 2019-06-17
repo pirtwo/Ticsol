@@ -10,21 +10,30 @@ class JobPolicy
 {
     use HandlesAuthorization;
 
+    protected $full;
+    protected $list;
+    protected $view;
+    protected $create;
+    protected $update;
+    protected $delete;
+
     public function before($user, $ability)
     {
         $roles = $user->load('roles.permissions')->roles;
         foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'full-job')) {
-                return true;
-            }
+            $this->full = $role->permissions->contains('name', 'full-job');
+            $this->list = $role->permissions->contains('name', 'list-job');
+            $this->view = $role->permissions->contains('name', 'view-job');
+            $this->create = $role->permissions->contains('name', 'create-job');
+            $this->update = $role->permissions->contains('name', 'update-job');
+            $this->delete = $role->permissions->contains('name', 'delete-job');
         }
     }
 
     /**
      * Determine whether the user can view the list of jobs.
      *
-     * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Job  $job
+     * @param  \App\Ticsol\Components\Models\User  $user    
      * @return mixed
      */
     function list(User $user) {
@@ -35,12 +44,12 @@ class JobPolicy
      * Determine whether the user can view the job.
      *
      * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Job  $job
+     * @param  \App\Ticsol\Components\Models\Job  $job
      * @return mixed
      */
     public function view(User $user, Job $job)
     {
-        return true;
+        return $job->client_id == $user->client_id;
     }
 
     /**
@@ -50,41 +59,39 @@ class JobPolicy
      * @return mixed
      */
     public function create(User $user)
-    {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'create-job')) {
-                return true;
-            }
-        }
+    {        
+        return $this->full || $this->create;
     }
 
     /**
      * Determine whether the user can update the job.
      *
      * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Job  $job
+     * @param  \App\Ticsol\Components\Models\Job  $job
      * @return mixed
      */
     public function update(User $user, Job $job)
     {
-        return true;
+        if ($job->client_id != $user->client_id) {
+            return false;
+        }
+
+        return $this->full || $this->update;
     }
 
     /**
      * Determine whether the user can delete the job.
      *
      * @param  \App\Ticsol\Components\Models\User  $user
-     * @param  \App\Job  $job
+     * @param  \App\Ticsol\Components\Models\Job  $job
      * @return mixed
      */
     public function delete(User $user, Job $job)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'delete-job')) {
-                return true;
-            }
+        if ($job->client_id != $user->client_id) {
+            return false;
         }
+
+        return $this->full || $this->delete;
     }
 }
