@@ -16,16 +16,20 @@ import TsModal from '../components/base/TsModal.vue';
 import TsGrid from '../components/base/TsGrid.vue';
 import TsTable from '../components/base/TsTable.vue';
 import TsFilter from '../components/base/TsFilter.vue';
+import TsSpinner from '../components/base/TsSpinner.vue';
+import TsToast from '../components/base/TsToast.vue';
 import TsDateScroller from '../components/base/TsDateScroller.vue'
 
 
 const VueBase = {
-    install(Vue, options) {   
+    install(Vue, options) {  
+        // App sections 
         Vue.component('app-layout', AppLayout);
         Vue.component('app-main', AppMain);
         Vue.component('iconbar-top', AppIconbarTop);
         Vue.component('iconbar-bot', AppIconbarBot);
         
+        // App components
         Vue.component('ts-icon', TsIcon);
         Vue.component('ts-select', TsSelect);
         Vue.component('ts-switch', TsSwitch);
@@ -39,7 +43,9 @@ const VueBase = {
         Vue.component('ts-grid', TsGrid);
         Vue.component('ts-table', TsTable);
         Vue.component('ts-filter', TsFilter);
-        Vue.component('ts-datescroller', TsDateScroller);
+        Vue.component('ts-spinner', TsSpinner);
+        Vue.component('ts-toast', TsToast);
+        Vue.component('ts-datescroller', TsDateScroller);        
     }
 }
 
