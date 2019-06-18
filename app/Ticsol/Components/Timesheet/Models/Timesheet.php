@@ -17,11 +17,11 @@ class Timesheet extends Model
      *
      * @var array
      */
-    protected $fillable = [        
+    protected $fillable = [
         'request_id',
         'week_start',
         'week_end',
-        'total_hours'
+        'total_hours',
     ];
 
     /**
@@ -38,9 +38,18 @@ class Timesheet extends Model
     public function scopeOfClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
-    }    
+    }
 
-    
+    public function scopeOfUser($query, $userId)
+    {
+        return $query->where('creator_id', $userId)
+            ->orWhere(function ($query) use ($userId) {
+                $query->whereHas('request', function ($query) use ($userId) {
+                    $query->where('assigned_id', $userId);
+                });
+            });
+    }
+
     #region Eloquent_Relationships
 
     /**
@@ -57,7 +66,7 @@ class Timesheet extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
-    }    
+    }
 
     /**
      * Assosiated job to current timesheet.
@@ -73,7 +82,7 @@ class Timesheet extends Model
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
-    }    
+    }
 
     #endregion
 }

@@ -47,7 +47,7 @@ class Request extends Model
         return $query->where('client_id', $clientId);
     }
 
-    public function scopeRelatedRequests($query, $userId)
+    public function scopeOfUser($query, $userId)
     {
         return $query->where('user_id', $userId)
             ->orWhere('assigned_id', $userId);

@@ -52,24 +52,6 @@ class Schedule extends Model
         return $query->where('type', 'schedule');
     }
 
-    public function scopeTimesheetItems($query)
-    {
-        return $query->where('type', 'timesheet');
-    }
-
-    public function scopeRelatedSchedules($query, $userId)
-    {
-        return $query->where('type', 'schedule')
-            ->where('user_id', $userId);
-    }
-
-    public function scopeRelatedTimesheets($query, $userId)
-    {
-        return $query->where('type', 'timesheet')
-            ->where('user_id', $userId);
-    }
-
-
 
     #region Eloquent_Relationships
 
