@@ -12,6 +12,8 @@ use App\Ticsol\Components\Models\Schedule;
 use App\Ticsol\Components\Models\Request as ReqModel;
 use App\Ticsol\Components\Timesheet\Requests;
 use App\Ticsol\Components\Timesheet\Repository;
+use App\Ticsol\Components\Timesheet\Events as TimesheetEvents;
+use App\Ticsol\Components\Request\Events as RequestEvents;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Components\Timesheet\Criterias\TimesheetCriteria;
@@ -37,37 +39,29 @@ class TimesheetController extends Controller
      */
     public function index(Request $request)
     {
-        try {   
-            
-            $list = null;
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', Timesheet::class);
 
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 15;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
+        $page =
+        $request->query('page') ?? null;
+        $perPage =
+        $request->query('perPage') ?? 15;
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
-            $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new TimesheetCriteria($request));
-            $this->repository->pushCriteria(new ClientCriteria($request));
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new TimesheetCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
 
-            if ($page == null) {
-                $list = $this->repository->all($with);
-            } else {
-                $list = $this->repository->paginate($perPage, $with);
-            }
-
-            //============================
-            // ==== Check Permissions ====
-            //============================
-            //$this->authorize('list');
-
-            return $list;
-
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        if ($page == null) {
+            $list = $this->repository->all($with);
+        } else {
+            $list = $this->repository->paginate($perPage, $with);
         }
+
+        return $list;
     }
 
     /**
@@ -81,61 +75,66 @@ class TimesheetController extends Controller
      */
     public function store(Requests\CreateTimesheet $request)
     {
-        try {
-            $timesheet = new Timesheet();
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', Timesheet::class);
 
-            $client_id =
-            $request->user()->client_id;
-            $creator_id =
-            $request->user()->id;
-            $status =
-            $request->input('status');
-            $items =
-            $request->input('items');
+        $timesheet = new Timesheet();
+        $req = new ReqModel();
+
+        $client_id =
+        $request->user()->client_id;
+        $creator_id =
+        $request->user()->id;
+        $status =
+        $request->input('status');
+        $items =
+        $request->input('items');
+
+        try {
 
             DB::beginTransaction();
-            try {
-                // create new request model
-                $req = new ReqModel();
-                $req->client_id = $client_id;
-                $req->user_id = $creator_id;
-                $req->type = 'timesheet';
-                $req->fill($request->only(['status', 'assigned_id']));
-                $req->save();
 
-                // create new timesheet model                
-                $timesheet->client_id = $client_id;
-                $timesheet->creator_id = $creator_id;
-                $timesheet->request_id = $req->id;
-                $timesheet->fill($request->only([
-                    'week_start', 
-                    'week_end', 
-                    'total_hours'
-                ]));
-                $timesheet->save();
+            // populate new request model            
+            $req->client_id = $client_id;
+            $req->user_id = $creator_id;
+            $req->type = 'timesheet';
+            $req->fill($request->only(['status', 'assigned_id']));
+            $req->save();
 
-                // populate timesheet items
-                foreach ($items as &$item) {   
-                    $schedule = new Schedule();   
-                    $schedule->client_id = $client_id; 
-                    $schedule->creator_id = $creator_id;
-                    $schedule->fill($item);                    
-                    $schedule->timesheet()->associate($timesheet);
-                    $schedule->save();
-                }                
+            // populate new timesheet model
+            $timesheet->client_id = $client_id;
+            $timesheet->creator_id = $creator_id;
+            $timesheet->request_id = $req->id;
+            $timesheet->fill($request->only([
+                'week_start',
+                'week_end',
+                'total_hours',
+            ]));
+            $timesheet->save();
 
-                DB::commit();                
+            // populate timesheet items
+            foreach ($items as &$item) {
+                $schedule = new Schedule();
+                $schedule->client_id = $client_id;
+                $schedule->creator_id = $creator_id;
+                $schedule->fill($item);
+                $schedule->timesheet()->associate($timesheet);
+                $schedule->save();
+            }
 
-            } catch (\Exception $e) {
-                DB::rollback();
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
-            }    
-            
-            return $timesheet;
+            DB::commit();
 
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new TimesheetEvents\TimesheetCreated($timesheet));
+        event(new RequestEvents\RequestCreated($req));
+
+        return $timesheet;
     }
 
     /**
@@ -145,33 +144,22 @@ class TimesheetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id = null)
+    public function show(Request $request, $id)
     {
-        try {
-            
-            $item = null;
-            
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
-            $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new TimesheetCriteria($request));
-            $this->repository->pushCriteria(new ClientCriteria($request));
-
-            if($id != null)
-                $item = $this->repository->find($id, $with);
-            else 
-                $item = $this->repository->first($with);
-
-            //============================
-            // ==== Check Permissions ====
-            //============================
-            //$this->authorize('view', $item);
-            
-            return $item;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $timesheet = $this->repository->find($id, $with);
+        if ($timesheet == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $timesheet);
+
+        return $timesheet;
     }
 
     /**
@@ -183,56 +171,60 @@ class TimesheetController extends Controller
      */
     public function update(Requests\UpdateTimesheet $request, $id)
     {
+        $client_id =
+        $request->user()->client_id;
+        $creator_id =
+        $request->user()->id;
+        $timesheet =
+        $this->repository->find($id);
+
+        if ($timesheet == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $timesheet);
+
         try {
-            $client_id =
-                $request->user()->client_id;
-            $creator_id =
-                $request->user()->id;
-            $timesheet = 
-                $this->repository->find($id);
+            DB::beginTransaction();
 
-            if($timesheet == null)
-                throw new NotFound();
+            $timesheet->update($request->only(['total_hours']));
 
-            //============================
-            // ==== Check Permissions ====
-            //============================
-            //$this->authorize('update', $timesheet);
-
-            try{                
-                DB::beginTransaction();
-                
-                $timesheet->update($request->only(['total_hours']));
+            if ($request->input('status') == 'draft') {$timesheet->request()
+                    ->update($request->only(['status', 'assigned_id']));
+            } else {
                 $timesheet->request()
                     ->update($request->only(['status', 'assigned_id']));
+            }
 
-                if($request->has('items')){
-                    $items = $request->input('items');
-                    $timesheet->schedules()->delete();
+            if ($request->has('items')) {
+                $items = $request->input('items');
+                $timesheet->schedules()->delete();
 
-                    // populate timesheet items
-                    foreach ($items as &$item) {   
-                        $schedule = new Schedule();   
-                        $schedule->client_id = $client_id; 
-                        $schedule->creator_id = $creator_id; 
-                        $schedule->fill($item);
-                        $schedule->timesheet()->associate($timesheet);
-                        $schedule->save();                        
-                    }             
-                }               
-                
-                DB::commit();
-                
-            }catch (\Exception $e) {
-                DB::rollback();
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
-            }  
-            
-            return $timesheet;
+                // populate timesheet items
+                foreach ($items as &$item) {
+                    $schedule = new Schedule();
+                    $schedule->client_id = $client_id;
+                    $schedule->creator_id = $creator_id;
+                    $schedule->fill($item);
+                    $schedule->timesheet()->associate($timesheet);
+                    $schedule->save();
+                }
+            }
+
+            DB::commit();
 
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new Events\TimesheetUpdated($timesheet));
+        event(new RequestEvents\RequestUpdated($timesheet->request));
+
+        return $timesheet;
     }
 
     /**
@@ -243,10 +235,6 @@ class TimesheetController extends Controller
      */
     public function delete($id)
     {
-        try {
-            //
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
-        }
+        //
     }
 }

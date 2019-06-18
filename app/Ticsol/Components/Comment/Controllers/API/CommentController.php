@@ -5,7 +5,6 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Components\Models\Comment;
 use App\Ticsol\Components\Comment\Events;
@@ -14,7 +13,6 @@ use App\Ticsol\Components\Comment\Repository;
 use App\Ticsol\Components\Comment\Criterias\CommentCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Base\Criteria\ClientCriteria;
-
 
 class CommentController extends Controller
 {
@@ -25,7 +23,7 @@ class CommentController extends Controller
     protected $repository;
 
     public function __construct(Repository\CommentRepository $rep)
-    {    
+    {
         $this->repository = $rep;
     }
 
@@ -36,34 +34,29 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
-        try {
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', Comment::class);
 
-            //$this->authorize('list', Comment::class);
+        $id =
+        $request->query('id');
+        $entity =
+        $request->query('entity');
+        $page =
+        $request->query('page', null);
+        $perPage =
+        $request->query('perPage', 20);
+        $with = ['creator', 'childs.creator'];
 
-            $id =  
-            $request->query('id');
-            $entity =  
-            $request->query('entity');
-            $page =
-            $request->query('page', null);
-            $perPage =
-            $request->query('perPage', 20);
-            $with = ['creator', 'childs.creator'];
-           
-            $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new CommentCriteria($request, $entity, $id));
-            $this->repository->pushCriteria(new ClientCriteria($request));
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new CommentCriteria($request, $entity, $id));
+        $this->repository->pushCriteria(new ClientCriteria($request));
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
-        
-        } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);   
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
@@ -75,32 +68,28 @@ class CommentController extends Controller
      */
     public function store(Requests\CreateComment $request)
     {
-        try {
-            //$this->authorize('create', Comment::class);           
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', Comment::class);
 
-            $comment = new Comment();
-            $comment->client_id = $request->user()->client_id;
-            $comment->creator_id = $request->user()->id; 
-            
-            if($request->input('entity') == 'job'){
-                $comment->fill($request->only('parent_id', 'job_id'));
-            }
-            else if($request->input('entity') == 'request'){
-                $comment->fill($request->only('parent_id', 'request_id'));
-            }else if($request->input('entity') == 'timesheet'){
-                $comment->fill($request->only('parent_id', 'timesheet_id'));
-            }
-            
-            $comment->body = \strip_tags($request->input('body'));
+        $comment = new Comment();
+        $comment->client_id = $request->user()->client_id;
+        $comment->creator_id = $request->user()->id;
 
-            $comment->save();
-            event(new Events\CommentCreated($comment));    
-            return $comment;
-        } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);   
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        if ($request->input('entity') == 'job') {
+            $comment->fill($request->only('parent_id', 'job_id'));
+        } else if ($request->input('entity') == 'request') {
+            $comment->fill($request->only('parent_id', 'request_id'));
+        } else if ($request->input('entity') == 'timesheet') {
+            $comment->fill($request->only('parent_id', 'timesheet_id'));
         }
+
+        $comment->body = \strip_tags($request->input('body'));
+
+        $comment->save();
+        event(new Events\CommentCreated($comment));
+        return $comment;
     }
 
     /**
@@ -111,13 +100,17 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        try {
-           //
-        } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);   
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $comment = $this->repository->find($id);
+        if ($comment == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $comment);
+
+        return $comment;
     }
 
     /**
@@ -129,22 +122,19 @@ class CommentController extends Controller
      */
     public function update(Requests\UpdateComment $request, $id)
     {
-        try {            
-            $comment = $this->repository->findBy('id', $id);
-            if ($comment == null) {
-                throw new NotFound();
-            }
-
-            $this->authorize('update', $comment);
-            
-            $comment->update($request->only('body'));
-            event(new Events\CommentCreated($comment));  
-            return $comment;
-        } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);        
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $comment = $this->repository->findBy('id', $id);
+        if ($comment == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $comment);
+
+        $comment->update($request->only('body'));
+        event(new Events\CommentCreated($comment));
+        return $comment;
     }
 
     /**
@@ -155,22 +145,16 @@ class CommentController extends Controller
      */
     public function delete($id)
     {
-        try {
-            
-            $comment = $this->repository->findBy('id', $id);
-            if ($comment == null) {
-                throw new NotFound();
-            }
-
-            $this->authorize('delete', $comment);
-            
-            $this->repository->delete('id', $id, false);
-            
-            return true;
-        } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This action is unauthorized.'], 401);        
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $comment = $this->repository->findBy('id', $id);
+        if ($comment == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('delete', $comment);
+
+        return $this->repository->delete('id', $id, false);
     }
 }

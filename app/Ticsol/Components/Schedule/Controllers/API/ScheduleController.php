@@ -4,6 +4,7 @@ namespace App\Ticsol\Components\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Schedule;
@@ -36,34 +37,35 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 15;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];   
-            
-            $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new ScheduleCriteria($request));           
-            $this->repository->pushCriteria(new ClientCriteria($request));             
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', Schedule::class);
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $page =
+        $request->query('page') ?? null;
+        $perPage =
+        $request->query('perPage') ?? 15;
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new ScheduleCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
+
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * Type         : schedule, timesheet
-     * Status       : tentative, confirmed, submitted, approved, rejected, draft
-     * Event_type   : leave, unavailable hours, scheduled, RDO
+     * Type         : schedule
+     * Status       : tentative, confirmed
+     * Event_type   : leave, unavailable, scheduled, RDO
      *
      *
      * @param  \Illuminate\Http\Request  $request
@@ -71,16 +73,75 @@ class ScheduleController extends Controller
      */
     public function store(Requests\CreateSchedule $request)
     {
-        try {
-            $schedule = new Schedule();
-            $schedule->client_id = $request->user()->client_id;
-            $schedule->creator_id = $request->user()->id;
-            $schedule->fill($request->all());
+        $client_id = $request->user()->client_id;
+        $creator_id = $request->user()->id;
+        $eventType = $request->input('event_type');
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', [Schedule::class, $request->input('user_id'), $eventType]);
+
+        $schedule = new Schedule();
+        $unavCollec = collect([]);
+
+        if ($eventType == 'scheduled') {
+
+            // Schedule item setup
+
+            $schedule->client_id = $client_id;
+            $schedule->creator_id = $creator_id;
+            $schedule->type = 'schedule';
+
+            $schedule->fill($request->only([
+                'event_type',
+                'user_id',
+                'job_id',
+                'status',
+                'start',
+                'end',
+                'offsite',
+            ]));
             $schedule->save();
-            event(new Events\ScheduleCreated($schedule));
+
+        } else {
+
+            // Unavailable hours setup
+
+            $unavailables =
+            $request->input('unavailables');
+
+            try {
+
+                DB::beginTransaction();
+
+                foreach ($unavailables as &$unavailable) {
+                    $unav = new Schedule();
+                    $unav->client_id = $client_id;
+                    $unav->creator_id = $creator_id;
+                    $unavailable['type'] = 'schedule';
+                    $unavailable['event_type'] = 'unavailable';
+                    $unavailable['user_id'] = $request->input('user_id');
+                    $unavailable['status'] = 'confirmed';
+                    $unav->fill($unavailable);
+                    $unav->save();
+                    $unavCollec->push($unav);
+                }
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
+            }
+        }
+
+        if ($eventType == 'scheduled') {
+            event(new Events\ScheduleCreated($request->user(), $eventType, $schedule));
             return $schedule;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        } else {
+            event(new Events\ScheduleCreated($request->user(), $eventType));
+            return $unavCollec;
         }
     }
 
@@ -92,15 +153,17 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        try {
-            $schedule = Job::find($id);
-            if ($schedule == null) {
-                throw new NotFound();
-            }
-            return $schedule;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $schedule = $this->repository->findBy('id', $id);
+        if ($schedule == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $schedule);
+
+        return $schedule;
     }
 
     /**
@@ -112,18 +175,19 @@ class ScheduleController extends Controller
      */
     public function update(Requests\UpdateSchedule $request, $id)
     {
-        try {
-            $schedule = $this->repository->findBy('id', $id);
-            if ($schedule == null) {
-                throw new NotFound();
-            }
-
-            $schedule->update($request->all());
-            event(new Events\ScheduleUpdated($schedule));
-            return $schedule;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $schedule = $this->repository->findBy('id', $id);
+        if ($schedule == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $schedule);
+
+        $schedule->update($request->all());
+        event(new Events\ScheduleUpdated($schedule));
+        return $schedule;
     }
 
     /**
@@ -134,10 +198,16 @@ class ScheduleController extends Controller
      */
     public function delete($id)
     {
-        try {
-            return $this->repository->delete('id', $id);
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $schedule = $this->repository->findBy('id', $id);
+        if ($schedule == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('delete', $schedule);
+
+        return $this->repository->delete('id', $id, false);
     }
 }

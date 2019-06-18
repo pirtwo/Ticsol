@@ -40,24 +40,25 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 15;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            
-            $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new ClientCriteria($request));
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', Role::class);
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $page =
+        $request->query('page') ?? null;
+        $perPage =
+        $request->query('perPage') ?? 15;
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
+
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
@@ -69,50 +70,55 @@ class RoleController extends Controller
      */
     public function store(Requests\CreateRole $request)
     {
-        try {
-            $creatorId = $request->user()->id;
-            $clientId = $request->user()->client_id;
-            $permissions = $request->input('permissions');
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', Role::class);
 
-            $role = new Role();
-            $role->client_id = $clientId;
-            $role->creator_id = $creatorId;
-            $role->fill($request->all());
+        $creatorId = $request->user()->id;
+        $clientId = $request->user()->client_id;
+        $permissions = $request->input('permissions');
+
+        $role = new Role();
+        $role->client_id = $clientId;
+        $role->creator_id = $creatorId;
+        $role->fill($request->all());
+
+        try {
 
             DB::beginTransaction();
-            try {
-                $role->save();
-                foreach ($permissions as $key => $value) {                    
-                    $pos = strpos($value, '-');
-                    $prmName = substr($value, 0, $pos);
-                    $resName = substr($value, $pos + 1, \strlen($value));
-                    $res = Resource::where('name', $resName)->first();
-                    $prm = Permission::where('name', $prmName)->first();
 
-                    $acl = ACL::firstOrNew([                                            
-                        'role_id'       => $role->id,
-                        'resource_id'   => $res->id,
-                        'permission_id' => $prm->id
-                    ]);
+            $role->save();
 
-                    if ($acl->id == null) {
-                        $acl->name = $value;
-                        $acl->client_id = $clientId;
-                        $acl->creator_id = $creatorId;
-                        $acl->save();
-                    }                    
+            foreach ($permissions as $key => $value) {
+                $pos = strpos($value, '-');
+                $prmName = substr($value, 0, $pos);
+                $resName = substr($value, $pos + 1, \strlen($value));
+                $res = Resource::where('name', $resName)->first();
+                $prm = Permission::where('name', $prmName)->first();
+
+                $acl = ACL::firstOrNew([
+                    'role_id' => $role->id,
+                    'resource_id' => $res->id,
+                    'permission_id' => $prm->id,
+                ]);
+
+                if ($acl->id == null) {
+                    $acl->name = $value;
+                    $acl->client_id = $clientId;
+                    $acl->creator_id = $creatorId;
+                    $acl->save();
                 }
-                DB::commit();
-
-            } catch (\Exception $e) {
-                DB::rollback();
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-            event(new Events\RoleCreated($role));
-            return $role;
+
+            DB::commit();
+
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+        event(new Events\RoleCreated($role));
+        return $role;
     }
 
     /**
@@ -123,16 +129,18 @@ class RoleController extends Controller
      */
     public function show($id, Request $request)
     {
-        try {
-            $with = $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            $role = $this->repository->find($id, $with);
-            if ($role == null) {
-                throw new NotFound();
-            }
-            return $role;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $with = $request->query('with') != null ? explode(',', $request->query('with')) : [];
+        $role = $this->repository->find($id, $with);
+        if ($role == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $role);
+
+        return $role;
     }
 
     /**
@@ -144,61 +152,65 @@ class RoleController extends Controller
      */
     public function update(Requests\UpdateRole $request, $id)
     {
+        $creatorId = $request->user()->id;
+        $clientId = $request->user()->client_id;
+        $users = $request->input('users');
+        $permissions = $request->input('permissions');
+
+        $role = $this->repository->findBy('id', $id);
+        if ($role == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $role);
+
         try {
-            $creatorId = $request->user()->id;
-            $clientId = $request->user()->client_id;
-            $users = $request->input('users');
-            $permissions = $request->input('permissions');
 
-            $role = $this->repository->findBy('id', $id);
-            if ($role == null) {
-                throw new NotFound();
-            }
+            DB::beginTransaction();
 
-            DB::beginTransaction();           
-            
-            try {                
-                $role->update($request->all());
+            $role->update($request->all());
 
-                if($permissions !== null){
-                    $role->permissions()->delete();
-                    foreach ($permissions as $key => $value) {                    
-                        $pos = strpos($value, '-');
-                        $prmName = substr($value, 0, $pos);
-                        $resName = substr($value, $pos + 1, \strlen($value));
-                        $res = Resource::where('name', $resName)->first();
-                        $prm = Permission::where('name', $prmName)->first();
+            if ($permissions !== null) {
+                $role->permissions()->delete();
+                foreach ($permissions as $key => $value) {
+                    $pos = strpos($value, '-');
+                    $prmName = substr($value, 0, $pos);
+                    $resName = substr($value, $pos + 1, \strlen($value));
+                    $res = Resource::where('name', $resName)->first();
+                    $prm = Permission::where('name', $prmName)->first();
 
-                        $acl = ACL::firstOrNew([                                            
-                            'role_id'       => $role->id,
-                            'resource_id'   => $res->id,
-                            'permission_id' => $prm->id
-                        ]);
+                    $acl = ACL::firstOrNew([
+                        'role_id' => $role->id,
+                        'resource_id' => $res->id,
+                        'permission_id' => $prm->id,
+                    ]);
 
-                        if ($acl->id == null) {
-                            $acl->name = $value;
-                            $acl->client_id = $clientId;
-                            $acl->creator_id = $creatorId;
-                            $acl->save();
-                        }                    
+                    if ($acl->id == null) {
+                        $acl->name = $value;
+                        $acl->client_id = $clientId;
+                        $acl->creator_id = $creatorId;
+                        $acl->save();
                     }
                 }
-
-                if($users != null){
-                    $role->users()->sync($users);
-                }
-                
-                DB::commit();
-
-            } catch (\Exception $e) {
-                DB::rollback();
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-            event(new Events\RoleUpdated($role));
-            return $role;
+
+            if ($users != null) {
+                $role->users()->sync($users);
+            }
+
+            DB::commit();
+
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new Events\RoleUpdated($role));
+        
+        return $role;
     }
 
     /**
@@ -209,10 +221,16 @@ class RoleController extends Controller
      */
     public function delete($id)
     {
-        try {
-            return $this->repository->delete('id', $id);
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $role = $this->repository->findBy('id', $id);
+        if ($role == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('delete', $role);
+
+        return $this->repository->delete('id', $id, false);
     }
 }

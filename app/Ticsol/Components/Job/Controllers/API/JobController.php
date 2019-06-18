@@ -5,7 +5,6 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Job;
@@ -14,7 +13,6 @@ use App\Ticsol\Components\Job\Requests;
 use App\Ticsol\Components\Job\Repository;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Base\Criteria\ClientCriteria;
-
 
 class JobController extends Controller
 {
@@ -25,7 +23,7 @@ class JobController extends Controller
     protected $repository;
 
     public function __construct(Repository\JobRepository $rep)
-    {    
+    {
         $this->repository = $rep;
     }
 
@@ -36,30 +34,25 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        try {
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', Job::class);
 
-            $this->authorize('list', Job::class);
+        $page =
+        $request->query('page', null);
+        $perPage =
+        $request->query('perPage', 20);
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
-            $page =
-            $request->query('page', null);
-            $perPage =
-            $request->query('perPage', 20);
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
-           
-            $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new ClientCriteria($request));
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
-        
-        } catch (AuthorizationException $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);   
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
@@ -71,34 +64,33 @@ class JobController extends Controller
      */
     public function store(Requests\CreateJob $request)
     {
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', Job::class);
+
         try {
-            $this->authorize('create', Job::class);
-            try{
 
-                DB::beginTransaction();  
+            DB::beginTransaction();
 
-                $job = new Job();
-                $job->client_id = $request->user()->client_id;
-                $job->creator_id = $request->user()->id;            
-                $job->fill($request->all());
-                $job->save();
-                if ($request->filled('contacts')) {
-                    $job->contacts()->sync($request->input('contacts'));
-                }    
-
-                DB::commit();
-
-            }catch(\Exception $e){                
-                DB::rollback();                
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            $job = new Job();
+            $job->client_id = $request->user()->client_id;
+            $job->creator_id = $request->user()->id;
+            $job->fill($request->all());
+            $job->save();
+            if ($request->filled('contacts')) {
+                $job->contacts()->sync($request->input('contacts'));
             }
-            event(new Events\JobCreated($job));
-            return $job;
-        } catch (AuthorizationException $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);  
+
+            DB::commit();
+
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new Events\JobCreated($job));
+        return $job;
     }
 
     /**
@@ -109,21 +101,17 @@ class JobController extends Controller
      */
     public function show($id)
     {
-        try {
-            $job = Job::find($id);
-            if ($job == null) {
-                throw new NotFound();
-            }
-
-            $this->authorize('view', $job);
-
-            return $job;
-
-        } catch (AuthorizationException $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);  
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $job = Job::find($id);
+        if ($job == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $job);
+
+        return $job;
     }
 
     /**
@@ -135,37 +123,33 @@ class JobController extends Controller
      */
     public function update(Requests\UpdateJob $request, $id)
     {
+        $job = $this->repository->findBy('id', $id);
+        if ($job == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $job);
+
         try {
-            
-            $job = $this->repository->findBy('id', $id);
-            if ($job == null) {
-                throw new NotFound();
+
+            DB::beginTransaction();
+
+            $job->update($request->all());
+            if ($request->filled('contacts')) {
+                $job->contacts()->sync($request->input('contacts'));
             }
 
-            $this->authorize('update', $job);
+            DB::commit();
 
-            try{
-
-                DB::beginTransaction();
-
-                $job->update($request->all());
-                if ($request->filled('contacts')) {
-                    $job->contacts()->sync($request->input('contacts'));
-                }   
-
-                DB::commit();                
-                
-            }catch(\Exception $e){                
-                DB::rollback();                
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
-            }   
-            event(new Events\JobUpdated($job));
-            return $job;
-        } catch (AuthorizationException $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => 'This action is unauthorized.'], 401);       
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+        event(new Events\JobUpdated($job));
+        return $job;
     }
 
     /**

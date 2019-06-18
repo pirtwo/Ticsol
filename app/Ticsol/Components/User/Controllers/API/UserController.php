@@ -5,10 +5,12 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\Ticsol\Components\Models\User;
-use App\Ticsol\Components\User\Repository;
+use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Base\Criteria\ClientCriteria;
+use App\Ticsol\Components\Models\User;
+use App\Ticsol\Components\User\Requests;
+use App\Ticsol\Components\User\Repository;
 
 class UserController extends Controller
 {
@@ -31,25 +33,25 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 15;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
-                   
-            $this->repository->pushCriteria(new CommonCriteria($request));   
-            $this->repository->pushCriteria(new ClientCriteria($request));
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', User::class);
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
-            
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $page =
+        $request->query('page') ?? null;
+        $perPage =
+        $request->query('perPage') ?? 15;
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
+
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
@@ -59,24 +61,26 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\CreateUser $request)
     {
-        try {
-
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
-        }
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', User::class);
     }
 
     public function current(Request $request)
     {
-        try {
-            $userId = $request->user()->id;
-            $with = $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            return $this->repository->find($userId, $with);
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
-        }
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+        $user = $this->repository
+            ->find($request->user()->id, $with);
+
+        $user->makeVisible(['permissions']);
+        $user->makeHidden(['roles']);
+
+        return $user;
     }
 
     /**
@@ -85,9 +89,25 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+        $user = $this->repository->find($id, $with);
+        if ($user == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $user);
+
+        $user->makeVisible(['permissions']);
+        $user->makeHidden(['roles']);
+
+        return $user;
     }
 
     /**
@@ -97,9 +117,33 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\UpdateUser $request, $id)
     {
-        //
+        $user = $this->repository->findBy('id', $id);
+        if ($user == null) {
+            throw new NotFound();
+        }
+
+        if ($request->has('isactive')) {
+
+            //----------------------------
+            //      AUTHORIZE ACTION
+            //----------------------------
+            $this->authorize('activation', $user);
+
+            $user->update($request->only(['isactive']));
+
+        } else {
+
+            //----------------------------
+            //      AUTHORIZE ACTION
+            //----------------------------
+            $this->authorize('update', $user);
+
+            $user->update($request->except(['isactive']));
+        }
+
+        return $user;
     }
 
     /**

@@ -9,10 +9,10 @@ use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Schedule;
 use App\Ticsol\Components\Models\Request as RequestModel;
-use App\Ticsol\Components\Request\Events;
+use App\Ticsol\Components\Request\Events as RequestEvents;
+use App\Ticsol\Components\Schedule\Events as ScheduleEvents;
 use App\Ticsol\Components\Request\Requests;
 use App\Ticsol\Components\Request\Repository;
-use App\Ticsol\Components\Request\Notifications;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Components\Request\Criterias\RequestCriteria;
@@ -37,26 +37,26 @@ class RequestController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 20;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', RequestModel::class);
 
-            $this->repository->pushCriteria(new CommonCriteria($request));
-            $this->repository->pushCriteria(new RequestCriteria($request));
-            $this->repository->pushCriteria(new ClientCriteria($request));
+        $page =
+        $request->query('page') ?? null;
+        $perPage =
+        $request->query('perPage') ?? 20;
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new RequestCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
 
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
@@ -68,47 +68,51 @@ class RequestController extends Controller
      */
     public function store(Requests\CreateRequest $request)
     {
-        try {
-            $req = new RequestModel(); 
-            $client_id = $request->user()->client_id;            
-            $user_id = $request->user()->id;          
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', RequestModel::class);
 
+        $req = new RequestModel();
+        $schedule = new Schedule();
+        $client_id = $request->user()->client_id;
+        $user_id = $request->user()->id;
+
+        try {
             DB::beginTransaction();
 
-            try {
-                $req->client_id = $client_id;
-                $req->user_id = $user_id;               
-                $req->fill($request->all());
-                $req->save();
+            $req->client_id = $client_id;
+            $req->user_id = $user_id;
+            $req->fill($request->all());
+            $req->save();
 
-                if ($request->input('type') == 'leave') {
-                    $schedule = new Schedule();
-                    $schedule->client_id = $client_id;
-                    $schedule->creator_id = $user_id;
-                    $schedule->fill([                                          
-                        'user_id' => $request->user()->id,
-                        'status' => 'tentative',
-                        'type' => 'schedule',
-                        'event_type' => 'leave',                        
-                        'start' => $request->input('meta.from'),
-                        'end' => $request->input('meta.till'),
-                    ]);
-                    $schedule->save();
-                }
-                
-                DB::commit();
-                
-            } catch (\Exception $e) {
-                DB::rollback();
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            if ($request->input('type') == 'leave') {                
+                $schedule->client_id = $client_id;
+                $schedule->creator_id = $user_id;
+                $schedule->fill([
+                    'user_id' => $request->user()->id,
+                    'status' => 'tentative',
+                    'type' => 'schedule',
+                    'event_type' => 'leave',
+                    'start' => $request->input('meta.from'),
+                    'end' => $request->input('meta.till'),
+                ]);
+                $schedule->save();
             }
 
-            event(new Events\RequestCreated($req));
-            return $req;
+            DB::commit();
 
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new RequestEvents\RequestCreated($req));
+
+        if ($request->input('type') == 'leave')
+            event(new ScheduleEvents\ScheduleCreated($request->user(), 'leave'));
+
+        return $req;
     }
 
     /**
@@ -119,15 +123,17 @@ class RequestController extends Controller
      */
     public function show($id)
     {
-        try {
-            $req = $this->repository->find($id);
-            if ($req == null) {
-                throw new NotFound();
-            }
-            return $req;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $req = $this->repository->find($id);
+        if ($req == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $req);
+
+        return $req;
     }
 
     /**
@@ -139,18 +145,29 @@ class RequestController extends Controller
      */
     public function update(Requests\UpdateRequest $request, $id)
     {
-        try {
-            $req = $this->repository->find($id);
-            if ($req == null) {
-                throw new NotFound();
-            }
-
-            $req->update($request->all());
-            event(new Events\RequestUpdated($req));
-            return $req;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $req = $this->repository->find($id);
+        if ($req == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $req);
+
+        if ($request->has('status')) {
+            if ($request->input('status') == 'approved' || $request->input('status') == 'rejected') {
+
+                //----------------------------
+                //      AUTHORIZE ACTION
+                //----------------------------
+                $this->authorize('approve', $req);
+            }
+        }
+
+        $req->update($request->all());
+        event(new Events\RequestUpdated($req));
+        return $req;
     }
 
     /**

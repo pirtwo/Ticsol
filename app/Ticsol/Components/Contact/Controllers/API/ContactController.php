@@ -35,24 +35,25 @@ class ContactController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 20;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            
-            $this->repository->pushCriteria(new CommonCriteria($request));   
-            $this->repository->pushCriteria(new ClientCriteria($request));
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', Contact::class);
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $page =
+        $request->query('page') ?? null;
+        $perPage =
+        $request->query('perPage') ?? 20;
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
+
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
@@ -64,47 +65,46 @@ class ContactController extends Controller
      */
     public function store(Requests\ContactCreate $request)
     {
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', [Contact::class, $request->input('group'), $request->input('user_id')]);
+
+        $contact = new contact();
+        $creatorId =
+        $request->user()->id;
+        $clientId =
+        $request->user()->client_id;
+
         try {
-
-            $contact = new contact();
-            $creatorId = 
-                $request->user()->id;
-            $clientId = 
-                $request->user()->client_id;
-
             DB::beginTransaction();
 
-            try {
-                $contact->client_id = $clientId;
-                $contact->creator_id = $creatorId;
-                $contact->fill($request->all());
-                $contact->save();
+            $contact->client_id = $clientId;
+            $contact->creator_id = $creatorId;
+            $contact->fill($request->all());
+            $contact->save();
 
-                if ($request->filled('addresses')) {
-                    $items = $request->input('addresses');
-                    foreach ($items as &$item) {
-                        $address = new Address();                        
-                        $address->client_id = $clientId;
-                        $address->creator_id = $creatorId;
-                        $address->fill($item);
-                        $address->contact()->associate($contact);
-                        $address->save();
-                    }                    
+            if ($request->filled('addresses')) {
+                $items = $request->input('addresses');
+                foreach ($items as &$item) {
+                    $address = new Address();
+                    $address->client_id = $clientId;
+                    $address->creator_id = $creatorId;
+                    $address->fill($item);
+                    $address->contact()->associate($contact);
+                    $address->save();
                 }
-
-                DB::commit();
-
-            } catch (\Exception $e) {
-                DB::rollback();
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-            
-            event(new Events\ContactCreated($contact));
-            return $contact;
+
+            DB::commit();
 
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new Events\ContactCreated($contact));
+        return $contact;
     }
 
     /**
@@ -115,16 +115,19 @@ class ContactController extends Controller
      */
     public function show($id, Request $request)
     {
-        try {
-            $with = $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            $contact = $this->repository->find($id, $with);
-            if ($contact == null) {
-                throw new NotFound();
-            }
-            return $contact;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $with = $request->query('with') != null ? explode(',', $request->query('with')) : [];
+        $contact = $this->repository->find($id, $with);
+
+        if ($contact == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $contact);
+
+        return $contact;
     }
 
     /**
@@ -136,48 +139,47 @@ class ContactController extends Controller
      */
     public function update(Requests\ContactUpdate $request, $id)
     {
-        try
-        {
-            $contact = $this->repository->findBy('id', $id);
-            $creatorId = $request->user()->id;
-            $clientId = $request->user()->client_id;
-            
-            if ($contact == null) {
-                throw new NotFound();
-            }
+        $contact = $this->repository->findBy('id', $id);
+        $creatorId = $request->user()->id;
+        $clientId = $request->user()->client_id;
 
+        if ($contact == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $contact);
+
+        try {
             DB::beginTransaction();
 
-            try {
-                $contact->update($request->all());
-                
-                if ($request->has('addresses')) {
-                    $items = $request->input('addresses');
-                    $contact->addresses()->delete();
+            $contact->update($request->all());
 
-                    foreach ($items as &$item) {
-                        $address = new Address();
-                        $address->client_id = $clientId;
-                        $address->creator_id = $creatorId;
-                        $address->fill($item);
-                        $address->contact()->associate($contact);
-                        $address->save();                
-                    }                    
+            if ($request->has('addresses')) {
+                $items = $request->input('addresses');
+                $contact->addresses()->delete();
+
+                foreach ($items as &$item) {
+                    $address = new Address();
+                    $address->client_id = $clientId;
+                    $address->creator_id = $creatorId;
+                    $address->fill($item);
+                    $address->contact()->associate($contact);
+                    $address->save();
                 }
-
-                DB::commit();
-
-            } catch (\Exception $e) {
-                DB::rollback();
-                return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
             }
-            
-            event(new Events\ContactUpdated($contact));
-            return $contact;
+
+            DB::commit();
 
         } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new Events\ContactUpdated($contact));
+        return $contact;
     }
 
     /**
@@ -188,6 +190,17 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $contact = $this->repository->findBy('id', $id);
+
+        if ($contact == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('delete', $contact);
+
+        return $this->repository->delete('id', $id, false);
     }
 }

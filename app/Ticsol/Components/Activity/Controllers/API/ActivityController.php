@@ -35,25 +35,26 @@ class ActivityController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $page =
-            $request->query('page') ?? null;
-            $perPage =
-            $request->query('perPage') ?? 20;
-            $with =
-            $request->query('with') != null ? explode(',', $request->query('with')) : [];
-            
-            $this->repository->pushCriteria(new CommonCriteria($request));   
-            $this->repository->pushCriteria(new ActivityCriteria($request));  
-            $this->repository->pushCriteria(new ClientCriteria($request));          
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('list', Activity::class);
 
-            if ($page == null) {
-                return $this->repository->all($with);
-            } else {
-                return $this->repository->paginate($perPage, $with);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $page =
+        $request->query('page') ?? null;
+        $perPage =
+        $request->query('perPage') ?? 20;
+        $with =
+        $request->query('with') != null ? explode(',', $request->query('with')) : [];
+
+        $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new ActivityCriteria($request));
+        $this->repository->pushCriteria(new ClientCriteria($request));
+
+        if ($page == null) {
+            return $this->repository->all($with);
+        } else {
+            return $this->repository->paginate($perPage, $with);
         }
     }
 
@@ -65,17 +66,18 @@ class ActivityController extends Controller
      */
     public function store(Requests\CreateActivity $request)
     {
-        try {
-            $activity = new Activity();
-            $activity->client_id = $request->user()->client_id;
-            $activity->creator_id = $request->user()->id;
-            $activity->fill($request->all());
-            $activity->save();
-            event(new Events\ActivityCreated($activity));
-            return $activity;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
-        }
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('create', Activity::class);
+
+        $activity = new Activity();
+        $activity->client_id = $request->user()->client_id;
+        $activity->creator_id = $request->user()->id;
+        $activity->fill($request->all());
+        $activity->save();
+        event(new Events\ActivityCreated($activity));
+        return $activity;
     }
 
     /**
@@ -86,15 +88,17 @@ class ActivityController extends Controller
      */
     public function show($id)
     {
-        try {
-            $activity = $this->repository->find($id);
-            if ($activity == null) {
-                throw new NotFound();
-            }
-            return $activity;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $activity = $this->repository->find($id);
+        if ($activity == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('view', $activity);
+
+        return $activity;
     }
 
     /**
@@ -106,17 +110,22 @@ class ActivityController extends Controller
      */
     public function update(Requests\UpdateActivity $request, $id)
     {
-        try {
-            $activity = $this->repository->find($id);
-            if ($activity == null) {
-                throw new NotFound();
-            }
-            $activity->update($request->all());
-            event(new Events\ActivityUpdated($activity));
-            return $activity;
-        } catch (\Exception $e) {
-            return response()->json(['code' => $e->getCode(), 'message' => $e->getMessage()], 500);
+        $activity = $this->repository->find($id);
+
+        if ($activity == null) {
+            throw new NotFound();
         }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $activity);
+
+        $activity->update($request->all());
+
+        event(new Events\ActivityUpdated($activity));
+
+        return $activity;
     }
 
     /**
@@ -127,6 +136,6 @@ class ActivityController extends Controller
      */
     public function destroy($id)
     {
-
+        //
     }
 }
