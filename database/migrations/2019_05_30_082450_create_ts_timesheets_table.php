@@ -23,6 +23,8 @@ class CreateTsTimesheetsTable extends Migration
             $table->unsignedInteger('request_id');
 
             // Attribuets
+            $table->string('year');
+            $table->integer('week_number');
             $table->dateTime('week_start');
             $table->dateTime('week_end');
             $table->time('total_hours');
