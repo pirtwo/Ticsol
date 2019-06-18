@@ -279,14 +279,15 @@ export const router = new VueRouter({
                     component: require('./components/pages/dashboard/users/Users.vue').default,
                     children: [
                         {
+                            props: true,
                             path: 'list/:col?/:opt?/:val?',
                             name: 'userList',
-                            meta: { requireAuth: true },
-                            props: true,
+                            meta: { requireAuth: true },                            
                             component: require('./components/pages/dashboard/users/UserList.vue').default,
                         },
                         {
-                            path: 'profile',
+                            props: true,
+                            path: ':id/profile',
                             name: 'userProfile',
                             meta: { requireAuth: true },                            
                             component: require('./components/pages/dashboard/users/UserProfile.vue').default,
@@ -357,7 +358,7 @@ export const router = new VueRouter({
                     redirect: { name: 'roleList' },
                     component: require('./components/pages/dashboard/Settings/Settings.vue').default,
                     children: [
-                        {
+                        {                            
                             path: '/settings',
                             name: 'settingModify',
                             meta: { requireAuth: true },

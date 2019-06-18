@@ -39,6 +39,10 @@ export const userModule = {
             }
         },
 
+        getPermissions(state) {
+            return state.info.permissions;
+        },
+
         getSettings(state) {
             return state.info.meta;
         },
@@ -75,6 +79,7 @@ export const userModule = {
             state.isAuth = false;
             state.token.value = "";
             state.token.expire = "";
+            state.info = null;
         }
 
     },
@@ -85,7 +90,7 @@ export const userModule = {
                 api.post(URLs.AUTH_LOGIN, payload, null, true, false)
                     .then(respond => {
                         commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
-                        commit(MUTATIONS.USER_AUTH_SUCCESS);                        
+                        commit(MUTATIONS.USER_AUTH_SUCCESS);
                         resolve("success");
                     }).catch(error => {
                         console.log(error);
@@ -101,13 +106,13 @@ export const userModule = {
         },
 
         refresh() {
-
+            //
         },
 
         info({ commit, dispatch }) {
             return new Promise((resolve, reject) => {
                 api.get(URLs.USER_INFO, null).then(respond => {
-                    commit(MUTATIONS.USER_INFO, respond.data);                    
+                    commit(MUTATIONS.USER_INFO, respond.data);
                     resolve(respond.data);
                 }).catch(error => {
                     console.log(error);
@@ -115,5 +120,9 @@ export const userModule = {
                 });
             })
         },
+
+        checkPermission({ state }, permission) {
+            return state.info.permission.indexOf(permission) > -1;
+        }
     }
 }
