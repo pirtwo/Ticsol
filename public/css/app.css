@@ -9837,6 +9837,12 @@ a.text-dark:hover, a.text-dark:focus {
   border: 1px solid #ff2819;
 }
 
+.unavailable .scheduler_green_event_inner {
+  color: #333333;
+  background: #ffaf02;
+  border: 1px solid #ffaf02;
+}
+
 #app.default {
   background-image: url("/img/theme/Default.jpg");
   font-family: "Source Sans Pro";

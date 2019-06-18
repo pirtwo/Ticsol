@@ -324,3 +324,9 @@
 	background: #ff2819;
 	border: 1px solid #ff2819;	
 }
+
+.unavailable .scheduler_green_event_inner  {
+	color: #333333;
+	background: #ffaf02;
+	border: 1px solid #ffaf02;	
+}
