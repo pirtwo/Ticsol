@@ -34,7 +34,9 @@ class TimesheetCriteria extends Criteria
                     ['week_end', '<=', $range[1]],
                 ]);
             });
-        }        
+        } 
+        
+        $model->OfUser($this->userId);
 
         return $model;
     }

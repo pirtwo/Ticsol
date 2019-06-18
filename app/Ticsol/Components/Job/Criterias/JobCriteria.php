@@ -14,16 +14,9 @@ class JobCriteria extends Criteria
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->contains = 
-            $request->query('contains');
     }
 
-    public function apply($model, IRepository $repository){
-        
-        if($this->contains != null){
-            $model->where('title', 'like', $this->contains);
-        }
-
+    public function apply($model, IRepository $repository){  
         return $model;
     }
 }
