@@ -1,5 +1,6 @@
 import Pusher from 'pusher-js';
 import * as MUTATIONS from "../mutation-types";
+import Notification from '../../utils/notification';
 
 const PUSHER_KEY = '89a2d9bf477c44775c9a';
 const PUSHER_CCLUSTER = 'ap1';
@@ -9,11 +10,11 @@ export const coreModule = {
     namespaced: true,
 
     state: {
-        logs: [],
+        notifications: [],
 
         theme: 'default',
 
-        connection:{
+        connection: {
             previous: '',
             current: ''
         },
@@ -47,8 +48,8 @@ export const coreModule = {
 
     getters: {
 
-        getAppLogs(state) {
-            return state.logs;
+        getNotifications(state) {
+            return state.notifications;
         },
 
         getUiFullscreen(state) {
@@ -91,21 +92,25 @@ export const coreModule = {
             return state.toolbar.height;
         },
 
-        getTheme(state){
+        getTheme(state) {
             return state.theme;
-        } 
+        }
     },
 
     mutations: {
-        [MUTATIONS.APP_LOG_PUSH](state, log) {
-            state.logs.push(log);
+        [MUTATIONS.APP_NOTIF_PUSH](state, notification) {
+            state.notifications.push(notification);
         },
 
-        [MUTATIONS.APP_LOG_CLEAR](state) {
-            state.logs = [];
+        [MUTATIONS.APP_NOTIF_SEEN](state, id) {
+            state.notifications.find(item => item.id == id).seen = true;
         },
 
-        [MUTATIONS.APP_CONNECTION](state, payload){
+        [MUTATIONS.APP_NOTIF_CLEAR](state) {
+            state.notifications = [];
+        },
+
+        [MUTATIONS.APP_CONNECTION](state, payload) {
             state.connection.previous = payload.previous;
             state.connection.current = payload.current;
         },
@@ -148,14 +153,18 @@ export const coreModule = {
     },
 
     actions: {
-        pushLog({ commit }, payload) {
-            commit(MUTATIONS.APP_LOG_PUSH, payload);
+        notify({ commit }, payload) {
+            commit(MUTATIONS.APP_NOTIF_PUSH, payload);
         },
 
-        clearLog({ commit }) {
-            commit(MUTATIONS.APP_LOG_CLEAR);
+        seenNotification({ commit }, id) {
+            commit(MUTATIONS.APP_NOTIF_SEEN, id);
         },
-       
+
+        clearNotification({ commit }) {
+            commit(MUTATIONS.APP_NOTIF_CLEAR);
+        },
+
         fullscreen({ commit }, { enable }) {
             commit(MUTATIONS.APP_FULLSCREEN, enable);
         },
@@ -175,7 +184,7 @@ export const coreModule = {
         toolbar({ commit }, { height, show }) {
             commit(MUTATIONS.APP_TOOLBAR, { show, height });
         },
-       
+
         snackbar({ commit }, { show, message, theme = '', fixed = false, timeout = 300 }) {
             commit(MUTATIONS.APP_SNACKBAR, { show: false, message: '', theme: theme });
             commit(MUTATIONS.APP_SNACKBAR, { show, message, theme, fixed, timeout });
@@ -184,16 +193,16 @@ export const coreModule = {
                     commit(MUTATIONS.APP_SNACKBAR, { show: false, message: '', theme: theme });
                 }, timeout);
             }
-        }, 
-        
-        theme({ commit }, payload){
+        },
+
+        theme({ commit }, payload) {
             commit(MUTATIONS.APP_THEME, payload.toLowerCase());
         },
-        
-        connectToChannels({state, dispatch, commit, rootState}){
+
+        connectToChannels({ state, dispatch, commit, rootState }) {
             if (!rootState.user.isAuth) return
 
-            let user = rootState.user;            
+            let user = rootState.user;
 
             let pusher = new Pusher(PUSHER_KEY, {
                 cluster: PUSHER_CCLUSTER,
@@ -207,26 +216,60 @@ export const coreModule = {
             });
 
             //Pusher.logToConsole = true;
-            
-            let notifChannel = pusher.subscribe(`private-App.Users.${user.info.id}`);
-            notifChannel.bind("User.Update", (data) => {
-                dispatch('resource/onClientUpdate', data.resName, { root: true });
+
+            let userChannel = pusher.subscribe(`private-App.Users.${user.info.id}`);
+            userChannel.bind("User.Update", (data) => {
+                console.log(data);
+                dispatch('resource/onServerUpdate', data.resName, { root: true });
             });
 
             let clientChannel = pusher.subscribe(`private-App.Clients.${user.info.client_id}`);
             clientChannel.bind("Client.Update", (data) => {
-                dispatch('resource/onClientUpdate', data.resName, { root: true });
+                dispatch('resource/onServerUpdate', data.resName, { root: true });
             });
 
             pusher.connection.bind('state_change', (state) => {
                 commit(MUTATIONS.APP_CONNECTION, state);
+
+                // Notify user about connection state
+                // by sending the notifications.
+                let msg = '';
+                let type = 'info';
+                let title = 'Connection';
+                let autohide = true;
+
+                if (state.current == 'connecting') {
+                    title = 'Connecting';
+                    msg = 'Connecting to the server, please wait...';
+                } else if (state.current == 'connected') {
+                    title = 'Connected';
+                    type = 'connected';
+                    msg = 'Connected to the server successfuly.';
+                } else if (state.current == 'unavailable') {
+                    autohide = false;
+                    title = 'Disconnected';
+                    type = 'disconnected';
+                    msg = 'The connection is unavailable, please check your internet connection.';
+                } else if (state.current == 'failed') {
+                    autohide = false;
+                    title = 'Disconnected';
+                    type = 'disconnected';
+                    msg = 'Connection failed, Channels is not supported by the browser.';
+                }
+
+                if (msg) dispatch('notify', new Notification({
+                    type: type,
+                    title: title,
+                    message: msg,
+                    autoHide: autohide
+                }));
             });
 
-            notifChannel.bind('pusher:subscription_succeeded', () => {
-                console.log('subscribed to notification channel successfuly.');
+            userChannel.bind('pusher:subscription_succeeded', () => {
+                console.log('subscribed to user channel successfuly.');
             });
-            notifChannel.bind('pusher:subscription_error', () => {
-                console.log('subscribe to notification channel failed.');
+            userChannel.bind('pusher:subscription_error', () => {
+                console.log('subscribe to user channel failed.');
             });
 
             clientChannel.bind('pusher:subscription_succeeded', () => {

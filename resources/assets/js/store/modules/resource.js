@@ -1,6 +1,7 @@
 import { api } from "../../api/http";
 import * as URLs from "../../api/resources";
 import * as MUTATIONS from "../mutation-types";
+import Notification from '../../utils/notification';
 
 class Resource {
     constructor(name, listUrl, showUrl, createUrl, updateUrl, deleteUrl) {
@@ -19,7 +20,6 @@ class Resource {
     }
 
     setQuery(value) {
-        if (typeof (value) !== String) throw Error(`Invalid type ${typeof (value)} for query.`);
         this.query = value;
     }
 
@@ -56,18 +56,23 @@ export const resourceModule = {
     getters: {
         getList: state => (resName, callback) => {
             let res = state.resources.find(item => item.name === resName);
-            if(!res.data) return [];
+            if (!res.data) return [];
             return callback === undefined ? res.getData() : res.getData().filter(callback);
         }
     },
 
     mutations: {
-        [MUTATIONS.RESOURCE_QUERY](state, payload) {            
+        [MUTATIONS.RESOURCE_QUERY](state, payload) {
             payload.resource.query = payload.query;
         },
 
-        [MUTATIONS.RESOURCE_UPDATE](state, payload) {            
+        [MUTATIONS.RESOURCE_UPDATE](state, payload) {
             payload.resource.setData(payload.data);
+        },
+
+        [MUTATIONS.RESOURCE_CLEAR](state, payload) {
+            payload.resource.setQuery('');
+            payload.resource.setData([]);
         },
     },
 
@@ -88,6 +93,7 @@ export const resourceModule = {
                         resolve(respond.data);
                     }).catch(error => {
                         console.log(error);
+                        dispatch('handleError', error);
                         reject(error);
                     });
             });
@@ -102,6 +108,7 @@ export const resourceModule = {
                         resolve(respond.data);
                     }).catch(error => {
                         console.log(error);
+                        dispatch('handleError', error);
                         reject(error);
                     });
             });
@@ -116,6 +123,7 @@ export const resourceModule = {
                         resolve(respond.data);
                     }).catch(error => {
                         console.log(error);
+                        dispatch('handleError', error);
                         reject(error);
                     });
             });
@@ -130,6 +138,7 @@ export const resourceModule = {
                         resolve(respond.data);
                     }).catch(error => {
                         console.log(error);
+                        dispatch('handleError', error);
                         reject(error);
                     });
             });
@@ -144,19 +153,58 @@ export const resourceModule = {
                         resolve(respond.data);
                     }).catch(error => {
                         console.log(error);
+                        dispatch('handleError', error);
                         reject(error);
                     });
             });
         },
 
-        onClientUpdate({ state, dispatch }, resource) {            
+        onServerUpdate({ state, dispatch }, resource) {
+            dispatch("checkResource", resource);
             let res = state.resources.find(item => item.name === resource);
             dispatch('list', { resource: res.name, query: res.query });
         },
 
-        checkResource({ state }, payload) {
-            if (resourceList.indexOf(payload) === -1)
-                throw new Error("Invalid resource name.");
+        clearResource({ state, commit, dispatch }, resource) {
+            dispatch("checkResource", resource);
+            let res = state.resources.find(item => item.name === resource);
+            commit(MUTATIONS.RESOURCE_CLEAR, { resource: res });
+        },
+
+        checkResource({ state }, resource) {
+            if (resourceList.indexOf(resource) === -1)
+                throw new Error(`Invalid resource name: ${resource}`);
+        },
+
+        handleError({ dispatch }, req) {
+            let msg = '';
+            let type = 'error';
+            let title = 'Whoops';
+            let autohide = false;
+            let error = req.response.data;
+
+            // Notify user about the error.            
+            if (error.code == 1002) {                
+                type = 'warning';
+                title = 'Auth Error';
+                msg = 'You are not logged in, please logout and login again.';
+            } else if (error.code == 1003) {                
+                type = 'warning';
+                title = 'Permission Error';
+                msg = 'You are not allowed to do this action, please check your permissions.';
+            } else if (error.code == 1004) {
+                autohide = true;
+                msg = 'The data is invalid or in a bad format, please try again.';
+            } else if (error.code == 1005) {
+                msg = 'Server side error, something went wrong while processing your request, please try again later.';
+            }
+
+            dispatch('core/notify', new Notification({
+                type: type,
+                title: title,
+                message: msg,
+                autoHide: autohide
+            }), { root: true });
         }
     }
 }

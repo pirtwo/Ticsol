@@ -1,8 +1,9 @@
 
 // CORE
 export const APP_CONNECTION = "APP_CONNECTION";
-export const APP_LOG_PUSH = "APP_ERRORS_PUSH";
-export const APP_LOG_CLEAR = "APP_ERRORS_CLEAR";
+export const APP_NOTIF_PUSH = "APP_NOTIF_PUSH";
+export const APP_NOTIF_SEEN = "APP_NOTIF_SEEN";
+export const APP_NOTIF_CLEAR = "APP_NOTIF_CLEAR";
 export const APP_THEME = "APP_THEME";
 export const APP_LOADING = "APP_LOADING";
 export const APP_DRAWER = "APP_DRAWER";
@@ -26,5 +27,6 @@ export const USER_AUTH_LOGOUT = "USER_AUTH_LOGOUT";
 // RESOURCE
 export const RESOURCE_QUERY = "RESOURCE_QUERY";
 export const RESOURCE_UPDATE = "RESOURCE_UPDATE";
+export const RESOURCE_CLEAR = "RESOURCE_CLEAR";
 
 
