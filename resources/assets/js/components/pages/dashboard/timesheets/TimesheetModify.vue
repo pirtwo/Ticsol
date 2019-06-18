@@ -8,7 +8,7 @@
       <ts-datescroller
         v-if="!id"
         v-model="weekStart"
-        @input="fetchLists"
+        @input="loadTimesheet"
         range="Week"
       />
     </template>
@@ -18,7 +18,7 @@
         <li class="menu-title">
           Actions
         </li>
-        <li>
+        <li v-if="!id">
           <button
             class="btn btn-light"
             @click="onSave"
@@ -26,7 +26,7 @@
             Save
           </button>
         </li>
-        <li>
+        <li v-if="!id">
           <button
             class="btn btn-light"
             @click="approverModal = true"
@@ -34,11 +34,29 @@
             Submit
           </button>
         </li>
-        <li>
+        <li v-if="!id">
           <button
             type="button"
             class="btn btn-light"
             @click="genFromSchedule(scheduleItems)"
+          >
+            Generate
+          </button>
+        </li>
+        <li v-if="id">
+          <button
+            type="button"
+            class="btn btn-light"
+            @click="onApprove"
+          >
+            Generate
+          </button>
+        </li>
+        <li v-if="id">
+          <button
+            type="button"
+            class="btn btn-light"
+            @click="onReject"
           >
             Generate
           </button>
@@ -254,6 +272,7 @@ import { mapActions, mapGetters } from "vuex";
 import pageMixin from "../../../../mixins/page-mixin";
 import Editor from "@tinymce/tinymce-vue";
 import uuid from "../../../../utils/uuid";
+import { constants } from "crypto";
 
 export default {
   name: "TimesheetModify",
@@ -269,10 +288,9 @@ export default {
   data() {
     return {
       approverModal: false,
-      isReady: false,
       status: "",
       weekEnd: "",
-      weekStart: "",
+      weekStart: DayPilot.Date.today().firstDayOfWeek(),
       timesheet: null,
       approver: {},
       scheduleItems: [],
@@ -289,9 +307,7 @@ export default {
     };
   },
 
-  watch: {
-    
-  },
+  watch: {},
 
   computed: {
     ...mapGetters({
@@ -339,37 +355,38 @@ export default {
     }
   },
 
-  beforeRouteEnter(to, from, next) {    
+  beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
+      vm.loadAssets();
     });
   },
 
-  created() {
-    this.weekStart = DayPilot.Date.today().firstDayOfWeek();
-  },
+  created() {},
 
-  mounted() {
-    this.startLoading();
-    let loadJobs = this.fetchList({ resource: "job" });
-    let loadUsers = this.fetchList({ resource: "user" });
-    Promise.all([loadJobs, loadUsers]).then(() => {
-      console.log("assets loading finished...");
-      this.stopLoading();
-      this.fetchLists();
-      this.isReady = true;
-    });
-  },
+  mounted() {},
 
   methods: {
-    ...mapActions({
-      fetchList: "resource/list",
+    ...mapActions({      
+      list: "resource/list",
       show: "resource/show",
       create: "resource/create",
       update: "resource/update"
     }),
 
-    fetchLists() {
+    loadAssets() {
+      this.startLoading();
+      let loadJobs = this.list({ resource: "job" });
+      let loadUsers = this.list({ resource: "user" });
+
+      Promise.all([loadJobs, loadUsers]).then(() => {
+        console.log("assets loading finished...");
+        this.stopLoading();
+        this.loadTimesheet();
+      });
+    },
+
+    loadTimesheet() {
       this.startLoading();
       this.status = "-";
       this.approver = {};
@@ -378,50 +395,76 @@ export default {
       this.timesheetItems = [];
       this.weekEnd = this.weekStart.addDays(7);
 
-      let query = this.id
-        ? []
-        : [
-            { opt: "eq", col: "week_start", val: this.weekStart.toString() },
-            {
-              opt: "eq",
-              col: "week_end",
-              val: this.weekEnd.toString()
-            }
-          ];
+      let p1 = null;
 
-      let p1 = this.show({
-        resource: "timesheet",
-        id: this.id || "",
-        query: this.$queryBuilder(
-          null,
-          null,
-          ["request", "schedules.job"],
-          query
-        )
-      }).then(data => {
-        console.log("Loading timesheet finished...");
-        if (data) {
-          this.timesheet = data;
-          this.status = data.request.status;
-          this.approver = this.users.find(
-            item => item.key === data.request.assigned_id
-          );
-          this.weekStart = new DayPilot.Date(this.timesheet.week_start);
-          this.weekEnd = new DayPilot.Date(this.timesheet.week_end);
-          this.genFromTimesheet(data.schedules);
-        }
-        this.stopLoading();
-      });
+      if (this.id) {
+        p1 = this.show({
+          resource: "timesheet",
+          id: this.id,
+          query: this.$queryBuilder(
+            null,
+            null,
+            ["request", "schedules.job"],
+            []
+          )
+        }).then(data => {
+          console.log("Loading timesheet finished...");
+          if (data) {
+            this.timesheet = data;
+            this.status = data.request.status;
+            this.approver = this.users.find(
+              item => item.key === data.request.assigned_id
+            );
+            this.weekStart = new DayPilot.Date(this.timesheet.week_start);
+            this.weekEnd = new DayPilot.Date(this.timesheet.week_end);
+            this.genFromTimesheet(data.schedules);
+          }
+          this.stopLoading();
+        });
+      } else {
+        p1 = this.list({
+          resource: "timesheet",
+          query: this.$queryBuilder(
+            null,
+            null,
+            ["request", "schedules.job"],
+            [
+              { opt: "eq", col: "creator_id", val: this.userId },
+              { opt: "eq", col: "week_start", val: this.weekStart.toString() },
+              {
+                opt: "eq",
+                col: "week_end",
+                val: this.weekEnd.toString()
+              }
+            ]
+          )
+        }).then(data => {
+          console.log("Loading timesheet finished...");
+          if (data.length > 0) {
+            data = data[0];
+            this.timesheet = data;
+            this.status = data.request.status;
+            this.approver = this.users.find(
+              item => item.key === data.request.assigned_id
+            );
+            this.weekStart = new DayPilot.Date(this.timesheet.week_start);
+            this.weekEnd = new DayPilot.Date(this.timesheet.week_end);
+            this.genFromTimesheet(data.schedules);
+          }
+          this.stopLoading();
+        });
+      }
 
-      let p2 = this.fetchList({
+      let p2 = this.list({
         resource: "schedule",
-        query: {
-          eq: `user_id,${this.userId}`,
-          with: "job",
-          inRange: `${this.start || this.weekStart},${this.end || this.weekEnd}`
-        }
+        query: this.$queryBuilder(null,null,['job'], [
+          {opt: 'eq', col:'user_id', val: this.userId},
+          {opt: 'eq', col:'event_type', val: 'scheduled'},
+          {opt:'inRange', col:'', val: `${this.start || this.weekStart},${this.end || this.weekEnd}`}
+        ])
       }).then(data => {
         console.log("loading schedules finished...");
+        console.log(data);
         this.scheduleItems = data;
       });
 
@@ -434,12 +477,20 @@ export default {
         });
     },
 
+    onApprove(){
+
+    },
+
+    onReject(){
+
+    },
+
     onSubmit(e) {
       if (this.timesheet) {
         this.updateTimesheet("submitted");
       } else {
         this.createTimesheet("submitted");
-      }     
+      }
 
       this.approverModal = false;
     },
@@ -489,7 +540,7 @@ export default {
           items: this.getTimesheetItems()
         }
       })
-        .then((data) => {
+        .then(data => {
           this.showMessage(
             `${
               status == "draft"
@@ -582,8 +633,15 @@ export default {
       return items;
     },
 
-    clearForm(){
-
+    clearForm() {
+      console.log("clear...");
+      this.status = "-";
+      this.approver = {};
+      this.timesheet = null;
+      this.scheduleItems = [];
+      this.timesheetItems = [];
+      this.weekStart = DayPilot.Date.today().firstDayOfWeek();
+      this.weekEnd = this.weekStart.addDays(7);
     },
 
     workHours(item) {

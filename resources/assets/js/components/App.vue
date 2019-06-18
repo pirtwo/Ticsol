@@ -27,8 +27,6 @@ export default {
 
       // connect to pusher
       this.connectToChannels();
-
-      console.log('app is ready...');      
     });
   },
 

@@ -36,16 +36,31 @@
     </template>
 
     <template slot="content">
+      <!-- Profile info -->
       <form class="needs-validation">
         <div class="form-row">
           <div class="form-group col-sm-4">
             <img
-              src="/img/avatar/pic_4.jpg"
-              class="rounded mx-auto d-block"
-              alt="..."
+              v-show="!loadingAvatar"
+              :src="form.avatar"
+              @load="loadingAvatar = false"
+              :class="['rounded mx-auto d-block', (loadingAvatar ? 'position-absolute':'position-relative')]"
+              :style="{ opacity: (loadingAvatar) ? 0 : 1 }"
+              alt="Profile picture"
               width="200"
               height="200"
             >
+            <div
+              v-if="loadingAvatar"
+              class="d-flex flex-column justify-content-center align-items-center h-100"
+            >
+              <ts-spinner
+                :spinner-style="'grow'"
+                class="spinner-grow-lg"
+                :sr="'loading...'"
+              />
+              <strong>Loading profile picture...</strong>
+            </div>
           </div>
           <div class="form-group col-sm-8">
             <div class="form-group">
@@ -133,14 +148,18 @@
       <br>
       <hr>
 
+      <!-- Unavailable hours calendar -->
       <ts-datescroller
         v-model="weekStart"
         range="Week"
+        @input="loadCalendar"
       />
-      <calendar 
-        :start-date="weekStart" 
-        :events="events" 
-        @range-selected="onRangeSelect" 
+      <calendar
+        :start-date="weekStart"
+        :events="scheduleEvents"
+        :disabled="userId != id"
+        :message="calendarMsg"
+        @range-selected="onRangeSelect"
         @event-clicked="onEventClicked"
       />
 
@@ -204,7 +223,7 @@
               <div class="form-row">
                 <label
                   class="col-sm-12 col-form-lable"
-                >For {{ recurring.times }} {{ recurring.times > 1 ? "times" : "time" }}</label>
+                >For {{ recurring.times }} {{ this.timesLable }}</label>
                 <div class="col">
                   <input
                     v-model="recurring.times"
@@ -278,7 +297,7 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="onDelete"
+            @click="onDeleteEvent"
           >
             DELETE
           </button>
@@ -291,9 +310,10 @@
         title="Confirm Delete"
       >
         <p>
-          Are you sure you want to delete event 
-          <b>Unavailable 
-            {{ selectedEvent.startDate.toString("MMM dd") }} till 
+          Are you sure you want to delete event
+          <b>
+            Unavailable
+            {{ selectedEvent.startDate.toString("MMM dd") }} till
             {{ selectedEvent.endDate.toString("MMM dd") }}
           </b>?
         </p>
@@ -323,31 +343,29 @@ import pageMixin from "../../../../mixins/page-mixin";
 import DPCalendarVue from "../../../base/DPCalendar.vue";
 
 export default {
-  name: "UserList",
+  name: "UserProfile",
 
   mixins: [pageMixin],
 
-  components: {    
-    calendar: DPCalendarVue,
+  components: {
+    calendar: DPCalendarVue
   },
+
+  props: ["id"],
 
   data() {
     return {
-      weekStart: DayPilot.Date.today().firstDayOfWeek(),
-      events: [],
-      selectedEvent: {
-        startDate: DayPilot.Date.today(),
-        endDate: DayPilot.Date.today(),
-        start: "",
-        end:""
-      },
+      loadingAvatar: true,
       createEventModal: false,
       confirmDeleteModal: false,
       eventInfoModal: false,
+      calendarMsg: { msg: "", delay: 0 },
+      weekStart: DayPilot.Date.today().firstDayOfWeek(),
       form: {
         firstname: "",
         lastname: "",
-        email: ""
+        email: "",
+        avatar: ""
       },
       recurring: {
         repeat: "no repeat",
@@ -356,6 +374,12 @@ export default {
           start: "",
           end: ""
         }
+      },
+      selectedEvent: {
+        startDate: DayPilot.Date.today(),
+        endDate: DayPilot.Date.today(),
+        start: "",
+        end: ""
       }
     };
   },
@@ -368,59 +392,151 @@ export default {
     }
   },
 
-  watch: {},
+  watch: {
+    id: function(val) {
+      console.log(val);
+      let p1 = this.loadProfile();
+      let p2 = this.loadCalendar();
 
-  computed: {},
+      Promise.all([p1, p2])
+        .then(() => {
+          this.stopLoading();
+        })
+        .catch(error => {
+          console.log(error);
+          this.showMessage(error.message, "danger");
+        });
+    }
+  },
 
-  mounted() {},
+  computed: {
+    ...mapGetters({
+      userId: "user/getId",
+      getList: "resource/getList"
+    }),
+
+    scheduleEvents: function() {
+      return this.getList("schedule").map(item => {
+        return {
+          id: item.id,
+          start: item.start,
+          end: item.end,
+          text: "Unavailable"
+        };
+      });
+    },
+
+    timesLable: function() {
+      if (this.recurring.repeat == "weekly")
+        return this.recurring.times > 1 ? "Weeks" : "Week";
+      if (this.recurring.repeat == "monthly")
+        return this.recurring.times > 1 ? "Months" : "Month";
+      return "time";
+    }
+  },
+
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.startLoading();
+      let p1 = vm.loadProfile();
+      let p2 = vm.loadCalendar();
+
+      Promise.all([p1, p2])
+        .then(() => {
+          vm.stopLoading();
+        })
+        .catch(error => {
+          console.log(error);
+          this.showMessage(error.message, "danger");
+        });
+    });
+  },
 
   methods: {
-    ...mapActions({ fetchList: "resource/list" }),
+    ...mapActions({
+      list: "resource/list",
+      show: "resource/show",
+      create: "resource/create",
+      delete: "resource/delete"
+    }),
+
+    loadProfile() {
+      this.loadingAvatar = true;
+      return this.show({ resource: "user", id: this.id }).then(data => {
+        this.form.firstname = data.firstname;
+        this.form.lastname = data.lastname;
+        this.form.email = data.email;
+        this.form.avatar = data.meta.avatar;
+      });
+    },
+
+    loadCalendar() {
+      this.calendarMsg = { msg: "Loading, please wait...", delay: 2000 };
+      return this.list({
+        resource: "schedule",
+        query: this.$queryBuilder(
+          null,
+          null,
+          ["user"],
+          [
+            { opt: "eq", col: "user_id", val: this.id },
+            { opt: "eq", col: "event_type", val: "unavailable" },
+            {
+              opt: "inRange",
+              col: "",
+              val: `${this.weekStart.toString()},${this.weekStart
+                .addDays(7)
+                .toString()}`
+            }
+          ]
+        )
+      }).catch(error => {
+        this.showMessage(error.message, "danger");
+      });
+    },
 
     onRangeSelect(e) {
       this.recurring.event.start = e.start.slice(0, 10);
       this.recurring.event.end = e.end.slice(0, 10);
-      this.createEventModal = true;      
+      this.createEventModal = true;
     },
 
-    onEventClicked(e){  
+    onEventClicked(e) {
       this.selectedEvent.startDate = DayPilot.Date(e.e.data.start);
-      this.selectedEvent.endDate = DayPilot.Date(e.e.data.end);      
+      this.selectedEvent.endDate = DayPilot.Date(e.e.data.end);
       this.selectedEvent.start = e.e.data.start.slice(0, 10);
       this.selectedEvent.end = e.e.data.end.slice(0, 10);
       this.eventInfoModal = true;
     },
 
-    onEventMoved(e){
+    onEventMoved(e) {},
 
-    },
+    onEventResized(e) {},
 
-    onEventResized(e){
-
-    },    
-
-    onEventDeleted(e){
-
-    },
+    onEventDeleted(e) {},
 
     onSubmitEvents(e) {
-      let start = new DayPilot.Date(this.recurring.event.start);
-      let end = new DayPilot.Date(this.recurring.event.end);      
+      // populate the form data
+      let form = {
+        event_type: "unavailable",
+        user_id: this.id,
+        unavailables: []
+      };
 
+      let start = new DayPilot.Date(this.recurring.event.start);
+      let end = new DayPilot.Date(this.recurring.event.end);
+
+      // Create recuring events and push them to list
       if (this.recurring.repeat === "no repeat") {
-        this.events.push({
+        form.unavailables.push({
           start: start.toString(),
-          end: end.toString(),
-          id: DayPilot.guid(),
-          text: "Unavailable"
+          end: end.toString()
         });
       } else if (this.recurring.repeat === "weekly") {
         for (let i = 1; i <= this.recurring.times; i++) {
-          this.events.push({
+          form.unavailables.push({
             start: start.toString(),
-            end: end.toString(),
-            id: DayPilot.guid(),
-            text: "Unavailable"
+            end: end.toString()
           });
           start = start.addDays(7);
           end = end.addDays(7);
@@ -430,17 +546,38 @@ export default {
           .firstDayOfMonth()
           .addMonths(Number(this.recurring.times));
         while (start < endDate) {
-          this.events.push({
+          form.unavailables.push({
             start: start.toString(),
-            end: end.toString(),
-            id: DayPilot.guid(),
-            text: "Unavailable"
+            end: end.toString()
           });
           start = start.addDays(7);
           end = end.addDays(7);
         }
       }
+
+      // Submit events to server
+      this.create({ resource: "schedule", data: form })
+        .then(() => {
+          console.log("events created successfuly.");
+          this.showMessage("Unavailable hours created successfuly.", "success");
+        })
+        .catch(error => {
+          console.log(error);
+          this.showMessage(error.message, "danger");
+        });
+
       this.createEventModal = false;
+    },
+
+    onDeleteEvent(e) {
+      // Show delete confirmation
+      this.eventInfoModal = false;
+      this.confirmDeleteModal = true;
+    },
+
+    onConfirmDelete() {
+      // Delete has been confirmed
+      // Delete the event
     },
 
     clearModal() {
@@ -451,11 +588,6 @@ export default {
     },
 
     onSave(e) {},
-
-    onDelete(e){
-      this.eventInfoModal = false;
-      this.confirmDeleteModal = true;
-    },
 
     onCancel(e) {}
   }

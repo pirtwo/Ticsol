@@ -155,7 +155,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import uuid from '../../../../utils/uuid';
+import uuid from "../../../../utils/uuid";
 import BaseDayPilot from "../schedules/BaseDayPilot.vue";
 import AssignModal from "../schedules/AssignModal.vue";
 import UpdateModal from "../schedules/UpdateModal.vue";
@@ -185,8 +185,13 @@ export default {
       updateModal: false,
       leaveJob: {
         id: uuid(),
-        name: 'LEAVE',
-        code: 'LEAVE-SYS'
+        name: "LEAVE",
+        code: "LEAVE-SYS"
+      },
+      unaviJob: {
+        id: uuid(),
+        name: "UNAVAILABLE",
+        code: "UNAVAILABLE-SYS"
       }
     };
   },
@@ -235,20 +240,40 @@ export default {
     scheduleEvents: function() {
       if (this.view === "user")
         return this.getList("schedule").map(item => {
+          let eventText = "";
+
+          if (item.job) {
+            eventText = item.job.title;
+          } else {
+            eventText =
+              item.event_type == "leave"
+                ? this.leaveJob.name
+                : this.unaviJob.name;
+          }
+
           return {
             id: item.id,
             resource: item.user_id,
             start: new DayPilot.Date(item.start),
             end: new DayPilot.Date(item.end),
-            text: item.job ? item.job.title : this.leaveJob.name,
+            text: eventText,
             type: item.event_type
           };
         });
       else {
         return this.getList("schedule").map(item => {
+          let eventResource = "";
+          
+          if(item.event_type == 'scheduled')
+            eventResource = item.job_id;
+          else if(item.event_type == 'leave')
+            eventResource = this.leaveJob.id;
+          else if(item.event_type == 'unavailable')
+            eventResource = this.unaviJob.id;
+
           return {
             id: item.id,
-            resource: item.event_type === 'leave' ? this.leaveJob.id : item.job_id,
+            resource: eventResource,
             start: new DayPilot.Date(item.start),
             end: new DayPilot.Date(item.end),
             text: item.user.name,
@@ -264,9 +289,13 @@ export default {
           return { id: item.id, name: item.name, avatar: item.meta.avatar };
         });
       else {
-        return [this.leaveJob].concat(this.getList("job").map(item => {
+        let list = this.getList("job").map(item => {
           return { id: item.id, name: item.title, code: item.code };
-        }));
+        });
+
+        list.unshift(this.unaviJob, this.leaveJob);
+
+        return list;
       }
     },
 
@@ -319,7 +348,7 @@ export default {
   },
 
   mounted() {
-    let query = [];    
+    let query = [];
     query.push({
       opt: "inRange",
       col: "",

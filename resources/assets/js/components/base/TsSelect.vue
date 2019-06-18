@@ -130,6 +130,7 @@ export default {
 
   watch: {
     value: function(value) {
+      if(!value) this.selects = [];
       if (this.multi) {
         this.selects = [...value];
       } else {

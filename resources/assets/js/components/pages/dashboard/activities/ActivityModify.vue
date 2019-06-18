@@ -57,6 +57,12 @@
         <li v-if="this.id">
           <router-link
             class="btn btn-link"
+            :to="{ name : 'activityCreate'}"
+          >
+            New
+          </router-link>
+          <router-link
+            class="btn btn-link"
             :to="{ name : 'jobDetails', params : { id: activity.job_id } }"
           >
             Related Job
@@ -73,12 +79,18 @@
             <div class="col-sm-10">
               <ts-select
                 v-model="scheduleItem"
-                :data="scheduleItems"                            
+                :data="scheduleItems"
+                :class="[{'is-invalid' : $v.scheduleItem.$error } ,'form-control']"
                 id="schedule_id"
-                name="schedule_id"
                 placeholder="Select the schedule..."
                 search-placeholder="search..."
               />
+              <div
+                class="invalid-feedback"
+                v-if="!$v.scheduleItem.required"
+              >
+                Schedule is required.
+              </div>
             </div>
           </div>
         </div>
@@ -87,10 +99,10 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">From</label>
             <div class="col">
-              <input 
-                id="from" 
-                v-model="$v.form.fromDate.$model" 
-                type="date" 
+              <input
+                id="from"
+                v-model="$v.form.fromDate.$model"
+                type="date"
                 :class="[{'is-invalid' : $v.form.fromDate.$error } ,'form-control']"
               >
               <div
@@ -101,9 +113,9 @@
               </div>
             </div>
             <div class="col">
-              <input 
-                v-model="$v.form.fromTime.$model" 
-                type="time" 
+              <input
+                v-model="$v.form.fromTime.$model"
+                type="time"
                 :class="[{'is-invalid' : $v.form.fromTime.$error } ,'form-control']"
               >
               <div
@@ -120,10 +132,10 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Till</label>
             <div class="col">
-              <input 
-                id="till" 
-                v-model="$v.form.tillDate.$model" 
-                type="date" 
+              <input
+                id="till"
+                v-model="$v.form.tillDate.$model"
+                type="date"
                 :class="[{'is-invalid' : $v.form.tillDate.$error } ,'form-control']"
               >
               <div
@@ -134,9 +146,9 @@
               </div>
             </div>
             <div class="col">
-              <input 
-                v-model="$v.form.tillTime.$model" 
-                type="time" 
+              <input
+                v-model="$v.form.tillTime.$model"
+                type="time"
                 :class="[{'is-invalid' : $v.form.tillTime.$error } ,'form-control']"
               >
               <div
@@ -169,7 +181,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import { required, between } from "vuelidate/lib/validators";
 import Editor from "@tinymce/tinymce-vue";
 import pageMixin from "../../../../mixins/page-mixin";
 
@@ -199,20 +211,21 @@ export default {
     };
   },
 
-  validations:{
-    form:{
-      schedule_id:{required},
-      fromDate:{required},
-      fromTime:{required},
-      tillDate:{required},
-      tillTime:{required},
+  validations: {
+    scheduleItem: { required },
+    form: {
+      fromDate: { required },
+      fromTime: { required },
+      tillDate: { required },
+      tillTime: { required }
     }
   },
 
   watch: {
-    scheduleItem: function(value) {
+    scheduleItem: function(value) {    
+      if(!value) return;  
       this.form.schedule_id = value.key;
-      if (value !== null && value !== undefined) {        
+      if (value !== null && value !== undefined) {
         this.form.fromDate = value.start.slice(0, 10);
         this.form.fromTime = value.start.slice(11, 16);
         this.form.tillDate = value.end.slice(0, 10);
@@ -224,7 +237,7 @@ export default {
   computed: {
     ...mapGetters({
       getList: "resource/getList"
-    }),    
+    }),
 
     scheduleItems: function() {
       return this.getList("schedule").map(obj => {
@@ -232,7 +245,7 @@ export default {
           start: obj.start,
           end: obj.end,
           job: obj.job,
-          key: obj.id,          
+          key: obj.id,
           value:
             new Date(obj.start.slice(0, 10)).toLocaleString("en-AU", {
               day: "2-digit",
@@ -245,52 +258,74 @@ export default {
     }
   },
 
+  beforeRouteEnter(to, from, next) {     
+    next(vm => {
+      vm.clearForm();
+    });
+  },
+  
+  created(){    
+    this.clear('schedule');
+  },
+
   mounted() {
     this.startLoading();
-    if (this.id) {
-      let activity = null;
-      let p1 = this.fetchList({ resource: "schedule", query: { with: "job" } });
-      let p2 = this.fetchItem({
-        resource: "activity",
-        id: this.id,
-        query: { with: "job" }
-      }).then(respond => {
-        this.activity = respond;
-        activity = respond;
-      });
-      Promise.all([p1, p2])
-        .then(() => {
-          this.scheduleItem = this.scheduleItems.find(item => item.key === activity.schedule_id);
+
+    let activity = null;
+    let p1 = this.id
+      ? this.show({
+          resource: "activity",
+          id: this.id,
+          query: { with: "job" }
+        }).then(respond => {
+          this.activity = respond;
+          activity = respond;
+        })
+      : new Promise(resolve => resolve());
+
+    let p2 = this.list({
+      resource: "schedule",
+      query: this.$queryBuilder(
+        null,
+        null,
+        ["job"],
+        [
+          { opt: "eq", col: "type", val: "schedule" },
+          { opt: "eq", col: "event_type", val: "scheduled" },
+          { opt: "ob", col: "start", val: "desc" }
+        ]
+      )
+    });
+
+    Promise.all([p1, p2])
+      .then(() => {
+        if (this.id) {
+          this.scheduleItem = this.scheduleItems.find(
+            item => item.key === activity.schedule_id
+          );
           this.form.schedule_id = activity.schedule_id;
           this.form.fromDate = activity.from.slice(0, 10);
           this.form.fromTime = activity.from.slice(11, 16);
           this.form.tillDate = activity.till.slice(0, 10);
           this.form.tillTime = activity.till.slice(11, 16);
           this.form.desc = activity.desc;
-          this.stopLoading();
-        })
-        .catch(error => {
-          console.log(error);
-          this.stopLoading();
-        });
-    } else {
-      this.fetchList({ resource: "schedule", query: { with: "job" } })
-        .then(() => {
-          this.stopLoading();
-        })
-        .catch(error => {
-          console.log(error);
-          this.stopLoading();
-        });
-    }
+        }
+
+        this.stopLoading();
+      })
+      .catch(error => {
+        console.log(error);
+        this.stopLoading();
+      });
   },
 
   methods: {
     ...mapActions({
-      fetchItem: "resource/show",
-      fetchList: "resource/list",
+      show: "resource/show",
+      list: "resource/list",
       create: "resource/create",
-      update: "resource/update"
+      update: "resource/update",
+      clear: "resource/clearResource"
     }),
 
     onSubmit(e) {
@@ -367,8 +402,8 @@ export default {
         });
     },
 
-    clearForm() {
-      this.form.schedule_id = null;
+    clearForm() {         
+      this.scheduleItem = null;
       this.form.fromDate = "";
       this.form.fromTime = "";
       this.form.tillDate = "";
@@ -378,7 +413,7 @@ export default {
     },
 
     onCancel(e) {
-      e.preventDefault();      
+      e.preventDefault();
       this.$router.push({ name: "activityList" });
     }
   }

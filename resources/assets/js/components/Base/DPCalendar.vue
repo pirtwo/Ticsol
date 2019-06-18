@@ -18,6 +18,16 @@ export default {
       default: () => {
         return [];
       }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    message: {
+      type: Object,
+      default: () => {
+        return { msg: "", delay: 0 };
+      }
     }
   },
 
@@ -28,13 +38,30 @@ export default {
   },
 
   watch: {
-    startDate: function(val) {      
+    startDate: function(val) {
       this.dpCal.startDate = val;
       this.dpCal.update();
     },
-    events: function(val) {      
+
+    events: function(val) {
       this.dpCal.events.list = val;
       this.dpCal.update();
+    },
+
+    disabled: function(val) {
+      console.log(val);
+      if (val) {
+        this.dpCal.eventClickHandling = "Disabled";
+        this.dpCal.eventMoveHandling = "Disabled";
+      } else {
+        this.dpCal.eventClickHandling = "Enabled";
+        this.dpCal.eventMoveHandling = "Enabled";
+      }
+      this.dpCal.update();
+    },
+
+    message: function(val) {
+      this.dpCal.message(val.msg, val.delay);
     }
   },
 
@@ -47,11 +74,23 @@ export default {
     this.dpCal.timeRangeSelectedHandling = true;
     this.dpCal.events.list = [];
 
+    this.dpCal.timeRangeSelectedHandling = "Disabled";
+
     this.dpCal.onEventMoved = this.eventMoveHandler;
     this.dpCal.onEventClicked = this.eventClickHandler;
     this.dpCal.onEventResized = this.eventResizeHandler;
     this.dpCal.onEventDeleted = this.eventDeleteHandler;
     this.dpCal.onTimeRangeSelected = this.timeRangeSelectHandler;
+
+    if (this.disabled) {
+      this.dpCal.eventClickHandling = "Disabled";
+      this.dpCal.eventMoveHandling = "Disabled";
+      this.dpCal.timeRangeSelectedHandling = "Disabled";
+    } else {
+      this.dpCal.eventClickHandling = "Enabled";
+      this.dpCal.eventMoveHandling = "Enabled";
+      this.dpCal.timeRangeSelectedHandling = "Enabled";
+    }
 
     this.dpCal.init();
   },

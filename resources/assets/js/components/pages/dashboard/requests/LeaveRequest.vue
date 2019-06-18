@@ -161,7 +161,7 @@
 
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Return</label>
+            <label class="col-sm-2 col-form-label">Till</label>
             <div class="col-sm-10">
               <input
                 v-model="form.meta.till"

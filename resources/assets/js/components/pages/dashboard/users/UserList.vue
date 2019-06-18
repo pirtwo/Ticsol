@@ -48,7 +48,7 @@
           <td>
             <router-link 
               class="btn btn-sm btn-light" 
-              :to="{ name : 'profileDetails', params : { id: item.id } }"
+              :to="{ name : 'userProfile', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>
             </router-link> 

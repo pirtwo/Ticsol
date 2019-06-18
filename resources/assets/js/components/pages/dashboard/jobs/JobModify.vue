@@ -104,7 +104,7 @@
             :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]"
             role="button"
             :aria-disabled="this.relatedRequests === null"
-            :to="{ name: 'inbox', params : { col: 'job_id', opt: 'in', val: this.relatedRequests } }"
+            :to="{ name: 'inbox', params : { col: 'id', opt: 'in', val: this.relatedRequests } }"
           >
             Related Requests
           </router-link>
@@ -255,7 +255,7 @@
           :schema="schema"
           v-model="form.meta"
         />
-      </form>
+      </form>      
     </template>
   </app-main>
 </template>

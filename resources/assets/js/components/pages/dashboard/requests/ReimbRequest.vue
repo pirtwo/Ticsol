@@ -1,37 +1,66 @@
 <template>
-  <app-main :scrollbar="true" :loading="isLoading" padding="p-5">
-    <template slot="toolbar"/>
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
+    padding="p-5"
+  >
+    <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li>
-          <button class="btn btn-light">New</button>
+        <li class="menu-title">
+          Actions
         </li>
         <li>
-          <button class="btn btn-light">Suspend</button>
+          <button class="btn btn-light">
+            New
+          </button>
         </li>
         <li>
-          <button class="btn btn-light" @click="onSubmit">Submit</button>
+          <button class="btn btn-light">
+            Suspend
+          </button>
         </li>
         <li>
-          <button class="btn btn-light">Cancel</button>
+          <button
+            class="btn btn-light"
+            @click="onSubmit"
+          >
+            Submit
+          </button>
         </li>
         <li>
-          <button class="btn btn-light">Print</button>
-        </li>
-        <li class="menu-title">Links</li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">Anuual Leave</router-link>
+          <button class="btn btn-light">
+            Cancel
+          </button>
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">Sick Leave</router-link>
+          <button class="btn btn-light">
+            Print
+          </button>
+        </li>
+        <li class="menu-title">
+          Links
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">Reimbursement</router-link>
+          <router-link :to="{ name: 'jobList' }">
+            Anuual Leave
+          </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">History</router-link>
+          <router-link :to="{ name: 'jobList' }">
+            Sick Leave
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            Reimbursement
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'jobList' }">
+            History
+          </router-link>
         </li>
       </ul>
     </template>
@@ -43,7 +72,7 @@
             <label class="col-sm-2 col-form-label">Details</label>
             <div class="col-sm-10">
               <textarea
-                v-model="form.meta.details"
+                v-model="form.meta.details"                
                 name="meta-details"
                 id="meta-details"
                 :class="[{'is-invalid' : $v.form.meta.details.$error } ,'form-control']"
@@ -108,7 +137,10 @@
                   class="custom-control-input"
                   checked
                 >
-                <label class="custom-control-label" for="meta-tax1">Incl</label>
+                <label
+                  class="custom-control-label"
+                  for="meta-tax1"
+                >Incl</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input
@@ -119,7 +151,10 @@
                   value="Excl"
                   class="custom-control-input"
                 >
-                <label class="custom-control-label" for="meta-tax2">Excl</label>
+                <label
+                  class="custom-control-label"
+                  for="meta-tax2"
+                >Excl</label>
               </div>
             </div>
           </div>
@@ -151,7 +186,7 @@
             <label class="col-sm-2 col-form-label">Expense To</label>
             <div class="col-sm-10">
               <ts-select
-                v-model="form.job"
+                v-model="$v.form.job.$model"
                 :data="jobs"
                 :class="[{'is-invalid' : $v.form.job.$error } ,'form-control']"
                 id="job_id"
@@ -173,7 +208,7 @@
             <label class="col-sm-2 col-form-label">Approver</label>
             <div class="col-sm-10">
               <ts-select
-                v-model="form.approver"
+                v-model="$v.form.approver.$model"
                 :data="users"
                 :class="[{'is-invalid' : $v.form.approver.$error } ,'form-control']"
                 id="assigned_id"
@@ -195,8 +230,16 @@
             <label class="col-sm-2 col-form-label">Attachments</label>
             <div class="col-sm-10">
               <div class="custom-file">
-                <input name="Attachments" id="customFile" type="file" class="custom-file-input">
-                <label class="custom-file-label" for="customFile">choose files</label>
+                <input
+                  name="Attachments"
+                  id="customFile"
+                  type="file"
+                  class="custom-file-input"
+                >
+                <label
+                  class="custom-file-label"
+                  for="customFile"
+                >choose files</label>
               </div>
             </div>
           </div>

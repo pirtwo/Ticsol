@@ -136,14 +136,16 @@
           </i>Activity Reports
         </router-link>           
       </div>
-    </div>
+    </div>   
   </div>
 </template>
+
 <script>
 export default {
-  name: "AppIconbarTop"
+  name: "AppIconbarTop", 
 };
 </script>
+
 <style scoped>
 .dropdown-item i{
   color: inherit !important;

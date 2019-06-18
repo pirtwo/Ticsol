@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar-top">
-    <app-statusbar />
+    <!-- <app-statusbar /> -->
 
     <router-link 
       :to="{ name : 'settingModify' }" 
@@ -35,7 +35,7 @@
         aria-labelledby="dropdownMenuLink"
       >
         <router-link 
-          :to="{ name : 'userProfile'}" 
+          :to="{ name : 'userProfile', params: {id: userId} }"          
           class="dropdown-item"
         >
           <i class="icon material-icons">
@@ -54,23 +54,27 @@
         </a>        
       </div>
     </div>
+
+    <app-notifications />
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
 import Statusbar from "../app/AppStatusbar";
+import Notifs from './AppNotifications';
 
 export default {
   name: "AppIconbarTop",
 
-  components: {
-    "app-statusbar": Statusbar
+   components:{
+    'app-notifications': Notifs
   },
 
   computed: {
-    ...mapGetters({
+    ...mapGetters({      
+      userId: "user/getId",
+      avatar: "user/getAvatar",
       userName: "user/getUsername",
-      avatar: "user/getAvatar"
     })
   },
 

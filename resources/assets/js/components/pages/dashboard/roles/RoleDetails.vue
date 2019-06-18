@@ -104,12 +104,12 @@
                   v-model="form.permissions" 
                   type="checkbox" 
                   class="custom-control-input" 
-                  id="full-timesheet" 
-                  value="full-timesheet"
+                  id="approve-timesheet" 
+                  value="approve-timesheet"
                 >
                 <label 
                   class="custom-control-label" 
-                  for="full-timesheet"
+                  for="approve-timesheet"
                 >
                   Can Approve Timesheets</label>
               </div>
@@ -126,12 +126,12 @@
                   v-model="form.permissions" 
                   type="checkbox" 
                   class="custom-control-input" 
-                  id="full-request_leave" 
-                  value="full-request_leave"
+                  id="approve-leave" 
+                  value="approve-leave"
                 >
                 <label 
                   class="custom-control-label" 
-                  for="full-request_leave"
+                  for="approve-leave"
                 >
                   Can Approve Leave Request</label>
               </div>
@@ -141,12 +141,12 @@
                   v-model="form.permissions" 
                   type="checkbox" 
                   class="custom-control-input" 
-                  id="full-request_reimb" 
-                  value="full-request_reimb"
+                  id="approve-reimbursement" 
+                  value="approve-reimbursement"
                 >
                 <label 
                   class="custom-control-label" 
-                  for="full-request_reimb"
+                  for="approve-reimbursement"
                 >
                   Can Approve Reimbursement</label>
               </div>

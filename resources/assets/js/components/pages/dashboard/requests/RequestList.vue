@@ -9,6 +9,13 @@
         v-model="pager"
         :page-count="pager.pageCount"
       />
+      <button
+        type="button"
+        class="btn btn-light btn-sm mr-auto"
+        @click="showFilter = true"
+      >
+        <i class="material-icons">filter_list</i>
+      </button>
     </template>
 
     <template slot="drawer">
@@ -50,7 +57,7 @@
             <router-link
               v-if="item.type === 'timesheet'"
               class="btn btn-sm btn-light"
-              :to="{ name : 'timesheetDetails', params : { id: item.timesheet.id, start: item.timesheet.week_start, end: item.timesheet.week_end } }"
+              :to="{ name : 'timesheetDetails', params : { id: item.timesheet.id, start: item.timesheet.week_start.slice(0,10), end: item.timesheet.week_end.slice(0,10) } }"
             >
               <i class="material-icons">visibility</i>
             </router-link>
@@ -76,6 +83,13 @@
           <td>{{ item.created_at }}</td>
         </template>
       </ts-table>
+      <!-- Filter view -->
+      <ts-filter
+        v-model="query"
+        :show.sync="showFilter"
+        :columns="filterColumns"
+        @apply="feedTable"
+      />
     </template>
   </app-main>
 </template>
@@ -95,6 +109,8 @@ export default {
 
   data() {
     return {
+      query: [],
+      showFilter: false,
       pager: {
         page: 1,
         perPage: 10,
@@ -125,6 +141,47 @@ export default {
 
     requests: function() {
       return this.getList("request");
+    },
+
+    filterColumns: function() {
+      return [
+        {
+          key: "type",
+          value: "Type",
+          type: "string",
+          placeholder: "Search for type..."
+        },
+        {
+          key: "request.assigned.name",
+          value: "Assigned",
+          type: "string",
+          placeholder: "Search for assigned..."
+        },
+        {
+          key: "status",
+          value: "Status",
+          type: "string",
+          placeholder: "Search for status..."
+        },
+        {
+          key: "meta->leave_type",
+          value: "Leave type",
+          type: "string",
+          placeholder: "Search for leave type..."
+        },
+        {
+          key: "meta->amount",
+          value: "Reimbursement amount",
+          type: "number",
+          placeholder: "Search for reimbursement amount..."
+        },
+        {
+          key: "request.job.title",
+          value: "Job Title",
+          type: "string",
+          placeholder: "Search for Request\\Job\\Title..."
+        },        
+      ];
     }
   },
 
@@ -137,17 +194,19 @@ export default {
 
     feedTable() {
       this.startLoading();
+      if (this.opt)
+        this.query.push({ opt: this.opt, col: this.col, val: this.val });
       this.fetchList({
         resource: "request",
-        query: {
-          page: this.pager.page,
-          perPage: this.pager.perPage,
-          with: "job,assigned,timesheet",
-          [this.opt]: `${this.col},${this.val}`
-        }
+        query: this.$queryBuilder(
+          this.pager.page,
+          this.pager.perPage,
+          ["job",'assigned',"timesheet"],
+          this.query
+        )
       })
         .then(respond => {
-          this.pager.pageCount = respond.last_page;
+          this.pager.pageCount = respond.last_page ? respond.last_page : 1;
           this.stopLoading();
         })
         .catch(error => {

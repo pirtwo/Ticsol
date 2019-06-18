@@ -1,13 +1,14 @@
 <template>
-  <app-main 
-    :scrollbar="true" 
-    :loading="isLoading" 
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-2"
   >
     <template slot="toolbar">
-      <ts-pagination 
-        v-model="pager" 
+      <ts-pagination
+        v-model="pager"
         :page-count="pager.pageCount"
+        @input="feedTable"
       />
     </template>
 
@@ -17,9 +18,9 @@
           Actions
         </li>
         <li>
-          <router-link 
-            tag="button" 
-            class="btn btn-light" 
+          <router-link
+            tag="button"
+            class="btn btn-light"
             :to="{ name: 'activityCreate' }"
           >
             New
@@ -27,43 +28,43 @@
         </li>
         <li class="menu-title">
           Links
-        </li>                
+        </li>
       </ul>
     </template>
 
     <template slot="content">
-      <ts-table 
+      <ts-table
         class="table table-striped"
-        :data="reports" 
-        :header="header" 
-        :selection="false" 
-        order-by="id" 
+        :data="reports"
+        :header="header"
+        :selection="false"
+        order-by="id"
         order="asc"
       >
-        <template 
-          slot="header" 
+        <template
+          slot="header"
           slot-scope="{item}"
         >
           <div :data-orderBy="item.orderBy">
             {{ item.value }}
           </div>
         </template>
-        <template 
-          slot="body" 
+        <template
+          slot="body"
           slot-scope="{item}"
         >
           <td>
-            <router-link 
-              class="btn btn-sm btn-light" 
+            <router-link
+              class="btn btn-sm btn-light"
               :to="{ name : 'activityDetails', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>
-            </router-link>                   
+            </router-link>
           </td>
           <td>{{ item.job.title }}</td>
           <td>{{ dateToString(item.from) }}</td>
           <td>{{ dateToString(item.till) }}</td>
-        </template> 
+        </template>
       </ts-table>
     </template>
   </app-main>
@@ -71,15 +72,14 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import pageMixin from '../../../../mixins/page-mixin';
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "ActivityList",
 
-  mixins:[pageMixin],
+  mixins: [pageMixin],
 
-  components: {
-  },
+  components: {},
 
   props: ["col", "opt", "val"],
 
@@ -89,7 +89,7 @@ export default {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },      
+      },
       header: [
         { value: "", orderBy: "" },
         { value: "Job", orderBy: "job" },
@@ -100,20 +100,14 @@ export default {
     };
   },
 
-  watch: {
-    pager: function(value) {
-      this.feedTable();
-    }
-  },
-
-  computed:{
+  computed: {
     ...mapGetters({
       getList: "resource/getList"
     }),
 
-    reports: function(){
+    reports: function() {
       return this.getList("activity");
-    },
+    }
   },
 
   mounted() {
@@ -127,14 +121,14 @@ export default {
       this.startLoading();
       this.fetch({
         resource: "activity",
-        query: {
-          page: this.pager.page,
-          perPage: this.pager.perPage,
-          with: "schedule,job",
-          [this.opt]: `${this.col},${this.val}`
-        }
+        query: this.$queryBuilder(
+          this.pager.page,
+          this.pager.perPage,
+          ["schedule", "job"],
+          this.opt ? [{ opt: this.opt, col: this.col, val: this.val }] : []
+        )
       })
-        .then(respond => {         
+        .then(respond => {
           this.pager.pageCount = respond.last_page;
           this.stopLoading();
         })
