@@ -55,7 +55,7 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
 
         // Timesheet
         Route::get('timesheet', 'TimesheetController@index');
-        Route::get('timesheet/show/{id?}', 'TimesheetController@show');
+        Route::get('timesheet/show/{id}', 'TimesheetController@show');
         Route::post('timesheet/store', 'TimesheetController@store');
         Route::post('timesheet/update/{id}', 'TimesheetController@update');
         Route::post('timesheet/delete/{id}', 'TimesheetController@delete');
