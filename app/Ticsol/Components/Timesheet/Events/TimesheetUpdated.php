@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Ticsol\Components\Schedule\Events;
+namespace App\Ticsol\Components\Timesheet\Events;
 
 use App\Ticsol\Components\Models\User;
-use App\Ticsol\Components\Models\Schedule;
+use App\Ticsol\Components\Models\Timesheet;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -12,24 +12,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ScheduleCreated implements ShouldBroadcast
+class TimesheetCreated implements ShouldBroadcast
 {
     use SerializesModels;
 
-    protected $user;
-    protected $type;
-    protected $schedule;
+    protected $timesheet;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, $type, Schedule $schedule = null)
+    public function __construct(Timesheet $timesheet)
     {
-        $this->user = $user;
-        $this->type = $type;
-        $this->schedule = $schedule;
+        $this->timesheet = $timesheet;
     }
 
     /**
@@ -39,7 +35,7 @@ class ScheduleCreated implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'Client.Update';
+        return 'User.Update';
     }
 
     /**
@@ -50,9 +46,10 @@ class ScheduleCreated implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'resName' => 'schedule',
-            'id' => $this->type == 'scheduled' ? $this->schedule->id : $this->user->id,
-            'title' => $this->type == 'scheduled' ? 'New schedule created.' : 'Unavailable hours created',
+            'resName' => 'timesheet',
+            'id' => $this->timesheet->id,
+            'assigned_id' => $this->timesheet->request->assigned_id,
+            'title' => 'Timesheet has been updated.',
         ];
     }
 
@@ -63,6 +60,15 @@ class ScheduleCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.Clients.' . $this->user->client_id);
+        if ($this->timesheet->request->assigned_id != null) {
+            return [
+                new PrivateChannel('App.Users.' . $this->timesheet->user_id),
+                new PrivateChannel('App.Users.' . $this->timesheet->request->assigned_id),
+            ];
+        } else {
+            return [
+                new PrivateChannel('App.Users.' . $this->timesheet->user_id)
+            ];
+        }     
     }
 }

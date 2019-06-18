@@ -2,7 +2,7 @@
 
 namespace App\Ticsol\Components\Request\Events;
 
-use App\Ticsol\Components\Models\Request;
+use App\Ticsol\Components\Models\Request as RequestModel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -22,7 +22,7 @@ class RequestCreated implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct(RequestModel $request)
     {
         $this->request = $request;
     }
@@ -46,7 +46,10 @@ class RequestCreated implements ShouldBroadcast
     {
         return [
             'resName' => 'request',
+            'event' => 'request_created',
+            'type' => $this->request->type,
             'id' => $this->request->id,
+            'assigned_id' => $this->request->assigned_id,
             'title' => $this->request->id,
         ];
     }
@@ -60,12 +63,12 @@ class RequestCreated implements ShouldBroadcast
     {
         if ($this->request->assigned_id != null) {
             return [
-                'App.User.' . $this->request->user_id,
-                'App.User.' . $this->request->assigned_id,
+                new PrivateChannel('App.Users.' . $this->request->user_id),
+                new PrivateChannel('App.Users.' . $this->request->assigned_id),
             ];
         } else {
             return [
-                'App.User.' . $this->request->user_id
+                new PrivateChannel('App.Users.' . $this->request->user_id)
             ];
         }        
     }
