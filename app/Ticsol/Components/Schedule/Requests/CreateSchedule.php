@@ -23,16 +23,21 @@ class CreateSchedule extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id'       => 'required|numeric',
-            'job_id'        => 'required|numeric',
-            'type'          => 'required|string|in:schedule',
-            'event_type'    => 'required|string|in:leave,unavailable,scheduled,RDO',
-            'status'        => 'required|string|in:tentative,confirmed',            
-            'start'         => 'required|date',
-            'end'           => 'required|date|after:start',
-            'offsite'       => 'nullable|boolean',
-            'break_length'  => 'required|numeric'
+        return [            
+            'event_type'                    => 'required|string|in:leave,unavailable,scheduled,RDO',
+            'user_id'                       => 'required|numeric|exists:ts_users,id',
+
+            // Schedule item roules            
+            'job_id'                        => 'required_if:event_type,scheduled|numeric|exists:ts_jobs,id',            
+            'status'                        => 'required_if:event_type,scheduled|string|in:tentative,confirmed',            
+            'start'                         => 'required_if:event_type,scheduled|date',
+            'end'                           => 'required_if:event_type,scheduled|date|after:start',
+            'offsite'                       => 'nullable|boolean',
+
+            // Unavailable hours roules
+            'unavailables'                  => 'required_if:event_type,unavailable|array',
+            'unavailables.*.start'          => 'required_with:unavailables|date',
+            'unavailables.*.end'            => 'required_with:unavailables|date|after:start',  
         ];
     }
 
