@@ -9852,22 +9852,97 @@ a.text-dark:hover, a.text-dark:focus {
 #app.default .main .wrap-drawer .wrap-content .navbar,
 #app.default .main .wrap-drawer .wrap-content .content,
 #app.default .main .wrap-drawer .drawer .drawer-toolbar {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 #app.default .main .wrap-drawer .drawer .drawer-body {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 #app.default .main .wrap-drawer .wrap-content .loading-box {
   color: #000000;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#app.default .main .wrap-drawer .wrap-content .navbar .btn {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+#app.default .main .wrap-drawer .wrap-content .navbar .btn-group .btn.active {
+  color: white;
+  background-color: #d76165;
+}
+
+#app.default .main .wrap-drawer .wrap-content .navbar .btn:focus {
+  box-shadow: none;
+}
+
+#app.default .main .wrap-drawer .wrap-content .navbar .btn:hover,
+#app.default .main .wrap-drawer .wrap-content .navbar .btn:active {
+  color: white;
+  background-color: #d76165;
 }
 
 #app.default .toolbar-top .btn,
 #app.default .toolbar-bot .btn {
   color: #000000;
-  background-color: rgba(255, 255, 255, 0.4) !important;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#app.default .toolbar-top .btn:hover,
+#app.default .toolbar-top .btn.active,
+#app.default .toolbar-bot .btn:hover,
+#app.default .toolbar-bot .btn.active {
+  color: white;
+  background-color: #d76165;
+}
+
+#app.default .v-menu .menu-title {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#app.default .v-menu li a,
+#app.default .v-menu li .btn {
+  color: #000000;
+}
+
+#app.default .v-menu li a:hover,
+#app.default .v-menu li .btn:hover {
+  color: white;
+  background-color: #d76165;
+}
+
+#app.default .dropdown-menu {
+  background-color: #fffffff5;
+}
+
+#app.default .dropdown-menu .dropdown-item:hover,
+#app.default .dropdown-menu .dropdown-item:active,
+#app.default .dropdown-menu .dropdown-item.active {
+  color: white;
+  background-color: #d76165;
+}
+
+#app.default .table-hover tr:hover {
+  color: white;
+  background-color: #d76165;
+}
+
+#app.default .btn.disabled {
+  color: #a1a1a1 !important;
+}
+
+#app.default .btn-outline-primary,
+#app.default .btn-outline-secondary {
+  color: #000000;
+  border-color: #4d4d4d;
+}
+
+#app.default .btn-outline-primary:hover,
+#app.default .btn-outline-secondary:hover {
+  color: white;
+  border-color: #d76165;
+  background-color: #d76165;
 }
 
 #app.default .scheduler_green_main {
@@ -10011,35 +10086,45 @@ a.text-dark:hover, a.text-dark:focus {
 #app .container-fluid {
   padding: 0px 50px;
   font-size: 1.1vw;
+  min-height: 500px;
 }
 
-header,
-footer {
+#app header,
+#app footer {
   padding: 0px;
   margin: 0px;
   position: relative;
 }
 
-footer {
+#app footer {
   padding-top: 7px;
 }
 
-.toolbar-top {
+#app .toolbar-top {
   text-align: right;
   padding: 10px 0px 5px 0px;
 }
 
-.toolbar-bot {
+#app .toolbar-bot {
   padding: 10px 0px 5px 0px;
 }
 
+.toolbar-top {
+  display: flex;
+  align-items: center;
+}
+
 .toolbar-top .icon,
+.toolbar-top .icon,
+.toolbar-bot .icon,
 .toolbar-bot .icon {
   font-size: 1.8vw !important;
   font-weight: bold;
 }
 
 .toolbar-top .caption,
+.toolbar-top .caption,
+.toolbar-bot .caption,
 .toolbar-bot .caption {
   display: block;
   padding-top: 1px;
@@ -10048,13 +10133,22 @@ footer {
 }
 
 .toolbar-top .btn,
+.toolbar-top .btn,
+.toolbar-bot .btn,
 .toolbar-bot .btn {
   padding: 10px;
-  min-width: 5vw;
+  min-width: 4.7vw;
   border: 0px transparent !important;
 }
 
+.toolbar-top .btn:focus,
+.toolbar-bot .btn:focus {
+  box-shadow: none;
+}
+
 .toolbar-top .btn .badge,
+.toolbar-top .btn .badge,
+.toolbar-bot .btn .badge,
 .toolbar-bot .btn .badge {
   top: 5px;
   left: 5px;
@@ -10062,19 +10156,39 @@ footer {
 }
 
 .toolbar-top .md-menu,
+.toolbar-top .md-menu,
+.toolbar-bot .md-menu,
 .toolbar-bot .md-menu {
   padding: 0px;
   margin: 0px !important;
 }
 
-.toolbar-top .btn:hover,
-.toolbar-bot .btn:hover {
-  background-color: rgba(255, 255, 255, 0.15) !important;
+.main .wrap-drawer .wrap-content .navbar {
+  font-size: 0.8vw;
 }
 
-.toolbar-top .btn.active,
-.toolbar-bot .btn.active {
-  background-color: rgba(255, 255, 255, 0.3) !important;
+.main .wrap-drawer .wrap-content .navbar .btn {
+  font-size: 0.8vw;
+}
+
+.main .wrap-drawer .wrap-content .navbar .btn i {
+  font-size: 1.3vw;
+}
+
+label,
+input,
+.form-control {
+  font-size: 1.1vw;
+}
+
+.table tr {
+  padding: 0.55rem;
+}
+
+.table td,
+.table th,
+.table thead th {
+  vertical-align: middle;
 }
 
 .wrap-auth {
@@ -10143,15 +10257,24 @@ footer {
   text-align: center;
 }
 
+.dropdown-menu {
+  border-radius: 0px;
+}
+
+.dropdown-menu .dropdown-item {
+  font-size: 1vw;
+}
+
 .v-menu {
   list-style: none;
   padding-left: 0px;
+  font-size: 1vw;
 }
 
 .v-menu .menu-title {
-  color: black;
+  font-size: 1.2vw;
   padding: 3px 7px;
-  background-color: #cacaca33 !important;
+  font-weight: bold;
 }
 
 .v-menu li {
@@ -10161,8 +10284,11 @@ footer {
 
 .v-menu li .btn {
   width: 100%;
+  font-size: inherit;
   text-align: left;
   border-radius: 0px;
+  display: flex;
+  align-items: center;
 }
 
 .v-menu li .btn i {
@@ -10172,18 +10298,17 @@ footer {
 
 .v-menu li a {
   display: block;
-  font-size: 1rem;
   padding: 7px 10px;
   text-decoration: none;
 }
 
 .v-menu li a:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.05);
+  text-decoration: none;
 }
 
 .v-menu li a i {
   line-height: 1.5;
-  font-size: 1rem;
+  font-size: 1vw;
   vertical-align: bottom;
 }

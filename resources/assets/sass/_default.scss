@@ -1,37 +1,125 @@
 $default-background: "";
-$default-primary-color: #ffffff;
-$default-secondary-color: #ffffff;
+$default-primary-color: #fffffff5;
+$default-secondary-color: #4d4d4d;
 
-$default-primary-bgColor: rgba(255, 255, 255, 0.4);
-$default-secondary-bgColor: rgba(255, 255, 255, 0.6);
+$default-primary-bgColor: rgba(255, 255, 255, 0.9);
+$default-secondary-bgColor: rgba(255, 255, 255, 0.9);
 
 $default-primary-fontColor: #000000;
-$default-secondary-fontColor: #000000;
+$default-secondary-fontColor: white;
+
+$default-btn-bg--idle: rgba(255, 255, 255, 0.8);
+$default-btn-bg--active: #d76165;
 
 #app.default {
   background-image: url("~/img/theme/Default.jpg");
   font-family: $app-primary-font;
   color: $default-primary-fontColor;
 
-  .main .wrap-drawer .wrap-content .navbar,
-  .main .wrap-drawer .wrap-content .content,
-  .main .wrap-drawer .drawer .drawer-toolbar {
-    background-color: $default-primary-bgColor;
+  // Drawer
+  .main .wrap-drawer {
+    .wrap-content .navbar,
+    .wrap-content .content,
+    .drawer .drawer-toolbar {
+      background-color: $default-primary-bgColor;
+    }
+
+    .drawer .drawer-body {
+      background-color: $default-secondary-bgColor;
+    }
+
+    .wrap-content .loading-box {
+      color: $default-primary-fontColor;
+      background-color: $default-secondary-bgColor;
+    }
+
+    // main -> toolbar
+    .wrap-content .navbar {
+      .btn {
+        background-color: $default-btn-bg--idle;
+      }
+
+      .btn-group .btn.active {
+        color: $default-secondary-fontColor;
+        background-color: $default-btn-bg--active;
+      }
+
+      .btn:focus {
+        box-shadow: none;
+      }
+
+      .btn:hover,
+      .btn:active {
+        color: $default-secondary-fontColor;
+        background-color: $default-btn-bg--active;
+      }
+    }
   }
 
-  .main .wrap-drawer .drawer .drawer-body {
-    background-color: $default-secondary-bgColor;
+  // Toolbar Top & Bot
+  .toolbar-top,
+  .toolbar-bot {
+    .btn {
+      color: $default-primary-fontColor;
+      background-color: $default-primary-bgColor;
+    }
+
+    .btn:hover,
+    .btn.active {
+      color: $default-secondary-fontColor;
+      background-color: $default-btn-bg--active;
+    }
   }
 
-  .main .wrap-drawer .wrap-content .loading-box {
+  // Drawer Vertical Menue
+  .v-menu {
+    .menu-title {
+      background-color: $default-primary-bgColor;
+    }
+
+    li a,
+    li .btn {
+      color: $default-primary-fontColor;
+    }
+
+    li a:hover,
+    li .btn:hover {
+      color: $default-secondary-fontColor;
+      background-color: $default-btn-bg--active;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: $default-primary-color;
+
+    .dropdown-item:hover,
+    .dropdown-item:active,
+    .dropdown-item.active {
+      color: $default-secondary-fontColor;
+      background-color: $default-btn-bg--active;
+    }
+  }
+
+  .table-hover tr:hover {
+    color: $default-secondary-fontColor;
+    background-color: $default-btn-bg--active;
+  }
+
+  .btn.disabled{
+    color: #a1a1a1 !important;
+  }
+
+  .btn-outline-primary,
+  .btn-outline-secondary {
     color: $default-primary-fontColor;
-    background-color: $default-secondary-bgColor;
+    border-color: $default-secondary-color;
   }
 
-  .toolbar-top .btn,
-  .toolbar-bot .btn {
-    color: $default-primary-fontColor;
-    background-color: $default-primary-bgColor !important;
+  .btn-outline-primary:hover,
+  .btn-outline-secondary:hover {
+    color: $default-secondary-fontColor;
+    border-color: $default-btn-bg--active;
+    background-color: $default-btn-bg--active;
   }
 
   // Daypilot settings

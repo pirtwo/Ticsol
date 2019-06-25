@@ -18,88 +18,137 @@
 @import "beach";
 @import "night";
 
-#app{
+#app {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
 
-#app .container-fluid {  
-  padding: 0px 50px;
-  font-size: 1.1vw;
-}
+  .container-fluid {
+    padding: 0px 50px;
+    font-size: 1.1vw;
+    min-height: 500px;
+  }
 
-header,
-footer {
-  padding: 0px;
-  margin: 0px;
-  position: relative;
-}
+  header,
+  footer {
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+  }
 
-footer {
-  padding-top: 7px;
+  footer {
+    padding-top: 7px;
+  }
+
+  .toolbar-top {
+    text-align: right;
+    padding: 10px 0px 5px 0px;
+  }
+
+  .toolbar-bot {
+    padding: 10px 0px 5px 0px;
+  }
 }
 
 .toolbar-top {
-  text-align: right;
-  padding: 10px 0px 5px 0px;
+  display: flex;
+  align-items: center;
 }
 
+.toolbar-top,
 .toolbar-bot {
-  padding: 10px 0px 5px 0px;
+  .icon,
+  .icon {
+    font-size: 1.8vw !important;
+    font-weight: bold;
+  }
+
+  .caption,
+  .caption {
+    display: block;
+    padding-top: 1px;
+    font-size: 0.6vw;
+    text-align: center;
+  }
+
+  .btn,
+  .btn {
+    padding: 10px;
+    min-width: 4.7vw;
+    border: 0px transparent !important;
+  }
+
+  .btn:focus {
+    box-shadow: none;
+  }
+
+  .btn .badge,
+  .btn .badge {
+    top: 5px;
+    left: 5px;
+    position: absolute;
+  }
+
+  .md-menu,
+  .md-menu {
+    padding: 0px;
+    margin: 0px !important;
+  }
 }
 
-.toolbar-top .icon,
-.toolbar-top .caption,
-.toolbar-bot .icon,
-.toolbar-bot .caption {
-  //font-size: 1.5vw !important;
-  //color: rgba(255,255,255,0.9) !important;
+.main .wrap-drawer {
+  .wrap-content .navbar,
+  .wrap-content .content,
+  .drawer .drawer-toolbar {
+    //
+  }
+
+  .drawer .drawer-body {
+    //
+  }
+
+  .wrap-content .loading-box {
+    //
+  }
+
+  // main -> toolbar
+  .wrap-content .navbar {
+    font-size: 0.8vw;
+
+    .btn {
+      font-size: 0.8vw;
+    }
+
+    .btn i {
+      font-size: 1.3vw;
+    }
+
+    .btn-group .btn.active {
+      //
+    }
+
+    .btn:focus {
+      //
+    }
+  }
 }
 
-.toolbar-top .icon,
-.toolbar-bot .icon {
-  font-size: 1.8vw !important;
-  font-weight: bold;
+label,
+input,
+.form-control {
+  font-size: 1.1vw;
 }
 
-.toolbar-top .caption,
-.toolbar-bot .caption {
-  display: block;
-  padding-top: 1px;
-  font-size: 0.6vw;
-  text-align: center;
-}
+.table {
+  tr {
+    padding: 0.55rem;
+  }
 
-.toolbar-top .btn,
-.toolbar-bot .btn {
-  padding: 10px;
-  min-width: 5vw;
-  border: 0px transparent !important;
-  //background-color: rgba(255,255,255,0) !important;
-}
-
-.toolbar-top .btn .badge,
-.toolbar-bot .btn .badge {
-  top: 5px;
-  left: 5px;
-  position: absolute;
-}
-
-.toolbar-top .md-menu,
-.toolbar-bot .md-menu {
-  padding: 0px;
-  margin: 0px !important;
-}
-
-.toolbar-top .btn:hover,
-.toolbar-bot .btn:hover {
-  background-color: rgba(255, 255, 255, 0.15) !important;
-}
-
-.toolbar-top .btn.active,
-.toolbar-bot .btn.active {
-  background-color: rgba(255, 255, 255, 0.3) !important;
+  td,
+  th,
+  thead th {
+    vertical-align: middle;
+  }
 }
 
 .wrap-auth {
@@ -168,47 +217,60 @@ footer {
   text-align: center;
 }
 
+//------ Dropdowns --------//
+.dropdown-menu {
+  border-radius: 0px;
+
+  .dropdown-item {
+    font-size: 1vw;
+  }
+}
+
+//------ Vertical Menue ----//
 .v-menu {
   list-style: none;
   padding-left: 0px;
-}
+  font-size: 1vw;
 
-.v-menu .menu-title {
-  color: black;
-  padding: 3px 7px;
-  background-color: #cacaca33 !important;
-}
+  .menu-title {
+    font-size: 1.2vw;
+    padding: 3px 7px;
+    font-weight: bold;
+  }
 
-.v-menu li {
-  width: 100%;
-  height: auto;
-}
+  li {
+    width: 100%;
+    height: auto;
+  }
 
-.v-menu li .btn {
-  width: 100%;
-  text-align: left;
-  border-radius: 0px;
-}
+  li .btn {
+    width: 100%;
+    font-size: inherit;
+    text-align: left;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+  }
 
-.v-menu li .btn i {
-  line-height: 1.1;
-  vertical-align: bottom;
-}
+  li .btn i {
+    line-height: 1.1;
+    vertical-align: bottom;
+  }
 
-.v-menu li a {
-  display: block;
-  font-size: 1rem;
-  padding: 7px 10px;
-  text-decoration: none;
-}
+  li a {
+    display: block;
+    padding: 7px 10px;
+    text-decoration: none;
+  }
 
-.v-menu li a:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.05);
-}
+  li a:hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
 
-.v-menu li a i {
-  line-height: 1.5;
-  font-size: 1rem;
-  vertical-align: bottom;
+  li a i {
+    line-height: 1.5;
+    font-size: 1vw;
+    vertical-align: bottom;
+  }
 }
