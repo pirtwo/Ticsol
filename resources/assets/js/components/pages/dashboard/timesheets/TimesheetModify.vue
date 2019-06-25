@@ -7,8 +7,8 @@
     <template slot="toolbar">
       <ts-datescroller
         v-if="!id"
-        v-model="weekStart"
-        @input="loadTimesheet"
+        v-model="week"
+        @change="onDateChange"
         range="Week"
       />
     </template>
@@ -18,52 +18,52 @@
         <li class="menu-title">
           Actions
         </li>
-        <li v-if="!id">
+        <li v-if="canEdit()">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onSave"
           >
             Save
           </button>
         </li>
-        <li v-if="!id">
+        <li v-if="canEdit()">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="approverModal = true"
           >
             Submit
           </button>
         </li>
-        <li v-if="!id">
+        <li v-if="canEdit()">
           <button
             type="button"
-            class="btn btn-light"
-            @click="genFromSchedule(scheduleItems)"
+            class="btn"
+            @click="generateModal = true"
           >
             Generate
           </button>
         </li>
-        <li v-if="id">
+        <li v-if="canApprove()">
           <button
             type="button"
-            class="btn btn-light"
+            class="btn"
             @click="onApprove"
           >
-            Generate
+            Approve
           </button>
         </li>
-        <li v-if="id">
+        <li v-if="canApprove()">
           <button
             type="button"
-            class="btn btn-light"
+            class="btn"
             @click="onReject"
           >
-            Generate
+            Reject
           </button>
         </li>
         <li>
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onCancel"
           >
             Cancel
@@ -78,6 +78,9 @@
             :to="{ name: 'commentList', params : { entity: 'timesheet', id: this.timesheet.id } }"
           >
             Comments
+            <ts-badge class="badge-light ml-auto">
+              {{ this.timesheet.commentsCount }}
+            </ts-badge>
           </router-link>
         </li>
       </ul>
@@ -85,12 +88,22 @@
 
     <template slot="content">
       <ts-grid
-        v-model="timesheetItems"
+        v-model="gridData"
         :columns="columns"
         :has-toolbar="false"
       >
         <template slot-scope="{ item }">
-          <td>{{ item.date ? item.date.value : "" }}</td>
+          <td>
+            <template v-if="item.date">
+              {{ item.date.value }}
+            </template>
+            <ts-icon
+              v-else
+              :icon="'error'"
+              class="text-danger"
+              title="Field is required"
+            />
+          </td>
           <td>
             <router-link
               v-if="item.job"
@@ -99,10 +112,46 @@
             >
               <span>{{ item.job.value }}</span>
             </router-link>
+            <ts-icon
+              v-else
+              :icon="'error'"
+              class="text-danger"
+              title="Field is required"
+            />
           </td>
-          <td>{{ item.startTime }}</td>
-          <td>{{ item.endTime }}</td>
-          <td>{{ item.break_length.slice(0,5) }}</td>
+          <td>
+            <template v-if="item.startTime">
+              {{ item.startTime }}
+            </template>
+            <ts-icon
+              v-else
+              :icon="'error'"
+              class="text-danger"
+              title="Field is required"
+            />
+          </td>
+          <td>
+            <template v-if="item.endTime">
+              {{ item.endTime }}
+            </template>
+            <ts-icon
+              v-else
+              :icon="'error'"
+              class="text-danger"
+              title="Field is required"
+            />
+          </td>
+          <td>
+            <template v-if="item.break_length">
+              {{ item.break_length.slice(0,5) }}
+            </template>
+            <ts-icon
+              v-else
+              :icon="'error'"
+              class="text-danger"
+              title="Field is required"
+            />
+          </td>
           <td>{{ workHours(item).slice(0,5) }}</td>
         </template>
         <template
@@ -184,7 +233,7 @@
         <template slot="footer">
           <tr>
             <td
-              v-if="timesheetItems.length > 0"
+              v-if="gridData.length > 0"
               colspan="7"
               class="table-status"
             >
@@ -194,7 +243,7 @@
                     STATUS
                   </div>
                   <div class="ts-status__val">
-                    {{ this.status.toUpperCase() }}
+                    {{ timesheetStatus }}
                   </div>
                 </div>
                 <div class="d-flex flex-row justify-content-end">
@@ -215,8 +264,9 @@
 
       <!-- Approver Modal -->
       <ts-modal
-        title="Chose Approver"
+        title="Select Approver"
         :show.sync="approverModal"
+        @hidden="comment = ''"
       >
         <div class="form-group">
           <div class="form-row">
@@ -263,16 +313,87 @@
           </button>
         </template>
       </ts-modal>
+
+      <!-- Generate Modal -->
+      <ts-modal
+        title="Select Schedules"
+        :show.sync="generateModal"
+      >
+        <ts-table
+          class="table table-striped table-hover"
+          v-model="selectedSchedules"
+          :data="mapedScheduleElements"
+          :header="scheduleColumns"
+          :selection="true"
+          order-by="day"
+          order="asc"
+        >
+          <template
+            slot="header"
+            slot-scope="{item}"
+          >
+            <div :data-orderBy="item.orderBy">
+              {{ item.value }}
+            </div>
+          </template>
+          <template
+            slot="body"
+            slot-scope="{item}"
+          >
+            <td>
+              <template v-if="item.date">
+                {{ item.date.value }}
+              </template>
+            </td>
+            <td>
+              <router-link
+                v-if="item.job"
+                class="btn btn-sm btn-link"
+                :to="{ name : 'jobDetails', params : { id: item.job.key } }"
+              >
+                <span>{{ item.job.value }}</span>
+              </router-link>
+            </td>
+            <td>
+              <template v-if="item.startTime">
+                {{ item.startTime }}
+              </template>
+            </td>
+            <td>
+              <template v-if="item.endTime">
+                {{ item.endTime }}
+              </template>
+            </td>
+          </template>
+        </ts-table>
+        <template slot="footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="onGenerate"
+          >
+            Generate
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="generateModal = false"
+          >
+            Cancel
+          </button>
+        </template>
+      </ts-modal>
     </template>
   </app-main>
 </template>
 
 <script>
+import moment from "moment";
+
 import { mapActions, mapGetters } from "vuex";
 import pageMixin from "../../../../mixins/page-mixin";
 import Editor from "@tinymce/tinymce-vue";
 import uuid from "../../../../utils/uuid";
-import { constants } from "crypto";
 
 export default {
   name: "TimesheetModify",
@@ -287,14 +408,15 @@ export default {
 
   data() {
     return {
+      week: {
+        start: moment(),
+        end: moment()
+      },
+      gridData: [],
+      approver: null,
       approverModal: false,
-      status: "",
-      weekEnd: "",
-      weekStart: DayPilot.Date.today().firstDayOfWeek(),
-      timesheet: null,
-      approver: {},
-      scheduleItems: [],
-      timesheetItems: [],
+      generateModal: false,
+      selectedSchedules: [],
       comment: "",
       columns: [
         { key: "day", value: "Day" },
@@ -303,11 +425,30 @@ export default {
         { key: "end-time", value: "End" },
         { key: "break", value: "Break" },
         { key: "total", value: "Total" }
+      ],
+      scheduleColumns: [
+        { value: "Day", orderBy: "date.value" },
+        { value: "Job", orderBy: "job.value" },
+        { value: "Start", orderBy: "startTime" },
+        { value: "End", orderBy: "endTime" }
       ]
     };
   },
 
-  watch: {},
+  watch: {
+    timesheet: function(val) {
+      this.gridData = this.mapedTimesheetElements;
+      if (val)
+        this.approver = this.users.find(
+          item => item.key == val.request.assigned_id
+        );
+    },
+
+    week: function(val) {
+      console.log(val.start);
+      console.log(val.end);
+    }
+  },
 
   computed: {
     ...mapGetters({
@@ -327,24 +468,72 @@ export default {
       });
     },
 
+    schedules: function() {
+      return this.getList("schedule");
+    },
+
+    timesheet: function() {
+      return this.getList("timesheet")[0];
+    },
+
+    timesheetStatus: function() {
+      return this.timesheet
+        ? this.timesheet.request.status.toUpperCase()
+        : "--";
+    },
+
+    mapedTimesheetElements: function() {
+      if (!this.timesheet) return [];
+      return this.mapElementsForView(this.timesheet.schedules);
+    },
+
+    mapedScheduleElements: function() {
+      if (this.schedules.length == 0) return [];
+      return this.mapElementsForView(this.schedules);
+    },
+
     weekDays: function() {
-      let day = this.weekStart;
+      let day = this.start
+        ? moment(this.start, ["YYYY-MM-DD"])
+        : this.week.start.clone();
       let days = [];
       for (let i = 0; i < 7; i++) {
         let item = {};
         item.key = i;
-        item.value = day.toString("ddd dd MMM");
-        item.day = day;
+        item.value = day.format("ddd DD MMM");
+        item.day = day.clone();
         days.push(item);
-        day = day.addDays(1);
+        day.add(1, "d");
       }
       return days;
+    },
+
+    weekYear: function() {
+      if (this.start) return moment(this.start, ["YYYY-MM-DD"]).year();
+      return this.week.start.year();
+    },
+
+    weekNumber() {
+      if (this.start) return moment(this.start, ["YYYY-MM-DD"]).week();
+      return this.week.start.week();
+    },
+
+    weekStart: function() {
+      if (this.start)
+        return moment(this.start, ["YYYY-MM-DD"]).format("YYYY-MM-DD");
+      return this.week.start.format("YYYY-MM-DD");
+    },
+
+    weekEnd: function() {
+      if (this.end)
+        return moment(this.end, ["YYYY-MM-DD"]).format("YYYY-MM-DD");
+      return this.week.end.format("YYYY-MM-DD");
     },
 
     totalHours: function() {
       let total = "00:00:00";
       let itemTotal = "";
-      this.timesheetItems.forEach(item => {
+      this.gridData.forEach(item => {
         itemTotal = this.subTime(
           this.subTime(item.endTime, item.startTime),
           item.break_length
@@ -357,139 +546,187 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.clearForm();
-      vm.loadAssets();
+      vm.initView(vm);
     });
   },
 
-  created() {},
-
-  mounted() {},
+  beforeRouteLeave(to, from, next) {
+    this.clear("job");
+    this.clear("user");
+    this.clear("schedule");
+    this.clear("timesheet");
+    next();
+  },
 
   methods: {
-    ...mapActions({      
+    ...mapActions({
+      clear: "resource/clearResource",
       list: "resource/list",
       show: "resource/show",
       create: "resource/create",
       update: "resource/update"
     }),
 
-    loadAssets() {
-      this.startLoading();
-      let loadJobs = this.list({ resource: "job" });
-      let loadUsers = this.list({ resource: "user" });
+    async initView(vm) {
+      console.log("init view...");
+      vm.startLoading();
+      vm.status = "-";
+      vm.approver = null;
 
-      Promise.all([loadJobs, loadUsers]).then(() => {
-        console.log("assets loading finished...");
-        this.stopLoading();
-        this.loadTimesheet();
+      await vm.loadAssets();
+      await vm.loadTimesheet();
+    },
+
+    loadAssets() {
+      return new Promise((resolve, reject) => {
+        let loadJobs = this.list({ resource: "job" });
+        let loadUsers = this.list({ resource: "user" });
+
+        Promise.all([loadJobs, loadUsers])
+          .then(() => {
+            console.log("assets loaded.");
+            resolve();
+          })
+          .catch(error => reject(error));
       });
     },
 
     loadTimesheet() {
       this.startLoading();
-      this.status = "-";
-      this.approver = {};
-      this.timesheet = null;
-      this.scheduleItems = [];
-      this.timesheetItems = [];
-      this.weekEnd = this.weekStart.addDays(7);
 
-      let p1 = null;
-
-      if (this.id) {
-        p1 = this.show({
+      return new Promise((resolve, reject) => {
+        let p1 = this.list({
           resource: "timesheet",
-          id: this.id,
           query: this.$queryBuilder(
             null,
             null,
             ["request", "schedules.job"],
-            []
+            this.id
+              ? [{ opt: "eq", col: "id", val: this.id }]
+              : [
+                  { opt: "eq", col: "creator_id", val: this.userId },
+                  { opt: "eq", col: "week_start", val: this.weekStart },
+                  { opt: "eq", col: "week_end", val: this.weekEnd }
+                ]
           )
-        }).then(data => {
-          console.log("Loading timesheet finished...");
-          if (data) {
-            this.timesheet = data;
-            this.status = data.request.status;
-            this.approver = this.users.find(
-              item => item.key === data.request.assigned_id
-            );
-            this.weekStart = new DayPilot.Date(this.timesheet.week_start);
-            this.weekEnd = new DayPilot.Date(this.timesheet.week_end);
-            this.genFromTimesheet(data.schedules);
-          }
-          this.stopLoading();
         });
-      } else {
-        p1 = this.list({
-          resource: "timesheet",
+
+        let p2 = this.list({
+          resource: "schedule",
           query: this.$queryBuilder(
             null,
             null,
-            ["request", "schedules.job"],
+            ["job"],
             [
-              { opt: "eq", col: "creator_id", val: this.userId },
-              { opt: "eq", col: "week_start", val: this.weekStart.toString() },
+              { opt: "eq", col: "user_id", val: this.userId },
+              { opt: "eq", col: "event_type", val: "scheduled" },
               {
-                opt: "eq",
-                col: "week_end",
-                val: this.weekEnd.toString()
+                opt: "inRange",
+                col: "",
+                val: `${this.start || this.weekStart},${this.end ||
+                  this.weekEnd}`
               }
             ]
           )
-        }).then(data => {
-          console.log("Loading timesheet finished...");
-          if (data.length > 0) {
-            data = data[0];
-            this.timesheet = data;
-            this.status = data.request.status;
-            this.approver = this.users.find(
-              item => item.key === data.request.assigned_id
-            );
-            this.weekStart = new DayPilot.Date(this.timesheet.week_start);
-            this.weekEnd = new DayPilot.Date(this.timesheet.week_end);
-            this.genFromTimesheet(data.schedules);
+        });
+
+        Promise.all([p1, p2])
+          .then(() => {
+            this.stopLoading();
+            this.gridData = this.mapedTimesheetElements;
+            resolve();
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+
+    // Maps timesheet or schedule items for current grid view.
+    mapElementsForView(list) {
+      let day = null;
+      let items = [];
+
+      // iterate throw week days.
+      for (let i = 0; i < 7; i++) {
+        day = this.weekDays[i].day;
+        let dayStart = day.startOf("day").format("YYYY-MM-DD HH:mm:ss");
+        let dayEnd = day.endOf("day").format("YYYY-MM-DD HH:mm:ss");
+
+        // for each elm in list check:
+        // if elm is in the current day range, then:
+        // create new timesheet based on elm and add it to the list.
+        list.forEach(item => {
+          let start = moment(item.start, ["YYYY-MM-DD HH:mm:ss"]);
+          let end = moment(item.end, ["YYYY-MM-DD HH:mm:ss"]);
+
+          if (
+            start.isBetween(dayStart, dayEnd) ||
+            end.isBetween(dayStart, dayEnd)
+          ) {
+            let timesheet = {};
+            timesheet.id = uuid();
+            timesheet.date = this.weekDays[i];
+            timesheet.job = this.jobs.find(job => job.key == item.job.id);
+            timesheet.startTime = item.start.slice(11, 16);
+            timesheet.endTime = item.end.slice(11, 16);
+            timesheet.break_length = item.break_length;
+            items.push(timesheet);
           }
-          this.stopLoading();
         });
       }
 
-      let p2 = this.list({
-        resource: "schedule",
-        query: this.$queryBuilder(null,null,['job'], [
-          {opt: 'eq', col:'user_id', val: this.userId},
-          {opt: 'eq', col:'event_type', val: 'scheduled'},
-          {opt:'inRange', col:'', val: `${this.start || this.weekStart},${this.end || this.weekEnd}`}
-        ])
-      }).then(data => {
-        console.log("loading schedules finished...");
-        console.log(data);
-        this.scheduleItems = data;
+      return items;
+    },
+
+    onDateChange() {
+      console.log("date set complete.");
+      this.loadTimesheet();
+    },
+
+    canEdit() {
+      if (!this.id) return true;
+      if (this.timesheet) {
+        return this.timesheet.creator_id == this.userId;
+      } else return false;
+    },
+
+    canApprove() {
+      if (!this.timesheet) {
+        return false;
+      } else return this.timesheet.request.assigned_id == this.userId;
+    },
+
+    onApprove() {
+      this.updateRequest("approved");
+    },
+
+    onReject() {
+      this.updateRequest("rejected");
+    },
+
+    onGenerate() {
+      this.generateModal = false;
+
+      let list = [...this.gridData.slice(), ...this.selectedSchedules.slice()];
+
+      let newList = list.map(item => Object.assign({}, item));
+      newList = newList.map(item => {
+        item.id = uuid();
+        return item;
       });
 
-      Promise.all([p1, p2])
-        .then(() => {
-          this.stopLoading();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+      console.log(JSON.stringify(newList));
 
-    onApprove(){
-
-    },
-
-    onReject(){
-
+      this.selectedSchedules = null;
+      this.gridData = newList;
     },
 
     onSubmit(e) {
       if (this.timesheet) {
-        this.updateTimesheet("submitted");
+        this.updateTimesheet("submitted", this.comment);
       } else {
-        this.createTimesheet("submitted");
+        this.createTimesheet("submitted", this.comment);
       }
 
       this.approverModal = false;
@@ -507,13 +744,13 @@ export default {
       this.$router.go(-1);
     },
 
-    createComment(timesheetId) {
+    createComment(timesheetId, comment) {
       this.create({
         resource: "comment",
         data: {
           entity: "timesheet",
           parent_id: this.parentId,
-          body: this.comment,
+          body: comment,
           timesheet_id: timesheetId
         }
       })
@@ -527,15 +764,18 @@ export default {
         });
     },
 
-    createTimesheet(status) {
+    createTimesheet(status, comment = "") {
+      console.log(`create timesheet with status: ${status}`);
       this.create({
         resource: "timesheet",
         data: {
+          locale: window.navigator.language,
+          year: this.weekYear,
           status: status,
-          assigned_id:
-            this.approver.key === undefined ? null : this.approver.key,
+          assigned_id: this.approver ? this.approver.key : null,
           week_start: this.weekStart,
           week_end: this.weekEnd,
+          week_number: this.weekNumber,
           total_hours: this.totalHours,
           items: this.getTimesheetItems()
         }
@@ -550,8 +790,9 @@ export default {
             "success"
           );
 
-          if (this.comment) {
-            this.createComment(data.id);
+          if (comment) {
+            console.log("sending comment...");
+            this.createComment(data.id, comment);
           }
         })
         .catch(error => {
@@ -559,66 +800,45 @@ export default {
         });
     },
 
-    updateTimesheet(status) {
+    updateTimesheet(status, comment = "") {
+      console.log(`update timesheet with status: ${status}`);
       this.update({
         resource: "timesheet",
         id: this.timesheet.id,
         data: {
           status: status,
-          assigned_id:
-            this.approver.key === undefined ? null : this.approver.key,
+          assigned_id: this.approver ? this.approver.key : null,
           total_hours: this.totalHours,
           items: this.getTimesheetItems()
         }
       })
-        .then(() => {
+        .then(data => {
           this.showMessage(`Timesheet updated successfuly.`, "success");
+
+          if (comment) {
+            console.log("sending comment...");
+            this.createComment(data.id, comment);
+          }
         })
         .catch(error => {
           this.showMessage(error.message, "danger");
         });
     },
 
-    genFromTimesheet(data) {
-      let day = null;
-      for (let i = 0; i < 7; i++) {
-        day = this.weekDays[i].day;
-        data.forEach(item => {
-          if (item.start >= day.addDays(-1) && item.end <= day) {
-            let timesheet = {};
-            timesheet.id = uuid();
-            timesheet.date = this.weekDays[i];
-            timesheet.job = this.jobs.find(job => job.key == item.job.id);
-            timesheet.startTime = item.start.slice(11, 16);
-            timesheet.endTime = item.end.slice(11, 16);
-            timesheet.break_length = item.break_length;
-            this.timesheetItems.push(timesheet);
-          }
-        });
-      }
-    },
-
-    genFromSchedule(data) {
-      let day = null;
-      for (let i = 0; i < 7; i++) {
-        day = this.weekDays[i].day;
-        data.forEach(item => {
-          if (item.start >= day.addDays(-1) && item.end <= day) {
-            let timesheet = {};
-            timesheet.id = uuid();
-            timesheet.date = this.weekDays[i];
-            timesheet.job = this.jobs.find(job => job.key == item.job.id);
-            timesheet.startTime = item.start.slice(11, 16);
-            timesheet.endTime = item.end.slice(11, 16);
-            timesheet.break_length = item.break_length;
-            this.timesheetItems.push(timesheet);
-          }
-        });
-      }
+    updateRequest(status) {
+      this.update({
+        resource: "request",
+        id: this.timesheet.request.id,
+        data: {
+          status: status
+        }
+      }).then(() => {
+        this.showMessage(`Timesheet ${status} successfuly.`, "success");
+      });
     },
 
     getTimesheetItems() {
-      let items = this.timesheetItems.map(item => {
+      let items = this.gridData.map(item => {
         return {
           job_id: item.job.key,
           user_id: this.userId,
@@ -626,22 +846,12 @@ export default {
           event_type: "scheduled",
           status: "tentative",
           break_length: item.break_length,
-          start: item.date.day.value.slice(0, 10) + "T" + item.startTime,
-          end: item.date.day.value.slice(0, 10) + "T" + item.endTime
+          start: `${item.date.day.format("YYYY-MM-DD")} ${item.startTime}`,
+          end: `${item.date.day.format("YYYY-MM-DD")} ${item.endTime}`
         };
       });
+      console.log(items);
       return items;
-    },
-
-    clearForm() {
-      console.log("clear...");
-      this.status = "-";
-      this.approver = {};
-      this.timesheet = null;
-      this.scheduleItems = [];
-      this.timesheetItems = [];
-      this.weekStart = DayPilot.Date.today().firstDayOfWeek();
-      this.weekEnd = this.weekStart.addDays(7);
     },
 
     workHours(item) {
