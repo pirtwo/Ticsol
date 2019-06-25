@@ -11,7 +11,7 @@
       />
       <button
         type="button"
-        class="btn btn-light btn-sm mr-auto"
+        class="btn btn-sm mr-auto"
         @click="showFilter = true"
       >
         <i class="material-icons">filter_list</i>
@@ -26,7 +26,7 @@
         <li>
           <router-link 
             tag="button" 
-            class="btn btn-light" 
+            class="btn" 
             :to="{ name: 'contactCreate' }"
           >
             New
@@ -61,7 +61,7 @@
         >
           <td>
             <router-link 
-              class="btn btn-sm btn-light" 
+              class="btn btn-sm" 
               :to="{ name : 'contactDetails', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>

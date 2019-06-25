@@ -13,7 +13,7 @@
         </li>                
         <li>
           <button 
-            class="btn btn-light" 
+            class="btn" 
             @click="onSave"
           >                        
             Save
@@ -21,7 +21,7 @@
         </li>
         <li>
           <button 
-            class="btn btn-light" 
+            class="btn" 
             @click="onCancel"
           >                        
             Cancel
@@ -82,14 +82,14 @@
                   v-model="form.permissions" 
                   type="checkbox" 
                   class="custom-control-input" 
-                  id="create-job" 
-                  value="create-job"
+                  id="full-job" 
+                  value="full-job"
                 >
                 <label 
                   class="custom-control-label" 
-                  for="create-job"
+                  for="full-job"
                 >
-                  Can Create Job</label>
+                  Can Create/Maintain Job</label>
               </div>
             </div>
           </div>

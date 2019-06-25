@@ -33,10 +33,17 @@
 
 <script>
 import Time from '../../utils/time';
+import moment from 'moment';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "AppNotifications",
+
+  data(){
+    return{
+      //
+    }
+  },
 
   computed: {
     ...mapGetters({
@@ -83,8 +90,8 @@ export default {
       return 'blue';
     },
 
-    renderTime(notif) {
-      return Time.passedToString(notif.date);
+    renderTime(notif){
+      return moment(notif.date).format('dd HH:mm');
     }
   }
 };

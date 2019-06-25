@@ -13,7 +13,7 @@
         </li>        
         <li>
           <button 
-            class="btn btn-light" 
+            class="btn" 
             @click="onSave"
           >
             Save
@@ -21,7 +21,7 @@
         </li>
         <li>
           <button 
-            class="btn btn-light" 
+            class="btn" 
             @click="onCancel"
           >
             Cancel
@@ -109,7 +109,7 @@
           >
             <td>
               <router-link 
-                class="btn btn-sm btn-light" 
+                class="btn btn-sm" 
                 :to="{ name : 'userDetails', params : { id: item.id } }"
               >
                 <i class="material-icons">visibility</i>

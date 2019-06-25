@@ -1,21 +1,21 @@
 <template>
   <div class="container-fluid">
-    <header 
-      v-if="this.header" 
+    <header
+      v-if="this.header"
       class="header"
     >
       <slot name="header" />
-    </header>    
+    </header>
     <main class="main">
       <slot />
-    </main>   
-    <footer 
-      v-if="this.footer" 
+    </main>
+    <footer
+      v-if="this.footer"
       class="footer"
     >
       <slot name="footer" />
-    </footer>    
-  </div>  
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -24,7 +24,7 @@ import { mapActions } from "vuex";
 
 export default {
   name: "AppLayout",
-  
+
   props: {
     header: {
       type: Boolean,
@@ -59,17 +59,22 @@ export default {
       let contentHeight = $(window).height() - (head + foot);
       let toolbarHeight = $(".navbar").outerHeight(true);
 
-      this.setContentDim({
-        width: $(".main").outerWidth(true),
-        height: contentHeight
-      });
-      this.setDocumentDim({
-        width: $("body").outerWidth(true),
-        height: $("body").outerHeight(true)
-      });
-      this.toolbar({ height: toolbarHeight, show: undefined });
+      if (contentHeight > 500) {
+        this.setContentDim({
+          width: $(".main").outerWidth(true),
+          height: contentHeight
+        });
 
-      $(".main").css("height", contentHeight);
+        this.setDocumentDim({
+          width: $("body").outerWidth(true),
+          height: $("body").outerHeight(true)
+        });
+
+        this.toolbar({ height: toolbarHeight, show: undefined });
+
+        $(".main").css("height", contentHeight);
+        $(".main .wrap-drawer .drawer").css("height", contentHeight);
+      }
     }
   }
 };

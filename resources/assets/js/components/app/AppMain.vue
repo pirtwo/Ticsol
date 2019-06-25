@@ -44,31 +44,31 @@
 
       <!-- toolbar -->
       <nav class="navbar navbar-light">
-        <div class="d-flex w-100">
+        <div class="d-flex align-items-center w-100">
           <div class="flex-grow-1">
             <button
-              class="btn btn-light btn-sm ml-auto"
+              class="btn btn-sm ml-auto"
               type="button"
               @click="onDrawer"
             >
               <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
             </button>
             <button
-              class="btn btn-light btn-sm ml-auto"
+              class="btn btn-sm ml-auto"
               type="button"
               @click="clickBack"
             >
               <i class="material-icons">arrow_back</i>
             </button>
             <button
-              class="btn btn-light btn-sm ml-auto"
+              class="btn btn-sm ml-auto"
               type="button"
               @click="clickForward"
             >
               <i class="material-icons">arrow_forward</i>
             </button>
             <button
-              class="btn btn-light btn-sm ml-auto"
+              class="btn btn-sm ml-auto"
               type="button"
               @click="onFullscreen"
             >
@@ -280,7 +280,6 @@ export default {
 .drawer-body {
   flex: 1 1 auto;
   overflow-y: auto;
-  //background-color: rgba(255, 255, 255, 0.95);
 }
 
 .drawer .title {
@@ -290,10 +289,9 @@ export default {
 }
 
 .navbar {
-  height: 50px;
+  height: 9%;
   margin-bottom: 5px;
   display: -webkit-box !important;
-  //background-color: rgba(255, 255, 255, 0.8);
 }
 
 .navbar .btn,
@@ -321,7 +319,7 @@ i.material-icons {
   height: 100%;
   position: absolute;
   background-color: rgba(34, 34, 34, 0.1);
-  z-index: 100;
+  z-index: 9;
 }
 
 .loading-box {

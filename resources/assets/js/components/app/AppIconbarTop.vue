@@ -2,58 +2,61 @@
   <div class="toolbar-top">
     <!-- <app-statusbar /> -->
 
-    <router-link 
-      :to="{ name : 'settingModify' }" 
-      class="btn btn-light" 
-      role="button"
-    >
-      <i class="icon material-icons">
-        settings
-      </i>
-      <span class="caption">SETTINGS</span>
-    </router-link>
+    <div class="d-flex align-items-stretch ml-auto">
+      <router-link 
+        :to="{ name : 'settingModify' }" 
+        class="btn" 
+        role="button"
+      >
+        <i class="icon material-icons">
+          settings
+        </i>
+        <span class="caption">SETTINGS</span>
+      </router-link>
 
-    <div class="dropdown">
-      <button 
-        class="btn btn-light" 
-        type="buttom" 
-        role="button" 
-        id="dropdownMenuLink" 
-        data-toggle="dropdown"
-        aria-haspopup="true" 
-        aria-expanded="false"
-      >
-        <img 
-          class="user-avatar rounded" 
-          :src="avatar" 
-          alt="Avtar"
+      <div class="dropdown ml-1">
+        <button 
+          class="btn h-100" 
+          type="buttom" 
+          role="button" 
+          id="dropdownMenuLink" 
+          data-toggle="dropdown"
+          aria-haspopup="true" 
+          aria-expanded="false"
         >
-        <span class="caption user-name">{{ userName }}</span>
-      </button>
-      <div 
-        class="dropdown-menu dropdown-menu-right" 
-        aria-labelledby="dropdownMenuLink"
-      >
-        <router-link 
-          :to="{ name : 'userProfile', params: {id: userId} }"          
-          class="dropdown-item"
+          <img 
+            class="user-avatar rounded" 
+            :src="avatar" 
+            alt="Avtar"
+          >
+          <span class="caption user-name">{{ userName }}</span>
+        </button>
+        <div 
+          class="dropdown-menu dropdown-menu-right" 
+          aria-labelledby="dropdownMenuLink"
         >
-          <i class="icon material-icons">
-            account_circle
-          </i>Profile
-        </router-link> 
-        <div class="dropdown-divider" />     
-        <a 
-          class="dropdown-item" 
-          href="#" 
-          @click.prevent="logoutHandler"
-        >
-          <i class="icon material-icons">
-            exit_to_app
-          </i>Log out
-        </a>        
+          <router-link 
+            :to="{ name : 'userProfile', params: {id: userId} }"          
+            class="dropdown-item"
+          >
+            <i class="icon material-icons">
+              account_circle
+            </i>Profile
+          </router-link> 
+          <div class="dropdown-divider" />     
+          <a 
+            class="dropdown-item" 
+            href="#" 
+            @click.prevent="logoutHandler"
+          >
+            <i class="icon material-icons">
+              exit_to_app
+            </i>Log out
+          </a>        
+        </div>
       </div>
     </div>
+    
 
     <app-notifications />
   </div>

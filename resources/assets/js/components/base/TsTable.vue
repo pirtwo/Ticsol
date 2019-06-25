@@ -3,54 +3,57 @@
     <thead>
       <slot name="toolbar" />
       <th v-if="selection">
-        <input 
-          type="checkbox" 
+        <input
+          type="checkbox"
           @click.self="onSelectAll"
         >
       </th>
 
-      <th 
-        v-for="(value, index) in header" 
-        :key="index" 
+      <th
+        v-for="(value, index) in header"
+        :key="index"
         @click="toggleOrder(index, $event)"
       >
-        <slot 
-          name="header" 
+        <slot
+          name="header"
           :item="value"
         >
           {{ value }}
           <!-- fallback content -->
-        </slot>        
-        <i 
-          v-show="sortBy == value.orderBy" 
+        </slot>
+        <i
+          v-show="sortBy == value.orderBy"
           class="material-icons"
-        >{{ colOrder === "asc" ? "arrow_upward" : "arrow_downward" }}</i>        
+        >{{ colOrder === "asc" ? "arrow_upward" : "arrow_downward" }}</i>
       </th>
     </thead>
 
     <tbody>
-      <tr 
-        v-for="(value, index) in list" 
+      <tr
+        v-for="(value, index) in list"
         :key="index"
       >
         <td v-if="selection">
-          <input 
-            type="checkbox" 
-            @click="onSelect(index, $event)"
+          <input
+            type="checkbox"
+            :value="value"
+            @input="onSelect(index, $event)"
           >
         </td>
-        <slot 
-          name="body" 
+        <slot
+          name="body"
           :item="value"
         >
           {{ value }}
-        </slot>        
+        </slot>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import { isArray } from "util";
+import { constants } from "crypto";
 export default {
   name: "TsTable",
   props: {
@@ -91,9 +94,18 @@ export default {
     };
   },
 
+  watch: {
+    value: function(val) {
+      if (!val) {
+        this.selects = [];
+        $("input[type='checkbox']").prop("checked", false);
+      }
+    }
+  },
+
   computed: {
-    list: function() {      
-      return this.data.slice(0).sort((a, b) => {
+    list: function() {
+      return this.data.slice().sort((a, b) => {
         if (this.colOrder === "asc") {
           if (a[this.sortBy] < b[this.sortBy]) return -1;
           if (a[this.sortBy] > b[this.sortBy]) return 1;
@@ -112,11 +124,10 @@ export default {
       if ($(e.target).prop("checked")) {
         this.selects.push(this.data[index]);
       } else {
-        this.selects.splice(el => el === data[index], 1);
+        this.selects.splice(el => el === this.data[index], 1);
       }
 
-      console.log(this.selects);
-      this.$emit("input", this.selects);
+      this.$emit("input", this.selects.slice());
     },
 
     onSelectAll(e) {
@@ -130,30 +141,17 @@ export default {
         $("input[type='checkbox']").prop("checked", false);
         this.selects = [];
       }
-      this.$emit("input", this.selects);
+      this.$emit("input", this.selects.slice());
     },
 
-    toggleOrder(index, e) {
-      let orderby = "";
-
-      if (e.target.tagName === "TH") {
-        orderby = $(e.target)
-          .find("[data-orderBy]")
-          .data().orderby;
-      } else {
-        orderby = $(e.target)
-          .closest("th")
-          .find("[data-orderBy]")
-          .data().orderby;
-      }
-
+    toggleOrder(index, e) { 
       if (this.colOrder === "asc") {
         this.colOrder = "des";
       } else {
         this.colOrder = "asc";
       }
 
-      this.sortBy = orderby;
+      this.sortBy = this.header[index].orderBy; 
     }
   }
 };

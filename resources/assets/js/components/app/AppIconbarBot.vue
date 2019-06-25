@@ -2,7 +2,7 @@
   <div class="toolbar-bot">
     <router-link 
       :to="{ name : 'dash' }" 
-      class="btn btn-light" 
+      class="btn" 
       role="button"
     >
       <i class="icon material-icons">
@@ -13,7 +13,7 @@
 
     <router-link 
       :to="{ name : 'inbox' }" 
-      class="btn btn-light" 
+      class="btn" 
       role="button"
     >
       <i class="icon material-icons">
@@ -25,7 +25,7 @@
     <div class="btn-group dropup">
       <button 
         type="button" 
-        class="btn btn-light" 
+        class="btn" 
         data-toggle="dropdown" 
         aria-haspopup="true" 
         aria-expanded="false"
@@ -53,7 +53,7 @@
 
     <router-link 
       :to="{ name : 'timesheet' }" 
-      class="btn btn-light" 
+      class="btn" 
       role="button"
     >
       <i class="icon material-icons">
@@ -64,7 +64,7 @@
 
     <router-link 
       :to="{ name : 'scheduler' }" 
-      class="btn btn-light" 
+      class="btn" 
       role="button"
     >
       <i class="icon material-icons">
@@ -76,7 +76,7 @@
     <div class="btn-group dropup">
       <button 
         type="button" 
-        class="btn btn-light" 
+        class="btn" 
         data-toggle="dropdown" 
         aria-haspopup="true" 
         aria-expanded="false"

@@ -12,17 +12,25 @@
       <div class="modal-content">
         <div class="modal-header">
           <slot name="header">
-            <h5 class="modal-title">
-              {{ title }}
-            </h5>
-            <button 
-              type="button" 
-              class="close" 
-              data-dismiss="modal" 
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <!-- Default header -->
+            <div class="d-flex justify-content-center align-items-center w-100">
+              <ts-icon
+                class="mr-2"
+                v-if="icon"
+                :icon="icon"
+              />
+              <h5 class="modal-title">
+                {{ title }}
+              </h5>
+              <button 
+                type="button" 
+                class="close" 
+                data-dismiss="modal" 
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           </slot>
         </div>
         <div class="modal-body">
@@ -48,6 +56,10 @@ export default {
     title:{
       value:String,
       default:''
+    },
+    icon:{
+      value: String,
+      default: ""
     },
     size: {
       value: String,

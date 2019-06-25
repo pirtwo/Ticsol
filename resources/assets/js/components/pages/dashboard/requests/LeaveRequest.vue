@@ -12,30 +12,30 @@
           Actions
         </li>
         <li>
-          <button class="btn btn-light">
+          <button class="btn">
             New
           </button>
         </li>
         <li>
-          <button class="btn btn-light">
+          <button class="btn">
             Suspend
           </button>
         </li>
         <li>
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onSubmit"
           >
             Submit
           </button>
         </li>
         <li>
-          <button class="btn btn-light">
+          <button class="btn">
             Cancel
           </button>
         </li>
         <li>
-          <button class="btn btn-light">
+          <button class="btn">
             Print
           </button>
         </li>

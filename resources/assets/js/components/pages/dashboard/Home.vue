@@ -12,10 +12,9 @@
           src="/img/app.png" 
           class="app-logo"
         >
-
         <router-link 
           :to="{ name : 'inbox'}" 
-          class="btn btn-light" 
+          class="btn" 
           role="button"
         >
           <i class="icon material-icons">
@@ -24,8 +23,18 @@
           <span class="caption">INBOX</span>
         </router-link>
         <router-link 
-          :to="{ name : 'request'}" 
-          class="btn btn-light" 
+          :to="{ name : 'inbox'}" 
+          class="btn" 
+          role="button"
+        >
+          <i class="icon material-icons">
+            work
+          </i>
+          <span class="caption">Jobs</span>
+        </router-link>
+        <router-link 
+          :to="{ name : 'leaveCreate'}" 
+          class="btn" 
           role="button"
         >
           <i class="icon material-icons">
@@ -34,8 +43,8 @@
           <span class="caption">REQUESTS</span>
         </router-link>
         <router-link 
-          :to="{ name : 'timesheet'}" 
-          class="btn btn-light" 
+          :to="{ name : 'timesheetCreate'}" 
+          class="btn" 
           role="button"
         >
           <i class="icon material-icons">
@@ -45,7 +54,7 @@
         </router-link>
         <router-link 
           :to="{ name : 'schedule'}" 
-          class="btn btn-light" 
+          class="btn" 
           role="button"
         >
           <i class="icon material-icons">

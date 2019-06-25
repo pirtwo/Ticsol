@@ -37,13 +37,13 @@
     </div>
     <button 
       @click="dbBack" 
-      class="btn btn-sm btn-light"
+      class="btn btn-sm"
     >
       <i class="material-icons">keyboard_arrow_left</i>
     </button>
     <button 
       @click="dbForward" 
-      class="btn btn-sm btn-light"
+      class="btn btn-sm"
     >
       <i class="material-icons">keyboard_arrow_right</i>
     </button>

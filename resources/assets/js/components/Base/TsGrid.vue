@@ -11,7 +11,7 @@
       class="table-responsive"
       slot-scope="{ selectRow, insertRow, updateRow, deleteRow, copyRow }"
     >
-      <table class="table table-sm table-hover table-light">
+      <table class="table table-striped table-hover">
         <thead>
           <tr v-if="hasToolbar">
             <th :colspan="columns.length + 1">

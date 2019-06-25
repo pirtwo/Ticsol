@@ -11,7 +11,7 @@
       />
       <button
         type="button"
-        class="btn btn-light btn-sm mr-auto"
+        class="btn btn-sm mr-auto"
         @click="showFilter = true"
       >
         <i class="material-icons">filter_list</i>
@@ -56,21 +56,21 @@
           <td>
             <router-link
               v-if="item.type === 'timesheet'"
-              class="btn btn-sm btn-light"
-              :to="{ name : 'timesheetDetails', params : { id: item.timesheet.id, start: item.timesheet.week_start.slice(0,10), end: item.timesheet.week_end.slice(0,10) } }"
+              class="btn btn-sm"
+              :to="{ name : 'timesheetDetails', params : { id: item.timesheet.id, start: item.timesheet.week_start, end: item.timesheet.week_end } }"
             >
               <i class="material-icons">visibility</i>
             </router-link>
             <router-link
               v-if="item.type === 'leave'"
-              class="btn btn-sm btn-light"
+              class="btn btn-sm"
               :to="{ name : 'leaveDetails', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>
             </router-link>
             <router-link
               v-if="item.type === 'reimbursement'"
-              class="btn btn-sm btn-light"
+              class="btn btn-sm"
               :to="{ name : 'reimbDetails', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>
@@ -228,8 +228,8 @@ export default {
       } else if (item.type === "reimbursement") {
         return `${item.meta.date} - $${item.meta.amount}`;
       }else if(item.type === "timesheet"){
-        let from = new DayPilot.Date(item.timesheet.week_start).toString('dd/MM/yyyy');
-        let till = new DayPilot.Date(item.timesheet.week_end).toString('dd/MM/yyyy');
+        let from = new DayPilot.Date(item.timesheet.start).toString('dd/MM/yyyy');
+        let till = new DayPilot.Date(item.timesheet.end).toString('dd/MM/yyyy');
         let hours = item.timesheet.total_hours.slice(0,2);
         return `${from} - ${till}, ${hours} Hours`;
       }

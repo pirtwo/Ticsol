@@ -13,7 +13,7 @@
         </li>
         <li v-if="!this.id">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="clearForm"
           >
             New
@@ -21,7 +21,7 @@
         </li>
         <li v-if="!this.id">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onSubmit"
           >
             Submit
@@ -29,7 +29,7 @@
         </li>
         <li v-if="this.id">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onSave"
           >
             Save
@@ -37,7 +37,7 @@
         </li>
         <li>
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onCancel"
           >
             Cancel
@@ -45,15 +45,7 @@
         </li>
         <li class="menu-title">
           Links
-        </li>
-        <li>
-          <router-link
-            class="btn btn-link"
-            :to="{ name: 'jobCreate' }"
-          >
-            New
-          </router-link>
-        </li>
+        </li>       
         <li>
           <router-link
             class="btn btn-link"
@@ -62,7 +54,7 @@
             Jobs
           </router-link>
         </li>
-        <li v-if="this.id">
+        <li v-if="currentJob">
           <router-link
             class="btn btn-link"
             :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }"
@@ -71,15 +63,18 @@
             Items
           </router-link>
         </li>
-        <li v-if="this.id">
+        <li v-if="currentJob">
           <router-link
             class="btn btn-link"
             :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }"
           >
             Comments
+            <ts-badge class="badge-light ml-auto">
+              {{ currentJob.commentsCount }}
+            </ts-badge>
           </router-link>
         </li>
-        <li v-if="this.id">
+        <li v-if="currentJob">
           <router-link
             :class="[{'disabled' : this.relatedActivities === null}, 'btn btn-link' ]"
             role="button"
@@ -87,9 +82,12 @@
             :to="{ name: 'activityList', params : { col: 'id', opt: 'in', val: this.relatedActivities } }"
           >
             Activity Reports
+            <ts-badge class="badge-light ml-auto">
+              {{ currentJob.reportsCount }}
+            </ts-badge>
           </router-link>
         </li>
-        <li v-if="this.id">
+        <li v-if="currentJob">
           <router-link
             :class="[{'disabled' : this.relatedJobs === null}, 'btn btn-link' ]"
             role="button"
@@ -97,9 +95,12 @@
             :to="{ name: 'jobList', params : { col: 'id', opt: 'in', val: this.relatedJobs } }"
           >
             Related Jobs
+            <ts-badge class="badge-light ml-auto">
+              {{ currentJob.childsCount }}
+            </ts-badge>
           </router-link>
         </li>
-        <li v-if="this.id">
+        <li v-if="currentJob">
           <router-link
             :class="[{'disabled' : this.relatedRequests === null}, 'btn btn-link' ]"
             role="button"
@@ -107,9 +108,12 @@
             :to="{ name: 'inbox', params : { col: 'id', opt: 'in', val: this.relatedRequests } }"
           >
             Related Requests
+            <ts-badge class="badge-light ml-auto">
+              {{ currentJob.requestsCount }}
+            </ts-badge>
           </router-link>
         </li>
-        <li v-if="this.id">
+        <li v-if="currentJob">
           <router-link
             :class="[{'disabled' : this.relatedContacts === null}, 'btn btn-link' ]"
             role="button"
@@ -117,6 +121,9 @@
             :to="{ name: 'contactList', params : { col: 'id', opt: 'in', val: this.relatedContacts } }"
           >
             Related Contacts
+            <ts-badge class="badge-light ml-auto">
+              {{ currentJob.contactsCount }}
+            </ts-badge>
           </router-link>
         </li>
       </ul>

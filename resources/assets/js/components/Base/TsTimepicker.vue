@@ -4,12 +4,12 @@
     class="ts-timepicker"
     type="text"
     readonly
-    :value="output"    
+    :value="output"
     @click="onClick"
     @focus="onFocus"
     @blur="onBlur"
     @keyup="onKeyup"
-    @keydown="onKeydown"   
+    @keydown="onKeydown"
   >
 </template>
 
@@ -23,10 +23,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: ""
-      // validator(val){
-      //   return INPUT_PATTERN.test(val);
-      // }
+      default: "00:00"
     },
     format: {
       type: String,
@@ -38,7 +35,7 @@ export default {
   },
 
   data() {
-    return {      
+    return {
       hour: 0,
       min: 0,
       sec: 0,
@@ -47,13 +44,13 @@ export default {
   },
 
   watch: {
-    value:function(val){
-      if(INPUT_PATTERN.test(val)){
+    value: function(val) {
+      if (INPUT_PATTERN.test(val)) {
         let groups = INPUT_PATTERN.exec(val);
         this.hour = Number(groups[1]);
         this.min = Number(groups[2]);
-        if(groups[3]) this.sec = Number(groups[3]);
-      }else{
+        if (groups[3]) this.sec = Number(groups[3]);
+      } else {
         this.hour = 0;
         this.min = 0;
         this.sec = 0;
@@ -72,7 +69,7 @@ export default {
   created() {},
 
   mounted() {
-    this.selectRange(0, 0);    
+    this.selectRange(0, 0);
   },
 
   destroyed() {},
@@ -111,15 +108,15 @@ export default {
       }
     },
 
-    onBlur(e){
+    onBlur(e) {
       e.preventDefault();
-      this.$emit('input', `${this.toText(this.hour)}:${this.toText(this.min)}`); 
+      this.$emit("input", `${this.toText(this.hour)}:${this.toText(this.min)}`);
     },
 
     onKeydown(e) {
       //console.log(e);
       e.preventDefault();
-      if(e.key === "Backspace" || e.key === "Delete"){
+      if (e.key === "Backspace" || e.key === "Delete") {
         if (this.currPos === 1) {
           this.hour = 0;
         } else if (this.currPos === 2) {
@@ -167,12 +164,12 @@ export default {
           if (this.sec < 10) this.sec = this.sec * 10 + val;
           else this.sec = val;
         }
-      }    
+      }
     },
 
     onKeyup(e) {
       this.selectPosition(this.currPos);
-    },    
+    },
 
     selectPosition(position) {
       this.$refs.tsTimepicker.focus();
@@ -192,7 +189,7 @@ export default {
       this.$refs.tsTimepicker.setSelectionRange(start, end);
     },
 
-    toText(val) {      
+    toText(val) {
       if (val < 10) return `0${val}`;
       else if (val >= 10) return `${val}`;
     }

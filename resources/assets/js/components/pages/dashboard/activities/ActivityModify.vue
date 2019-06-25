@@ -13,7 +13,7 @@
         </li>
         <li v-if="!this.id">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="clearForm"
           >
             New
@@ -21,7 +21,7 @@
         </li>
         <li v-if="!this.id">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onSubmit"
           >
             Submit
@@ -29,7 +29,7 @@
         </li>
         <li v-if="this.id">
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onSave"
           >
             Save
@@ -37,7 +37,7 @@
         </li>
         <li>
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onCancel"
           >
             Cancel
