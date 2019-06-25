@@ -80,6 +80,7 @@ export const userModule = {
             state.token.value = "";
             state.token.expire = "";
             state.info = null;
+            window.localStorage.removeItem('app.ticsol');
         }
 
     },
@@ -101,8 +102,8 @@ export const userModule = {
         },
 
         logout({ commit }) {
-            api.post(URLs.AUTH_LOGOUT, null);
             commit(MUTATIONS.USER_AUTH_LOGOUT);
+            api.post(URLs.AUTH_LOGOUT, null);            
         },
 
         refresh() {
