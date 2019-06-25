@@ -1,115 +1,140 @@
 <template>
   <div class="vb-datepicker d-flex align-items-center">
-    <div 
-      class="btn-group" 
-      role="group" 
+    <div
+      class="btn-group"
+      role="group"
       aria-label="select date"
     >
-      <button 
-        type="button" 
-        class="btn btn-sm btn-secondary" 
+      <button
+        type="button"
+        class="btn btn-sm"
         @click="onBack"
       >
         <i class="material-icons">keyboard_arrow_left</i>
       </button>
-      <button 
-        type="button" 
-        class="btn btn-sm btn-secondary" 
+      <button
+        type="button"
+        class="btn btn-sm"
         @click="onToday"
       >
         Today
       </button>
-      <button 
-        type="button" 
-        class="btn btn-sm btn-secondary" 
+      <button
+        type="button"
+        class="btn btn-sm"
         @click="onNext"
       >
         <i class="material-icons">keyboard_arrow_right</i>
       </button>
     </div>
     <div class="vb-datepicker__range">
-      {{ todayToText }}
+      {{ dayToText }}
     </div>
   </div>
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   name: "TsDateScroller",
 
   props: {
     value: {
-      type: [String, Object],
-      default: ''
+      type: [Object],
+      default: () => {
+        return {};
+      }
     },
     range: {
       type: String,
       default: "",
-      validator: value => {
-        return ["Month", "Week"].indexOf(value) !== -1;
+      validator: val => {
+        return ["Month", "Week"].indexOf(val) > -1;
+      }
+    },
+    weekStart: {
+      type: String,
+      default: "Mon",
+      validator: val => {
+        return (
+          ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(val) > -1
+        );
       }
     }
   },
 
   data() {
     return {
-      today: this.getToday(),
-      picker: {}
+      start: this.calcStart()
     };
   },
 
   watch: {
+    value: function(val) {
+      if (val) this.start = val.start;
+    },
+
     range: function(value) {
-      this.today = this.getToday();
-      this.$emit("input", this.today);
+      this.start = this.calcStart();
+      this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
     }
   },
 
   computed: {
-    todayToText: function() {
+    dayToText: function() {
       return this.range == "Month"
-        ? this.today.toString("MMM yyyy")
-        : `${this.today.toString("MMM dd")} - ${this.today.addDays(6).toString("MMM dd")}`;
+        ? this.start.format("MMM YYYY")
+        : `${this.start.format("MMM DD")} - 
+          ${this.calcEnd().format("MMM DD")}`;
     }
   },
 
   mounted() {
-    this.today = this.getToday();
-    // this.picker = new DayPilot.DatePicker({
-    //     target: 'picker', 
-    //     pattern: 'yyyy-MM-dd', 
-    //     onTimeRangeSelected: function(args) { 
-    //         console.log(args.date);
-    //     }
-    //   });
+    this.start = this.calcStart();
+    this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
   },
 
   methods: {
-    getToday() {
+    calcStart() {     
+      let now = moment();
+      let weekStart = moment().day(this.weekStart);
+      if (weekStart.isAfter(now)) weekStart.add(-7, "d");
+
       return this.range == "Month"
-        ? DayPilot.Date.today().firstDayOfMonth()
-        : DayPilot.Date.today().firstDayOfWeek();
+        ? now.startOf("month")
+        : weekStart;
     },
 
-    onToday() {      
-      this.today = this.getToday();
-      this.$emit("input", this.today);
+    calcEnd() {
+      return this.range == "Month"
+        ? this.start
+            .clone()
+            .add(1, "M")
+            .add(-1, "d")
+        : this.start.clone().add(6, "d");
+    },
+
+    onToday() {
+      this.start = this.calcStart();
+      this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
+      this.$emit("change");
     },
 
     onNext() {
-      this.today =
-        this.range == "Month"
-          ? this.today.addMonths(1)
-          : this.today.addDays(7);
-      this.$emit("input", this.today);
+      this.start =
+        this.range == "Month" ? this.start.add(1, "M") : this.start.add(7, "d");
+      this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
+      this.$emit("change");
     },
 
     onBack() {
-      this.today =
+      this.start =
         this.range == "Month"
-          ? this.today.addMonths(-1)
-          : this.today.addDays(-7);
-      this.$emit("input", this.today);
+          ? this.start.add(-1, "M")
+          : this.start.add(-7, "d");
+      this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
+      this.$emit("change");
     }
   }
 };
@@ -117,24 +142,36 @@ export default {
 
 <style scoped>
 .vb-datepicker {
-  color: white;  
-  overflow: hidden;   
-  background-color: #6c757d;
-  border: 1px solid rgba(0, 0, 0, 0.1);  
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: inherit;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
-.vb-datepicker__range{
+.vb-datepicker__range {
+  font-size: inherit;
   padding: 0px 5px;
-  font-size: 0.8rem;
+  width: 130px;
+  text-align: center;
 }
 
-.btn-group .btn{
-  font-size: 0.8rem;
+.btn-group {
+  height: 100%;
+}
+
+.btn-group .btn {
+  font-size: inherit;
+  align-items: center;
+  display: flex;
 }
 
 .btn-group .btn i {
-  font-size: 0.8rem;
   line-height: 1;
-  vertical-align: baseline;
+}
+
+.btn-group .btn:focus {
+  box-shadow: none;
 }
 </style>
