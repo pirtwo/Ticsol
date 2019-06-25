@@ -19,8 +19,7 @@ class CreateTsAclsTable extends Migration
             // Keys
             $table->increments('id');            
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id')
-                ->nullable();
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('role_id');
             $table->unsignedInteger('resource_id');
             $table->unsignedInteger('permission_id');

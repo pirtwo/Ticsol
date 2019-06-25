@@ -19,8 +19,7 @@ class CreateTsActivitiesTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id')
-                ->nullable();            
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('schedule_id');
             $table->unsignedInteger('job_id');
 

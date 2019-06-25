@@ -22,7 +22,7 @@ class CreateTsPasswordResetTable extends Migration
             $table->unsignedInteger('user_id');
             
             // Attributes
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('token');
             $table->timestamps();
         });

@@ -19,8 +19,7 @@ class CreateTsAddressesTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id')
-                ->nullable();
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('contact_id');
 
             // Attributes

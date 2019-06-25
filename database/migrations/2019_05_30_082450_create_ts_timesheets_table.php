@@ -18,15 +18,14 @@ class CreateTsTimesheetsTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id')
-                ->nullable();
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('request_id');
 
             // Attribuets
             $table->string('year');
             $table->integer('week_number');
-            $table->dateTime('week_start');
-            $table->dateTime('week_end');
+            $table->date('week_start');
+            $table->date('week_end');
             $table->time('total_hours');
             $table->softDeletes();
             $table->timestamps();

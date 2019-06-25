@@ -19,8 +19,7 @@ class CreateTsRolesTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id')
-                ->nullable();          
+            $table->unsignedInteger('creator_id');
 
             // Attributes
             $table->string('name');  

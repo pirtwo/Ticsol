@@ -17,8 +17,7 @@ class CreateTsCommentsTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id')
-                ->nullable();
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('job_id')
                 ->nullable();
             $table->unsignedInteger('parent_id')

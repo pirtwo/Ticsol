@@ -19,8 +19,7 @@ class CreateTsJobsTable extends Migration
             // Keys
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id')
-                ->nullable();
+            $table->unsignedInteger('creator_id');
             $table->unsignedInteger('parent_id')
                 ->nullable();
             $table->unsignedInteger('form_id')
@@ -28,8 +27,10 @@ class CreateTsJobsTable extends Migration
 
             // Attributes
             $table->string('title');
-            $table->string('code');
+            $table->string('code');            
             $table->boolean('isactive');
+            $table->string('color')
+                ->nullable();
             $table->json('meta')
                 ->nullable();
             $table->softDeletes();
