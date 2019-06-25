@@ -42,9 +42,19 @@ export default {
       type: String,
       required: true,
       validator: value => {
-        return ["Day", "Week", "Month", "Year"].indexOf(value) !== -1;
+        return ["Day", "Week", "Month", "Year"].indexOf(value) > -1;
       }
     },
+    weekStart: {
+      type: String,
+      default: "Mon",
+      validator: value => {
+        return (
+          ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(value) > -1
+        );
+      }
+    },
+
     startDate: {
       type: [Object, String],
       default: null
@@ -57,7 +67,7 @@ export default {
       type: String,
       required: true,
       validator: value => {
-        return ["Day", "Hour", "CellDuration"].indexOf(value) !== -1;
+        return ["Day", "Hour", "CellDuration"].indexOf(value) > -1;
       }
     },
     cellDuration: {
@@ -118,14 +128,14 @@ export default {
       type: String,
       default: "Disabled",
       validator: value => {
-        return ["Disabled", "Header", "Full"].indexOf(value) !== -1;
+        return ["Disabled", "Header", "Full"].indexOf(value) > -1;
       }
     },
     autoScroll: {
       type: String,
       default: "Disabled",
       validator: value => {
-        return ["Disabled", "Drag", "Always"].indexOf(value) !== -1;
+        return ["Disabled", "Drag", "Always"].indexOf(value) > -1;
       }
     },
 
@@ -194,14 +204,14 @@ export default {
         this.dayPilot.resources = value;
         this.dayPilot.update();
         this.makeDraggable();
-      }      
+      }
     },
 
     events: function(value) {
       if (this.dayPilot.events !== undefined) {
         this.dayPilot.events.list = value;
         this.dayPilot.update();
-      }      
+      }
     },
 
     message: function(value) {
@@ -215,18 +225,21 @@ export default {
 
     range: function(value) {
       this.dayPilot.days = this.getDays();
-      this.dayPilot.startDate = this.getStartDate();
+      this.dayPilot.startDate = this.getStartDate();      
       this.dayPilot.update();
     },
 
     startDate: function(value) {
-      this.dayPilot.days = this.getDays();
-      this.dayPilot.startDate = value;
+      console.log(value);
+      this.dayPilot.startDate = new window.DayPilot.Date(value);
+      this.dayPilot.days = this.getDays();      
       this.dayPilot.update();
     }
   },
 
   mounted() {
+    var _this = this;
+
     let dp = (this.dayPilot = new DayPilot.Scheduler("dp"));
 
     dp.theme = "scheduler_green";
@@ -240,8 +253,7 @@ export default {
     dp.durationBarMode = "Duration";
 
     // Time Axies
-    dp.days = this.days || this.getDays();
-    dp.startDate = this.startDate || this.getStartDate();
+    dp.weekStarts = this.getWeekStart();
     dp.timeHeaders = this.timeHeader || this.getTimeHeader();
     dp.headerHeightAutoFit = this.timeHeaderAutoFit;
     if (!this.timeHeaderAutoFit) dp.headerHeight = this.timeHeaderHeight;
@@ -295,20 +307,20 @@ export default {
     dp.onEventClicked = this.eventClickedHandler;
     dp.onEventResize = this.eventResizeHandler;
     dp.onEventResized = this.eventResizedHandler;
-    dp.onEventDeleted = this.eventDeletedHandler;    
+    dp.onEventDeleted = this.eventDeletedHandler;
     dp.onTimeRangeSelected = this.eventCreatedHandler;
 
     // dp.onEventMove = this.eventMoveHandler;
     // dp.onEventClicke = this.eventClickHandler;
     // dp.onEventResize = this.eventResizeHandler;
     // dp.onEventDelete = this.eventDeleteHandler;
-    // dp.onTimeRangeSelect = this.eventCreateHandler;    
+    // dp.onTimeRangeSelect = this.eventCreateHandler;
 
     dp.onBeforeTimeHeaderRender = function(args) {
       if (args.header.level === 0) {
         if (
-          args.header.start.getDayOfWeek() == 0 &&
-          args.header.start.getMonth() == args.header.end.getMonth()
+          args.header.start.getDayOfWeek() == _this.getWeekStart() &&
+          args.header.start.getMonth() == args.header.end.addDays(-1).getMonth()
         ) {
           args.header.html =
             "<span class='header_weekDay_weekRange'>" +
@@ -355,8 +367,8 @@ export default {
       args.data.cssClass = item.type;
       args.data.html = `
         <div class=''>${args.data.text}</div>
-        <div class=''>${ args.data.start.toString('hh:mm') }</div>
-        <div class=''>${ args.data.end.toString('hh:mm') }</div>`;
+        <div class=''>${args.data.start.toString("hh:mm")}</div>
+        <div class=''>${args.data.end.toString("hh:mm")}</div>`;
     };
 
     dp.init();
@@ -364,6 +376,27 @@ export default {
   },
 
   methods: {
+    getWeekStart() {
+      switch (this.weekStart) {
+        case "Sun":
+          return 0;
+        case "Mon":
+          return 1;
+        case "Tue":
+          return 2;
+        case "Wed":
+          return 3;
+        case "Thu":
+          return 4;
+        case "Fri":
+          return 5;
+        case "Sat":
+          return 6;
+        default:
+          throw new Error("Invalid week start for dayPilot.");
+      }
+    },
+
     getDays() {
       switch (this.range) {
         case "Day":
@@ -371,9 +404,9 @@ export default {
         case "Week":
           return 7;
         case "Month":
-          return this.startDate.daysInMonth();
+          return this.dayPilot.startDate.daysInMonth();
         case "Year":
-          return this.startDate.daysInYear();
+          return this.dayPilot.startDate.daysInYear();
         default:
           throw new Error("Invalid range for dayPilot.");
       }
@@ -445,7 +478,7 @@ export default {
       }
     },
 
-    eventCreatedHandler(arg) {      
+    eventCreatedHandler(arg) {
       this.$emit("range-selected", {
         resourceId: arg.resource,
         start: arg.start,
@@ -454,7 +487,7 @@ export default {
       this.dayPilot.clearSelection();
     },
 
-    eventClickedHandler(arg) {      
+    eventClickedHandler(arg) {
       if (arg.e.isEvent) {
         this.$emit("event-clicked", {
           eventId: arg.e.id(),
@@ -466,8 +499,8 @@ export default {
       }
     },
 
-    eventMovedHandler(arg) {   
-      console.log(arg);   
+    eventMovedHandler(arg) {
+      console.log(arg);
       if (arg.external) {
         this.$emit("event-dragged", {
           eventId: arg.e.id(),
@@ -496,7 +529,7 @@ export default {
 
     eventResizeHandler(arg) {
       console.log(arg);
-      if (arg.e.start() !== arg.newStart) {         
+      if (arg.e.start() !== arg.newStart) {
         arg.newStart =
           arg.newStart.toString().substr(0, 10) +
           "T" +
@@ -506,16 +539,17 @@ export default {
             .substr(11);
       }
 
-      if (arg.e.end() !== arg.newEnd) {        
+      if (arg.e.end() !== arg.newEnd) {
         arg.newEnd = arg.newEnd.addDays(-1);
         arg.newEnd = new DayPilot.Date(
           arg.newEnd.toString().substr(0, 10) +
-          "T" +
-          arg.e
-            .end()
-            .toString()
-            .substr(11));
-      } 
+            "T" +
+            arg.e
+              .end()
+              .toString()
+              .substr(11)
+        );
+      }
     },
 
     eventResizedHandler(arg) {
