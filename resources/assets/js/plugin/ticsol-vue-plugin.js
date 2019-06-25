@@ -4,6 +4,7 @@ import AppIconbarTop from '../components/app/AppIconbarTop.vue';
 import AppIconbarBot from '../components/app/AppIconbarBot.vue';
 
 import TsIcon from '../components/base/TsIcon.vue';
+import TsBadge from '../components/base/TsBadge.vue';
 import TsSelect from '../components/base/TsSelect.vue';
 import TsSwitch from '../components/base/TsSwitch.vue';
 import TsComment from '../components/base/TsComment.vue';
@@ -31,6 +32,7 @@ const VueBase = {
         
         // App components
         Vue.component('ts-icon', TsIcon);
+        Vue.component('ts-badge', TsBadge);
         Vue.component('ts-select', TsSelect);
         Vue.component('ts-switch', TsSwitch);
         Vue.component('ts-comment', TsComment);
