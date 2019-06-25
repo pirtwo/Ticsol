@@ -6,7 +6,7 @@
   >
     <template slot="toolbar">
       <ts-datescroller
-        v-model="start"
+        v-model="currDate"
         :range="range"
         @input="fetchData"
       />
@@ -19,14 +19,14 @@
         <button
           type="button"
           @click="range = 'Week'"
-          :class="[{'active' : range === 'Week'} ,'btn btn-secondary']"
+          :class="[{'active' : range === 'Week'} ,'btn']"
         >
           Week
         </button>
         <button
           type="button"
           @click="range = 'Month'"
-          :class="[{'active' : range === 'Month'} ,'btn btn-secondary']"
+          :class="[{'active' : range === 'Month'} ,'btn']"
         >
           Month
         </button>
@@ -40,14 +40,14 @@
         <button
           type="button"
           @click="view = 'user'"
-          :class="[{'active' : view === 'user'} ,'btn btn-secondary']"
+          :class="[{'active' : view === 'user'} ,'btn']"
         >
           Employee
         </button>
         <button
           type="button"
           @click="view = 'job'"
-          :class="[{'active' : view === 'job'} ,'btn btn-secondary']"
+          :class="[{'active' : view === 'job'} ,'btn']"
         >
           Jobs
         </button>
@@ -55,7 +55,7 @@
 
       <button
         type="button"
-        class="btn btn-light btn-sm mr-auto"
+        class="btn btn-sm mr-auto"
         @click="showFilter = true"
       >
         <i class="material-icons">filter_list</i>
@@ -121,7 +121,8 @@
         time-header-format="Weeks/Days"
         crosshair="Header"
         cell-width="Auto"
-        :start-date="start"
+        :week-start="'Mon'"
+        :start-date="startDate"
         :view="view"
         :range="range"
         :time-header-auto-fit="false"
@@ -154,6 +155,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import uuid from "../../../../utils/uuid";
 import BaseDayPilot from "../schedules/BaseDayPilot.vue";
@@ -180,7 +182,7 @@ export default {
       view: "user",
       range: "Month",
       sidebarQuery: "",
-      start: DayPilot.Date.today().firstDayOfMonth(),
+      currDate: null,
       assignModal: false,
       updateModal: false,
       leaveJob: {
@@ -194,7 +196,7 @@ export default {
         code: "UNAVAILABLE-SYS"
       }
     };
-  },
+  },  
 
   computed: {
     ...mapGetters({
@@ -203,13 +205,13 @@ export default {
     }),
 
     startDate: function() {
-      return this.start.toString("yyyy-MM-dd");
+      if (!this.currDate) return "";
+      return this.currDate.start.format("YYYY-MM-DD");
     },
 
     endDate: function() {
-      return this.range === "Month"
-        ? this.start.addMonths(1).toString("yyyy-MM-dd")
-        : this.start.addDays(7).toString("yyyy-MM-dd");
+      if (!this.currDate) return "";
+      return this.currDate.end.format("YYYY-MM-DD");
     },
 
     sidebarResources: function() {
@@ -263,12 +265,10 @@ export default {
       else {
         return this.getList("schedule").map(item => {
           let eventResource = "";
-          
-          if(item.event_type == 'scheduled')
-            eventResource = item.job_id;
-          else if(item.event_type == 'leave')
-            eventResource = this.leaveJob.id;
-          else if(item.event_type == 'unavailable')
+
+          if (item.event_type == "scheduled") eventResource = item.job_id;
+          else if (item.event_type == "leave") eventResource = this.leaveJob.id;
+          else if (item.event_type == "unavailable")
             eventResource = this.unaviJob.id;
 
           return {
@@ -347,6 +347,13 @@ export default {
     }
   },
 
+  beforeRouteLeave(to, from, next) {
+    this.clear("job");
+    this.clear("user");
+    this.clear("schedule");
+    next();
+  },
+
   mounted() {
     let query = [];
     query.push({
@@ -375,6 +382,7 @@ export default {
 
   methods: {
     ...mapActions({
+      clear: "resource/clearResource",
       fetchList: "resource/list",
       create: "resource/create",
       update: "resource/update"
@@ -513,10 +521,6 @@ export default {
 </script>
 
 <style scoped>
-.btn-group .btn {
-  font-size: 0.8rem !important;
-}
-
 .btn-group .btn:first-child {
   margin-left: 5px;
 }
