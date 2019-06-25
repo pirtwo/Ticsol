@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Models;
 
+use Carbon\Carbon;
 use App\Ticsol\Components\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ class Timesheet extends Model
 {
     protected $table = 'ts_timesheets';
     protected $primaryKey = 'id';
+    protected $appends = ['commentsCount'];
     protected $dates = ['deleted_at'];
 
     /**
@@ -19,8 +21,10 @@ class Timesheet extends Model
      */
     protected $fillable = [
         'request_id',
+        'year',
         'week_start',
         'week_end',
+        'week_number',
         'total_hours',
     ];
 
@@ -49,6 +53,11 @@ class Timesheet extends Model
                 });
             });
     }
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }    
 
     #region Eloquent_Relationships
 
@@ -82,6 +91,14 @@ class Timesheet extends Model
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    /**
+     * Assosiated comments items to current timesheet.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     #endregion

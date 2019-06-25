@@ -10,18 +10,18 @@ class ValidWeekEnd implements Rule
 
     protected $locale;
     protected $year;
-    protected $weekNumber;
+    protected $week_start;
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($locale, $year, $weekNumber)
+    public function __construct($locale, $year, $week_start)
     {
         $this->year = $year;
         $this->locale = $locale;
-        $this->weekNumber = $weekNumber;
+        $this->week_start = $week_start;
     }
 
     /**
@@ -33,13 +33,18 @@ class ValidWeekEnd implements Rule
      */
     public function passes($attribute, $value)
     {
-        $weekEnd = Carbon::create($this->year)
-            ->locale($this->locale)
-            ->week($this->weekNumber)
-            ->endOfWeek()
-            ->format('Y-m-d');
-            
-        return $value === $weekEnd;
+        try {
+            $weekStart = Carbon::create($this->week_start)
+                ->locale($this->locale);
+
+            $weekEnd = Carbon::create($value)
+                ->locale($this->locale);
+
+            return $weekEnd->shortDayName == 'Sun' && $weekStart->addDays(6)->equalTo($weekEnd);
+
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -49,7 +54,6 @@ class ValidWeekEnd implements Rule
      */
     public function message()
     {
-        return 'The :attribute is not a valid week end for locale:' .
-        $this->locale . ' and week number:' . $this->weekNumber;
+        return 'Invalid :attribute, Week end should be Sunday.';
     }
 }

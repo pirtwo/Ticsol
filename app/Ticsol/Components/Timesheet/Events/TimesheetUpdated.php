@@ -12,7 +12,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TimesheetCreated implements ShouldBroadcast
+class TimesheetUpdated implements ShouldBroadcast
 {
     use SerializesModels;
 
@@ -62,12 +62,12 @@ class TimesheetCreated implements ShouldBroadcast
     {
         if ($this->timesheet->request->assigned_id != null) {
             return [
-                new PrivateChannel('App.Users.' . $this->timesheet->user_id),
+                new PrivateChannel('App.Users.' . $this->timesheet->creator_id),
                 new PrivateChannel('App.Users.' . $this->timesheet->request->assigned_id),
             ];
         } else {
             return [
-                new PrivateChannel('App.Users.' . $this->timesheet->user_id)
+                new PrivateChannel('App.Users.' . $this->timesheet->creator_id)
             ];
         }     
     }

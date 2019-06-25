@@ -7,13 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateTimesheet extends FormRequest
 {
-
-    protected $locale;
-
-    public function __construct()
-    {
-        $this->locale = 'en_AU';
-    }
+    protected $user;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +16,7 @@ class CreateTimesheet extends FormRequest
      */
     public function authorize()
     {
+        $this->user = $this->user();
         return true;
     }
 
@@ -34,21 +29,37 @@ class CreateTimesheet extends FormRequest
     {
         return [
             'assigned_id' => 'nullable|numeric|exists:ts_users,id',
-            'locale' => 'required|in:en_US,en_AU',
-            'year' => 'required|date_format:Y',
+            'locale' => 'required|in:en-US,en-AU',
+            'year' => 'required|date_format:Y|regex:/^\d{4}$/',
             'week_number' => [
                 'required',
                 'numeric',
-                new Rules\ValidWeekNumber($this->input('locale'), $this->input('year'))],
+                new Rules\WeekRange(
+                    $this->input('locale'),
+                    $this->input('year')
+                ),
+                new Rules\WeekUnique(
+                    $this->user,
+                    $this->input('year')
+                ),
+            ],
             'week_start' => [
                 'required',
                 'date_format:Y-m-d',
-                new Rules\ValidWeekStart($this->input('locale'), $this->input('year'), $this->input('week_number'))],
+                new Rules\ValidWeekStart(
+                    $this->input('locale'),
+                    $this->input('year'),
+                    $this->input('week_number')
+                ),
+            ],
             'week_end' => [
                 'required',
                 'date_format:Y-m-d',
-                'after:week_start',
-                new Rules\ValidWeekStart($this->input('locale'), $this->input('year'), $this->input('week_number')),
+                new Rules\ValidWeekEnd(
+                    $this->input('locale'),
+                    $this->input('year'),
+                    $this->input('week_start')
+                ),
             ],
             'total_hours' => 'required|string',
             'status' => 'required|string|in:submitted,draft',

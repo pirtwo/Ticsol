@@ -15,7 +15,7 @@ class User extends Authenticatable
     protected $table = 'ts_users';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
-    protected $appends = ['permissions'];
+    protected $appends = ['permissions', 'fullname'];
     protected $casts = [
         'meta' => 'array',
     ];
@@ -40,7 +40,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'isowner',
-        'permissions'
     ];
 
     public function getAuthPassword()
@@ -60,13 +59,18 @@ class User extends Authenticatable
 
     public function getPermissionsAttribute()
     {
-        $roles = $this->roles;
+        $roles = $this->roles()->get();
         $permissions = collect([]);
         foreach ($roles as $role) {
             $permissions = $permissions->concat($role->permissions);
         }
 
         return $permissions->map(function($item,$key){ return $item->name; });
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     /**
@@ -183,6 +187,14 @@ class User extends Authenticatable
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    /**
+     * User scheduled items.
+     */
+    public function timesheets()
+    {
+        return $this->hasMany(Timesheet::class, 'creator_id');
     }
 
     /**

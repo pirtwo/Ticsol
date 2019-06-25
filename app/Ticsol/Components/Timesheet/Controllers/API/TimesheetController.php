@@ -108,6 +108,8 @@ class TimesheetController extends Controller
             $timesheet->creator_id = $creator_id;
             $timesheet->request_id = $req->id;
             $timesheet->fill($request->only([
+                'year',
+                'week_number',
                 'week_start',
                 'week_end',
                 'total_hours',
@@ -192,8 +194,9 @@ class TimesheetController extends Controller
 
             $timesheet->update($request->only(['total_hours']));
 
-            if ($request->input('status') == 'draft') {$timesheet->request()
-                    ->update($request->only(['status', 'assigned_id']));
+            if ($request->input('status') == 'draft') {
+                $timesheet->request()
+                    ->update(['status' => 'draft', 'assigned_id' => null]);
             } else {
                 $timesheet->request()
                     ->update($request->only(['status', 'assigned_id']));
@@ -221,7 +224,7 @@ class TimesheetController extends Controller
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
 
-        event(new Events\TimesheetUpdated($timesheet));
+        event(new TimesheetEvents\TimesheetUpdated($timesheet));
         event(new RequestEvents\RequestUpdated($timesheet->request));
 
         return $timesheet;

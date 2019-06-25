@@ -10,7 +10,13 @@ class Job extends Model
 {    
     protected $table = 'ts_jobs';
     protected $primaryKey = 'id';
-    protected $dates = ['deleted_at'];
+    protected $appends = [
+        'commentsCount', 
+        'requestsCount', 
+        'reportsCount', 
+        'contactsCount',
+        'childsCount'
+    ];
     protected $casts = [
         'meta' => 'array',
     ];
@@ -42,6 +48,32 @@ class Job extends Model
     public function scopeOfClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
+    }
+
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }
+
+    public function getReportsCountAttribute()
+    {
+        return $this->activities()->count();
+    }
+
+    public function getRequestsCountAttribute()
+    {
+        return $this->requests()->count();
+    }
+
+    public function getChildsCountAttribute()
+    {
+        return $this->childs()->count();
+    }
+
+    public function getContactsCountAttribute()
+    {
+        return $this->contacts()->count();
     }
 
 
@@ -118,6 +150,14 @@ class Job extends Model
     public function Activities()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    /**
+     * Activities of current job.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     #regionend

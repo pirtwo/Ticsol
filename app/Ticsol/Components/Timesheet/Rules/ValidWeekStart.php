@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Timesheet\Rules;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidWeekStart implements Rule
@@ -32,13 +33,18 @@ class ValidWeekStart implements Rule
      */
     public function passes($attribute, $value)
     {
-        $weekStart = Carbon::create($this->year)
-            ->locale($this->locale)
-            ->week($this->weekNumber)
-            ->endOfWeek()
-            ->format('Y-m-d');
-            
-        return $value === $weekStart;
+        try {
+
+            $weekStart = Carbon::create($value)
+                ->locale($this->locale);
+
+            return $weekStart->year == $this->year &&
+                $weekStart->week() == $this->weekNumber &&
+                $weekStart->shortDayName == 'Mon';
+
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -48,7 +54,6 @@ class ValidWeekStart implements Rule
      */
     public function message()
     {
-        return 'The :attribute is not a valid week start for locale:' .
-        $this->locale . ' and week number:' . $this->weekNumber;
+        return 'Invalid :attribute, Week start should be Monday.';
     }
 }

@@ -11,6 +11,7 @@ use App\Ticsol\Components\Models\Schedule;
 use App\Ticsol\Components\Models\Request as RequestModel;
 use App\Ticsol\Components\Request\Events as RequestEvents;
 use App\Ticsol\Components\Schedule\Events as ScheduleEvents;
+use App\Ticsol\Components\Timesheet\Events as TimesheetEvents;
 use App\Ticsol\Components\Request\Requests;
 use App\Ticsol\Components\Request\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
@@ -159,14 +160,19 @@ class RequestController extends Controller
             if ($request->input('status') == 'approved' || $request->input('status') == 'rejected') {
 
                 //----------------------------
-                //      AUTHORIZE ACTION
+                //      AUTHORIZE Approve
                 //----------------------------
                 $this->authorize('approve', $req);
             }
         }
 
         $req->update($request->all());
-        event(new Events\RequestUpdated($req));
+
+        event(new RequestEvents\RequestUpdated($req));
+
+        if ($req->type == 'timesheet')
+            event(new TimesheetEvents\TimesheetUpdated($req->timesheet));
+
         return $req;
     }
 

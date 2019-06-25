@@ -77,9 +77,6 @@ class UserController extends Controller
         $user = $this->repository
             ->find($request->user()->id, $with);
 
-        $user->makeVisible(['permissions']);
-        $user->makeHidden(['roles']);
-
         return $user;
     }
 
@@ -103,9 +100,6 @@ class UserController extends Controller
         //      AUTHORIZE ACTION
         //----------------------------
         $this->authorize('view', $user);
-
-        $user->makeVisible(['permissions']);
-        $user->makeHidden(['roles']);
 
         return $user;
     }

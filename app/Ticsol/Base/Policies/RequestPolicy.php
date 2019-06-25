@@ -108,9 +108,13 @@ class RequestPolicy
         $canApproveTimesheet = false;
         $canApproveReimbursement = false;
 
-        if ($user->client_id != $request->client_id || $user->id != $request->assigned_id) {
+        if ($user->client_id != $request->client_id) {
             return false;
-        }        
+        }       
+        
+        if ($user->id != $request->assigned_id) {
+            return false;
+        }
 
         $roles = $user->load('roles.permissions')->roles;
         foreach ($roles as $role) {
