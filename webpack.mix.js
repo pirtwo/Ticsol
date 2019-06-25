@@ -1,4 +1,5 @@
 let mix = require('laravel-mix');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 /*
  |--------------------------------------------------------------------------
@@ -13,3 +14,16 @@ let mix = require('laravel-mix');
 
 mix.js(['resources/assets/js/app.js'], 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css', { implementation: require('node-sass') });
+
+
+mix.webpackConfig(webpack => {
+   return {
+      plugins: [
+        // Strip all locales except “en”, “es-us” and “ru”
+        // (“en” is built into Moment and can’t be removed)
+        new MomentLocalesPlugin({
+            localesToKeep: ['es-us', 'en-au'],
+        }),
+      ]
+   };
+});
