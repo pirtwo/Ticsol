@@ -14,7 +14,7 @@
 
         <li>
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onSave"
           >
             Save
@@ -22,7 +22,7 @@
         </li>
         <li>
           <button
-            class="btn btn-light"
+            class="btn"
             @click="onCancel"
           >
             Cancel
@@ -150,14 +150,16 @@
 
       <!-- Unavailable hours calendar -->
       <ts-datescroller
-        v-model="weekStart"
+        v-model="week"
         range="Week"
-        @input="loadCalendar"
+        :week-start="locale === 'en-AU' ? 'Mon' : 'Sun'"
+        @change="loadCalendar"
       />
       <calendar
         :start-date="weekStart"
-        :events="scheduleEvents"
-        :disabled="userId != id"
+        :events="unavailables"
+        :view-type="'Weeks'"
+        :disabled="id != userId"
         :message="calendarMsg"
         @range-selected="onRangeSelect"
         @event-clicked="onEventClicked"
@@ -337,6 +339,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { mapGetters, mapActions } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
@@ -355,12 +358,16 @@ export default {
 
   data() {
     return {
+      locale: window.navigator.language,
       loadingAvatar: true,
       createEventModal: false,
       confirmDeleteModal: false,
       eventInfoModal: false,
       calendarMsg: { msg: "", delay: 0 },
-      weekStart: DayPilot.Date.today().firstDayOfWeek(),
+      week: {
+        start: moment(),
+        end: moment()
+      },
       form: {
         firstname: "",
         lastname: "",
@@ -376,8 +383,8 @@ export default {
         }
       },
       selectedEvent: {
-        startDate: DayPilot.Date.today(),
-        endDate: DayPilot.Date.today(),
+        startDate: window.DayPilot.Date.today(),
+        endDate: window.DayPilot.Date.today(),
         start: "",
         end: ""
       }
@@ -415,7 +422,15 @@ export default {
       getList: "resource/getList"
     }),
 
-    scheduleEvents: function() {
+    weekStart:function(){
+      return this.week.start.format('YYYY-MM-DD');
+    },
+
+    weekEnd:function(){
+      return this.week.end.format('YYYY-MM-DD');
+    },
+
+    unavailables: function() {
       return this.getList("schedule").map(item => {
         return {
           id: item.id,
@@ -451,9 +466,16 @@ export default {
         });
     });
   },
+  
+  beforeRouteLeave (to, from, next) {
+    this.clear('user');
+    this.clear('schedule');
+    next();
+  },
 
   methods: {
     ...mapActions({
+      clear: "resource/clearResource",
       list: "resource/list",
       show: "resource/show",
       create: "resource/create",
@@ -484,9 +506,7 @@ export default {
             {
               opt: "inRange",
               col: "",
-              val: `${this.weekStart.toString()},${this.weekStart
-                .addDays(7)
-                .toString()}`
+              val: `${this.weekStart},${this.weekEnd}`
             }
           ]
         )
@@ -523,8 +543,8 @@ export default {
         unavailables: []
       };
 
-      let start = new DayPilot.Date(this.recurring.event.start);
-      let end = new DayPilot.Date(this.recurring.event.end);
+      let start = new window.DayPilot.Date(this.recurring.event.start);
+      let end = new window.DayPilot.Date(this.recurring.event.end);
 
       // Create recuring events and push them to list
       if (this.recurring.repeat === "no repeat") {

@@ -1,5 +1,8 @@
 <template>
-  <div id="dpCal" />
+  <div class="wrap-calendar">
+    <div v-if="disabled" class="cover"/>
+    <div id="dpCal"/>
+  </div>
 </template>
 
 <script>
@@ -8,16 +11,29 @@ export default {
 
   props: {
     startDate: {
-      type: Object,
-      default: () => {
-        return {};
-      }
+      type: [Object, String],
+      default: ""
     },
     events: {
       type: Array,
       default: () => {
         return [];
       }
+    },
+    viewType: {
+      type: String,
+      default: "Days",
+      validator: val => {
+        return ["Days", "Weeks", "Month"].indexOf(val) > -1;
+      }
+    },
+    days: {
+      type: Number,
+      default: 7
+    },
+    weeks: {
+      type: Number,
+      default: 1
     },
     disabled: {
       type: Boolean,
@@ -48,33 +64,21 @@ export default {
       this.dpCal.update();
     },
 
-    disabled: function(val) {
-      console.log(val);
-      if (val) {
-        this.dpCal.eventClickHandling = "Disabled";
-        this.dpCal.eventMoveHandling = "Disabled";
-      } else {
-        this.dpCal.eventClickHandling = "Enabled";
-        this.dpCal.eventMoveHandling = "Enabled";
-      }
-      this.dpCal.update();
-    },
-
     message: function(val) {
       this.dpCal.message(val.msg, val.delay);
     }
   },
 
   mounted() {
-    this.dpCal = new DayPilot.Month("dpCal");
-    this.dpCal.locale = "en-us";
-    this.dpCal.viewType = "week";
+    this.dpCal = new window.DayPilot.Month("dpCal");
+    this.dpCal.viewType = this.viewType;
+    if(this.viewType === 'Days') this.dpCal.days = this.days;
+    if(this.viewType === 'Weeks') this.dpCal.weeks = this.weeks;
+    this.dpCal.weekStart = 1;
     this.dpCal.startDate = this.startDate;
     this.dpCal.weeks = 1;
     this.dpCal.timeRangeSelectedHandling = true;
     this.dpCal.events.list = [];
-
-    this.dpCal.timeRangeSelectedHandling = "Disabled";
 
     this.dpCal.onEventMoved = this.eventMoveHandler;
     this.dpCal.onEventClicked = this.eventClickHandler;
@@ -82,45 +86,42 @@ export default {
     this.dpCal.onEventDeleted = this.eventDeleteHandler;
     this.dpCal.onTimeRangeSelected = this.timeRangeSelectHandler;
 
-    if (this.disabled) {
-      this.dpCal.eventClickHandling = "Disabled";
-      this.dpCal.eventMoveHandling = "Disabled";
-      this.dpCal.timeRangeSelectedHandling = "Disabled";
-    } else {
-      this.dpCal.eventClickHandling = "Enabled";
-      this.dpCal.eventMoveHandling = "Enabled";
-      this.dpCal.timeRangeSelectedHandling = "Enabled";
-    }
-
     this.dpCal.init();
   },
 
   methods: {
     timeRangeSelectHandler(e) {
+      if (this.disabled) return;
+
       this.$emit("range-selected", {
         start: e.start.value,
         end: e.end.value
       });
+
       this.dpCal.clearSelection();
     },
 
     eventClickHandler(e) {
       console.log(e);
+      if (this.disabled) return;
       this.$emit("event-clicked", e);
     },
 
     eventMoveHandler(e) {
       console.log(e);
+      if (this.disabled) return;
       this.$emit("event-moved", e);
     },
 
     eventResizeHandler(e) {
       console.log(e);
+      if (this.disabled) return;
       this.$emit("event-resized", e);
     },
 
     eventDeleteHandler(e) {
       console.log(e);
+      if (this.disabled) return;
       this.$emit("event-deleted", e);
     }
   }
@@ -128,4 +129,15 @@ export default {
 </script>
 
 <style scoped>
+.wrap-calendar {
+  position: relative;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #bfbfbf54;
+  z-index: 10;
+}
 </style>

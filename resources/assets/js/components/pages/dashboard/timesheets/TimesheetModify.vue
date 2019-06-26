@@ -442,11 +442,6 @@ export default {
         this.approver = this.users.find(
           item => item.key == val.request.assigned_id
         );
-    },
-
-    week: function(val) {
-      console.log(val.start);
-      console.log(val.end);
     }
   },
 
@@ -716,7 +711,7 @@ export default {
         return item;
       });
 
-      console.log(JSON.stringify(newList));
+      //console.log(JSON.stringify(newList));
 
       this.selectedSchedules = null;
       this.gridData = newList;

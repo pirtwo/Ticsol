@@ -23,7 +23,7 @@
           <span class="caption">INBOX</span>
         </router-link>
         <router-link 
-          :to="{ name : 'inbox'}" 
+          :to="{ name : 'jobList'}" 
           class="btn" 
           role="button"
         >

@@ -19,22 +19,20 @@
         </li>
         <li>
           <button
-            class="btn btn-light"
+            class="btn"
             @click="sendModal = true"
           >
             New
           </button>
-        </li>       
+        </li>
         <li>
-          <button
-            class="btn btn-light"
-          >
+          <button class="btn">
             Cancel
           </button>
         </li>
         <li class="menu-title">
           Links
-        </li>       
+        </li>
       </ul>
     </template>
 
@@ -51,7 +49,7 @@
             :username="parent.creator.name"
             :avatar="parent.creator.meta.avatar"
             :body="parent.body"
-            :date="parent.created_at"
+            :date="getLocalDateTime(parent.created_at)"
             :has-reply="true"
           />
           <ul
@@ -68,7 +66,7 @@
                 :username="child.creator.name"
                 :avatar="child.creator.meta.avatar"
                 :body="child.body"
-                :date="child.created_at"
+                :date="getLocalDateTime(child.created_at)"
                 :has-reply="false"
               />
             </li>
@@ -127,6 +125,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import moment from 'moment';
 import PageMixin from "../../../../mixins/page-mixin.js";
 import Editor from "@tinymce/tinymce-vue";
 
@@ -201,7 +200,7 @@ export default {
         });
     },
 
-    loadComments() {      
+    loadComments() {
       return this.fetchList({
         resource: "comment",
         query: {
@@ -214,36 +213,35 @@ export default {
     },
 
     getCreatorName(commentId) {
-      if(!commentId) return "";
+      if (!commentId) return "";
       return this.comments.find(item => item.id === commentId).creator.name;
     },
 
-    onReply(parentId) {      
+    getLocalDateTime(date){
+      let utcDate = moment.utc(date).toDate();
+      return moment(utcDate).local().fromNow();
+    },
+
+    onReply(parentId) {
       this.sendModal = true;
       this.parentId = parentId;
     },
 
-    cancelModal() {      
+    cancelModal() {
       this.comment = "";
-      this.parentId = null;      
+      this.parentId = null;
       this.sendModal = false;
     },
 
-    sendComment() {      
-      let comment =
-        this.entity == "job"
-          ? {
-              entity: "job",
-              parent_id: this.parentId,
-              body: this.comment,
-              job_id: this.id
-            }
-          : {
-              entity: "request",
-              parent_id: this.parentId,
-              body: this.comment,
-              request_id: this.id
-            };
+    sendComment() {
+
+      let comment = {
+        entity: this.entity,
+        parent_id: this.parentId,
+        body: this.comment,
+        [`${this.entity}_id`]: this.id
+      };
+
       this.parentId = null;
       this.sendModal = false;
       this.create({ resource: "comment", data: comment })

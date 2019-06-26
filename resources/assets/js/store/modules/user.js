@@ -18,20 +18,22 @@ export const userModule = {
 
     getters: {
         getId(state) {
+            if(!state.info) return "";
             return state.info.id;
         },
 
         getInfo(state) {
+            if(!state.info) return "";
             return state.info;
         },
 
         getUsername(state) {
-            if (state.info === null) return '';
+            if (!state.info) return "";
             return state.info.name;
         },
 
         getAvatar(state) {
-            if (state.info === null) return '';
+            if (!state.info) return "";
             if (state.info.meta.avatar) {
                 return state.info.meta.avatar;
             } else {
@@ -40,10 +42,12 @@ export const userModule = {
         },
 
         getPermissions(state) {
+            if (!state.info) return [];
             return state.info.permissions;
         },
 
         getSettings(state) {
+            if (!state.info) return [];
             return state.info.meta;
         },
 
@@ -101,9 +105,9 @@ export const userModule = {
             });
         },
 
-        logout({ commit }) {
-            commit(MUTATIONS.USER_AUTH_LOGOUT);
-            api.post(URLs.AUTH_LOGOUT, null);            
+        logout({ commit }) {            
+            api.post(URLs.AUTH_LOGOUT, null);  
+            commit(MUTATIONS.USER_AUTH_LOGOUT);          
         },
 
         refresh() {

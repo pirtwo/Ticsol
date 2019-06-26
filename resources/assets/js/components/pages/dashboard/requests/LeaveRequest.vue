@@ -306,6 +306,12 @@ export default {
     });
   },
 
+  beforeRouteLeave (to, from, next) {
+    this.clear('user');
+    this.clear('request');
+    next();
+  },
+
   mounted() {
     this.startLoading();
     let p1;
@@ -339,6 +345,7 @@ export default {
 
   methods: {
     ...mapActions({
+      clear: "resource/clearResource",
       list: "resource/list",
       show: "resource/show",
       create: "resource/create"
