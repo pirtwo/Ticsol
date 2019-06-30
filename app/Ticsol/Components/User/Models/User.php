@@ -2,7 +2,6 @@
 
 namespace App\Ticsol\Components\Models;
 
-use App\Ticsol\Base\Scopes\ClientScope;
 use App\Ticsol\Components\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

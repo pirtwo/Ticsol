@@ -1,7 +1,10 @@
 <template>
   <div class="wrap-calendar">
-    <div v-if="disabled" class="cover"/>
-    <div id="dpCal"/>
+    <div
+      v-if="disabled"
+      class="cover"
+    />
+    <div id="dpCal" />
   </div>
 </template>
 
