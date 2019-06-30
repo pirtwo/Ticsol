@@ -5,7 +5,9 @@
         :key="item.id"
         :autohide="item.autoHide"
         :delay="item.delay"
-        @hidden="onHidden(item)"
+        @hidden="hideNotification(item)"
+        @click="seenNotification(item)"
+        @mouseover="seenNotification(item)"
         class="text-left"
       >
         <template slot="header">
@@ -21,6 +23,7 @@
             class="ml-2 mb-1 close"
             data-dismiss="toast"
             aria-label="Close"
+            @click="onClose(item)"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -32,17 +35,17 @@
 </template>
 
 <script>
-import Time from '../../utils/time';
-import moment from 'moment';
+import Time from "../../utils/time";
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "AppNotifications",
 
-  data(){
-    return{
+  data() {
+    return {
       //
-    }
+    };
   },
 
   computed: {
@@ -51,47 +54,48 @@ export default {
     }),
 
     notifs: function() {
-      return this.getNotifs.filter(item => item.seen == false);
+      return this.getNotifs.filter(item => item.hide == false);
     }
   },
 
   methods: {
     ...mapActions({
-      seen: "core/seenNotification"
+      seen: "core/seenNotification",
+      hide: "core/hideNotification"
     }),
 
-    onHidden(item) {
-      this.seen(item.id);
+    onClose(notif){
+      this.seen(notif.id);
+    },
+
+    seenNotification(notif) {
+      this.seen(notif.id);
+    },
+
+    hideNotification(notif) {
+      this.hide(notif.id);
     },
 
     renderIcon(notif) {
-      if(notif.type == 'connected')
-        return 'sync';
-      if(notif.type == 'disconnected')
-        return 'sync_problem';
-      if(notif.type == 'error')
-        return 'error';
-      if(notif.type == 'warning')
-        return 'warning'; 
-      
-      return 'info';
+      if (notif.type == "connected") return "sync";
+      if (notif.type == "disconnected") return "sync_problem";
+      if (notif.type == "error") return "error";
+      if (notif.type == "warning") return "warning";
+
+      return "info";
     },
 
     renderIconColor(notif) {
-      if(notif.type == 'connected')
-        return 'green';
-      if(notif.type == 'disconnected')
-        return 'red';
-      if(notif.type == 'error')
-        return 'red';
-      if(notif.type == 'warning')
-        return 'orange'; 
-      
-      return 'blue';
+      if (notif.type == "connected") return "green";
+      if (notif.type == "disconnected") return "red";
+      if (notif.type == "error") return "red";
+      if (notif.type == "warning") return "orange";
+
+      return "blue";
     },
 
-    renderTime(notif){
-      return moment(notif.date).format('dd HH:mm');
+    renderTime(notif) {
+      return moment(notif.date).format("dd HH:mm");
     }
   }
 };

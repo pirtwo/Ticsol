@@ -1,8 +1,8 @@
 <template>
   <div class="toolbar-top">
-    <!-- <app-statusbar /> -->
-
     <div class="d-flex align-items-stretch ml-auto">
+      <notifications-log class="mr-1" />
+
       <router-link 
         :to="{ name : 'settingModify' }" 
         class="btn" 
@@ -56,21 +56,20 @@
         </div>
       </div>
     </div>
-    
-
-    <app-notifications />
+    <notifications />
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Statusbar from "../app/AppStatusbar";
 import Notifs from './AppNotifications';
+import NotifsLog from "../app/AppNotificationsLog";
 
 export default {
   name: "AppIconbarTop",
 
    components:{
-    'app-notifications': Notifs
+    'notifications': Notifs,
+    'notifications-log': NotifsLog,
   },
 
   computed: {

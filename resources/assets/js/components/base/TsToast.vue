@@ -5,6 +5,8 @@
     aria-live="assertive"
     aria-atomic="true"
     class="toast"
+    @click="(e)=>{ this.$emit('click', e) }"
+    @mouseover="(e)=>{ this.$emit('mouseover', e) }"
   >
     <div class="toast-header">
       <slot name="header" />

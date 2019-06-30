@@ -3,6 +3,7 @@
 export const APP_CONNECTION = "APP_CONNECTION";
 export const APP_NOTIF_PUSH = "APP_NOTIF_PUSH";
 export const APP_NOTIF_SEEN = "APP_NOTIF_SEEN";
+export const APP_NOTIF_HIDE = "APP_NOTIF_HIDE";
 export const APP_NOTIF_CLEAR = "APP_NOTIF_CLEAR";
 export const APP_THEME = "APP_THEME";
 export const APP_LOADING = "APP_LOADING";

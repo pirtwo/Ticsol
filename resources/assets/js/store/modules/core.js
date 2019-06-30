@@ -106,6 +106,10 @@ export const coreModule = {
             state.notifications.find(item => item.id == id).seen = true;
         },
 
+        [MUTATIONS.APP_NOTIF_HIDE](state, id) {
+            state.notifications.find(item => item.id == id).hide = true;
+        },
+
         [MUTATIONS.APP_NOTIF_CLEAR](state) {
             state.notifications = [];
         },
@@ -161,7 +165,11 @@ export const coreModule = {
             commit(MUTATIONS.APP_NOTIF_SEEN, id);
         },
 
-        clearNotification({ commit }) {
+        hideNotification({ commit }, id) {
+            commit(MUTATIONS.APP_NOTIF_HIDE, id);
+        },
+
+        clearNotificationLog({ commit }) {
             commit(MUTATIONS.APP_NOTIF_CLEAR);
         },
 

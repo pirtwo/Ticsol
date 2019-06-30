@@ -17,6 +17,7 @@ export default class Notification {
     this.autoHide = autoHide;
     this.delay = delay;
     this.seen = seen;
+    this.hide = false;
     this.date = date;
   }
 }
