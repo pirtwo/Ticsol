@@ -88,6 +88,14 @@ class Request extends Model
     }
 
     /**
+     * Assosiated job to current request.
+     */
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_id');
+    }
+
+    /**
      * Assosiated form to current request.
      */
     public function form()

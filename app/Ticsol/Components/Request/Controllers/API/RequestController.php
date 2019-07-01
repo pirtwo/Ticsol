@@ -84,10 +84,9 @@ class RequestController extends Controller
 
             $req->client_id = $client_id;
             $req->user_id = $user_id;
-            $req->fill($request->all());
-            $req->save();
+            $req->fill($request->all());                      
 
-            if ($request->input('type') == 'leave') {                
+            if ($request->input('type') == 'leave') {
                 $schedule->client_id = $client_id;
                 $schedule->creator_id = $user_id;
                 $schedule->fill([
@@ -99,7 +98,10 @@ class RequestController extends Controller
                     'end' => $request->input('meta.till'),
                 ]);
                 $schedule->save();
+                $req->schedule()->associate($schedule);                
             }
+            
+            $req->save();
 
             DB::commit();
 
@@ -110,8 +112,9 @@ class RequestController extends Controller
 
         event(new RequestEvents\RequestCreated($req));
 
-        if ($request->input('type') == 'leave')
+        if ($request->input('type') == 'leave') {
             event(new ScheduleEvents\ScheduleCreated($request->user(), 'leave'));
+        }
 
         return $req;
     }
@@ -166,12 +169,33 @@ class RequestController extends Controller
             }
         }
 
-        $req->update($request->all());
+        try {
+
+            DB::beginTransaction();
+
+            if ($req->type == 'leave') {
+                $schedule = $req->schedule;
+                $schedule->update([
+                    'status' => $request->input('meta.status', 'tentative'),
+                    'start' => $request->input('meta.from'),
+                    'end' => $request->input('meta.till'),
+                ]);
+            }
+
+            $req->update($request->all());
+
+            DB::commit();
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
+        }
 
         event(new RequestEvents\RequestUpdated($req));
 
-        if ($req->type == 'timesheet')
+        if ($req->type == 'timesheet') {
             event(new TimesheetEvents\TimesheetUpdated($req->timesheet));
+        }
 
         return $req;
     }

@@ -80,7 +80,7 @@
           <td>{{ item.assigned === null ? "None" : item.assigned.name }}</td>
           <td>{{ item.status }}</td>
           <td>{{ summary(item) }}</td>
-          <td>{{ item.created_at }}</td>
+          <td>{{ utcToLocal(item.created_at) }}</td>
         </template>
       </ts-table>
       <!-- Filter view -->
@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import pageMixin from "../../../../mixins/page-mixin";
 
@@ -122,7 +123,7 @@ export default {
         { value: "Approver", orderBy: "name" },
         { value: "Status", orderBy: "status" },
         { value: "Summary", orderBy: "" },
-        { value: "Submitted date", orderBy: "created_at" }
+        { value: "Submitted At", orderBy: "created_at" }
       ],
       order: "asc"
     };
@@ -180,7 +181,7 @@ export default {
           value: "Job Title",
           type: "string",
           placeholder: "Search for Request\\Job\\Title..."
-        },        
+        }
       ];
     }
   },
@@ -201,7 +202,7 @@ export default {
         query: this.$queryBuilder(
           this.pager.page,
           this.pager.perPage,
-          ["job",'assigned',"timesheet"],
+          ["job", "assigned", "timesheet"],
           this.query
         )
       })
@@ -216,28 +217,33 @@ export default {
     },
 
     summary(item) {
+      let dateFormat = moment.localeData().longDateFormat('L');
       if (item.type === "leave") {
-        let days = (
-          (new Date(item.meta.till) - new Date(item.meta.from)) /
-          86400000
-        ).toFixed(0);
-
-        return `From: ${item.meta.from} - Till: ${
-          item.meta.till
-        }  Days: ${days}`;
+        // Show summary for leave request
+        let from = moment(item.meta.from);
+        let till = moment(item.meta.till);
+        let days = till.diff(from, "days");
+        let hours = till.diff(from, "hours");
+        return `From: ${from.format(dateFormat)} - Till: ${till.format(dateFormat)}, ${
+          days > 0 ? `Days: ${days}` : `Hours: ${hours}`
+        }`;
+      } else if (item.type === "timesheet") {
+        // Show summary for timesheet request
+        let from = moment(item.timesheet.start);
+        let till = moment(item.timesheet.end);
+        let hours = item.timesheet.total_hours.slice(0, 2);
+        return `${from.format(dateFormat)} - ${till.format(dateFormat)}, ${hours} Hours`;
       } else if (item.type === "reimbursement") {
+        // Show summary for reimbursement request
         return `${item.meta.date} - $${item.meta.amount}`;
-      }else if(item.type === "timesheet"){
-        let from = new DayPilot.Date(item.timesheet.start).toString('dd/MM/yyyy');
-        let till = new DayPilot.Date(item.timesheet.end).toString('dd/MM/yyyy');
-        let hours = item.timesheet.total_hours.slice(0,2);
-        return `${from} - ${till}, ${hours} Hours`;
       }
     },
 
-    getDate(date) {
-      let d = new DayPilot.Date(Date.UTC(date));
-      return d.toDateLocal();
+    utcToLocal(date) {
+      let utcDate = moment.utc(date).toDate();
+      return moment(utcDate)
+        .local()
+        .format("YYYY-MM-DD HH:mm");
     }
   }
 };

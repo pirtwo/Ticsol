@@ -11,22 +11,37 @@
         <li class="menu-title">
           Actions
         </li>
-        <li>
-          <button class="btn">
+        <li v-if="!currentReq">
+          <button 
+            class="btn"
+            @click="clearForm"
+          >
             New
           </button>
         </li>
-        <li>
-          <button class="btn">
-            Suspend
-          </button>
-        </li>
-        <li>
+        
+        <li v-if="!currentReq">
           <button
             class="btn"
             @click="onSubmit"
           >
             Submit
+          </button>
+        </li>
+        <li v-if="currentReq">
+          <button
+            class="btn"
+            @click="onSave"
+          >
+            Save
+          </button>
+        </li>
+        <li v-if="currentReq">
+          <button
+            class="btn"
+            @click="onSave($event, 'suspended')"
+          >
+            Suspend
           </button>
         </li>
         <li>
@@ -44,16 +59,6 @@
         </li>
         <li>
           <router-link :to="{ name: 'jobList' }">
-            Anuual Leave
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">
-            Sick Leave
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">
             Request History
           </router-link>
         </li>
@@ -67,9 +72,9 @@
             <label class="col-sm-2 col-form-label">Leave Type</label>
             <div class="col-sm-10">
               <select
-                v-model="form.meta.leave_type" 
-                name="meta-leave_type" 
-                :class="[{'is-invalid' : $v.form.meta.leave_type.$error } ,'custom-select']"
+                v-model="form.leaveType"
+                name="meta-leave_type"
+                :class="[{'is-invalid' : $v.form.leaveType.$error } ,'custom-select']"
               >
                 <option selected>
                   please select leave type
@@ -98,7 +103,7 @@
               </select>
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.leave_type.required"
+                v-if="!$v.form.leaveType.required"
               >
                 Please enter a type.
               </div>
@@ -112,11 +117,12 @@
             <div class="col-sm-10">
               <div class="custom-control custom-radio custom-control-inline">
                 <input
+                  v-model="form.display"
+                  value="days"
                   type="radio"
                   id="display1"
                   name="display"
                   class="custom-control-input"
-                  checked
                 >
                 <label
                   class="custom-control-label"
@@ -125,6 +131,8 @@
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input
+                  v-model="form.display"
+                  value="hours"
                   type="radio"
                   id="display2"
                   name="display"
@@ -142,19 +150,27 @@
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">From</label>
-            <div class="col-sm-10">
+            <div class="col">
               <input
-                v-model="form.meta.from"
+                v-model="form.fromDate"
                 type="date"
                 name="meta-from"
-                :class="[{'is-invalid' : $v.form.meta.from.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.fromDate.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.from.required"
+                v-if="!$v.form.fromDate.required"
               >
                 Please enter a from date.
               </div>
+            </div>
+            <div class="col">
+              <input
+                v-model="form.fromTime"
+                type="time"
+                name="meta-fromTime"
+                :class="['form-control']"
+              >
             </div>
           </div>
         </div>
@@ -162,30 +178,44 @@
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Till</label>
-            <div class="col-sm-10">
+            <div class="col">
               <input
-                v-model="form.meta.till"
+                v-model="form.tillDate"
                 type="date"
                 name="meta-till"
-                :class="[{'is-invalid' : $v.form.meta.till.$error } ,'form-control']"
+                :disabled="form.display === 'hours'"
+                :class="[{'is-invalid' : $v.form.tillDate.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.till.required"
+                v-if="!$v.form.tillDate.required"
               >
                 Please enter a till date.
               </div>
+            </div>
+            <div class="col">
+              <input
+                v-model="form.tillTime"
+                type="time"
+                name="meta-tillTime"
+                :class="['form-control']"
+              >
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Days Requested</label>
+            <label
+              class="col-sm-2 col-form-label"
+            >{{ form.display === 'days' ? 'Days Requested' : 'Hours Requested' }}</label>
             <div class="col-sm-10">
               <input
-                type="text"
+                :value="requested"
+                type="number"
+                min="0"
                 class="form-control"
+                disabled
               >
             </div>
           </div>
@@ -251,6 +281,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapActions, mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
@@ -264,27 +295,54 @@ export default {
 
   data() {
     return {
-      currentReq: {},
+      currentReq: null,
       form: {
-        approver: {},
-        attachments: "",
-        meta: {
-          leave_type: "",
-          from: "",
-          till: ""
-        }
+        display: "days",
+        daysRequested: "",
+        approver: null,
+        leaveType: "",
+        fromDate: moment().format("YYYY-MM-DD"),
+        fromTime: "00:00",
+        tillDate: moment().format("YYYY-MM-DD"),
+        tillTime: "00:00",
+        attachments: ""
       }
     };
   },
 
   validations: {
     form: {
-      approver:{ required},
-      meta: {
-        leave_type: {required},
-        from: {required},
-        till: {required}
+      approver: { required },
+      leaveType: { required },
+      fromDate: { required },
+      fromTime: { required },
+      tillDate: { required },
+      tillTime: { required }
+    }
+  },
+
+  watch: {
+    ["form.display"]: function(val) {
+      console.log(val);
+      if (val === "hours") {
+        let from = this.form.fromDate ? moment(this.form.fromDate) : moment();
+        this.form.fromDate = this.form.tillDate = from.format("YYYY-MM-DD");
       }
+    },
+
+    ["form.fromDate"]: function(val) {
+      if (this.form.display === "hours") {
+        let from = moment(val);
+        this.form.tillDate = from.format("YYYY-MM-DD");
+      }
+    },
+
+    ["form.tillDate"]: function(val) {
+    },
+
+    ["form.daysRequested"]: function(val) {
+      let from = this.form.fromDate ? moment(this.form.fromDate) : moment();
+      this.form.tillDate = from.add(this.requested, "d").format("YYYY-MM-DD");
     }
   },
 
@@ -297,6 +355,28 @@ export default {
       return this.getList("user").map(item => {
         return { key: item.id, value: item.name };
       });
+    },
+
+    from: function() {
+      return `${this.form.fromDate} ${
+        this.form.fromTime ? this.form.fromTime : "00:00"
+      }`;
+    },
+
+    till: function() {
+      return `${this.form.tillDate} ${
+        this.form.tillTime ? this.form.tillTime : "00:00"
+      }`;
+    },
+
+    requested: function() {
+      if (this.from && this.till) {
+        let from = moment(this.from);
+        let till = moment(this.till).add(this.form.daysRequested, "d");
+        return this.form.display === "days"
+          ? till.diff(from, "d")
+          : till.diff(from, "hours");
+      } else return 0;
     }
   },
 
@@ -306,9 +386,9 @@ export default {
     });
   },
 
-  beforeRouteLeave (to, from, next) {
-    this.clear('user');
-    this.clear('request');
+  beforeRouteLeave(to, from, next) {
+    this.clear("user");
+    this.clear("request");
     next();
   },
 
@@ -328,9 +408,11 @@ export default {
     Promise.all([p1, p2])
       .then(() => {
         if (this.id) {
-          this.form.meta.leave_type = this.currentReq.meta.leave_type;
-          this.form.meta.from = this.currentReq.meta.from;
-          this.form.meta.till = this.currentReq.meta.till;
+          this.form.leaveType = this.currentReq.meta.leave_type;
+          this.form.fromDate = this.currentReq.meta.from.slice(0, 10);
+          this.form.fromTime = this.currentReq.meta.from.slice(11, 16);
+          this.form.tillDate = this.currentReq.meta.till.slice(0, 10);
+          this.form.tillTime = this.currentReq.meta.till.slice(11, 16);
           this.form.approver = this.users.find(
             item => item.key === this.currentReq.assigned_id
           );
@@ -348,7 +430,8 @@ export default {
       clear: "resource/clearResource",
       list: "resource/list",
       show: "resource/show",
-      create: "resource/create"
+      create: "resource/create",
+      update: "resource/update",
     }),
 
     onSubmit(e) {
@@ -363,11 +446,13 @@ export default {
       }
 
       // populate form data
-      let form = {};      
+      let form = { meta: {} };
       form.type = "leave";
       form.status = "submitted";
       form.assigned_id = this.form.approver.key;
-      form.meta = this.form.meta;
+      form.meta.leave_type = this.form.leaveType;
+      form.meta.from = this.from;
+      form.meta.till = this.till;
 
       this.create({ resource: "request", data: form })
         .then(respond => {
@@ -382,10 +467,49 @@ export default {
         });
     },
 
+    onSave(e, status = "submitted"){
+      e.preventDefault();
+      e.target.disabled = true;
+
+      // validate form
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
+
+      // populate form data
+      let form = { meta: {} };
+      form.type = "leave";
+      form.status = status;
+      form.assigned_id = this.form.approver.key;
+      form.meta.leave_type = this.form.leaveType;
+      form.meta.from = this.from;
+      form.meta.till = this.till;
+
+      this.update({ resource: "request", id: this.id, data: form })
+        .then(respond => {
+          e.target.disabled = false;
+          this.showMessage(`Leave request updated successfuly.`, "success");
+        })
+        .catch(error => {
+          console.log(error.response);
+          e.target.disabled = false;
+          this.showMessage(error.message, "danger");
+          this.$formFeedback(error.response.data.errors);
+        });
+    },
+
     clearForm() {
-      this.currentReq = {};
-      this.form.approver = {};
-      this.form.meta = {};
+      this.form.display = "days";
+      this.currentReq = null;
+      this.form.approver = null;
+      this.form.daysRequested = "";
+      this.form.leaveType= "";
+      this.form.fromDate= moment().format("YYYY-MM-DD");
+      this.form.fromTime= "00:00";
+      this.form.tillDate= moment().format("YYYY-MM-DD");
+      this.form.tillTime= "00:00";
       this.$v.form.$reset();
     }
   }

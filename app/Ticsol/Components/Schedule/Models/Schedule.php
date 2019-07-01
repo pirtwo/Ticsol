@@ -80,12 +80,20 @@ class Schedule extends Model
     }
 
     /**
+     * Assosiated request to current schedule item.
+     */
+    public function request()
+    {
+        return $this->hasOne(Request::class);
+    }
+
+    /**
      * Assosiated job to current schedule item.
      */
     public function job()
     {
         return $this->belongsTo(Job::class, 'job_id');
-    }
+    }    
 
     /**
      * Assosiated timesheet to current schedule item.
