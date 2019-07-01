@@ -7,7 +7,10 @@
       <ts-icon class="vb-notif__icon">
         {{ icon }}
       </ts-icon>
-      <span class="vb-notif__title">{{ title }} <ts-badge v-if="!seen" class="badge-info">New</ts-badge> </span>
+      <span class="vb-notif__title">{{ title }} <ts-badge
+        v-if="!seen"
+        class="badge-info"
+      >New</ts-badge> </span>
       <div class="vb-notif__time">
         {{ time }}
       </div>

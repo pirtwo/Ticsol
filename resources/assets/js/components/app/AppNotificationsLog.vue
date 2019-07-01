@@ -1,32 +1,53 @@
 <template>
-  <div ref="statusbar" class="statusbar">
-    <ts-dropdown :btn-class="'btn-light'" :menu-class="'dropdown-menu-right'" :menu-size="'md'">
-      <template slot="button">
-        <ts-icon class="icon">notifications</ts-icon>
-        <span class="caption">NOTIFs</span>
-        <span class="badge badge-danger" v-show="unSeen > 0">{{ unSeen }}</span>
-      </template>
-      <template slot="dropdown">
-        <div class="statusbar__dropdown__controls">
-          <button class="btn" type="button" @click="clearAll">clear all</button>
-        </div>
-        <div class="text-center" v-show="logs.length == 0">List is empty</div>
-        <div class="statusbar__dropdown__list">
-          <!-- list -->
-          <ul class="list-group">
-            <li
-              class="list-group-item list-group-item-action"
-              v-for="notif in logList"
-              :key="notif.id"
-            >
-              <ts-notification v-bind="notif" @mouseover="onHover(notif)"/>
-            </li>
-          </ul>
-          <!-- list END -->
-        </div>
-      </template>
-    </ts-dropdown>
-  </div>
+  <ts-dropdown
+    :btn-class="'btn-light'"
+    :menu-class="'dropdown-menu-right'"
+    :menu-size="'md'"
+  >
+    <template slot="button">
+      <ts-icon class="icon">
+        notifications
+      </ts-icon>
+      <span class="caption">NOTIFs</span>
+      <span
+        class="badge badge-danger"
+        v-show="unSeen > 0"
+      >{{ unSeen }}</span>
+    </template>
+    <template slot="dropdown">
+      <div class="statusbar__dropdown__controls">
+        <button
+          class="btn"
+          type="button"
+          @click="clearAll"
+        >
+          clear all
+        </button>
+      </div>
+      <div
+        class="text-center"
+        v-show="logs.length == 0"
+      >
+        List is empty
+      </div>
+      <div class="statusbar__dropdown__list">
+        <!-- list -->
+        <ul class="list-group">
+          <li
+            class="list-group-item list-group-item-action"
+            v-for="notif in logList"
+            :key="notif.id"
+          >
+            <ts-notification
+              v-bind="notif"
+              @mouseover="onHover(notif)"
+            />
+          </li>
+        </ul>
+        <!-- list END -->
+      </div>
+    </template>
+  </ts-dropdown>
 </template>
 
 <script>
