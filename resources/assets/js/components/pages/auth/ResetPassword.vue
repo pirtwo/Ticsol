@@ -1,7 +1,7 @@
 <template>    
   <div class="wrap-auth shadow-sm">
     <img 
-      src="/img/app.png" 
+      src="/img/logo.svg" 
       class="app-logo"
     >
 

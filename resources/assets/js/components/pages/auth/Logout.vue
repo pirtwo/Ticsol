@@ -2,7 +2,7 @@
   <div class="md-layout md-alignment-center-center">
     <div class="wrap-auth md-layout-item">
       <img 
-        src="/img/app.png" 
+        src="/img/logo.svg" 
         class="app-logo"
       >
       <div class="text-center">

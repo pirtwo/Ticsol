@@ -9,7 +9,7 @@
     <div class="wrap-dashboard d-flex justify-content-center align-items-center">            
       <div class="dashboard shadow-sm">
         <img 
-          src="/img/app.png" 
+          src="/img/logo.svg" 
           class="app-logo"
         >
         <router-link 
@@ -21,16 +21,6 @@
             inbox
           </i>
           <span class="caption">INBOX</span>
-        </router-link>
-        <router-link 
-          :to="{ name : 'jobList'}" 
-          class="btn" 
-          role="button"
-        >
-          <i class="icon material-icons">
-            work
-          </i>
-          <span class="caption">Jobs</span>
         </router-link>
         <router-link 
           :to="{ name : 'leaveCreate'}" 
@@ -61,6 +51,16 @@
             calendar_today
           </i>
           <span class="caption">SCHEDULE</span>
+        </router-link>
+        <router-link 
+          :to="{ name : 'jobList'}" 
+          class="btn" 
+          role="button"
+        >
+          <i class="icon material-icons">
+            work
+          </i>
+          <span class="caption">Jobs</span>
         </router-link>
       </div>
     </div>
