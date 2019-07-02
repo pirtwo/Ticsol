@@ -18,23 +18,7 @@ class RequestPolicy
      */
     function list(User $user) {
         return true;
-    }
-
-    /**
-     * Determine whether the user can view the list of all requests.
-     *
-     * @param  \App\Ticsol\Components\Models\User  $user
-     * @return mixed
-     */
-    public function listAll(User $user)
-    {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'list_all-request')) {
-                return true;
-            }
-        }
-    }
+    }    
 
     /**
      * Determine whether the user can view the request.
@@ -77,10 +61,10 @@ class RequestPolicy
         }
 
         if ($request->status == 'approved') {
-            return $user->id == $request->assigned_id;
+            return false;
         }
 
-        return $user->id == $request->user_id || $user->id == $request->assigned_id;
+        return $user->id == $request->user_id;
     }
 
     /**
@@ -116,18 +100,10 @@ class RequestPolicy
             return false;
         }
 
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            if ($role->permissions->contains('name', 'approve-leave')) {
-                $canApproveLeave = true;
-            }
-            if ($role->permissions->contains('name', 'approve-timesheet')) {
-                $canApproveTimesheet = true;
-            }
-            if ($role->permissions->contains('name', 'approve-reimbursement')) {
-                $canApproveReimbursement = true;
-            }
-        }
+        $permissions = $user->permissions;
+        $canApproveLeave = $permissions->contains('approve-leave');   
+        $canApproveTimesheet = $permissions->contains('approve-timesheet');
+        $canApproveReimbursement = $permissions->contains('approve-reimbursement');        
 
         if ($request->type === 'leave' && $canApproveLeave) {
             return true;

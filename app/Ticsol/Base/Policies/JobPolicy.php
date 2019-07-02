@@ -19,15 +19,14 @@ class JobPolicy
 
     public function before($user, $ability)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            $this->full = $role->permissions->contains('name', 'full-job');
-            $this->list = $role->permissions->contains('name', 'list-job');
-            $this->view = $role->permissions->contains('name', 'view-job');
-            $this->create = $role->permissions->contains('name', 'create-job');
-            $this->update = $role->permissions->contains('name', 'update-job');
-            $this->delete = $role->permissions->contains('name', 'delete-job');
-        }
+        $permissions = $user->permissions;
+        
+        $this->full = $permissions->contains('name', 'full-job');
+        $this->list = $permissions->contains('name', 'list-job');
+        $this->view = $permissions->contains('name', 'view-job');
+        $this->create = $permissions->contains('name', 'create-job');
+        $this->update = $permissions->contains('name', 'update-job');
+        $this->delete = $permissions->contains('name', 'delete-job');        
     }
 
     /**

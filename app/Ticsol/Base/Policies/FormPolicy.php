@@ -19,15 +19,14 @@ class FormPolicy
 
     public function before($user, $ability)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            $this->full = $role->permissions->contains('name', 'full-job_profile');
-            $this->list = $role->permissions->contains('name', 'list-job_profile');
-            $this->view = $role->permissions->contains('name', 'view-job_profile');
-            $this->create = $role->permissions->contains('name', 'create-job_profile');
-            $this->update = $role->permissions->contains('name', 'update-job_profile');
-            $this->delete = $role->permissions->contains('name', 'delete-job_profile');
-        }
+        $permissions = $user->permissions;
+        
+        $this->full = $permissions->contains('name', 'full-job_profile');
+        $this->list = $permissions->contains('name', 'list-job_profile');
+        $this->view = $permissions->contains('name', 'view-job_profile');
+        $this->create = $permissions->contains('name', 'create-job_profile');
+        $this->update = $permissions->contains('name', 'update-job_profile');
+        $this->delete = $permissions->contains('name', 'delete-job_profile');    
     }
 
     /**

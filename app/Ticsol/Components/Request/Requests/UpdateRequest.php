@@ -28,7 +28,7 @@ class UpdateRequest extends FormRequest
             'form_id'           => 'nullable|integer',
             'assigned_id'       => 'nullable|integer',
             'schedule_id'       => 'nullable|integer',
-            'status'            => 'required|string|in:submitted,approved,rejected',
+            'status'            => 'required|string|in:submitted,suspended,draft,approved,rejected',
 
             // Leave     
             'meta.status'       => 'nullable|string|in:tentative,confirmed',       

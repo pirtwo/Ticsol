@@ -84,7 +84,7 @@ class RequestController extends Controller
 
             $req->client_id = $client_id;
             $req->user_id = $user_id;
-            $req->fill($request->all());                      
+            $req->fill($request->all());
 
             if ($request->input('type') == 'leave') {
                 $schedule->client_id = $client_id;
@@ -98,9 +98,9 @@ class RequestController extends Controller
                     'end' => $request->input('meta.till'),
                 ]);
                 $schedule->save();
-                $req->schedule()->associate($schedule);                
+                $req->schedule()->associate($schedule);
             }
-            
+
             $req->save();
 
             DB::commit();
@@ -154,19 +154,20 @@ class RequestController extends Controller
             throw new NotFound();
         }
 
-        //----------------------------
-        //      AUTHORIZE ACTION
-        //----------------------------
-        $this->authorize('update', $req);
+        if ($request->has('status') && 
+            $request->input('status') == 'approved' || 
+            $request->input('status') == 'rejected') {
 
-        if ($request->has('status')) {
-            if ($request->input('status') == 'approved' || $request->input('status') == 'rejected') {
+            //----------------------------
+            //      AUTHORIZE Approve
+            //----------------------------
+            $this->authorize('approve', $req);
 
-                //----------------------------
-                //      AUTHORIZE Approve
-                //----------------------------
-                $this->authorize('approve', $req);
-            }
+        } else {
+            //----------------------------
+            //      AUTHORIZE ACTION
+            //----------------------------
+            $this->authorize('update', $req);
         }
 
         try {

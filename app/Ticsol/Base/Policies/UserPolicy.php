@@ -18,15 +18,14 @@ class UserPolicy
 
     public function before($user, $ability)
     {
-        $roles = $user->load('roles.permissions')->roles;
-        foreach ($roles as $role) {
-            $this->full = $role->permissions->contains('name', 'full-user');
-            $this->list = $role->permissions->contains('name', 'list-user');
-            $this->view = $role->permissions->contains('name', 'view-user');
-            $this->create = $role->permissions->contains('name', 'create-user');
-            $this->update = $role->permissions->contains('name', 'update-user');
-            $this->delete = $role->permissions->contains('name', 'delete-user');
-        }
+        $permissions = $user->permissions;
+        
+        $this->full = $permissions->contains('name', 'full-user');
+        $this->list = $permissions->contains('name', 'list-user');
+        $this->view = $permissions->contains('name', 'view-user');
+        $this->create = $permissions->contains('name', 'create-user');
+        $this->update = $permissions->contains('name', 'update-user');
+        $this->delete = $permissions->contains('name', 'delete-user');       
     }
 
     /**
