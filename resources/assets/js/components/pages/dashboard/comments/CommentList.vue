@@ -45,12 +45,15 @@
           <ts-comment
             name="VbComment"
             @reply="onReply"
-            :id="parent.id"
-            :username="parent.creator.name"
+            @edit="onEdit"
+            @delete="onDelete"
+            v-bind="parent"
             :avatar="parent.creator.meta.avatar"
-            :body="parent.body"
-            :date="getLocalDateTime(parent.created_at)"
-            :has-reply="true"
+            :username="parent.creator.name"            
+            :created-at="getPassedTime(parent.created_at)"
+            :updated-at="parent.created_at !== parent.updated_at ? getPassedTime(parent.updated_at) : ''"
+            :has-edit="parent.creator.id === userId"
+            :has-delete="parent.creator.id === userId"
           />
           <ul
             class="reply-list"
@@ -62,12 +65,16 @@
             >
               <ts-comment
                 name="VbComment"
-                :id="child.id"
-                :username="child.creator.name"
+                @edit="onEdit"
+                @delete="onDelete"
+                v-bind="child"
+                :username="child.creator.name" 
                 :avatar="child.creator.meta.avatar"
-                :body="child.body"
-                :date="getLocalDateTime(child.created_at)"
+                :created-at="getPassedTime(child.created_at)"
+                :updated-at="child.created_at !== child.updated_at ? getPassedTime(child.updated_at) : ''"
                 :has-reply="false"
+                :has-edit="child.creator.id === userId"
+                :has-delete="child.creator.id === userId"
               />
             </li>
           </ul>
@@ -84,7 +91,8 @@
               Reply to
               <b>{{ getCreatorName(parentId) }}</b>
             </span>
-            <span v-else>Send Comment</span>
+            <span v-else-if="editMode">Update Comment</span>
+            <span v-else-if="!editMode">Send Comment</span>
           </h5>
           <button
             type="button"
@@ -96,7 +104,7 @@
           </button>
         </template>
         <editor
-          v-model="comment"
+          v-model="commentBody"
           :init="{height: 300, menubar: false, statusbar: false}"
           api-key="he51k5qf4qe8668k9rgkie9c13j01h43fh61m72chuvv93ip"
           plugins="bbcode code"
@@ -104,11 +112,20 @@
         />
         <template slot="footer">
           <button
+            v-if="!editMode"
             type="button"
             class="btn btn-primary"
             @click="sendComment"
           >
             Send
+          </button>
+          <button
+            v-if="editMode"
+            type="button"
+            class="btn btn-primary"
+            @click="editComment"
+          >
+            Update
           </button>
           <button
             type="button"
@@ -119,13 +136,35 @@
           </button>
         </template>
       </ts-modal>
+      <!-- Confirm modal -->
+      <ts-modal
+        :show.sync="confirmModal"
+        title="Confirm Delete"
+        size="sm"
+      >
+        <b>Delete this comment permanently?</b>
+        <template slot="footer">
+          <button
+            class="btn btn-outline-danger"
+            @click="deleteComment"
+          >
+            Yes
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            @click="confirmModal = false"
+          >
+            No
+          </button>
+        </template>
+      </ts-modal>
     </template>
   </app-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import moment from 'moment';
+import moment from "moment";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import Editor from "@tinymce/tinymce-vue";
 
@@ -142,9 +181,12 @@ export default {
 
   data() {
     return {
-      comment: "",
+      commentId: null,
       parentId: null,
+      commentBody: "",
       sendModal: false,
+      confirmModal: false,
+      editMode: false,
       pager: {
         page: 1,
         perPage: 10,
@@ -155,12 +197,22 @@ export default {
 
   computed: {
     ...mapGetters({
+      userId: "user/getId",
       getList: "resource/getList"
     }),
 
     comments: function() {
       return this.getList("comment");
     }
+  },
+
+  beforeRouteEnter(to, from, next) {
+    next(vm => {});
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.clear("comment");
+    next();
   },
 
   mounted() {
@@ -183,8 +235,11 @@ export default {
 
   methods: {
     ...mapActions({
-      fetchList: "resource/list",
-      create: "resource/create"
+      clear: "resource/clearResource",
+      list: "resource/list",
+      create: "resource/create",
+      update: "resource/update",
+      delete: "resource/delete"
     }),
 
     changePage() {
@@ -201,7 +256,7 @@ export default {
     },
 
     loadComments() {
-      return this.fetchList({
+      return this.list({
         resource: "comment",
         query: {
           id: this.id,
@@ -217,39 +272,97 @@ export default {
       return this.comments.find(item => item.id === commentId).creator.name;
     },
 
-    getLocalDateTime(date){
+    getPassedTime(date) {
       let utcDate = moment.utc(date).toDate();
-      return moment(utcDate).local().fromNow();
+      return moment(utcDate)
+        .local()
+        .fromNow();
     },
 
-    onReply(parentId) {
+    onReply(id) {
       this.sendModal = true;
-      this.parentId = parentId;
+      this.parentId = id;
+    },
+
+    onEdit(e) {
+      this.commentId = e.id;
+      this.commentBody = e.body;
+      this.editMode = true;
+      this.sendModal = true;
+    },
+
+    onDelete(id) {
+      this.commentId = id;
+      this.confirmModal = true;
     },
 
     cancelModal() {
-      this.comment = "";
+      this.commentBody = "";
       this.parentId = null;
+      this.editMode = false;
       this.sendModal = false;
     },
 
-    sendComment() {
+    sendComment(e) {
+      e.preventDefault();
+      e.target.disabled = true;
 
       let comment = {
         entity: this.entity,
         parent_id: this.parentId,
-        body: this.comment,
+        body: this.commentBody,
         [`${this.entity}_id`]: this.id
       };
 
-      this.parentId = null;
-      this.sendModal = false;
       this.create({ resource: "comment", data: comment })
         .then(data => {
-          this.showMessage("Your comment submited successfuly.", "success");
+          this.showMessage("Comment submited successfuly.", "success");
         })
         .catch(error => {
           this.showMessage(error.message, "danger");
+        })
+        .finally(() => {
+          this.parentId = null;
+          this.sendModal = false;
+          e.target.disabled = false;
+        });
+    },
+
+    editComment(e) {
+      e.preventDefault();
+      e.target.disabled = true;
+
+      let data = {
+        body: this.commentBody
+      };
+
+      this.update({ resource: "comment", id: this.commentId, data: data })
+        .then(() => {
+          this.showMessage("Comment updated successfuly.", "success");
+        })
+        .catch(error => {
+          this.showMessage(error.message, "danger");
+        })
+        .finally(() => {
+          this.sendModal = false;
+          e.target.disabled = false;
+        });
+    },
+
+    deleteComment(e) {
+      e.preventDefault();
+      e.target.disabled = true;
+
+      this.delete({ resource: "comment", id: this.commentId })
+        .then(() => {
+          this.showMessage("Comment deleted successfuly.", "success");
+        })
+        .catch(error => {
+          this.showMessage(error.message, "danger");
+        })
+        .finally(() => {
+          this.confirmModal = false;
+          e.target.disabled = false;
         });
     }
   }
