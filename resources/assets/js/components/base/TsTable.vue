@@ -29,6 +29,11 @@
     </thead>
 
     <tbody>
+      <tr v-show="list.length < 1">
+        <td :colspan="header.length + 1">
+          No Record
+        </td>
+      </tr>
       <tr
         v-for="(value, index) in list"
         :key="index"
