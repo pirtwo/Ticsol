@@ -40,6 +40,12 @@ export const TIMESHEET_CREATE = '/api/timesheet/store';
 export const TIMESHEET_UPDATE = '/api/timesheet/update';
 export const TIMESHEET_DELETE = '/api/timesheet/delete';
 
+export const TEAM_LIST = '/api/team';
+export const TEAM_SHOW = '/api/team/show';
+export const TEAM_CREATE = '/api/team/store';
+export const TEAM_UPDATE = '/api/team/update';
+export const TEAM_DELETE = '/api/team/delete';
+
 export const ACTIVITY_LIST = '/api/activity';
 export const ACTIVITY_SHOW = '/api/activity/show';
 export const ACTIVITY_CREATE = '/api/activity/store';

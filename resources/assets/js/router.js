@@ -122,6 +122,37 @@ export const router = new VueRouter({
                     ]
                 },
 
+                // Team
+                {
+                    path: '/team', 
+                    name: 'team',                                       
+                    meta: { requireAuth: true },
+                    redirect: { name: 'teamList' },
+                    component: require('./components/pages/dashboard/team/Teams.vue').default,
+                    children: [
+                        {
+                            path: 'list/:col?/:opt?/:val?',
+                            name: 'teamList',                            
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/team/TeamList.vue').default,
+                        },
+                        {
+                            path: 'create',
+                            name: 'teamCreate',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/team/TeamModify.vue').default,
+                        },
+                        {
+                            path: ':id/details',
+                            name: 'teamDetails',
+                            props: true,
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/team/TeamModify.vue').default,
+                        }  
+                    ]
+                },
+
                 // Timesheets
                 {
                     path: '/timesheet',

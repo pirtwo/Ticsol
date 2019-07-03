@@ -37,6 +37,10 @@ class ResourcesTableSeeder extends Seeder
         ]);
 
         Resource::create([
+            'name' => 'team'
+        ]);
+
+        Resource::create([
             'name' => 'leave'
         ]);
 

@@ -56,6 +56,12 @@ class User extends Authenticatable
         return $query->where('client_id', $clientId);
     }
 
+
+    /**
+     * User premissions attribute.
+     * 
+     * @return \Illuminate\Support\Collection
+     */
     public function getPermissionsAttribute()
     {
         $roles = $this->roles()->get();
@@ -67,6 +73,11 @@ class User extends Authenticatable
         return $permissions->map(function($item,$key){ return $item->name; });
     }
 
+    /**
+     * User fullname attribute.
+     * 
+     * @return String;
+     */
     public function getFullnameAttribute()
     {
         return $this->firstname . ' ' . $this->lastname;
@@ -218,6 +229,14 @@ class User extends Authenticatable
     public function invitations()
     {
         return $this->hasMany(Invitation::class);
+    }
+
+    /**
+     * Assosiated teams to this user.
+     */
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'ts_user_team');
     }
 
     #endregion

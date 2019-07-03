@@ -60,6 +60,13 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::post('timesheet/update/{id}', 'TimesheetController@update');
         Route::post('timesheet/delete/{id}', 'TimesheetController@delete');
 
+        // Team
+        Route::get('team', 'TeamController@index');
+        Route::get('team/show/{id}', 'TeamController@show');
+        Route::post('team/store', 'TeamController@store');
+        Route::post('team/update/{id}', 'TeamController@update');
+        Route::post('team/delete/{id}', 'TeamController@delete');
+
         // Activity
         Route::get('activity', 'ActivityController@index');
         Route::get('activity/show/{id}', 'ActivityController@show');
@@ -85,9 +92,9 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::post('request/update/{id}', 'RequestController@update');
 
         // Comment
-        Route::get('comment', 'CommentController@index');        
+        Route::get('comment', 'CommentController@index');
         Route::post('comment/store', 'CommentController@store');
-        Route::post('comment/update/{id}', 'CommentController@update');        
+        Route::post('comment/update/{id}', 'CommentController@update');
         Route::post('comment/delete/{id}', 'CommentController@delete');
     });
 
