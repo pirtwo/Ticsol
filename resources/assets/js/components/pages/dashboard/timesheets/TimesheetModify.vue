@@ -515,14 +515,14 @@ export default {
 
     weekStart: function() {
       if (this.start)
-        return moment(this.start, ["YYYY-MM-DD"]).format("YYYY-MM-DD");
-      return this.week.start.format("YYYY-MM-DD");
+        return moment(this.start, ["YYYY-MM-DD"]).format("YYYY-MM-DDTHH:mm:ss");
+      return this.week.start.format("YYYY-MM-DDTHH:mm:ss");
     },
 
     weekEnd: function() {
       if (this.end)
-        return moment(this.end, ["YYYY-MM-DD"]).format("YYYY-MM-DD");
-      return this.week.end.format("YYYY-MM-DD");
+        return moment(this.end, ["YYYY-MM-DD"]).format("YYYY-MM-DDTHH:mm:ss");
+      return this.week.end.format("YYYY-MM-DDTHH:mm:ss");
     },
 
     totalHours: function() {
@@ -600,8 +600,7 @@ export default {
               ? [{ opt: "eq", col: "id", val: this.id }]
               : [
                   { opt: "eq", col: "creator_id", val: this.userId },
-                  { opt: "eq", col: "week_start", val: this.weekStart },
-                  { opt: "eq", col: "week_end", val: this.weekEnd }
+                  { opt: "eq", col: "week_number", val: this.weekNumber }
                 ]
           )
         });
@@ -645,8 +644,8 @@ export default {
       // iterate throw week days.
       for (let i = 0; i < 7; i++) {
         day = this.weekDays[i].day;
-        let dayStart = day.startOf("day").format("YYYY-MM-DD HH:mm:ss");
-        let dayEnd = day.endOf("day").format("YYYY-MM-DD HH:mm:ss");
+        let dayStart = day.clone().startOf("day");
+        let dayEnd = day.clone().endOf("day");
 
         // for each elm in list check:
         // if elm is in the current day range, then:
@@ -656,8 +655,10 @@ export default {
           let end = moment(item.end, ["YYYY-MM-DD HH:mm:ss"]);
 
           if (
-            start.isBetween(dayStart, dayEnd) ||
-            end.isBetween(dayStart, dayEnd)
+            (start.isBetween(dayStart, dayEnd, null, "[]") ||
+            end.isBetween(dayStart, dayEnd, null, "[]")) ||
+            (dayStart.isBetween(start, end, null, "[]") ||
+            dayEnd.isBetween(start, end, null, "[]"))
           ) {
             let timesheet = {};
             timesheet.id = uuid();
@@ -768,8 +769,8 @@ export default {
           year: this.weekYear,
           status: status,
           assigned_id: this.approver ? this.approver.key : null,
-          week_start: this.weekStart,
-          week_end: this.weekEnd,
+          week_start: this.weekStart.slice(0,10),
+          week_end: this.weekEnd.slice(0,10),
           week_number: this.weekNumber,
           total_hours: this.totalHours,
           items: this.getTimesheetItems()
