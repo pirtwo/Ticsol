@@ -20,12 +20,13 @@ class AuthServiceProvider extends ServiceProvider
         Models\Role::class => Policies\RolePolicy::class,
         Models\User::class => Policies\UserPolicy::class,
         Models\Form::class => Policies\FormPolicy::class,
+        //Models\Team::class => Policies\TeamPolicy::class,
         Models\Request::class => Policies\RequestPolicy::class,
         Models\Comment::class => Policies\CommentPolicy::class,
         Models\Contact::class => Policies\ContactPolicy::class,
         Models\Activity::class => Policies\ActivityPolicy::class,
         Models\Schedule::class => Policies\SchedulePolicy::class,
-        Models\Timesheet::class => Policies\TimesheetPolicy::class,
+        Models\Timesheet::class => Policies\TimesheetPolicy::class,        
     ];
 
     /**
