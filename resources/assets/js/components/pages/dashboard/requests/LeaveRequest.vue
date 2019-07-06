@@ -11,6 +11,7 @@
         <li class="menu-title">
           Actions
         </li>
+
         <li v-if="!currentReq">
           <button 
             class="btn"
@@ -28,7 +29,8 @@
             Submit
           </button>
         </li>
-        <li v-if="currentReq">
+
+        <li v-if="canEdit()">
           <button
             class="btn"
             @click="onSave"
@@ -36,7 +38,8 @@
             Save
           </button>
         </li>
-        <li v-if="currentReq">
+
+        <li v-if="canEdit()">
           <button
             class="btn"
             @click="onSave($event, 'suspended')"
@@ -44,16 +47,37 @@
             Suspend
           </button>
         </li>
+
+        <li v-if="canApprove()">
+          <button
+            class="btn"
+            @click="onSave($event, 'approved')"
+          >
+            Approve
+          </button>
+        </li>
+
+        <li v-if="canApprove()">
+          <button
+            class="btn"
+            @click="onSave($event, 'rejected')"
+          >
+            Reject
+          </button>
+        </li>
+
         <li>
           <button class="btn">
             Cancel
           </button>
         </li>
+
         <li>
           <button class="btn">
             Print
           </button>
         </li>
+
         <li class="menu-title">
           Links
         </li>
@@ -348,6 +372,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userId: "user/getId",
       getList: "resource/getList"
     }),
 
@@ -434,6 +459,16 @@ export default {
       update: "resource/update",
     }),
 
+    canEdit(){
+      if(!this.currentReq) return false;
+      return this.currentReq.user_id === this.userId;
+    },
+
+    canApprove(){
+      if(!this.currentReq) return false;
+      return this.currentReq.assigned_id === this.userId;
+    },
+
     onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
@@ -490,7 +525,7 @@ export default {
       this.update({ resource: "request", id: this.id, data: form })
         .then(respond => {
           e.target.disabled = false;
-          this.showMessage(`Leave request updated successfuly.`, "success");
+          this.showMessage(`Leave request ${status} successfuly.`, "success");
         })
         .catch(error => {
           console.log(error.response);
