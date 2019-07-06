@@ -206,12 +206,12 @@ export default {
 
     startDate: function() {
       if (!this.currDate) return "";
-      return this.currDate.start.format("YYYY-MM-DD");
+      return this.currDate.start.format("YYYY-MM-DDTHH:mm:ss");
     },
 
     endDate: function() {
       if (!this.currDate) return "";
-      return this.currDate.end.format("YYYY-MM-DD");
+      return this.currDate.end.format("YYYY-MM-DDTHH:mm:ss");
     },
 
     sidebarResources: function() {
@@ -259,7 +259,8 @@ export default {
             start: new DayPilot.Date(item.start),
             end: new DayPilot.Date(item.end),
             text: eventText,
-            type: item.event_type
+            type: item.event_type,
+            status: item.status
           };
         });
       else {
@@ -277,7 +278,8 @@ export default {
             start: new DayPilot.Date(item.start),
             end: new DayPilot.Date(item.end),
             text: item.user.name,
-            type: item.event_type
+            type: item.event_type,
+            status: item.status
           };
         });
       }

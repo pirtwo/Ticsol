@@ -224,8 +224,7 @@ export default {
     },
 
     range: function(value) {
-      this.dayPilot.days = this.getDays();
-      this.dayPilot.startDate = this.getStartDate();      
+      this.dayPilot.days = this.getDays();   
       this.dayPilot.update();
     },
 
@@ -320,7 +319,7 @@ export default {
       if (args.header.level === 0) {
         if (
           args.header.start.getDayOfWeek() == _this.getWeekStart() &&
-          args.header.start.getMonth() == args.header.end.addDays(-1).getMonth()
+          args.header.start.getMonth() == args.header.end.getMonth()
         ) {
           args.header.html =
             "<span class='header_weekDay_weekRange'>" +
@@ -364,7 +363,7 @@ export default {
 
     dp.onBeforeEventRender = function(args) {
       let item = dp.events.list.find(item => item.id == args.data.id);
-      args.data.cssClass = item.type;
+      args.data.cssClass = `${item.type} ${item.status}`;
       args.data.html = `
         <div class=''>${args.data.text}</div>
         <div class=''>${args.data.start.toString("hh:mm")}</div>
