@@ -11,6 +11,35 @@ $default-secondary-fontColor: white;
 $default-btn-bg--idle: rgba(255, 255, 255, 0.8);
 $default-btn-bg--active: #d76165;
 
+// $default-bg-primary: red;
+// $default-bg-secondary: red;
+
+// $default-primary: red;
+// $default-secondary: red;
+// $default-success: red;
+// $default-danger: red;
+// $default-warning: red;
+// $default-info: red;
+// $default-light: red;
+
+// $default-tetx-primary: red;
+// $default-tetx-secondary: red;
+// $default-tetx-success: red;
+// $default-tetx-danger: red;
+// $default-tetx-warning: red;
+// $default-tetx-info: red;
+// $default-tetx-light: red;
+
+$default-scheduler-bg-primary: #007bff;
+$default-scheduler-bg-secondary: #6c757d;
+
+$default-scheduler-primary: #007bff;
+$default-scheduler-secondary: #6c757d;
+$default-scheduler-danger: #dc3545;
+$default-scheduler-warning: #ffc107;
+$default-scheduler-info: #17a2b8;
+$default-scheduler-light: #343a40;
+
 #app.default {
   background-image: url("~/img/theme/Default.jpg");
   font-family: $app-primary-font;
@@ -100,12 +129,12 @@ $default-btn-bg--active: #d76165;
     }
   }
 
-  .table-hover tr:hover {
-    color: $default-secondary-fontColor;
-    background-color: $default-btn-bg--active;
-  }
+  // .table-hover tr:hover {
+  //   color: $default-secondary-fontColor;
+  //   background-color: $default-btn-bg--active;
+  // }
 
-  .btn.disabled{
+  .btn.disabled {
     color: #a1a1a1 !important;
   }
 
@@ -125,5 +154,33 @@ $default-btn-bg--active: #d76165;
   // Daypilot settings
   .scheduler_green_main {
     font-family: $app-secondary-font !important;
+  }
+
+  .scheduled .scheduler_green_event_inner {
+    border: 0px;
+    color: #ffffff;
+    background: $default-scheduler-primary;
+  }
+
+  .tentative .scheduled.scheduler_green_event_inner {
+    background: repeating-linear-gradient(
+      45deg,
+      blue,
+      blue 5px,
+      $default-scheduler-primary 5px,
+      $default-scheduler-primary 12px
+    ) !important;
+  }
+
+  .leave .scheduler_green_event_inner {
+    border: 0px;
+    color: #ffffff;
+    background: $default-scheduler-danger;
+  }
+
+  .unavailable .scheduler_green_event_inner {
+    border: 0px;
+    color: #333333;
+    background: $default-scheduler-warning;
   }
 }

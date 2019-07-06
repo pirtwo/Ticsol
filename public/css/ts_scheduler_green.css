@@ -313,6 +313,16 @@
 	font-size: 10px;
 }
 
+.tentative .scheduler_green_event_inner{
+	background: repeating-linear-gradient(
+    45deg,
+    #606dbc,
+    #606dbc 5px,
+    #465298 5px,
+    #465298 12px
+  );
+}
+
 .scheduled .scheduler_green_event_inner  {
 	color: #ffffff;
 	background: #a2c200;
