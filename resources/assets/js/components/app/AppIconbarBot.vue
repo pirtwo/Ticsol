@@ -108,7 +108,7 @@
           class="dropdown-item"
         >
           <i class="icon material-icons">
-            people
+            person
           </i>Users
         </router-link> 
         <router-link 
@@ -118,7 +118,15 @@
           <i class="icon material-icons">
             verified_user
           </i>Roles
-        </router-link>         
+        </router-link> 
+        <router-link 
+          :to="{ name : 'teamList'}" 
+          class="dropdown-item"
+        >
+          <i class="icon material-icons">
+            group
+          </i>Teams
+        </router-link>           
         <router-link 
           :to="{ name : 'contactList'}" 
           class="dropdown-item"

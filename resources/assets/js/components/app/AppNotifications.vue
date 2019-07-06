@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import Time from "../../utils/time";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 

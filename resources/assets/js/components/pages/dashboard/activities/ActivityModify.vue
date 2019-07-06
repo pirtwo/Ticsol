@@ -54,13 +54,7 @@
             Activities
           </router-link>
         </li>
-        <li v-if="this.id">
-          <router-link
-            class="btn btn-link"
-            :to="{ name : 'activityCreate'}"
-          >
-            New
-          </router-link>
+        <li v-if="this.id">          
           <router-link
             class="btn btn-link"
             :to="{ name : 'jobDetails', params : { id: activity.job_id } }"

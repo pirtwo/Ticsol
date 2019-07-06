@@ -1,28 +1,61 @@
 <template>
-  <app-main :scrollbar="true" :loading="isLoading" padding="p-2">
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
+    padding="p-2"
+  >
     <template slot="toolbar">
-      <ts-pagination v-model="pager" :page-count="pager.pageCount" />
-      <button type="button" class="btn btn-sm mr-auto" @click="showFilter = true">
+      <ts-pagination
+        v-model="pager"
+        :page-count="pager.pageCount"
+      />
+      <button
+        type="button"
+        class="btn btn-sm mr-auto"
+        @click="showFilter = true"
+      >
         <i class="material-icons">filter_list</i>
       </button>
     </template>
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li>
-          <router-link tag="button" class="btn" :to="{ name: 'teamCreate' }">New</router-link>
+        <li class="menu-title">
+          Actions
         </li>
-        <li class="menu-title">Links</li>
+        <li>
+          <router-link
+            tag="button"
+            class="btn"
+            :to="{ name: 'teamCreate' }"
+          >
+            New
+          </router-link>
+        </li>
+        <li class="menu-title">
+          Links
+        </li>
       </ul>
     </template>
 
     <template slot="content">
-      <ts-table class="table table-striped" :data="teams" :header="header">
-        <template slot="header" slot-scope="{item}">
-          <div :data-orderBy="item.orderBy">{{ item.value }}</div>
+      <ts-table
+        class="table table-striped"
+        :data="teams"
+        :header="header"
+      >
+        <template
+          slot="header"
+          slot-scope="{item}"
+        >
+          <div :data-orderBy="item.orderBy">
+            {{ item.value }}
+          </div>
         </template>
-        <template slot="body" slot-scope="{item}">
+        <template
+          slot="body"
+          slot-scope="{item}"
+        >
           <td>
             <router-link
               class="btn btn-sm"

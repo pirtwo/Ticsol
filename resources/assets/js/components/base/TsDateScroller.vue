@@ -66,7 +66,7 @@ export default {
 
   data() {
     return {
-      start: this.calcStart()
+      start: this.calcStart(this.range)
     };
   },
 
@@ -76,8 +76,9 @@ export default {
     },
 
     range: function(value) {
-      this.start = this.calcStart();
+      this.start = this.calcStart(value);
       this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
+      this.$emit("change");
     }
   },
 
@@ -91,19 +92,18 @@ export default {
   },
 
   mounted() {
-    this.start = this.calcStart();
+    this.start = this.calcStart(this.range);
     this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
+    this.$emit("change");
   },
 
   methods: {
-    calcStart() {     
+    calcStart(range) {
       let now = moment();
       let weekStart = moment().day(this.weekStart);
       if (weekStart.isAfter(now)) weekStart.add(-7, "d");
 
-      return this.range == "Month"
-        ? now.startOf("month")
-        : weekStart;
+      return range == "Month" ? now.startOf("month") : weekStart;
     },
 
     calcEnd() {
@@ -112,11 +112,15 @@ export default {
             .clone()
             .add(1, "M")
             .add(-1, "d")
-        : this.start.clone().add(6, "d");
+            .endOf("d")
+        : this.start
+            .clone()
+            .add(6, "d")
+            .endOf("d");
     },
 
     onToday() {
-      this.start = this.calcStart();
+      this.start = this.calcStart(this.range);
       this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
       this.$emit("change");
     },

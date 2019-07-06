@@ -1,22 +1,50 @@
 <template>
-  <app-main :scrollbar="true" :loading="isLoading" padding="p-5">
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
+    padding="p-5"
+  >
     <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
+        <li class="menu-title">
+          Actions
+        </li>
         <li v-if="!this.team">
-          <button class="btn" @click="onSubmit">Submit</button>
+          <button
+            class="btn"
+            @click="onSubmit"
+          >
+            Submit
+          </button>
         </li>
         <li v-if="this.team">
-          <button class="btn" @click="onSave">Save</button>
+          <button
+            class="btn"
+            @click="onSave"
+          >
+            Save
+          </button>
         </li>
         <li>
-          <button class="btn" @click="onCancel">Cancel</button>
+          <button
+            class="btn"
+            @click="onCancel"
+          >
+            Cancel
+          </button>
         </li>
-        <li class="menu-title">Links</li>
+        <li class="menu-title">
+          Links
+        </li>
         <li>
-          <router-link class="btn" :to="{name:'teamList'}">Teams</router-link>
+          <router-link
+            class="btn"
+            :to="{name:'teamList'}"
+          >
+            Teams
+          </router-link>
         </li>
       </ul>
     </template>
@@ -35,7 +63,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Please enter team name here..."
-                  />
+                  >
                 </div>
               </div>
             </div>
@@ -56,7 +84,7 @@
                         class="rounded"
                         width="30"
                         height="30"
-                      />
+                      >
                       <span>&nbsp; {{ item.value }}</span>
                     </template>
                   </ts-select>
@@ -74,10 +102,18 @@
           order-by="title"
           order="asc"
         >
-          <template slot="header" slot-scope="{item}">
-            <div :data-orderBy="item.orderBy">{{ item.value }}</div>
+          <template
+            slot="header"
+            slot-scope="{item}"
+          >
+            <div :data-orderBy="item.orderBy">
+              {{ item.value }}
+            </div>
           </template>
-          <template slot="body" slot-scope="{item}">
+          <template
+            slot="body"
+            slot-scope="{item}"
+          >
             <td>
               <router-link
                 class="btn btn-sm"
@@ -93,7 +129,9 @@
                 :key="item.id"
                 class="btn btn-sm btn-link"
                 :to="{ name : 'teamDetails', params : { id: item.id } }"
-              >{{ item.name }}</router-link>
+              >
+                {{ item.name }}
+              </router-link>
               <span v-if="item.teams.length === 0">None</span>
             </td>
           </template>
