@@ -34,15 +34,16 @@ class Resource {
 
 const resourceList = [
     "user",
+    "role",
     "job",
-    "schedule",
-    "timesheet",
-    "request",
-    "activity",
     "form",
+    "team",
     "contact",
     "comment",
-    "role"
+    "request",
+    "activity",
+    "schedule",
+    "timesheet",
 ];
 
 export const resourceModule = {
@@ -50,7 +51,6 @@ export const resourceModule = {
 
     state: {
         resources: initResources(),
-        scheduleView: '',
     },
 
     getters: {
@@ -183,20 +183,27 @@ export const resourceModule = {
             let autohide = false;
             let error = req.response.data;
 
-            // Notify user about the error.            
-            if (error.code == 1002) {                
-                type = 'warning';
-                title = 'Auth Error';
-                msg = 'You are not logged in, please logout and login again.';
-            } else if (error.code == 1003) {                
-                type = 'warning';
-                title = 'Permission Error';
-                msg = 'You are not allowed to do this action, please check your permissions.';
-            } else if (error.code == 1004) {
-                autohide = true;
-                msg = 'The data is invalid or in a bad format, please try again.';
-            } else if (error.code == 1005) {
-                msg = 'Server side error, something went wrong while processing your request, please try again later.';
+            // Notify user about the error.
+            switch (error.code) {
+                case 1002:
+                    type = 'warning';
+                    title = 'Auth Error';
+                    msg = 'You are not logged in, please logout and login again.';
+                    break;
+                case 1003:
+                    type = 'warning';
+                    title = 'Permission Error';
+                    msg = 'You are not allowed to do this action, please check your permissions.';
+                    break;
+                case 1004:
+                    msg = 'The data is invalid or in a bad format, please try again.';
+                    break;
+                case 1005:
+                    msg = 'Server side error, something went wrong while processing your request, please try again later.';
+                    break;
+                default:
+                    msg = "Something went wrong!!!";
+                    break;
             }
 
             dispatch('core/notify', new Notification({
