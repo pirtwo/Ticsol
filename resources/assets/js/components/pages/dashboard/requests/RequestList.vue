@@ -229,8 +229,8 @@ export default {
         }`;
       } else if (item.type === "timesheet") {
         // Show summary for timesheet request
-        let from = moment(item.timesheet.start);
-        let till = moment(item.timesheet.end);
+        let from = moment(item.timesheet.week_start);
+        let till = moment(item.timesheet.week_end);
         let hours = item.timesheet.total_hours.slice(0, 2);
         return `${from.format(dateFormat)} - ${till.format(dateFormat)}, ${hours} Hours`;
       } else if (item.type === "reimbursement") {
