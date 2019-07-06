@@ -25,12 +25,12 @@ class RolePolicy
         $this->owner = $user->isowner;
         
         $permissions = $user->permissions;        
-        $this->full = $permissions->contains('name', 'full-role');
-        $this->list = $permissions->contains('name', 'list-role');
-        $this->view = $permissions->contains('name', 'view-role');
-        $this->create = $permissions->contains('name', 'create-role');
-        $this->update = $permissions->contains('name', 'update-role');
-        $this->delete = $permissions->contains('name', 'delete-role');    
+        $this->full = $permissions->contains('full-role');
+        $this->list = $permissions->contains('list-role');
+        $this->view = $permissions->contains('view-role');
+        $this->create = $permissions->contains('create-role');
+        $this->update = $permissions->contains('update-role');
+        $this->delete = $permissions->contains('delete-role');    
     }
 
     /**

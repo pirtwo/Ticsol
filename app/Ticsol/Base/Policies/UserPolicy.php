@@ -20,12 +20,12 @@ class UserPolicy
     {
         $permissions = $user->permissions;
         
-        $this->full = $permissions->contains('name', 'full-user');
-        $this->list = $permissions->contains('name', 'list-user');
-        $this->view = $permissions->contains('name', 'view-user');
-        $this->create = $permissions->contains('name', 'create-user');
-        $this->update = $permissions->contains('name', 'update-user');
-        $this->delete = $permissions->contains('name', 'delete-user');       
+        $this->full = $permissions->contains('full-user');
+        $this->list = $permissions->contains('list-user');
+        $this->view = $permissions->contains('view-user');
+        $this->create = $permissions->contains('create-user');
+        $this->update = $permissions->contains('update-user');
+        $this->delete = $permissions->contains('delete-user');       
     }
 
     /**

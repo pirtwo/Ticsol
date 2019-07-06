@@ -21,12 +21,12 @@ class JobPolicy
     {
         $permissions = $user->permissions;
         
-        $this->full = $permissions->contains('name', 'full-job');
-        $this->list = $permissions->contains('name', 'list-job');
-        $this->view = $permissions->contains('name', 'view-job');
-        $this->create = $permissions->contains('name', 'create-job');
-        $this->update = $permissions->contains('name', 'update-job');
-        $this->delete = $permissions->contains('name', 'delete-job');        
+        $this->full = $permissions->contains('full-job');
+        $this->list = $permissions->contains('list-job');
+        $this->view = $permissions->contains('view-job');
+        $this->create = $permissions->contains('create-job');
+        $this->update = $permissions->contains('update-job');
+        $this->delete = $permissions->contains('delete-job');        
     }
 
     /**

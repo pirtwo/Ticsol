@@ -20,12 +20,12 @@ class SchedulePolicy
     public function before($user, $ability)
     {      
         $permissions = $user->permissions;        
-        $this->full = $permissions->contains('name', 'full-schedule');
-        $this->list = $permissions->contains('name', 'list-schedule');
-        $this->view = $permissions->contains('name', 'view-schedule');
-        $this->create = $permissions->contains('name', 'create-schedule');
-        $this->update = $permissions->contains('name', 'update-schedule');
-        $this->delete = $permissions->contains('name', 'delete-schedule');    
+        $this->full = $permissions->contains('full-schedule');
+        $this->list = $permissions->contains('list-schedule');
+        $this->view = $permissions->contains('view-schedule');
+        $this->create = $permissions->contains('create-schedule');
+        $this->update = $permissions->contains('update-schedule');
+        $this->delete = $permissions->contains('delete-schedule');    
     }
 
     /**

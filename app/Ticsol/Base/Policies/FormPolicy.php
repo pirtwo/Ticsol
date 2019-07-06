@@ -21,12 +21,12 @@ class FormPolicy
     {
         $permissions = $user->permissions;
         
-        $this->full = $permissions->contains('name', 'full-job_profile');
-        $this->list = $permissions->contains('name', 'list-job_profile');
-        $this->view = $permissions->contains('name', 'view-job_profile');
-        $this->create = $permissions->contains('name', 'create-job_profile');
-        $this->update = $permissions->contains('name', 'update-job_profile');
-        $this->delete = $permissions->contains('name', 'delete-job_profile');    
+        $this->full = $permissions->contains('full-job_profile');
+        $this->list = $permissions->contains('list-job_profile');
+        $this->view = $permissions->contains('view-job_profile');
+        $this->create = $permissions->contains('create-job_profile');
+        $this->update = $permissions->contains('update-job_profile');
+        $this->delete = $permissions->contains('delete-job_profile');    
     }
 
     /**
