@@ -23,9 +23,8 @@ class ContactCreate extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id'               => 'nullable|numeric|exists:ts_users,id',
-            'group'                 => 'required|string|in:user,customer',
+        return [            
+            'group'                 => 'required|string|in:user,customer,emergency',
             'firstname'             => 'required|string',
             'lastname'              => 'required|string',
             'telephone'             => 'nullable|string',

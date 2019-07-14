@@ -2,8 +2,8 @@
 
 namespace App\Ticsol\Base\Policies;
 
-use App\Ticsol\Components\Models\User;
 use App\Ticsol\Components\Models\Contact;
+use App\Ticsol\Components\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ContactPolicy
@@ -43,13 +43,9 @@ class ContactPolicy
      * @param  \App\Ticsol\Components\Models\User  $user
      * @return mixed
      */
-    public function create(User $user, $group, $assignedId)
+    public function create(User $user)
     {
-        if ($group != 'customer') {
-            return $user->id == $assignedId;
-        } else {
-            return true;
-        }
+        return true;
     }
 
     /**
@@ -61,10 +57,16 @@ class ContactPolicy
      */
     public function update(User $user, Contact $contact)
     {
-        if($contact->group == 'customer')
-            return $contact->client_id == $user->client_id;
-        else
-            return $contact->client_id == $user->client_id && $contact->user_id == $user->id;
+        if ($contact->client_id !== $user->client_id) {
+            return false;
+        }
+
+        if ($contact->group == 'customer') {
+            return true;
+        } else {
+            return $contact->user_id == $user->id;
+        }
+
     }
 
     /**
@@ -76,6 +78,14 @@ class ContactPolicy
      */
     public function delete(User $user, Contact $contact)
     {
-        return $contact->client_id == $user->client_id;
+        if ($contact->client_id !== $user->client_id) {
+            return false;
+        }
+
+        if ($contact->group == 'customer') {
+            return true;
+        } else {
+            return $contact->user_id == $user->id;
+        }
     }
 }
