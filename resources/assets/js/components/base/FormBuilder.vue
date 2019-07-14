@@ -59,6 +59,7 @@ export default {
       })
       .promise.then(formBuilder => {
         this.$emit("input", formBuilder);
+        this.$emit("mounted");
       });
   },
 

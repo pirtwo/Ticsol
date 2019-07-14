@@ -18,18 +18,23 @@ export const userModule = {
 
     getters: {
         getId(state) {
-            if(!state.info) return "";
+            if (!state.info) return "";
             return state.info.id;
         },
 
         getInfo(state) {
-            if(!state.info) return "";
+            if (!state.info) return "";
             return state.info;
         },
 
         getUsername(state) {
             if (!state.info) return "";
             return state.info.name;
+        },
+
+        getFullname(state) {
+            if (!state.info) return "";
+            return state.info.fullname;
         },
 
         getAvatar(state) {
@@ -91,7 +96,7 @@ export const userModule = {
     actions: {
         login({ commit, dispatch }, payload) {
             return new Promise((resolve, reject) => {
-                api.post(URLs.AUTH_LOGIN, payload, null, true, false)
+                api.post({ url: URLs.AUTH_LOGIN, data: payload, query: null, isJson: true, isAuth: false })
                     .then(respond => {
                         commit(MUTATIONS.USER_AUTH_TOKEN, respond.data);
                         commit(MUTATIONS.USER_AUTH_SUCCESS);
@@ -104,10 +109,10 @@ export const userModule = {
             });
         },
 
-        logout({ commit, dispatch }) {            
-            api.post(URLs.AUTH_LOGOUT, null);  
-            commit(MUTATIONS.USER_AUTH_LOGOUT);  
-            dispatch('core/clearNotificationLog', null, { root: true });        
+        logout({ commit, dispatch }) {
+            api.post({ url: URLs.AUTH_LOGOUT, data: null });
+            commit(MUTATIONS.USER_AUTH_LOGOUT);
+            dispatch('core/clearNotificationLog', null, { root: true });
         },
 
         refresh() {
@@ -116,7 +121,7 @@ export const userModule = {
 
         info({ commit, dispatch }) {
             return new Promise((resolve, reject) => {
-                api.get(URLs.USER_INFO, null).then(respond => {
+                api.get({ url: URLs.USER_INFO, data: null }).then(respond => {
                     commit(MUTATIONS.USER_INFO, respond.data);
                     resolve(respond.data);
                 }).catch(error => {

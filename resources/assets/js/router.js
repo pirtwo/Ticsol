@@ -345,14 +345,14 @@ export const router = new VueRouter({
                             path: 'create',
                             name: 'roleCreate',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/roles/RoleCreate.vue').default,
+                            component: require('./components/pages/dashboard/roles/RoleModify.vue').default,
                         },
                         {
                             path: ':id/details',
                             name: 'roleDetails',
                             props: true,
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/roles/RoleDetails.vue').default,
+                            component: require('./components/pages/dashboard/roles/RoleModify.vue').default,
                         },
                         {
                             path: ':id/users',

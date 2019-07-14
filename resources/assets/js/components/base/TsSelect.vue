@@ -195,23 +195,24 @@ export default {
     selectHandler(item, event) {
       if (this.multi) {
         if (!this.isSelected(item)) {
-          this.selects.push(item);
-          this.$emit("input", [...this.selects]);
+          this.selects.push(item);          
         } else {
           this.selects.splice(
             this.selects.findIndex(
               fn => fn.key === item.key && fn.value === item.value
             ),
             1
-          );
-          this.$emit("input", [...this.selects]);
+          );          
         }
+        this.$emit("input", [...this.selects]);
+        this.$emit("change", [...this.selects]);
       } else {
         this.dropdownStatus = false;
         this.selects = [];
         this.selects.push(item);
         this.$emit("input", this.selects[0]);
-      }
+        this.$emit("change", this.selects[0]);
+      }      
     },
 
     focusHandler(event) {
