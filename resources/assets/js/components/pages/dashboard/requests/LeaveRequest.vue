@@ -12,16 +12,16 @@
           Actions
         </li>
 
-        <li v-if="!currentReq">
-          <button 
+        <li v-if="!request">
+          <button
             class="btn"
             @click="clearForm"
           >
             New
           </button>
         </li>
-        
-        <li v-if="!currentReq">
+
+        <li v-if="!request">
           <button
             class="btn"
             @click="onSubmit"
@@ -67,7 +67,10 @@
         </li>
 
         <li>
-          <button class="btn">
+          <button
+            class="btn"
+            @click="onCancel"
+          >
             Cancel
           </button>
         </li>
@@ -82,7 +85,7 @@
           Links
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">
+          <router-link :to="{ name: 'inbox' }">
             Request History
           </router-link>
         </li>
@@ -90,7 +93,9 @@
     </template>
 
     <template slot="content">
+      <!-- Leave Request From -->
       <form>
+        <!-- Leave Type -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Leave Type</label>
@@ -129,12 +134,13 @@
                 class="invalid-feedback"
                 v-if="!$v.form.leaveType.required"
               >
-                Please enter a type.
+                Type is required.
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Display -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Display</label>
@@ -171,6 +177,7 @@
           </div>
         </div>
 
+        <!-- From Date -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">From</label>
@@ -179,13 +186,19 @@
                 v-model="form.fromDate"
                 type="date"
                 name="meta-from"
-                :class="[{'is-invalid' : $v.form.fromDate.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.fromDate.$error || $v.from.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
                 v-if="!$v.form.fromDate.required"
               >
-                Please enter a from date.
+                From date is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                v-if="!$v.from.before"
+              >
+                From date must be before Till date.
               </div>
             </div>
             <div class="col">
@@ -194,11 +207,13 @@
                 type="time"
                 name="meta-fromTime"
                 :class="['form-control']"
+                :disabled="form.display === 'days'"
               >
             </div>
           </div>
         </div>
 
+        <!-- Till Date -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Till</label>
@@ -208,13 +223,19 @@
                 type="date"
                 name="meta-till"
                 :disabled="form.display === 'hours'"
-                :class="[{'is-invalid' : $v.form.tillDate.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.tillDate.$error || $v.till.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
                 v-if="!$v.form.tillDate.required"
               >
-                Please enter a till date.
+                Till date is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                v-if="!$v.till.after"
+              >
+                Till date must be after From date.
               </div>
             </div>
             <div class="col">
@@ -223,11 +244,13 @@
                 type="time"
                 name="meta-tillTime"
                 :class="['form-control']"
+                :disabled="form.display === 'days'"
               >
             </div>
           </div>
         </div>
 
+        <!-- Requested Days/Hours -->
         <div class="form-group">
           <div class="form-row">
             <label
@@ -236,8 +259,7 @@
             <div class="col-sm-10">
               <input
                 :value="requested"
-                type="number"
-                min="0"
+                type="text"
                 class="form-control"
                 disabled
               >
@@ -245,6 +267,7 @@
           </div>
         </div>
 
+        <!-- Remaining Days/Hours -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Days Remaining</label>
@@ -257,6 +280,7 @@
           </div>
         </div>
 
+        <!-- Approver -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Approver</label>
@@ -274,13 +298,14 @@
                 class="invalid-feedback"
                 v-if="!$v.form.approver.required"
               >
-                Please select a approver.
+                Approver is required.
               </div>
             </div>
           </div>
         </div>
 
-        <div class="form-group">
+        <!-- Attachments -->
+        <div class="form-group">          
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Attachments</label>
             <div class="col-sm-10">
@@ -290,12 +315,30 @@
                   id="customFile"
                   type="file"
                   class="custom-file-input"
+                  multiple
+                  @change="onAttachment"
                 >
                 <label
                   class="custom-file-label"
                   for="customFile"
                 >choose files</label>
               </div>
+            </div>
+            <div
+              v-if="request"
+              class="col-sm-12"
+            >
+              <template v-for="(item, index) in request.meta.attachments">
+                <button
+                  :key="item.id"
+                  type="button"
+                  class="btn btn-secondary"
+                  @click="downloadAttachment(item)"
+                >
+                  <ts-icon icon="cloud_download" />
+                  Attachment-{{ index + 1 }}.{{ item.extension }}
+                </button>
+              </template>
             </div>
           </div>
         </div>
@@ -305,10 +348,24 @@
 </template>
 
 <script>
-import moment from "moment";
+import { api } from "../../../../api/http";
 import { mapActions, mapGetters } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import { required, helpers } from "vuelidate/lib/validators";
+import moment from "moment";
+import downloadjs from "downloadjs";
 import pageMixin from "../../../../mixins/page-mixin";
+
+const before = (valueA, valueB) =>
+  helpers.withParams(
+    { type: "before", valueA: valueA, valueB: valueB },
+    value => valueA < valueB
+  );
+
+const after = (valueA, valueB) =>
+  helpers.withParams(
+    { type: "after", valueA: valueA, valueB: valueB },
+    value => valueA > valueB
+  );
 
 export default {
   name: "LeaveRequest",
@@ -319,7 +376,6 @@ export default {
 
   data() {
     return {
-      currentReq: null,
       form: {
         display: "days",
         daysRequested: "",
@@ -329,28 +385,44 @@ export default {
         fromTime: "00:00",
         tillDate: moment().format("YYYY-MM-DD"),
         tillTime: "00:00",
-        attachments: ""
+        attachments: []
       }
     };
   },
 
-  validations: {
-    form: {
-      approver: { required },
-      leaveType: { required },
-      fromDate: { required },
-      fromTime: { required },
-      tillDate: { required },
-      tillTime: { required }
-    }
+  validations() {
+    return {
+      from: {
+        required,
+        before: before(this.from, this.till)
+      },
+      till: {
+        required,
+        after: after(this.till, this.from)
+      },
+      form: {
+        approver: { required },
+        leaveType: { required },
+        fromDate: { required },
+        fromTime: { required },
+        tillDate: { required },
+        tillTime: { required }
+      }
+    };
   },
 
   watch: {
+    request: function(val) {
+      this.populateForm(val);
+    },
+
     ["form.display"]: function(val) {
-      console.log(val);
       if (val === "hours") {
         let from = this.form.fromDate ? moment(this.form.fromDate) : moment();
         this.form.fromDate = this.form.tillDate = from.format("YYYY-MM-DD");
+      } else {
+        this.form.fromTime = "00:00";
+        this.form.tillTime = "00:00";
       }
     },
 
@@ -361,8 +433,7 @@ export default {
       }
     },
 
-    ["form.tillDate"]: function(val) {
-    },
+    ["form.tillDate"]: function(val) {},
 
     ["form.daysRequested"]: function(val) {
       let from = this.form.fromDate ? moment(this.form.fromDate) : moment();
@@ -376,6 +447,14 @@ export default {
       getList: "resource/getList"
     }),
 
+    request: function() {
+      if (!this.id) return null;
+      return this.getList("request")[0];
+    },
+
+    /**
+     * List of the users with approve permission.
+     */
     users: function() {
       return this.getList("user").map(item => {
         return { key: item.id, value: item.name };
@@ -383,24 +462,37 @@ export default {
     },
 
     from: function() {
-      return `${this.form.fromDate} ${
-        this.form.fromTime ? this.form.fromTime : "00:00"
-      }`;
+      return moment(`${this.form.fromDate} ${this.form.fromTime}`).format(
+        "YYYY-MM-DD HH:mm"
+      );
     },
 
     till: function() {
-      return `${this.form.tillDate} ${
-        this.form.tillTime ? this.form.tillTime : "00:00"
-      }`;
+      return moment(`${this.form.tillDate} ${this.form.tillTime}`).format(
+        "YYYY-MM-DD HH:mm"
+      );
     },
 
+    /**
+     * Calculated requested days/hours.
+     */
     requested: function() {
       if (this.from && this.till) {
+        let diff = 0;
         let from = moment(this.from);
         let till = moment(this.till).add(this.form.daysRequested, "d");
-        return this.form.display === "days"
-          ? till.diff(from, "d")
-          : till.diff(from, "hours");
+
+        if (this.form.display === "days") {
+          diff = till.diff(from, "d", true);
+          if (diff <= 0) return 0;
+          return `${diff} Day`;
+        } else {
+          diff = till.diff(from, "hours", true);
+          if (diff <= 0) return 0;
+          let hour = Math.floor(diff);
+          let mins = Math.floor((((diff - hour) * 60) / 100) * 100);
+          return `${hour} Hour ${mins} Minute`;
+        }
       } else return 0;
     }
   },
@@ -408,6 +500,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
+      vm.loadAssets();
     });
   },
 
@@ -417,59 +510,67 @@ export default {
     next();
   },
 
-  mounted() {
-    this.startLoading();
-    let p1;
-    let p2;
-    if (this.id) {
-      p1 = this.show({ resource: "request", id: this.id }).then(data => {
-        this.currentReq = data;
-      });
-    } else {
-      p1 = new Promise(resolve => resolve());
-    }
-    p2 = this.list({ resource: "user" });
-
-    Promise.all([p1, p2])
-      .then(() => {
-        if (this.id) {
-          this.form.leaveType = this.currentReq.meta.leave_type;
-          this.form.fromDate = this.currentReq.meta.from.slice(0, 10);
-          this.form.fromTime = this.currentReq.meta.from.slice(11, 16);
-          this.form.tillDate = this.currentReq.meta.till.slice(0, 10);
-          this.form.tillTime = this.currentReq.meta.till.slice(11, 16);
-          this.form.approver = this.users.find(
-            item => item.key === this.currentReq.assigned_id
-          );
-        }
-        this.stopLoading();
-      })
-      .catch(error => {
-        console.log(error);
-        this.stopLoading();
-      });
-  },
-
   methods: {
     ...mapActions({
       clear: "resource/clearResource",
       list: "resource/list",
-      show: "resource/show",
       create: "resource/create",
-      update: "resource/update",
+      update: "resource/update"
     }),
 
-    canEdit(){
-      if(!this.currentReq) return false;
-      return this.currentReq.user_id === this.userId;
+    async loadAssets() {
+      this.startLoading();
+
+      let p1 = await this.list({
+        resource: "user",
+        query: { in: "user.roles.permissions.name,approve-leave" }
+      });
+      let p2 = this.id
+        ? this.list({ resource: "request", query: { eq: `id,${this.id}` } })
+        : new Promise(resolve => resolve());
+
+      Promise.all([p1, p2]).finally(() => {
+        this.stopLoading();
+      });
     },
 
-    canApprove(){
-      if(!this.currentReq) return false;
-      return this.currentReq.assigned_id === this.userId;
+    populateForm(request) {
+      if (!request) return;
+      this.form.leaveType = request.meta.leave_type;
+      this.form.fromDate = request.meta.from.slice(0, 10);
+      this.form.fromTime = request.meta.from.slice(11, 16);
+      this.form.tillDate = request.meta.till.slice(0, 10);
+      this.form.tillTime = request.meta.till.slice(11, 16);
+      this.form.approver = this.users.find(
+        item => item.key === request.assigned_id
+      );
     },
 
-    onSubmit(e) {
+    /**
+     * Check if current user can edit this request.
+     */
+    canEdit() {
+      if (!this.request) return false;
+      return this.request.user_id === this.userId;
+    },
+
+    /**
+     * Check if current user can approve this request.
+     */
+    canApprove() {
+      if (!this.request) return false;
+      return this.request.assigned_id === this.userId;
+    },
+
+    onAttachment(e) {
+      this.form.attachments = [];
+      let files = e.target.files;
+      for (let i = 0; i < files.length; i++) {
+        this.form.attachments.push(files[i]);
+      }
+    },
+
+    async onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
 
@@ -481,15 +582,20 @@ export default {
       }
 
       // populate form data
-      let form = { meta: {} };
-      form.type = "leave";
-      form.status = "submitted";
-      form.assigned_id = this.form.approver.key;
-      form.meta.leave_type = this.form.leaveType;
-      form.meta.from = this.from;
-      form.meta.till = this.till;
+      let form = new FormData();
+      form.append("type", "leave");
+      form.append("status", "submitted");
+      form.append("assigned_id", this.form.approver.key);
+      form.append("leave_type", this.form.leaveType);
+      form.append("from", this.from);
+      form.append("till", this.till);
 
-      this.create({ resource: "request", data: form })
+      for (let i = 0; i < this.form.attachments.length; i++) {
+        let file = this.form.attachments[i];
+        form.append(`attachments[${i}]`, file);
+      }
+
+      this.create({ resource: "request", data: form, hasAttachments: true })
         .then(respond => {
           e.target.disabled = false;
           this.showMessage(`Leave request created successfuly.`, "success");
@@ -502,7 +608,7 @@ export default {
         });
     },
 
-    onSave(e, status = "submitted"){
+    onSave(e, status = "submitted") {
       e.preventDefault();
       e.target.disabled = true;
 
@@ -537,15 +643,25 @@ export default {
 
     clearForm() {
       this.form.display = "days";
-      this.currentReq = null;
       this.form.approver = null;
       this.form.daysRequested = "";
-      this.form.leaveType= "";
-      this.form.fromDate= moment().format("YYYY-MM-DD");
-      this.form.fromTime= "00:00";
-      this.form.tillDate= moment().format("YYYY-MM-DD");
-      this.form.tillTime= "00:00";
+      this.form.leaveType = "";
+      this.form.fromDate = moment().format("YYYY-MM-DD");
+      this.form.fromTime = "00:00";
+      this.form.tillDate = moment().format("YYYY-MM-DD");
+      this.form.tillTime = "00:00";
       this.$v.form.$reset();
+    },
+
+    onCancel(e) {
+      this.$router.go(-1);
+    },
+
+    downloadAttachment(file){
+      api.get({url:`/api/request/attachment/${this.request.id}/${file.id}`, responseType: "blob" })
+      .then(res => {
+        downloadjs(res.data, `${file.id}.${file.extension}`);
+      });
     }
   }
 };

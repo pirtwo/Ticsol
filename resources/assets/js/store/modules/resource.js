@@ -76,12 +76,12 @@ export const resourceModule = {
         },
     },
 
-    actions: {
+    actions: {        
         list({ state, commit, dispatch }, { resource, query }) {
             dispatch("checkResource", resource);
             let res = state.resources.find(item => item.name === resource);
             return new Promise((resolve, reject) => {
-                api.get(res.listUrl, query)
+                api.get({ url: res.listUrl, query: query })
                     .then(respond => {
                         let data = null;
                         if (respond.data.per_page)
@@ -99,11 +99,11 @@ export const resourceModule = {
             });
         },
 
-        create({ state, dispatch }, { resource, data }) {
+        create({ state, dispatch }, { resource, data, hasAttachments = false }) {
             dispatch("checkResource", resource);
             let res = state.resources.find(item => item.name === resource);
             return new Promise((resolve, reject) => {
-                api.post(res.createUrl, data)
+                api.create({ url: res.createUrl, data: data, hasAttachments: hasAttachments })
                     .then(respond => {
                         resolve(respond.data);
                     }).catch(error => {
@@ -118,7 +118,7 @@ export const resourceModule = {
             dispatch("checkResource", resource);
             let res = state.resources.find(item => item.name === resource);
             return new Promise((resolve, reject) => {
-                api.get(`${res.showUrl}/${id}`, query)
+                api.get({ url: `${res.showUrl}/${id}`, query: query })
                     .then(respond => {
                         resolve(respond.data);
                     }).catch(error => {
@@ -129,11 +129,11 @@ export const resourceModule = {
             });
         },
 
-        update({ state, dispatch }, { resource, id, data }) {
+        update({ state, dispatch }, { resource, id, data, hasAttachments = false }) {
             dispatch("checkResource", resource);
             let res = state.resources.find(item => item.name === resource);
             return new Promise((resolve, reject) => {
-                api.post(`${res.updateUrl}/${id}`, data)
+                api.update({ url: `${res.updateUrl}/${id}`, data: data, hasAttachments: hasAttachments })
                     .then(respond => {
                         resolve(respond.data);
                     }).catch(error => {
@@ -148,7 +148,7 @@ export const resourceModule = {
             dispatch("checkResource", resource);
             let res = state.resources.find(item => item.name === resource);
             return new Promise((resolve, reject) => {
-                api.post(`${res.deleteUrl}/${id}`)
+                api.delete({ url: `${res.deleteUrl}/${id}` })
                     .then(respond => {
                         resolve(respond.data);
                     }).catch(error => {
