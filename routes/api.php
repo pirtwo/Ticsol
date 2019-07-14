@@ -90,6 +90,9 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::get('request/show/{id}', 'RequestController@show');
         Route::post('request/store', 'RequestController@store');
         Route::post('request/update/{id}', 'RequestController@update');
+        Route::post('request/approve/{id}', 'RequestController@approve');
+        Route::post('request/reject/{id}', 'RequestController@reject');
+        Route::get('request/attachment/{reqId}/{fileId}', 'RequestController@attachment');
 
         // Comment
         Route::get('comment', 'CommentController@index');

@@ -31,16 +31,20 @@ class UpdateRequest extends FormRequest
             'status'            => 'required|string|in:submitted,suspended,draft,approved,rejected',
 
             // Leave     
-            'meta.status'       => 'nullable|string|in:tentative,confirmed',       
-            'meta.leave_type'   => 'nullable|string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
-            'meta.from'         => 'nullable|date',
-            'meta.till'         => 'nullable|date|after:meta.from',
+            'leave_status'      => 'required_if:type,leave|string|in:tentative,confirmed',       
+            'leave_type'        => 'required_if:type,leave|string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
+            'from'              => 'required_if:type,leave|date',
+            'till'              => 'required_if:type,leave|date|after:from',
 
             // Reimbursement
-            'meta.details'      => 'nullable|string',
-            'meta.amount'       => 'nullable|numeric',
-            'meta.tax'          => 'nullable|string',
-            'meta.date'         => 'nullable|date'  
+            'details'           => 'required_if:type,reimbursement|string|between:1,1000',
+            'amount'            => 'required_if:type,reimbursement|numeric',
+            'tax'               => 'required_if:type,reimbursement|string|in:Incl,Excl',
+            'date'              => 'required_if:type,reimbursement|date',
+
+            // Attachments
+            'attachments'       => 'nullable|array',
+            'attachments.*'     => 'mimes:jpg,jpeg,png,doc,xls,pdf|max:5120'
         ];
     }
 

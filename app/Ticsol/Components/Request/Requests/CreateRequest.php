@@ -32,15 +32,19 @@ class CreateRequest extends FormRequest
             'status'            => 'required|string|in:submitted',            
             
             // Leave            
-            'meta.leave_type'   => 'required_if:type,leave|string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
-            'meta.from'         => 'required_if:type,leave|date',
-            'meta.till'         => 'required_if:type,leave|date|after:meta.from',
+            'leave_type'        => 'required_if:type,leave|string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
+            'from'              => 'required_if:type,leave|date',
+            'till'              => 'required_if:type,leave|date|after:from',
 
             // Reimbursement
-            'meta.details'      => 'required_if:type,reimbursement|string',
-            'meta.amount'       => 'required_if:type,reimbursement|numeric',
-            'meta.tax'          => 'required_if:type,reimbursement|string',
-            'meta.date'         => 'required_if:type,reimbursement|date'            
+            'details'           => 'required_if:type,reimbursement|string|between:1,1000',
+            'amount'            => 'required_if:type,reimbursement|numeric',
+            'tax'               => 'required_if:type,reimbursement|string|in:Incl,Excl',
+            'date'              => 'required_if:type,reimbursement|date',
+            
+            // Attachments
+            'attachments'       => 'nullable|array|max:5',
+            'attachments.*'     => 'mimes:jpg,jpeg,png,doc,docx,xls,xlsx,pdf|max:5120'
         ];
     }
 

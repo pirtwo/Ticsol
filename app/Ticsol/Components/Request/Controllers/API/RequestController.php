@@ -4,7 +4,9 @@ namespace App\Ticsol\Components\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Schedule;
@@ -76,26 +78,49 @@ class RequestController extends Controller
 
         $req = new RequestModel();
         $schedule = new Schedule();
-        $client_id = $request->user()->client_id;
-        $user_id = $request->user()->id;
+        $clientId = $request->user()->client_id;
+        $userId = $request->user()->id;
 
         try {
             DB::beginTransaction();
 
-            $req->client_id = $client_id;
-            $req->user_id = $user_id;
-            $req->fill($request->all());
+            $req->client_id = $clientId;
+            $req->user_id = $userId;
+            $req->fill($request->all()); 
 
+            // check for attachments
+            $attachments = $this->storeAttachments($request->attachments, "{$clientId}/{$userId}");            
+
+            // set meta data
+            if ($request->input("type") === "leave") {
+                $req->meta = [
+                    "leave_type" => $request->input("leave_type"),
+                    "from" => $request->input("from"),
+                    "till" => $request->input("till"),
+                    "attachments" => $attachments
+                ];
+            } elseif ($request->input("type") === "reimbursement") {
+                $req->meta = [
+                    "details" => $request->input("details"),
+                    "amount" => $request->input("amount"),
+                    "tax" => $request->input("tax"),
+                    "date" => $request->input("date"),
+                    "attachments" => $attachments
+                ];
+            }
+
+            // check the request type
+            // if type == leave then create the related schedule item.
             if ($request->input('type') == 'leave') {
-                $schedule->client_id = $client_id;
-                $schedule->creator_id = $user_id;
+                $schedule->client_id = $clientId;
+                $schedule->creator_id = $userId;
                 $schedule->fill([
                     'user_id' => $request->user()->id,
                     'status' => 'tentative',
                     'type' => 'schedule',
                     'event_type' => 'leave',
-                    'start' => $request->input('meta.from'),
-                    'end' => $request->input('meta.till'),
+                    'start' => $request->input('from'),
+                    'end' => $request->input('till'),
                 ]);
                 $schedule->save();
                 $req->schedule()->associate($schedule);
@@ -149,48 +174,62 @@ class RequestController extends Controller
      */
     public function update(Requests\UpdateRequest $request, $id)
     {
+        $clientId = $request->user()->client_id;
+        $userId = $request->user()->id;
+
         $req = $this->repository->find($id);
         if ($req == null) {
             throw new NotFound();
         }
-
-        if ($request->has('status') && 
-            $request->input('status') == 'approved' || 
-            $request->input('status') == 'rejected') {
-
-            //----------------------------
-            //      AUTHORIZE Approve
-            //----------------------------
-            $this->authorize('approve', $req);
-
-        } else {
-            //----------------------------
-            //      AUTHORIZE ACTION
-            //----------------------------
-            $this->authorize('update', $req);
-        }
+        
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $req);
 
         try {
-
             DB::beginTransaction();
 
             if ($req->type == 'leave') {
                 $schedule = $req->schedule;
                 $schedule->update([
-                    'status' => $request->input('meta.status', 'tentative'),
-                    'start' => $request->input('meta.from'),
-                    'end' => $request->input('meta.till'),
+                    'status' => $request->input('leave_status', 'tentative'),
+                    'start' => $request->input('from'),
+                    'end' => $request->input('till'),
                 ]);
             }
 
             $req->update($request->all());
 
+            // check for attachments
+            $attachments = $this->storeAttachments($request->attachments, "{$clientId}/{$userId}"); 
+
+            // set meta data
+            if ($request->input("type") === "leave") {
+                $req->meta = [
+                    "leave_type" => $request->input("leave_type"),
+                    "from" => $request->input("from"),
+                    "till" => $request->input("till"),
+                    "attachments" => $attachments
+                ];
+            } elseif ($request->input("type") === "reimbursement") {
+                $req->meta = [
+                    "details" => $request->input("details"),
+                    "amount" => $request->input("amount"),
+                    "tax" => $request->input("tax"),
+                    "date" => $request->input("date"),
+                    "attachments" => $attachments
+                ];
+            }
+
+            $req->save();
+
             DB::commit();
 
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
-        }
+        }        
 
         event(new RequestEvents\RequestUpdated($req));
 
@@ -199,7 +238,7 @@ class RequestController extends Controller
         }
 
         return $req;
-    }
+    }    
 
     /**
      * Remove the specified resource from storage.
@@ -210,5 +249,81 @@ class RequestController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function approve(Request $request, $id)
+    {
+        $req = $this->repository->find($id);
+        if ($req == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE Approve
+        //----------------------------
+        $this->authorize('approve', $req);
+
+        $req->update(['status' => 'approved']);
+
+        return $req;
+    }
+
+    public function reject(Request $request, $id)
+    {
+        $req = $this->repository->find($id);
+        if ($req == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE Approve
+        //----------------------------
+        $this->authorize('approve', $req);
+
+        $req->update(['status' => 'rejected']);
+
+        return $req;
+    }
+
+    public function attachment(Request $request, $reqId, $fileId)
+    {
+        $req = $this->repository->find($reqId);
+        if ($req == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE Approve
+        //----------------------------
+        //$this->authorize('attachment', $req);
+
+        $attachment = collect($req->meta["attachments"]);
+        
+        $attachment = $attachment->first(function ($value, $key) use ($fileId) {
+            return $value["id"] === $fileId;
+        });
+
+        return Storage::download($attachment["path"]);
+
+    }
+
+    protected function storeAttachments($files, $directory)
+    {
+        $fs = new \Illuminate\Filesystem\Filesystem();
+        $attachments = [];
+
+        for ($i = 0; $i < \sizeof($files); $i++) {            
+            $attachment = new \stdClass;            
+            $path = $files[$i]->store($directory);
+            
+            // populate and add to attachments
+            $attachment->id = $fs->name($path);
+            $attachment->extension = $fs->extension($path);
+            $attachment->size = Storage::size($path);
+            $attachment->path = $path;
+            $attachments[] = $attachment;
+        }
+
+        return $attachments;
     }
 }

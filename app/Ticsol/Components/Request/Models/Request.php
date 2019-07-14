@@ -30,7 +30,6 @@ class Request extends Model
 
         // submitted, approved, rejected, draft
         'status',
-        'meta',
     ];
 
     /**
