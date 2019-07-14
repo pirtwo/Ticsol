@@ -16,7 +16,9 @@
         </button>
       </div>
       <div class="panel-body">
+        <!-- Create Job Form -->
         <form>
+          <!-- Title -->
           <div class="form-group">
             <div class="form-row">
               <label class="col-sm-2 col-form-label col-form-label-sm">Title</label>
@@ -26,13 +28,20 @@
                   name="title" 
                   id="title" 
                   type="text" 
-                  class="form-control form-control-sm" 
+                  :class="[{'is-invalid' : $v.form.title.$error } ,'form-control']"
                   placeholder="job title"
                 >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.title.required"
+                >
+                  Title is required.
+                </div>
               </div>
             </div>
           </div>
 
+          <!-- Code -->
           <div class="form-group">
             <div class="form-row">
               <label class="col-sm-2 col-form-label col-form-label-sm">Code</label>
@@ -42,13 +51,20 @@
                   name="code" 
                   id="code" 
                   type="text" 
-                  class="form-control form-control-sm" 
+                  :class="[{'is-invalid' : $v.form.code.$error } ,'form-control']"
                   placeholder="display code"
                 >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.code.required"
+                >
+                  Code is required.
+                </div>
               </div>
             </div>
           </div>
 
+          <!-- Parent -->
           <div class="form-group">
             <div class="form-row">
               <label class="col-sm-2 col-form-label col-form-label-sm">Parent</label>
@@ -67,6 +83,7 @@
             </div>
           </div>                
 
+          <!-- IsActive --> 
           <div class="form-group">
             <div class="form-row">
               <label class="col-sm-2 col-form-label col-form-label-sm">Status</label>
@@ -124,13 +141,12 @@
 </template>
 
 <script>
+
+import { required } from "vuelidate/lib/validators";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CreateJobModal",
-
-  components: {
-  },
 
   props: {
     jobName: {
@@ -158,6 +174,13 @@ export default {
     };
   },
 
+  validations:{
+    form:{
+      title: { required },
+      code: { required }
+    }
+  },
+
   watch: {
     value: function(value) {
       this.show = value;
@@ -176,10 +199,6 @@ export default {
     }
   },
 
-  mounted() {
-    //
-  },
-
   methods: {
     ...mapActions({
       fetch: "resource/list",
@@ -189,37 +208,53 @@ export default {
     onShow() {},
 
     onHide() {
+      this.clearForm();
       this.show = false;
       this.$emit("input", this.show);
     },
 
     onSubmit(e) {
-      e.target.disabled = true;
-      e.target.innerHTML = "Saving...";
+      e.preventDefault();
+      e.target.disabled = true;      
 
-      let newJob = {};
-      newJob.title = this.form.title;
-      newJob.code = this.form.code;
-      newJob.parent_id = this.form.parent.key;
-      newJob.form_id = this.form.form_id;
-      newJob.isactive = this.form.isactive;
-      newJob.meta = this.form.meta;
+      // Validate
+      this.$v.$touch();
+      if(this.$v.$invalid){
+        e.target.disabled = false;
+        return;
+      }
+
+      // Populate form data
+      let form = {};
+      form.title = this.form.title;
+      form.code = this.form.code;
+      form.parent_id = this.form.parent.key;
+      form.form_id = this.form.form_id;
+      form.isactive = this.form.isactive;
+      form.meta = this.form.meta;
       
-      this.create({ resource: "job", data: newJob })
-        .then(respond => {
-          e.target.disabled = false;
-          e.target.innerHTML = "Save";
+      e.target.innerHTML = "Saving...";
+      this.create({ resource: "job", data: form })
+        .then(respond => {          
           console.log("job created successfuly");
           this.onHide();
         })
         .catch(error => {
-          e.target.disabled = false;
-          e.target.innerHTML = "Save";
           console.log(error.response.data);
           this.$formFeedback(error.response.data.errors);
+        })
+        .finally(()=>{
+          e.target.disabled = false;
+          e.target.innerHTML = "Save";
         });
+    },
 
-      e.preventDefault();
+    clearForm(){
+      this.form.title = "";
+      this.form.code = "";
+      this.form.parent = null;
+      this.form.isactive = 1;
+      this.$v.form.$reset();
     }
   }
 };

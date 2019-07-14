@@ -87,6 +87,54 @@
     </template>
 
     <template slot="content">
+      <!-- Validation Summary -->
+      <div
+        v-if="$v.gridData.$error"
+        class="alert alert-danger"
+        role="alert"
+      >
+        <b class="alert-heading">Fix these problems:</b>
+        <ul>
+          <li v-if="!$v.gridData.required">
+            Timesheets are required.
+          </li>
+          <template
+            v-for="(item, index) in $v.gridData.$each.$iter"            
+          >
+            <li
+              v-if="item.$invalid"
+              :key="index"
+            >
+              <div>
+                Row #{{ 1 + (+index) }}:
+              </div>
+              <div v-if="!item.date.required">
+                Day is required.
+              </div>
+              <div v-if="!item.job.required">
+                Job is required.
+              </div>
+              <div v-if="!item.startTime.required">
+                Start time is required.
+              </div>
+              <div v-if="!item.endTime.required">
+                End time is required.
+              </div>
+              <div v-if="!item.break_length.required">
+                Break length is required.
+              </div>
+            </li>
+          </template>
+        </ul>
+        <hr>
+        <p
+          class="mb-0"
+        >
+          Your timesheet list have some errors. Fix them to be able to save the timesheet.
+        </p>
+      </div>
+
+      <!-- Timesheets Grid View -->
       <ts-grid
         v-model="gridData"
         :columns="columns"
@@ -97,12 +145,6 @@
             <template v-if="item.date">
               {{ item.date.value }}
             </template>
-            <ts-icon
-              v-else
-              :icon="'error'"
-              class="text-danger"
-              title="Field is required"
-            />
           </td>
           <td>
             <router-link
@@ -112,45 +154,21 @@
             >
               <span>{{ item.job.value }}</span>
             </router-link>
-            <ts-icon
-              v-else
-              :icon="'error'"
-              class="text-danger"
-              title="Field is required"
-            />
           </td>
           <td>
             <template v-if="item.startTime">
               {{ item.startTime }}
             </template>
-            <ts-icon
-              v-else
-              :icon="'error'"
-              class="text-danger"
-              title="Field is required"
-            />
           </td>
           <td>
             <template v-if="item.endTime">
               {{ item.endTime }}
             </template>
-            <ts-icon
-              v-else
-              :icon="'error'"
-              class="text-danger"
-              title="Field is required"
-            />
           </td>
           <td>
             <template v-if="item.break_length">
               {{ item.break_length.slice(0,5) }}
             </template>
-            <ts-icon
-              v-else
-              :icon="'error'"
-              class="text-danger"
-              title="Field is required"
-            />
           </td>
           <td>{{ workHours(item).slice(0,5) }}</td>
         </template>
@@ -275,10 +293,17 @@
               <ts-select
                 v-model="approver"
                 :data="users"
+                :class="[{'is-invalid' : $v.approver.$error } ,'form-control']"
                 id="assigned_id"
                 placeholder="Select approver..."
                 search-placeholder="search..."
               />
+              <div
+                class="invalid-feedback"
+                v-if="!$v.approver.required"
+              >
+                Approver is required.
+              </div>
             </div>
           </div>
         </div>
@@ -389,7 +414,7 @@
 
 <script>
 import moment from "moment";
-
+import { required, requiredIf } from "vuelidate/lib/validators";
 import { mapActions, mapGetters } from "vuex";
 import pageMixin from "../../../../mixins/page-mixin";
 import Editor from "@tinymce/tinymce-vue";
@@ -433,6 +458,20 @@ export default {
         { value: "End", orderBy: "endTime" }
       ]
     };
+  },
+
+  validations: {
+    approver: { required: requiredIf(function(){ return this.approverModal; }) },
+    gridData: {
+      required,
+      $each: {
+        date: { required },
+        job: { required },
+        startTime: { required },
+        endTime: { required },
+        break_length: { required }
+      }
+    }
   },
 
   watch: {
@@ -515,13 +554,13 @@ export default {
 
     weekStart: function() {
       if (this.start)
-        return moment(this.start, ["YYYY-MM-DD"]).format("YYYY-MM-DDTHH:mm:ss");
+        return moment(this.start, ["YYYY-MM-DD"]).startOf("d").format("YYYY-MM-DDTHH:mm:ss");
       return this.week.start.format("YYYY-MM-DDTHH:mm:ss");
     },
 
     weekEnd: function() {
       if (this.end)
-        return moment(this.end, ["YYYY-MM-DD"]).format("YYYY-MM-DDTHH:mm:ss");
+        return moment(this.end, ["YYYY-MM-DD"]).endOf("d").format("YYYY-MM-DDTHH:mm:ss");
       return this.week.end.format("YYYY-MM-DDTHH:mm:ss");
     },
 
@@ -563,13 +602,13 @@ export default {
     }),
 
     async initView(vm) {
-      console.log("init view...");
       vm.startLoading();
       vm.status = "-";
       vm.approver = null;
 
       await vm.loadAssets();
       await vm.loadTimesheet();
+      vm.stopLoading();
     },
 
     loadAssets() {
@@ -587,8 +626,6 @@ export default {
     },
 
     loadTimesheet() {
-      this.startLoading();
-
       return new Promise((resolve, reject) => {
         let p1 = this.list({
           resource: "timesheet",
@@ -617,8 +654,7 @@ export default {
               {
                 opt: "inRange",
                 col: "",
-                val: `${this.start || this.weekStart},${this.end ||
-                  this.weekEnd}`
+                val: `${this.weekStart},${this.weekEnd}`
               }
             ]
           )
@@ -626,7 +662,6 @@ export default {
 
         Promise.all([p1, p2])
           .then(() => {
-            this.stopLoading();
             this.gridData = this.mapedTimesheetElements;
             resolve();
           })
@@ -636,7 +671,9 @@ export default {
       });
     },
 
-    // Maps timesheet or schedule items for current grid view.
+    /**
+     * Maps timesheet or schedule items for current grid view.
+     */
     mapElementsForView(list) {
       let day = null;
       let items = [];
@@ -655,10 +692,10 @@ export default {
           let end = moment(item.end, ["YYYY-MM-DD HH:mm:ss"]);
 
           if (
-            (start.isBetween(dayStart, dayEnd, null, "[]") ||
-            end.isBetween(dayStart, dayEnd, null, "[]")) ||
+            start.isBetween(dayStart, dayEnd, null, "[]") ||
+            end.isBetween(dayStart, dayEnd, null, "[]") ||
             (dayStart.isBetween(start, end, null, "[]") ||
-            dayEnd.isBetween(start, end, null, "[]"))
+              dayEnd.isBetween(start, end, null, "[]"))
           ) {
             let timesheet = {};
             timesheet.id = uuid();
@@ -676,8 +713,11 @@ export default {
     },
 
     onDateChange() {
-      console.log("date set complete.");
-      this.loadTimesheet();
+      // clear validation messages
+      this.$v.gridData.$reset();
+
+      this.startLoading();
+      this.loadTimesheet().then(() => this.stopLoading());
     },
 
     canEdit() {
@@ -718,22 +758,47 @@ export default {
       this.gridData = newList;
     },
 
-    onSubmit(e) {
-      if (this.timesheet) {
-        this.updateTimesheet("submitted", this.comment);
-      } else {
-        this.createTimesheet("submitted", this.comment);
+    async onSubmit(e) {
+      e.preventDefault();
+      e.target.disabled = true;
+
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
       }
 
+      if (this.timesheet) {
+        await this.updateTimesheet("submitted", this.comment);
+      } else {
+        await this.createTimesheet("submitted", this.comment);
+      }
+
+      if (this.comment) {
+        await this.createComment(this.timesheet.id, this.comment);
+      }
+
+      e.target.disabled = false;
       this.approverModal = false;
     },
 
-    onSave(e) {
-      if (this.timesheet) {
-        this.updateTimesheet("draft");
-      } else {
-        this.createTimesheet("draft");
+    async onSave(e) {
+      e.preventDefault();
+      e.target.disabled = true;
+
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
       }
+
+      if (this.timesheet) {
+        await this.updateTimesheet("draft");
+      } else {
+        await this.createTimesheet("draft");
+      }
+
+      e.target.disabled = false;
     },
 
     onCancel() {
@@ -741,84 +806,85 @@ export default {
     },
 
     createComment(timesheetId, comment) {
-      this.create({
-        resource: "comment",
-        data: {
-          entity: "timesheet",
-          parent_id: this.parentId,
-          body: comment,
-          timesheet_id: timesheetId
-        }
-      })
-        .then(() => {
-          console.log("comment creataed successfuly...");
-          this.comment = "";
-        })
-        .catch(error => {
-          console.log(error);
-          this.showMessage(error.message, "danger");
-        });
-    },
-
-    createTimesheet(status, comment = "") {
-      console.log(`create timesheet with status: ${status}`);
-      this.create({
-        resource: "timesheet",
-        data: {
-          locale: window.navigator.language,
-          year: this.weekYear,
-          status: status,
-          assigned_id: this.approver ? this.approver.key : null,
-          week_start: this.weekStart.slice(0,10),
-          week_end: this.weekEnd.slice(0,10),
-          week_number: this.weekNumber,
-          total_hours: this.totalHours,
-          items: this.getTimesheetItems()
-        }
-      })
-        .then(data => {
-          this.showMessage(
-            `${
-              status == "draft"
-                ? "Draft created successfuly."
-                : "Timesheet submitted successfuly."
-            }`,
-            "success"
-          );
-
-          if (comment) {
-            console.log("sending comment...");
-            this.createComment(data.id, comment);
+      return new Promise((resolve, reject) => {
+        this.create({
+          resource: "comment",
+          data: {
+            entity: "timesheet",
+            parent_id: this.parentId,
+            body: comment,
+            timesheet_id: timesheetId
           }
         })
-        .catch(error => {
-          this.showMessage(error.message, "danger");
-        });
+          .then(() => {
+            console.log("comment creataed successfuly...");
+            this.comment = "";
+            resolve();
+          })
+          .catch(error => {
+            console.log(error);
+            this.showMessage(error.message, "danger");
+            reject();
+          });
+      });
     },
 
-    updateTimesheet(status, comment = "") {
-      console.log(`update timesheet with status: ${status}`);
-      this.update({
-        resource: "timesheet",
-        id: this.timesheet.id,
-        data: {
-          status: status,
-          assigned_id: this.approver ? this.approver.key : null,
-          total_hours: this.totalHours,
-          items: this.getTimesheetItems()
-        }
-      })
-        .then(data => {
-          this.showMessage(`Timesheet updated successfuly.`, "success");
-
-          if (comment) {
-            console.log("sending comment...");
-            this.createComment(data.id, comment);
+    createTimesheet(status) {
+      return new Promise((resolve, reject) => {
+        this.create({
+          resource: "timesheet",
+          data: {
+            locale: window.navigator.language,
+            year: this.weekYear,
+            status: status,
+            assigned_id: this.approver ? this.approver.key : null,
+            week_start: this.weekStart.slice(0, 10),
+            week_end: this.weekEnd.slice(0, 10),
+            week_number: this.weekNumber,
+            total_hours: this.totalHours,
+            items: this.getTimesheetItems()
           }
         })
-        .catch(error => {
-          this.showMessage(error.message, "danger");
-        });
+          .then(data => {
+            this.showMessage(
+              `${
+                status == "draft"
+                  ? "Draft created successfuly."
+                  : "Timesheet submitted successfuly."
+              }`,
+              "success"
+            );
+
+            resolve();
+          })
+          .catch(error => {
+            this.showMessage(error.message, "danger");
+            reject();
+          });
+      });
+    },
+
+    updateTimesheet(status) {
+      return new Promise((resolve, reject) => {
+        this.update({
+          resource: "timesheet",
+          id: this.timesheet.id,
+          data: {
+            status: status,
+            assigned_id: this.approver ? this.approver.key : null,
+            total_hours: this.totalHours,
+            items: this.getTimesheetItems()
+          }
+        })
+          .then(data => {
+            this.showMessage(`Timesheet updated successfuly.`, "success");
+            resolve();
+          })
+          .catch(error => {
+            this.showMessage(error.message, "danger");
+            reject();
+          });
+      });
     },
 
     updateRequest(status) {

@@ -273,7 +273,6 @@ import { mapGetters, mapActions } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import FormGen from "../../../base/formGenerator/BaseFormGenerator";
-import { Promise } from 'q';
 
 export default {
   name: "JobModify",

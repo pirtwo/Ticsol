@@ -61,9 +61,15 @@
                     v-model="form.name"
                     id="name"
                     type="text"
-                    class="form-control"
+                    :class="[{'is-invalid' : $v.form.name.$error } ,'form-control']"
                     placeholder="Please enter team name here..."
                   >
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.form.name.required"
+                  >
+                    Team name is required.
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,6 +149,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { required } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
@@ -164,6 +171,12 @@ export default {
         { value: "Teams", orderBy: "teams" }
       ]
     };
+  },
+
+  validations: {
+    form: {
+      name: { required }
+    }
   },
 
   watch: {
@@ -192,7 +205,13 @@ export default {
      */
     users: function() {
       return this.getList("user").map(item => {
-        return { key: item.id, value: item.fullname, pic: item.meta.avatar, fullname:item.fullname, teams: item.teams };
+        return {
+          key: item.id,
+          value: item.fullname,
+          pic: item.meta.avatar,
+          fullname: item.fullname,
+          teams: item.teams
+        };
       });
     },
 
@@ -262,18 +281,23 @@ export default {
     /**
      * Create a new team with form data.
      */
-    onSubmit(e) {
-      this.startLoading();
+    onSubmit(e) {      
       e.preventDefault();
       e.target.disabled = true;
 
       // validate
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
 
       // Set request body
       let form = {};
       form.name = this.form.name;
       form.users = this.form.users.map(item => item.key);
 
+      this.startLoading();
       this.create({ resource: "team", data: form })
         .then(() => {
           this.showMessage("<b>Team</b> created successfuly.", "success");
@@ -290,18 +314,23 @@ export default {
     /**
      * Update the current team with form data.
      */
-    onSave(e) {
-      this.startLoading();
+    onSave(e) {      
       e.preventDefault();
       e.target.disabled = true;
 
       // validate
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
 
       // Set request body
       let form = {};
       form.name = this.form.name;
       form.users = this.form.users.map(item => item.id);
 
+      this.startLoading();
       this.update({ resource: "team", id: this.id, data: form })
         .then(() => {
           this.showMessage("<b>Team</b> updated successfuly.", "success");
@@ -313,6 +342,10 @@ export default {
           e.target.disabled = false;
           this.stopLoading();
         });
+    },
+
+    clearForm() {      
+      this.$v.form.$reset();
     },
 
     onCancel(e) {

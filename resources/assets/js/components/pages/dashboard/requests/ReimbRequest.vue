@@ -8,20 +8,20 @@
 
     <template slot="drawer">
       <ul class="v-menu">
+        <!-- Actions -->
         <li class="menu-title">
           Actions
         </li>
-        <li>
-          <button class="btn">
+        <li v-if="!request">
+          <button
+            class="btn"
+            @click="clearForm"
+          >
             New
           </button>
         </li>
-        <li>
-          <button class="btn">
-            Suspend
-          </button>
-        </li>
-        <li>
+
+        <li v-if="!request">
           <button
             class="btn"
             @click="onSubmit"
@@ -29,36 +29,55 @@
             Submit
           </button>
         </li>
-        <li>
-          <button class="btn">
-            Cancel
+
+        <li v-if="canEdit()">
+          <button
+            class="btn"
+            @click="onSave"
+          >
+            Save
           </button>
         </li>
+
+        <li v-if="canEdit()">
+          <button
+            class="btn"
+            @click="onSave($event, 'suspended')"
+          >
+            Suspend
+          </button>
+        </li>
+
+        <li v-if="canApprove()">
+          <button
+            class="btn"
+            @click="onSave($event, 'approved')"
+          >
+            Approve
+          </button>
+        </li>
+
+        <li v-if="canApprove()">
+          <button
+            class="btn"
+            @click="onSave($event, 'rejected')"
+          >
+            Reject
+          </button>
+        </li>
+
         <li>
           <button class="btn">
             Print
           </button>
         </li>
+
+        <!-- Links -->
         <li class="menu-title">
           Links
         </li>
         <li>
-          <router-link :to="{ name: 'jobList' }">
-            Anuual Leave
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">
-            Sick Leave
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">
-            Reimbursement
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'jobList' }">
+          <router-link :to="{ name: 'inbox' }">
             History
           </router-link>
         </li>
@@ -66,70 +85,80 @@
     </template>
 
     <template slot="content">
+      <!-- Reimbursement Form -->
       <form>
+        <!-- Details -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Details</label>
             <div class="col-sm-10">
               <textarea
-                v-model="form.meta.details"                
+                v-model="form.details"
                 name="meta-details"
                 id="meta-details"
-                :class="[{'is-invalid' : $v.form.meta.details.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.details.$error } ,'form-control']"
                 rows="5"
               />
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.details.required"
+                v-if="!$v.form.details.required"
               >
-                Please enter a description.
+                Description is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.details.maxLength"
+              >
+                Description is too long, must be between 1-{{ $v.form.details.$params.maxLength.max }} characters.
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Amount -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Amount</label>
             <div class="col-sm-10">
               <input
-                v-model="form.meta.amount"
+                v-model="form.amount"
                 name="meta-amount"
                 id="meta-amount"
                 type="text"
-                :class="[{'is-invalid' : $v.form.meta.amount.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.amount.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.amount.required"
+                v-if="!$v.form.amount.required"
               >
-                Please enter a amount.
+                Amount is required.
               </div>
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.amount.decimal"
+                v-if="!$v.form.amount.decimal"
               >
                 Value must be a number.
               </div>
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.amount.between"
+                v-if="!$v.form.amount.between"
               >
-                Value must be btween 
-                {{ $v.form.meta.amount.$params.between.min }} and 
-                {{ $v.form.meta.amount.$params.between.max }}
+                Value must be btween
+                {{ $v.form.amount.$params.between.min }} and
+                {{ $v.form.amount.$params.between.max }}
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Tax -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Incl/Excl</label>
             <div class="col-sm-10">
               <div class="custom-control custom-radio custom-control-inline">
                 <input
-                  v-model="form.meta.tax"
+                  v-model="form.tax"
                   type="radio"
                   id="meta-tax1"
                   name="meta-tax"
@@ -144,7 +173,7 @@
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input
-                  v-model="form.meta.tax"
+                  v-model="form.tax"
                   type="radio"
                   id="meta-tax2"
                   name="meta-tax"
@@ -160,20 +189,21 @@
           </div>
         </div>
 
+        <!-- Date -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Date</label>
             <div class="col-sm-10">
               <input
-                v-model="form.meta.date"
+                v-model="form.date"
                 name="meta-date"
                 id="meta-date"
                 type="date"
-                :class="[{'is-invalid' : $v.form.meta.date.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.date.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
-                v-if="!$v.form.meta.date.required"
+                v-if="!$v.form.date.required"
               >
                 Please select a date.
               </div>
@@ -181,12 +211,13 @@
           </div>
         </div>
 
+        <!-- Job -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Expense To</label>
             <div class="col-sm-10">
               <ts-select
-                v-model="$v.form.job.$model"
+                v-model="form.job"
                 :data="jobs"
                 :class="[{'is-invalid' : $v.form.job.$error } ,'form-control']"
                 id="job_id"
@@ -203,12 +234,13 @@
           </div>
         </div>
 
+        <!-- Approver -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Approver</label>
             <div class="col-sm-10">
               <ts-select
-                v-model="$v.form.approver.$model"
+                v-model="form.approver"
                 :data="users"
                 :class="[{'is-invalid' : $v.form.approver.$error } ,'form-control']"
                 id="assigned_id"
@@ -225,6 +257,7 @@
           </div>
         </div>
 
+        <!-- Attachments -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Attachments</label>
@@ -251,7 +284,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { required, decimal, between } from "vuelidate/lib/validators";
+import { required, decimal, between, maxLength } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
@@ -263,16 +296,13 @@ export default {
 
   data() {
     return {
-      currRequest: {},
       form: {
         job: {},
         approver: {},
-        meta: {
-          tax: "Incl",
-          date: "",
-          details: "",
-          amount: ""
-        }
+        tax: "Incl",
+        date: "",
+        details: "",
+        amount: ""
       }
     };
   },
@@ -281,20 +311,33 @@ export default {
     form: {
       job: { required },
       approver: { required },
-      meta: {
-        tax: { required },
-        date: { required },
-        details: { required },
-        amount: { required, decimal, between: between(0, 1000000) }
-      }
+      tax: { required },
+      date: { required },
+      details: { required, maxLength: maxLength(1000) },
+      amount: { required, decimal, between: between(0, 1000000) }
+    }
+  },
+
+  watch: {
+    request: function(val) {
+      this.populateForm(val);
     }
   },
 
   computed: {
     ...mapGetters({
+      userId: "user/getId",
       getList: "resource/getList"
     }),
 
+    request: function() {
+      if (!this.id) return null;
+      return this.getList("request")[0];
+    },
+
+    /**
+     * List of the users with approve permission.
+     */
     users: function() {
       return this.getList("user").map(item => {
         return { key: item.id, value: item.name };
@@ -311,54 +354,112 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
+      vm.loadAssets();
     });
   },
 
-  beforeRouteLeave (to, from, next) {
-    this.clear('user');
-    this.clear('request');
+  beforeRouteLeave(to, from, next) {
+    this.clear("user");
+    this.clear("request");
     next();
-  },
-
-  mounted() {
-    this.startLoading();
-    let p1 = this.list({ resource: "job" });
-    let p2 = this.list({ resource: "user" });
-    let p3 = new Promise(resolve => resolve());
-    if (this.id)
-      p3 = this.show({ resource: "request", id: this.id }).then(data => {
-        this.currRequest = data;
-      });
-
-    Promise.all([p1, p2, p3])
-      .then(() => {
-        if (this.id) {
-          this.form.job = this.jobs.find(
-            item => item.key === this.currRequest.job_id
-          );
-          this.form.approver = this.users.find(
-            item => item.key === this.currRequest.assigned_id
-          );
-          this.form.meta.tax = this.currRequest.meta.tax;
-          this.form.meta.amount = this.currRequest.meta.amount;
-          this.form.meta.date = this.currRequest.meta.date;
-          this.form.meta.details = this.currRequest.meta.details;
-        }
-        this.stopLoading();
-      })
-      .catch(error => {
-        console.log(error);
-        this.stopLoading();
-      });
   },
 
   methods: {
     ...mapActions({
       clear: "resource/clearResource",
       list: "resource/list",
-      show: "resource/show",
-      create: "resource/create"
+      create: "resource/create",
+      update: "resource/update"
     }),
+
+    async loadAssets() {
+      this.startLoading();
+      let p1 = await this.list({ resource: "job" });
+      let p2 = await this.list({
+        resource: "user",
+        query: { in: "user.roles.permissions.name,approve-reimbursement" }
+      });
+      let p3 = this.id
+        ? this.list({ resource: "request", query: { eq: `id,${this.id}` } })
+        : new Promise(resolev => resolev());
+
+      Promise.all([p1, p2, p3]).finally(() => {
+        this.stopLoading();
+      });
+    },
+
+    populateForm(request) {
+      if (!request) return;
+      this.form.job = this.jobs.find(item => item.key === request.job_id);
+      this.form.approver = this.users.find(
+        item => item.key === request.assigned_id
+      );
+      this.form.tax = request.meta.tax;
+      this.form.amount = request.meta.amount;
+      this.form.date = request.meta.date;
+      this.form.details = request.meta.details;
+    },
+
+    clearForm() {
+      this.form.tax = "Incl";
+      this.form.amount = "";
+      this.form.date = "";
+      this.form.details = "";
+      this.form.job = null;
+      this.form.approver = null;
+      this.$v.form.$reset();
+    },
+
+    canEdit() {
+      if (!this.request) return false;
+      return this.request.user_id === this.userId;
+    },
+
+    canApprove() {
+      if (!this.request) return false;
+      return this.request.assigned_id === this.userId;
+    },
+
+    onSave(e, status = "submitted") {
+      e.preventDefault();
+      e.target.disabled = true;
+
+      // validate form
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
+
+      // populate form data
+      let form = {};
+      form.type = "reimbursement";
+      form.status = status;
+      form.job_id = this.form.job.key;
+      form.assigned_id = this.form.approver.key;
+      form.meta = {
+        tax: this.form.tax,
+        amount: this.form.amount,
+        date: this.form.date,
+        details: this.form.details
+      };
+
+      this.update({ resource: "request", id: this.id, data: form })
+        .then(respond => {
+          this.showMessage(
+            `Reimbursement request ${status} successfuly.`,
+            "success"
+          );
+        })
+        .catch(error => {
+          console.log(error.response);
+          this.showMessage(error.message, "danger");
+          this.$formFeedback(error.response.data.errors);
+        })
+        .finally(() => {
+          e.target.disabled = false;
+        });
+    },
 
     onSubmit(e) {
       e.preventDefault();
@@ -377,7 +478,12 @@ export default {
       form.status = "submitted";
       form.job_id = this.form.job.key;
       form.assigned_id = this.form.approver.key;
-      form.meta = this.form.meta;
+      form.meta = {
+        tax: this.form.tax,
+        amount: this.form.amount,
+        date: this.form.date,
+        details: this.form.details
+      };
 
       this.create({ resource: "request", data: form })
         .then(() => {
@@ -390,15 +496,15 @@ export default {
           console.log(error);
           this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
+        })
+        .finally(() => {
+          e.target.disabled = false;
         });
     },
 
-    clearForm() {
-      this.currentReq = {};
-      this.form.job = {};
-      this.form.approver = {};
-      this.form.meta = {};
-      this.$v.form.$reset();
+    onCancel(e) {
+      e.preventDefault();
+      this.$router.go(-1);
     }
   }
 };

@@ -11,7 +11,7 @@
         <li class="menu-title">
           Actions
         </li>
-        <li v-if="!this.id">
+        <li v-if="!activity">
           <button
             class="btn"
             @click="clearForm"
@@ -19,7 +19,7 @@
             New
           </button>
         </li>
-        <li v-if="!this.id">
+        <li v-if="!activity">
           <button
             class="btn"
             @click="onSubmit"
@@ -27,7 +27,7 @@
             Submit
           </button>
         </li>
-        <li v-if="this.id">
+        <li v-if="activity">
           <button
             class="btn"
             @click="onSave"
@@ -54,7 +54,7 @@
             Activities
           </router-link>
         </li>
-        <li v-if="this.id">          
+        <li v-if="activity">
           <router-link
             class="btn btn-link"
             :to="{ name : 'jobDetails', params : { id: activity.job_id } }"
@@ -66,6 +66,25 @@
     </template>
 
     <template slot="content">
+      <!-- Adress list validation summary -->
+      <div
+        v-if="$v.form.desc.$error"
+        class="alert alert-danger"
+        role="alert"
+      >
+        <b class="alert-heading">Fix these problems:</b>
+        <ul>
+          <li v-if="$v.form.desc.$error">
+            The report is required.
+          </li>
+        </ul>
+        <hr>
+        <p class="mb-0">
+          Your report have some errors. Fix them to be able to save the report.
+        </p>
+      </div>
+
+      <!-- Report Form -->
       <form>
         <div class="form-group">
           <div class="form-row">
@@ -75,6 +94,7 @@
                 v-model="scheduleItem"
                 :data="scheduleItems"
                 :class="[{'is-invalid' : $v.scheduleItem.$error } ,'form-control']"
+                @change="onScheduleChange"
                 id="schedule_id"
                 placeholder="Select the schedule..."
                 search-placeholder="search..."
@@ -97,13 +117,19 @@
                 id="from"
                 v-model="$v.form.fromDate.$model"
                 type="date"
-                :class="[{'is-invalid' : $v.form.fromDate.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.fromDate.$error || $v.from.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
                 v-if="!$v.form.fromDate.required"
               >
                 From date is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                v-if="!$v.from.between"
+              >
+                Must be between {{ $v.from.$params.between.min }} and {{ $v.from.$params.between.max }}
               </div>
             </div>
             <div class="col">
@@ -130,13 +156,19 @@
                 id="till"
                 v-model="$v.form.tillDate.$model"
                 type="date"
-                :class="[{'is-invalid' : $v.form.tillDate.$error } ,'form-control']"
+                :class="[{'is-invalid' : $v.form.tillDate.$error || $v.till.$error } ,'form-control']"
               >
               <div
                 class="invalid-feedback"
                 v-if="!$v.form.tillDate.required"
               >
                 Till date is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                v-if="!$v.till.between"
+              >
+                Must be between {{ $v.till.$params.between.min }} and {{ $v.till.$params.between.max }}
               </div>
             </div>
             <div class="col">
@@ -165,6 +197,12 @@
                 plugins="print fullscreen table image link lists advlist"
                 toolbar="formatselect | fontselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat"
               />
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.tillTime.required"
+              >
+                Report is required.
+              </div>
             </div>
           </div>
         </div>
@@ -174,13 +212,20 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import { required, between } from "vuelidate/lib/validators";
+import moment from "moment";
 import Editor from "@tinymce/tinymce-vue";
 import pageMixin from "../../../../mixins/page-mixin";
+import { mapActions, mapGetters } from "vuex";
+import { required, helpers } from "vuelidate/lib/validators";
+
+const between = (min, max) =>
+  helpers.withParams(
+    { type: "between", min: min, max: max },
+    value => value >= min && value <= max
+  );
 
 export default {
-  name: "ActivityCreate",
+  name: "ActivityModify",
 
   mixins: [pageMixin],
 
@@ -192,7 +237,6 @@ export default {
 
   data() {
     return {
-      activity: {},
       scheduleItem: {},
       form: {
         schedule_id: null,
@@ -205,26 +249,24 @@ export default {
     };
   },
 
-  validations: {
-    scheduleItem: { required },
-    form: {
-      fromDate: { required },
-      fromTime: { required },
-      tillDate: { required },
-      tillTime: { required }
-    }
+  validations() {
+    return {
+      scheduleItem: { required },
+      from: { between: between(this.scheduleStart, this.scheduleEnd) },
+      till: { between: between(this.scheduleStart, this.scheduleEnd) },
+      form: {
+        fromDate: { required },
+        fromTime: { required },
+        tillDate: { required },
+        tillTime: { required },
+        desc: { required }
+      }
+    };
   },
 
   watch: {
-    scheduleItem: function(value) {    
-      if(!value) return;  
-      this.form.schedule_id = value.key;
-      if (value !== null && value !== undefined) {
-        this.form.fromDate = value.start.slice(0, 10);
-        this.form.fromTime = value.start.slice(11, 16);
-        this.form.tillDate = value.end.slice(0, 10);
-        this.form.tillTime = value.end.slice(11, 16);
-      }
+    activity: function(val) {
+      this.populateForm(val);
     }
   },
 
@@ -233,6 +275,33 @@ export default {
       getList: "resource/getList"
     }),
 
+    activity: function() {
+      if(!this.id) return null;
+      return this.getList("activity")[0];
+    },
+
+    from: function() {
+      return moment(this.form.fromDate + " " + this.form.fromTime).format(
+        "YYYY-MM-DD HH:mm"
+      );
+    },
+
+    till: function() {
+      return moment(this.form.tillDate + " " + this.form.tillTime).format(
+        "YYYY-MM-DD HH:mm"
+      );
+    },
+
+    scheduleStart: function() {
+      if (!this.scheduleItem) return "";
+      return moment(this.scheduleItem.start).format("YYYY-MM-DD HH:mm");
+    },
+
+    scheduleEnd: function() {
+      if (!this.scheduleItem) return "";
+      return moment(this.scheduleItem.end).format("YYYY-MM-DD HH:mm");
+    },
+
     scheduleItems: function() {
       return this.getList("schedule").map(obj => {
         return {
@@ -240,163 +309,171 @@ export default {
           end: obj.end,
           job: obj.job,
           key: obj.id,
-          value:
-            new Date(obj.start.slice(0, 10)).toLocaleString("en-AU", {
-              day: "2-digit",
-              month: "short"
-            }) +
-            " - " +
-            obj.job.title
+          value: `${moment(obj.start).format("DD MMM")} - ${obj.job.title}`
         };
       });
     }
   },
 
-  beforeRouteEnter(to, from, next) {     
+  beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
+      vm.loadAssets();
     });
   },
-  
-  created(){    
-    this.clear('schedule');
-  },
 
-  mounted() {
-    this.startLoading();
-
-    let activity = null;
-    let p1 = this.id
-      ? this.show({
-          resource: "activity",
-          id: this.id,
-          query: { with: "job" }
-        }).then(respond => {
-          this.activity = respond;
-          activity = respond;
-        })
-      : new Promise(resolve => resolve());
-
-    let p2 = this.list({
-      resource: "schedule",
-      query: this.$queryBuilder(
-        null,
-        null,
-        ["job"],
-        [
-          { opt: "eq", col: "type", val: "schedule" },
-          { opt: "eq", col: "event_type", val: "scheduled" },
-          { opt: "ob", col: "start", val: "desc" }
-        ]
-      )
-    });
-
-    Promise.all([p1, p2])
-      .then(() => {
-        if (this.id) {
-          this.scheduleItem = this.scheduleItems.find(
-            item => item.key === activity.schedule_id
-          );
-          this.form.schedule_id = activity.schedule_id;
-          this.form.fromDate = activity.from.slice(0, 10);
-          this.form.fromTime = activity.from.slice(11, 16);
-          this.form.tillDate = activity.till.slice(0, 10);
-          this.form.tillTime = activity.till.slice(11, 16);
-          this.form.desc = activity.desc;
-        }
-
-        this.stopLoading();
-      })
-      .catch(error => {
-        console.log(error);
-        this.stopLoading();
-      });
+  beforeRouteLeave(to, from, next) {
+    this.clear("activity");
+    this.clear("schedule");
+    next();
   },
 
   methods: {
     ...mapActions({
-      show: "resource/show",
       list: "resource/list",
       create: "resource/create",
       update: "resource/update",
       clear: "resource/clearResource"
     }),
 
+    async loadAssets() {
+      this.startLoading();
+
+      let p1 = await this.list({
+        resource: "schedule",
+        query: this.$queryBuilder(
+          null,
+          null,
+          ["job"],
+          [
+            { opt: "eq", col: "type", val: "schedule" },
+            { opt: "eq", col: "event_type", val: "scheduled" },
+            { opt: "ob", col: "start", val: "desc" }
+          ]
+        )
+      });
+
+      let p2 = this.id
+        ? this.list({
+            resource: "activity",
+            id: this.id,
+            query: { with: "job" }
+          })
+        : new Promise(resolve => resolve());      
+
+      Promise.all([p1, p2]).finally(() => {
+        this.stopLoading();
+      });
+    },
+
+    /**
+     * Fill the form with current model.
+     */
+    populateForm(activity) {
+      this.scheduleItem = this.scheduleItems.find(
+        item => item.key === activity.schedule_id
+      );
+      this.form.schedule_id = activity.schedule_id;
+      this.form.fromDate = activity.from.slice(0, 10);
+      this.form.fromTime = activity.from.slice(11, 16);
+      this.form.tillDate = activity.till.slice(0, 10);
+      this.form.tillTime = activity.till.slice(11, 16);
+      this.form.desc = activity.desc;
+    },
+
+    /**
+     * Populate date fields when schedule changes.
+     */
+    onScheduleChange(value){
+      this.form.schedule_id = value.key;
+      if (value !== null && value !== undefined) {
+        this.form.fromDate = value.start.slice(0, 10);
+        this.form.fromTime = value.start.slice(11, 16);
+        this.form.tillDate = value.end.slice(0, 10);
+        this.form.tillTime = value.end.slice(11, 16);
+      }
+    },
+
+    /**
+     * Handler for submit button click.
+     */
     onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
 
+      // Validate
       this.$v.$touch();
       if (this.$v.$invalid) {
         e.target.disabled = false;
         return;
       }
 
+      // Populate request body
       let form = {};
       form.schedule_id = this.form.schedule_id;
       form.job_id = this.scheduleItem.job.id;
-      form.from =
-        this.form.fromDate +
-        "T" +
-        (this.form.fromTime == "" ? "00:00" : this.form.fromTime);
-      form.till =
-        this.form.tillDate +
-        "T" +
-        (this.form.tillTime == "" ? "00:00" : this.form.tillTime);
+      form.from = this.from;
+      form.till = this.till;
       form.desc = this.form.desc;
+
       this.create({ resource: "activity", data: form })
-        .then(() => {
-          e.target.disabled = false;
+        .then(() => {          
           this.showMessage(
             `Report <b>${this.scheduleItem.value}</b> created successfuly.`,
             "success"
           );
         })
         .catch(error => {
-          e.target.disabled = false;
           this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
+        })
+        .finally(()=>{
+          e.target.disabled = false;
         });
     },
 
+    /**
+     * Handler for save button click.
+     */
     onSave(e) {
       e.preventDefault();
       e.target.disabled = true;
 
+      // Validate
       this.$v.$touch();
       if (this.$v.$invalid) {
         e.target.disabled = false;
         return;
       }
 
+      // Populate request body
       let form = {};
       form.schedule_id = this.form.schedule_id;
       form.job_id = this.activity.job_id;
-      form.from =
-        this.form.fromDate +
-        "T" +
-        (this.form.fromTime == "" ? "00:00" : this.form.fromTime);
-      form.till =
-        this.form.tillDate +
-        "T" +
-        (this.form.tillTime == "" ? "00:00" : this.form.tillTime);
+      form.from = this.from;
+      form.till = this.till;
       form.desc = this.form.desc;
+
       this.update({ resource: "activity", id: this.id, data: form })
         .then(() => {
-          e.target.disabled = false;
           this.showMessage(
             `Report <b>${this.scheduleItem.value}</b> updated successfuly.`,
             "success"
           );
         })
         .catch(error => {
-          e.target.disabled = false;
           this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
+        })
+        .finally(()=>{
+          e.target.disabled = false;
         });
     },
 
-    clearForm() {         
+    /**
+     * Clear the form controls.
+     */
+    clearForm() {
       this.scheduleItem = null;
       this.form.fromDate = "";
       this.form.fromTime = "";
@@ -406,9 +483,12 @@ export default {
       this.$v.form.$reset();
     },
 
+    /**
+     * Handler for cancel button click.
+     */
     onCancel(e) {
       e.preventDefault();
-      this.$router.push({ name: "activityList" });
+      this.$router.go(-1);
     }
   }
 };

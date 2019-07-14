@@ -11,7 +11,7 @@
         <li class="menu-title">
           Actions
         </li>
-        <li v-if="!this.id">
+        <li v-if="!contact">
           <button
             class="btn"
             @click="clearForm"
@@ -19,7 +19,7 @@
             New
           </button>
         </li>
-        <li v-if="!this.id">
+        <li v-if="!contact">
           <button
             class="btn"
             @click="onSubmit"
@@ -27,7 +27,7 @@
             Submit
           </button>
         </li>
-        <li v-if="this.id">
+        <li v-if="contact">
           <button
             class="btn"
             @click="onSave"
@@ -58,6 +58,50 @@
     </template>
 
     <template slot="content">
+      <!-- Adress list validation summary -->
+      <div
+        v-if="$v.form.addresses.$error"
+        class="alert alert-danger"
+        role="alert"
+      >
+        <b class="alert-heading">Fix these problems:</b>
+        <ul>
+          <template v-for="(item, index) in $v.form.addresses.$each.$iter">
+            <li
+              :key="index"
+              v-if="item.$invalid"
+            >
+              <div>
+                Row #{{ 1 + (+index) }}:
+              </div>
+              <div v-if="!item.number.required">
+                Number is required.
+              </div>
+              <div v-if="!item.street.required">
+                Street is required.
+              </div>
+              <div v-if="!item.suburb.required">
+                Suburb is required.
+              </div>
+              <div v-if="!item.state.required">
+                State is required.
+              </div>
+              <div v-if="!item.country.required">
+                Country is required.
+              </div>
+              <div v-if="!item.postcode.required">
+                Post code is required.
+              </div>
+            </li>
+          </template>
+        </ul>
+        <hr>
+        <p class="mb-0">
+          Your address list have some errors. Fix them to be able to save the contact.
+        </p>
+      </div>
+
+      <!-- Contact form -->
       <form>
         <div class="form-group">
           <div class="form-row">
@@ -73,12 +117,15 @@
                   disabled
                 >
                   Select a group...
+                </option>                
+                <option value="customer">
+                  Customer
                 </option>
                 <option value="user">
                   User
                 </option>
-                <option value="customer">
-                  Customer
+                <option value="emergency">
+                  Emergency
                 </option>
               </select>
               <div
@@ -93,38 +140,19 @@
 
         <div
           class="form-group"
-          v-if="form.group === 'user'"
+          v-if="form.group !== 'customer' && form.group !== ''"
         >
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">User</label>
             <div class="col-sm-10">
-              <ts-select
-                v-model="user"
-                :data="users"
-                :multi="false"
-                :class="[{'is-invalid' : $v.form.user_id.$error } ,'']"
-                id="user"
+              <input
+                v-model="userFullname"
+                type="text"
+                class="form-control"
                 name="user"
-                placeholder="Select a user..."
-                search-placeholder="search..."
+                id="user"
+                readonly
               >
-                <template slot-scope="{ item }">
-                  <img
-                    :src="item.pic"
-                    :alt="`${item.value}-avatar`"
-                    class="rounded"
-                    width="30"
-                    height="30"
-                  >
-                  <span>&nbsp; {{ item.value }}</span>
-                </template>
-              </ts-select>
-              <div
-                class="invalid-feedback"
-                v-if="!$v.form.user_id.required"
-              >
-                User is required.
-              </div>
             </div>
           </div>
         </div>
@@ -373,9 +401,7 @@ export default {
   data() {
     return {
       place: {},
-      user: {},
       form: {
-        user_id: "",
         group: "",
         firstname: "",
         lastname: "",
@@ -395,97 +421,79 @@ export default {
     };
   },
 
-  validations() {
-    if (this.form.group === "user")
-      return {
-        form: {
-          group: { required },
-          user_id: { required },
-          firstname: { required },
-          lastname: { required },
-          mobilephone: { required }
+  validations: {
+    form: {
+      group: { required },
+      firstname: { required },
+      lastname: { required },
+      mobilephone: { required },
+      addresses: {
+        $each: {
+          number: { required },
+          street: { required },
+          suburb: { required },
+          state: { required },
+          country: { required },
+          postcode: { required }
         }
-      };
-    else
-      return {
-        form: {
-          group: { required },
-          firstname: { required },
-          lastname: { required },
-          mobilephone: { required }
-        }
-      };
+      }
+    }
   },
 
   watch: {
-    user: function(val) {
-      this.form.user_id = val.key;
+    contact: function(val) {
+      this.populateForm(val);
     }
   },
 
   computed: {
     ...mapGetters({
+      userFullname: "user/getFullname",
       getList: "resource/getList"
     }),
 
-    users: function() {
-      return this.getList("user").map(item => {
-        return { key: item.id, value: item.name, pic: item.meta.avatar };
-      });
+    contact:function(){
+      if(!this.id) return null;
+      return this.getList("contact")[0];
     }
   },
 
-  beforeRouteEnter(to, from, next) {    
+  beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
+      vm.loadAssets();
     });
   },
 
-  mounted() {
-    this.startLoading();
-    if (this.id) {
-      let p1 = this.fetchItem({
-        id: this.id,
-        resource: "contact",
-        query: { with: "addresses" }
-      }).then(respond => {
-        this.stopLoading();
-        this.form = Object.assign({}, this.form, respond);
-      });
-      let p2 = this.fetchList({ resource: "user" })
-        .then(() => {
-          this.stopLoading();
-        })
-        .catch(error => {
-          this.stopLoading();
-          console.log(error);
-        });
-      Promise.all([p1, p2])
-        .then(() => {
-          this.stopLoading();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      this.fetchList({ resource: "user" })
-        .then(() => {
-          this.stopLoading();
-        })
-        .catch(error => {
-          this.stopLoading();
-          console.log(error);
-        });
-    }
+  beforeRouteLeave(to, from, next) {
+    next();
   },
-
+ 
   methods: {
     ...mapActions({
+      clear: "resource/clearResource",
+      list: "resource/list",
       create: "resource/create",
-      update: "resource/update",
-      fetchList: "resource/list",
-      fetchItem: "resource/show"
-    }),    
+      update: "resource/update"
+    }),
+
+    async loadAssets() {
+      this.startLoading();
+      let p1 = this.id
+        ? this.list({
+            resource: "contact",
+            query: { eq: `id,${this.id}`, with: "addresses" }
+          })
+        : new Promise(resolve => resolve());
+
+      Promise.all([p1]).finally(() => {
+        this.stopLoading();
+      });
+    },
+
+    populateForm(contact) {
+      this.form = Object.assign({}, this.form, contact);
+    },
 
     placeChange(place, item) {
       this.$set(item, "number", place.street_number);
@@ -510,9 +518,7 @@ export default {
         .then(() => {
           e.target.disabled = false;
           this.showMessage(
-            `Contact <b>${this.form.firstname} ${
-              this.form.lastname
-            }</b> created successfuly.`,
+            `Contact <b>${this.form.firstname} ${this.form.lastname}</b> created successfuly.`,
             "success"
           );
         })
@@ -537,9 +543,7 @@ export default {
         .then(() => {
           e.target.disabled = false;
           this.showMessage(
-            `Contact <b>${this.form.firstname} ${
-              this.form.lastname
-            }</b> updated successfuly.`,
+            `Contact <b>${this.form.firstname} ${this.form.lastname}</b> updated successfuly.`,
             "success"
           );
         })
