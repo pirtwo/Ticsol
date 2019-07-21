@@ -58,16 +58,17 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof HttpResponseException) {
             return response()->json(['code' => 1001, 'error' => true, 'message' => $e->getMessage()], $e->status);
         } elseif ($e instanceof AuthenticationException) {
-            return response()->json(['code' => 1002, 'error' => true, 'message' => 'Unauthenticated.'], 401);
+            return $this->unauthenticated($request, $e);
         } elseif ($e instanceof AuthorizationException) {
             return response()->json(['code' => 1003, 'error' => true, 'message' => 'This action is unauthorized.'], 401);
         } elseif ($e instanceof ValidationException) {
-            return response()->json(['code' => 1004, 'error' => true, 'message' => $e->getMessage(), 'errors' => $e->errors()], $e->status);
+            return $this->convertValidationExceptionToResponse($e, $request);
         } elseif($e instanceof QueryException){
             return response()->json(['code' => 1006, 'error' => true, 'message' => 'Invalid query or field name.'], 400);
         }
 
         return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
+                
     }
 
     /**
@@ -80,9 +81,9 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()) {
-            return response()->json(['error' => 'Unauthenticated.'], 401);
+            return response()->json(['code' => 1002, 'error' => true, 'message' => 'Unauthenticated.'], 401);
         }
 
-        return redirect()->guest(route('home', ['any' => '/']));
+        return redirect()->guest(route('login', ['any' => '/']));
     }
 }

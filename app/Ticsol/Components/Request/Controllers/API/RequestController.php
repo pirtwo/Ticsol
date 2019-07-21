@@ -285,6 +285,9 @@ class RequestController extends Controller
         return $req;
     }
 
+    /**
+     * return the attachment of the request based on fileId and requestId.
+     */
     public function attachment(Request $request, $reqId, $fileId)
     {
         $req = $this->repository->find($reqId);
@@ -304,11 +307,14 @@ class RequestController extends Controller
         });
 
         return Storage::download($attachment["path"]);
-
     }
 
+    /**
+     * stores attachments and return the list of metadata of them.
+     */
     protected function storeAttachments($files, $directory)
     {
+        if($files === null) return [];
         $fs = new \Illuminate\Filesystem\Filesystem();
         $attachments = [];
 

@@ -43,8 +43,8 @@ class UpdateRequest extends FormRequest
             'date'              => 'required_if:type,reimbursement|date',
 
             // Attachments
-            'attachments'       => 'nullable|array',
-            'attachments.*'     => 'mimes:jpg,jpeg,png,doc,xls,pdf|max:5120'
+            'attachments'       => 'nullable|array|max:5',
+            'attachments.*'     => 'mimes:jpg,jpeg,png,doc,docx,xls,xlsx,pdf|max:5120'
         ];
     }
 
