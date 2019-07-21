@@ -26,7 +26,9 @@ class CreateTsUsersTable extends Migration
             $table->string("lastname");
             $table->string('email')
                 ->unique();
-            $table->string('password');            
+            $table->string('password');  
+            $table->string('remember_token')
+                ->nullable();            
             $table->boolean('isowner')
                 ->default(false);
             $table->boolean('isactive')

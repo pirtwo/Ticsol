@@ -60,7 +60,8 @@ class CreateTsRequestsTable extends Migration
                 
             $table->foreign('schedule_id')
                 ->references('id')
-                ->on('ts_schedules');
+                ->on('ts_schedules')                
+                ->onDelete('cascade');
         });
     }
 
