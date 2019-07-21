@@ -1,7 +1,9 @@
 
-export const AUTH_LOGIN = '/api/login';
-export const AUTH_LOGOUT = '/api/logout';
-export const AUTH_REGISTER = '/api/register';
+/**
+ * web route.
+ * method: Post
+ */
+export const AUTH_LOGOUT = '/logout';
 export const AUTH_PASSWORD_RESET = '/api/passwordreset';
 
 export const USER_LIST = '/api/user';
