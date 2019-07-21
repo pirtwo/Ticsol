@@ -3,56 +3,50 @@
     <div class="d-flex align-items-stretch ml-auto">
       <notifications-log class="mr-1" />
 
-      <router-link 
-        :to="{ name : 'settingModify' }" 
-        class="btn" 
+      <router-link
+        :to="{ name : 'settingModify' }"
+        class="btn"
         role="button"
       >
-        <i class="icon material-icons">
-          settings
-        </i>
+        <i class="icon material-icons">settings</i>
         <span class="caption">SETTINGS</span>
       </router-link>
 
       <div class="dropdown ml-1">
-        <button 
-          class="btn h-100" 
-          type="buttom" 
-          role="button" 
-          id="dropdownMenuLink" 
+        <button
+          class="btn h-100"
+          type="buttom"
+          role="button"
+          id="dropdownMenuLink"
           data-toggle="dropdown"
-          aria-haspopup="true" 
+          aria-haspopup="true"
           aria-expanded="false"
         >
-          <img 
-            class="user-avatar rounded" 
-            :src="avatar" 
+          <img
+            class="user-avatar rounded"
+            :src="avatar"
             alt="Avtar"
           >
           <span class="caption user-name">{{ userName }}</span>
         </button>
-        <div 
-          class="dropdown-menu dropdown-menu-right" 
+        <div
+          class="dropdown-menu dropdown-menu-right"
           aria-labelledby="dropdownMenuLink"
         >
-          <router-link 
-            :to="{ name : 'userProfile', params: {id: userId} }"          
+          <router-link
+            :to="{ name : 'userProfile', params: {id: userId} }"
             class="dropdown-item"
           >
-            <i class="icon material-icons">
-              account_circle
-            </i>Profile
-          </router-link> 
-          <div class="dropdown-divider" />     
-          <a 
-            class="dropdown-item" 
-            href="#" 
+            <i class="icon material-icons">account_circle</i>Profile
+          </router-link>
+          <div class="dropdown-divider" />
+          <a
+            class="dropdown-item"
+            href="#"
             @click.prevent="logoutHandler"
           >
-            <i class="icon material-icons">
-              exit_to_app
-            </i>Log out
-          </a>        
+            <i class="icon material-icons">exit_to_app</i>Log out
+          </a>
         </div>
       </div>
     </div>
@@ -61,22 +55,22 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Notifs from './AppNotifications';
+import Notifs from "./AppNotifications";
 import NotifsLog from "../app/AppNotificationsLog";
 
 export default {
   name: "AppIconbarTop",
 
-   components:{
-    'notifications': Notifs,
-    'notifications-log': NotifsLog,
+  components: {
+    notifications: Notifs,
+    "notifications-log": NotifsLog
   },
 
   computed: {
-    ...mapGetters({      
+    ...mapGetters({
       userId: "user/getId",
       avatar: "user/getAvatar",
-      userName: "user/getUsername",
+      userName: "user/getUsername"
     })
   },
 
@@ -86,7 +80,7 @@ export default {
       this.logout()
         .then(() => {
           console.log("successful logout");
-          this.$router.push("/logout");
+          this.$router.push({ name: "signout" });
         })
         .catch(error => {
           console.log(error);
@@ -115,7 +109,7 @@ export default {
   display: inline-block !important;
 }
 
-.dropdown-item i{
+.dropdown-item i {
   color: inherit !important;
   margin-right: 5px;
   vertical-align: top;

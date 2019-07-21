@@ -331,7 +331,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-light"
             @click="approverModal = false"
           >
             Cancel
@@ -401,7 +401,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-light"
             @click="generateModal = false"
           >
             Cancel

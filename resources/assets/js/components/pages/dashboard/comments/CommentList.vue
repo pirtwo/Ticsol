@@ -37,6 +37,7 @@
     </template>
 
     <template slot="content">
+      <!-- Comments List -->      
       <ul class="comment-list">
         <li
           v-for="parent in comments"
@@ -80,6 +81,7 @@
           </ul>
         </li>
       </ul>
+
       <!-- Send Modal -->
       <ts-modal
         :show.sync="sendModal"
@@ -129,32 +131,35 @@
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-light"
             @click="cancelModal"
           >
             Cancel
           </button>
         </template>
       </ts-modal>
+
       <!-- Confirm modal -->
       <ts-modal
         :show.sync="confirmModal"
         title="Confirm Delete"
-        size="sm"
+        size="md"
       >
-        <b>Delete this comment permanently?</b>
+        <div class="px-2 py-2 text-center">
+          Do you really want to delete this comment? This process cannot be undone and sub treads will be deleted.
+        </div>
         <template slot="footer">
           <button
-            class="btn btn-outline-danger"
+            class="btn btn-danger"
             @click="deleteComment"
           >
-            Yes
+            Delete
           </button>
           <button
-            class="btn btn-outline-secondary"
+            class="btn btn-light"
             @click="confirmModal = false"
           >
-            No
+            Cancel
           </button>
         </template>
       </ts-modal>

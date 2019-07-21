@@ -124,13 +124,13 @@
       </div>
       <div class="panel-footer">
         <button 
-          class="btn btn-sm btn-success" 
+          class="btn btn-sm btn-primary" 
           @click="onSubmit"
         >                        
           Save
         </button>
         <button 
-          class="btn btn-sm btn-success" 
+          class="btn btn-sm btn-light" 
           @click="onHide"
         >                        
           Cancel

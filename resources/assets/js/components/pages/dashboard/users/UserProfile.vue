@@ -247,14 +247,14 @@
             class="btn btn-primary"
             @click="onSubmitEvents"
           >
-            SUBMIT
+            Save
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-light"
             @click="()=>{ createEventModal = false }"
           >
-            CLOSE
+            Cancel
           </button>
         </template>
       </ts-modal>
@@ -291,17 +291,17 @@
         <template slot="footer">
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-light"
             @click="()=>{ eventInfoModal = false }"
           >
-            CLOSE
+            Cancel
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-danger"
             @click="onDeleteEvent"
           >
-            DELETE
+            Delete
           </button>
         </template>
       </ts-modal>
@@ -312,7 +312,7 @@
         title="Confirm Delete"
       >
         <p>
-          Are you sure you want to delete event
+          Are you sure you want to delete this event?
           <b>
             Unavailable
             {{ selectedEvent.startDate.toString("MMM dd") }} till
@@ -322,15 +322,15 @@
         <template slot="footer">
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-danger"
           >
-            YES
+            Delete
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-light"
           >
-            NO
+            Cancel
           </button>
         </template>
       </ts-modal>

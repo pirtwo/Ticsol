@@ -232,14 +232,14 @@
           <button
             @click="onSubmit"
             type="button"
-            class="btn btn-success"
+            class="btn btn-primary"
           >
             Assign
           </button>
           <button
             @click="onClose"
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-light"
           >
             Cancel
           </button>

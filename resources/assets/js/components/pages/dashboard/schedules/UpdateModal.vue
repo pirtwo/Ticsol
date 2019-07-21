@@ -186,7 +186,7 @@
           <button 
             @click="onSubmit" 
             type="button" 
-            class="btn btn-success"
+            class="btn btn-primary"
           >
             Update
           </button>
@@ -200,7 +200,7 @@
           <button 
             @click="onHide" 
             type="button" 
-            class="btn btn-secondary"
+            class="btn btn-light"
           >
             Cancel
           </button>          

@@ -46,13 +46,16 @@
       <nav class="navbar navbar-light">
         <div class="d-flex align-items-center w-100">
           <div class="flex-grow-1">
+            <!-- Drawer toggle button -->
             <button
-              class="btn btn-sm ml-auto"
+              :class="[{ active: showDrawer }, 'btn btn-sm ml-auto']"
               type="button"
               @click="onDrawer"
             >
-              <i class="material-icons">{{ showDrawer ? "close" : "menu" }}</i>
+              <i class="material-icons">menu</i>
             </button>
+
+            <!-- Back button -->
             <button
               class="btn btn-sm ml-auto"
               type="button"
@@ -60,6 +63,8 @@
             >
               <i class="material-icons">arrow_back</i>
             </button>
+
+            <!-- Forward button -->
             <button
               class="btn btn-sm ml-auto"
               type="button"
@@ -67,16 +72,21 @@
             >
               <i class="material-icons">arrow_forward</i>
             </button>
+
+            <!-- Fullscreen button -->
             <button
-              class="btn btn-sm ml-auto"
+              :class="[{ active: fullscreen }, 'btn btn-sm ml-auto']"
               type="button"
               @click="onFullscreen"
             >
               <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
             </button>
 
+            <!-- title -->
             <span class="navbar-brand">{{ menuTitle }}</span>
           </div>
+
+          <!-- toolbar slot -->
           <div class="toolbar">
             <slot name="toolbar" />
           </div>

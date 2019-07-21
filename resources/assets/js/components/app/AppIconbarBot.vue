@@ -1,5 +1,6 @@
 <template>
   <div class="toolbar-bot">
+    <!-- Home -->
     <router-link 
       :to="{ name : 'dash' }" 
       class="btn" 
@@ -11,6 +12,7 @@
       <span class="caption">HOME</span>
     </router-link>
 
+    <!-- Inbox -->
     <router-link 
       :to="{ name : 'inbox' }" 
       class="btn" 
@@ -22,10 +24,12 @@
       <span class="caption">INBOX</span>
     </router-link>
 
+    <!-- Requests -->
     <div class="btn-group dropup">
-      <button 
-        type="button" 
+      <button
+        type="button"
         class="btn" 
+        role="button"        
         data-toggle="dropdown" 
         aria-haspopup="true" 
         aria-expanded="false"
@@ -51,8 +55,9 @@
       </div>
     </div>
 
+    <!-- Timesheets -->
     <router-link 
-      :to="{ name : 'timesheet' }" 
+      to="/timesheet" 
       class="btn" 
       role="button"
     >
@@ -62,6 +67,7 @@
       <span class="caption">TIMESHEETS</span>
     </router-link>
 
+    <!-- Scheduler -->
     <router-link 
       :to="{ name : 'scheduler' }" 
       class="btn" 
@@ -72,7 +78,8 @@
       </i>
       <span class="caption">SCHEDULE</span>
     </router-link>
-
+    
+    <!-- more -->
     <div class="btn-group dropup">
       <button 
         type="button" 
@@ -86,7 +93,8 @@
         </i>
         <span class="caption">MORE</span>
       </button>
-      <div class="dropdown-menu">                
+      <div class="dropdown-menu"> 
+        <!-- Job -->               
         <router-link 
           :to="{ name : 'jobList'}" 
           class="dropdown-item"
@@ -95,6 +103,8 @@
             work
           </i>Jobs
         </router-link> 
+
+        <!-- Job Profile --> 
         <router-link 
           :to="{ name : 'profileList'}" 
           class="dropdown-item"
@@ -102,7 +112,9 @@
           <i class="icon material-icons">
             assignment
           </i>Job Profiles
-        </router-link>  
+        </router-link> 
+
+        <!-- Users --> 
         <router-link 
           :to="{ name : 'userList'}" 
           class="dropdown-item"
@@ -111,6 +123,8 @@
             person
           </i>Users
         </router-link> 
+
+        <!-- Roles --> 
         <router-link 
           :to="{ name : 'roleList'}" 
           class="dropdown-item"
@@ -119,6 +133,8 @@
             verified_user
           </i>Roles
         </router-link> 
+
+        <!-- Team --> 
         <router-link 
           :to="{ name : 'teamList'}" 
           class="dropdown-item"
@@ -126,7 +142,9 @@
           <i class="icon material-icons">
             group
           </i>Teams
-        </router-link>           
+        </router-link>  
+
+        <!-- Contacts --> 
         <router-link 
           :to="{ name : 'contactList'}" 
           class="dropdown-item"
@@ -134,7 +152,9 @@
           <i class="icon material-icons">
             contact_mail
           </i>Contacts
-        </router-link>      
+        </router-link> 
+
+        <!-- Activities --> 
         <router-link 
           :to="{ name : 'activityList'}" 
           class="dropdown-item"
