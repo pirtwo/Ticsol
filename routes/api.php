@@ -14,19 +14,10 @@ use Illuminate\Http\Request;
  */
 
 Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\API'], function () {
-
-    // Auth
-    Route::post('/login', 'AuthController@login');
-    Route::post('/refresh', 'AuthController@refresh');
-
     /**
      * Protected api routes
      */
     Route::middleware('auth:api')->group(function () {
-
-        // Auth
-        Route::post('/logout', 'AuthController@logout');
-
         // User
         Route::get('user', 'UserController@index');
         Route::get('user/info', 'UserController@current');
