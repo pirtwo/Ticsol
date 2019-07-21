@@ -205,7 +205,7 @@
                 class="invalid-feedback"
                 v-if="!$v.form.date.required"
               >
-                Please select a date.
+                Date is required.
               </div>
             </div>
           </div>
@@ -228,7 +228,7 @@
                 class="invalid-feedback"
                 v-if="!$v.form.job.required"
               >
-                Please select a job.
+                Job is required.
               </div>
             </div>
           </div>
@@ -251,7 +251,7 @@
                 class="invalid-feedback"
                 v-if="!$v.form.approver.required"
               >
-                Please select a approver.
+                Approver is required.
               </div>
             </div>
           </div>
@@ -268,6 +268,8 @@
                   id="customFile"
                   type="file"
                   class="custom-file-input"
+                  multiple
+                  @change="onAttachment"
                 >
                 <label
                   class="custom-file-label"
@@ -277,15 +279,42 @@
             </div>
           </div>
         </div>
+
+        <!-- Current Attachments -->
+        <div 
+          v-if="request" 
+          class="form-group"
+        >
+          <div class="form-row">            
+            <div class="col-sm-10 offset-2">              
+              <button
+                v-for="(item, index) in request.meta.attachments"
+                :key="item.id"
+                type="button"
+                class="btn btn-primary mr-2"
+                @click="downloadAttachment(item)"
+              >
+                <div class="d-flex flex-row align-items-center">
+                  <ts-icon icon="cloud_download" />
+                  <dir class="my-0 px-2 py-1">
+                    Attachment-{{ index + 1 }}.{{ item.extension }}
+                  </dir>                  
+                </div>                
+              </button>              
+            </div>
+          </div>
+        </div>
       </form>
     </template>
   </app-main>
 </template>
 
 <script>
+import { api } from "../../../../api/http";
 import { mapActions, mapGetters } from "vuex";
 import { required, decimal, between, maxLength } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
+import downloadjs from "downloadjs";
 
 export default {
   name: "ReimbRequest",
@@ -302,7 +331,8 @@ export default {
         tax: "Incl",
         date: "",
         details: "",
-        amount: ""
+        amount: "",
+        attachments: []
       }
     };
   },
@@ -432,17 +462,20 @@ export default {
       }
 
       // populate form data
-      let form = {};
-      form.type = "reimbursement";
-      form.status = status;
-      form.job_id = this.form.job.key;
-      form.assigned_id = this.form.approver.key;
-      form.meta = {
-        tax: this.form.tax,
-        amount: this.form.amount,
-        date: this.form.date,
-        details: this.form.details
-      };
+      let form = new FormData();
+      form.append("type", "reimbursement");
+      form.append("status", status);
+      form.append("job_id", this.form.job.key);
+      form.append("assigned_id", this.form.approver.key);
+      form.append("tax", this.form.tax);
+      form.append("amount", this.form.amount);
+      form.append("date", this.form.date);
+      form.append("details", this.form.details);
+
+      for (let i = 0; i < this.form.attachments.length; i++) {
+        let file = this.form.attachments[i];
+        form.append(`attachments[${i}]`, file);
+      }
 
       this.update({ resource: "request", id: this.id, data: form })
         .then(respond => {
@@ -472,18 +505,21 @@ export default {
         return;
       }
 
-      // populate form data
-      let form = {};
-      form.type = "reimbursement";
-      form.status = "submitted";
-      form.job_id = this.form.job.key;
-      form.assigned_id = this.form.approver.key;
-      form.meta = {
-        tax: this.form.tax,
-        amount: this.form.amount,
-        date: this.form.date,
-        details: this.form.details
-      };
+      // populate form data      
+      let form = new FormData();
+      form.append("type", "reimbursement");
+      form.append("status", status);
+      form.append("job_id", this.form.job.key);
+      form.append("assigned_id", this.form.approver.key);
+      form.append("tax", this.form.tax);
+      form.append("amount", this.form.amount);
+      form.append("date", this.form.date);
+      form.append("details", this.form.details);
+
+      for (let i = 0; i < this.form.attachments.length; i++) {
+        let file = this.form.attachments[i];
+        form.append(`attachments[${i}]`, file);
+      }
 
       this.create({ resource: "request", data: form })
         .then(() => {
@@ -505,6 +541,21 @@ export default {
     onCancel(e) {
       e.preventDefault();
       this.$router.go(-1);
+    },
+
+    onAttachment(e) {
+      this.form.attachments = [];
+      let files = e.target.files;
+      for (let i = 0; i < files.length; i++) {
+        this.form.attachments.push(files[i]);
+      }
+    },
+
+    downloadAttachment(file){
+      api.get({url:`/api/request/attachment/${this.request.id}/${file.id}`, responseType: "blob" })
+      .then(res => {
+        downloadjs(res.data, `${file.id}.${file.extension}`);
+      });
     }
   }
 };

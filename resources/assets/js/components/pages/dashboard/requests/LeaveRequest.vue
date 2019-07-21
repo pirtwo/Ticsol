@@ -323,22 +323,31 @@
                   for="customFile"
                 >choose files</label>
               </div>
-            </div>
-            <div
-              v-if="request"
-              class="col-sm-12"
-            >
-              <template v-for="(item, index) in request.meta.attachments">
-                <button
-                  :key="item.id"
-                  type="button"
-                  class="btn btn-secondary"
-                  @click="downloadAttachment(item)"
-                >
+            </div>            
+          </div>          
+        </div>
+
+        <!-- Current Attachments -->
+        <div 
+          v-if="request" 
+          class="form-group"
+        >
+          <div class="form-row">            
+            <div class="col-sm-10 offset-2">              
+              <button
+                v-for="(item, index) in request.meta.attachments"
+                :key="item.id"
+                type="button"
+                class="btn btn-primary mr-2"
+                @click="downloadAttachment(item)"
+              >
+                <div class="d-flex flex-row align-items-center">
                   <ts-icon icon="cloud_download" />
-                  Attachment-{{ index + 1 }}.{{ item.extension }}
-                </button>
-              </template>
+                  <dir class="my-0 px-2 py-1">
+                    Attachment-{{ index + 1 }}.{{ item.extension }}
+                  </dir>                  
+                </div>                
+              </button>              
             </div>
           </div>
         </div>
