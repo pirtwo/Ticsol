@@ -9882,7 +9882,8 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 #app.default .main .wrap-drawer .wrap-content .navbar .btn:hover,
-#app.default .main .wrap-drawer .wrap-content .navbar .btn:active {
+#app.default .main .wrap-drawer .wrap-content .navbar .btn:active,
+#app.default .main .wrap-drawer .wrap-content .navbar .btn.active {
   color: white;
   background-color: #d76165;
 }
@@ -10098,15 +10099,22 @@ a.text-dark:hover, a.text-dark:focus {
   font-family: "Cabin" !important;
 }
 
+html,
+body,
+main {
+  height: 100%;
+}
+
 #app {
+  height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 #app .container-fluid {
+  height: 100%;
   padding: 0px 50px;
-  font-size: 1.1vw;
   min-height: 500px;
 }
 

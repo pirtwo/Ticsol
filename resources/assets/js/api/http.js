@@ -3,7 +3,7 @@ import axios from 'axios';
 import { store } from '../store/store';
 
 export const api = {
-    get({ url, query = null, data = null, responseType = "json", isJson = true, isAuth = true }) {
+    get({ url, data = null, query = null, responseType = "json", isJson = true, isAuth = true }) {
         return makeRequest({
             method: 'GET',
             url: url,
