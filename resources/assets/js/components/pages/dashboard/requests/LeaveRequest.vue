@@ -98,7 +98,7 @@
         <!-- Leave Type -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Leave Type</label>
+            <label class="col-sm-2 col-form-label">Leave Type <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <select
                 v-model="form.leaveType"
@@ -180,7 +180,7 @@
         <!-- From Date -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">From</label>
+            <label class="col-sm-2 col-form-label">From <i class="field-required">*</i></label>
             <div class="col">
               <input
                 v-model="form.fromDate"
@@ -216,7 +216,7 @@
         <!-- Till Date -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Till</label>
+            <label class="col-sm-2 col-form-label">Till <i class="field-required">*</i></label>
             <div class="col">
               <input
                 v-model="form.tillDate"
@@ -283,7 +283,7 @@
         <!-- Approver -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Approver</label>
+            <label class="col-sm-2 col-form-label">Approver <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <ts-select
                 v-model="form.approver"

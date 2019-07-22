@@ -131,10 +131,12 @@
     </template>
 
     <template slot="content">
+      <!-- Job Form -->
       <form class="needs-validation">
+        <!-- title -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Title</label>
+            <label class="col-sm-2 col-form-lable">Title <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.title.$model"
@@ -147,15 +149,16 @@
                 class="invalid-feedback"
                 v-if="!$v.form.title.required"
               >
-                Please enter a title.
+                Title is required.
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Code -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Code</label>
+            <label class="col-sm-2 col-form-lable">Code <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.code.$model"
@@ -168,12 +171,13 @@
                 class="invalid-feedback"
                 v-if="!$v.form.code.required"
               >
-                Please enter a code.
+                Code is required.
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Parent -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Parent</label>
@@ -190,6 +194,7 @@
           </div>
         </div>
 
+        <!-- Profile -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Profile</label>
@@ -206,6 +211,7 @@
           </div>
         </div>
 
+        <!-- contact -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Contacts</label>
@@ -223,9 +229,10 @@
           </div>
         </div>
 
+        <!-- Status -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Status</label>
+            <label class="col-sm-2 col-form-lable">Status <i class="field-required">*</i></label>
 
             <div class="custom-control custom-radio custom-control-inline">
               <input

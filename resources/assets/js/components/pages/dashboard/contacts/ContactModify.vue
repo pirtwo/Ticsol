@@ -101,11 +101,12 @@
         </p>
       </div>
 
-      <!-- Contact form -->
+      <!-- Contact Form -->
       <form>
+        <!-- Group -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Group</label>
+            <label class="col-sm-2 col-form-lable">Group <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <select
                 v-model="$v.form.group.$model"
@@ -138,6 +139,7 @@
           </div>
         </div>
 
+        <!-- User -->
         <div
           class="form-group"
           v-if="form.group !== 'customer' && form.group !== ''"
@@ -157,9 +159,10 @@
           </div>
         </div>
 
+        <!-- First Name -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">First Name</label>
+            <label class="col-sm-2 col-form-lable">First Name <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.firstname.$model"
@@ -178,9 +181,10 @@
           </div>
         </div>
 
+        <!-- Last Name -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Last Name</label>
+            <label class="col-sm-2 col-form-lable">Last Name <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.lastname.$model"
@@ -199,6 +203,7 @@
           </div>
         </div>
 
+        <!-- Tel Num -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Tel Number</label>
@@ -214,9 +219,10 @@
           </div>
         </div>
 
+        <!-- Mobile Num -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Mobile Number</label>
+            <label class="col-sm-2 col-form-lable">Mobile Number <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.mobilephone.$model"
@@ -235,7 +241,7 @@
           </div>
         </div>
       </form>
-
+      
       <ts-grid
         v-model="form.addresses"
         :columns="columns"
@@ -257,6 +263,7 @@
           slot-scope="{ item }"
         >
           <div class="p-2">
+            <!-- google places -->
             <div class="form-group">
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">Find Address</label>
@@ -270,6 +277,7 @@
             </div>
             <hr>
 
+            <!-- Unit -->
             <div class="form-group">
               <div class="form-row">
                 <label class="col-sm-2 col-form-lable">Unit</label>
@@ -285,9 +293,10 @@
               </div>
             </div>
 
+            <!-- Number -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Number</label>
+                <label class="col-sm-2 col-form-lable">Number <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.number"
@@ -300,9 +309,10 @@
               </div>
             </div>
 
+            <!-- Street -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Street</label>
+                <label class="col-sm-2 col-form-lable">Street <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.street"
@@ -315,9 +325,10 @@
               </div>
             </div>
 
+            <!-- Suburb -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Suburb</label>
+                <label class="col-sm-2 col-form-lable">Suburb <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.suburb"
@@ -330,9 +341,10 @@
               </div>
             </div>
 
+            <!-- State -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">State</label>
+                <label class="col-sm-2 col-form-lable">State <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.state"
@@ -345,9 +357,10 @@
               </div>
             </div>
 
+            <!-- Country -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Country</label>
+                <label class="col-sm-2 col-form-lable">Country <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.country"
@@ -360,9 +373,10 @@
               </div>
             </div>
 
+            <!-- Post Code -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Post Code</label>
+                <label class="col-sm-2 col-form-lable">Post Code <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.postcode"

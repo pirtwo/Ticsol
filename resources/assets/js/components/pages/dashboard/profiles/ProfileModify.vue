@@ -2,7 +2,7 @@
   <app-main
     :scrollbar="true"
     :loading="isLoading"
-    padding="p-2"
+    padding="p-5"
   >
     <template slot="drawer">
       <template slot="toolbar" />
@@ -58,34 +58,39 @@
     </template>
 
     <template slot="content">
-      <div class="form-group">
-        <div class="form-row">
-          <label class="col-sm-2 col-form-lable">Profile Name</label>
-          <div class="col-sm-10">
-            <input
-              v-model="$v.form.name.$model"
-              id="title"
-              type="text"
-              :class="[{'is-invalid' : $v.form.name.$error } ,'form-control']"
-              placeholder="Enter name for profile..."
-            >
-            <div
-              class="invalid-feedback"
-              v-if="!$v.form.name.required"
-            >
-              Profile name is required
+      <!-- Profile Form -->
+      <form>
+        <!-- profile Name -->
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-lable">Profile Name <i class="field-required">*</i></label>
+            <div class="col-sm-10">
+              <input
+                v-model="$v.form.name.$model"
+                id="title"
+                type="text"
+                :class="[{'is-invalid' : $v.form.name.$error } ,'form-control']"
+                placeholder="Enter name for profile..."
+              >
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.name.required"
+              >
+                Name is required.
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <form-builder
-        v-model="frmBuilder"
-        :disable-fields="['hidden', 'button', 'paragraph', 'header']"
-        :disabled-attrs="['className', 'value']"
-        :disabled-action-buttons="[]"
-        :control-order="[]"
-      />
+        <!-- meta -->
+        <form-builder
+          v-model="frmBuilder"
+          :disable-fields="['hidden', 'button', 'paragraph', 'header']"
+          :disabled-attrs="['className', 'value']"
+          :disabled-action-buttons="[]"
+          :control-order="[]"
+        />
+      </form>      
     </template>
   </app-main>
 </template>

@@ -5,7 +5,7 @@
   >    
     <div class="jobModal">
       <div class="panel-title">
-        <span>Create Job</span>
+        <h5>Create New Job</h5>
         <button 
           type="button" 
           class="close" 
@@ -21,7 +21,7 @@
           <!-- Title -->
           <div class="form-group">
             <div class="form-row">
-              <label class="col-sm-2 col-form-label col-form-label-sm">Title</label>
+              <label class="col-sm-2 col-form-label col-form-label-sm">Title <i class="field-required">*</i></label>
               <div class="col-sm-10">
                 <input 
                   v-model="form.title" 
@@ -44,7 +44,7 @@
           <!-- Code -->
           <div class="form-group">
             <div class="form-row">
-              <label class="col-sm-2 col-form-label col-form-label-sm">Code</label>
+              <label class="col-sm-2 col-form-label col-form-label-sm">Code <i class="field-required">*</i></label>
               <div class="col-sm-10">
                 <input 
                   v-model="form.code" 
@@ -86,7 +86,7 @@
           <!-- IsActive --> 
           <div class="form-group">
             <div class="form-row">
-              <label class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+              <label class="col-sm-2 col-form-label col-form-label-sm">Status <i class="field-required">*</i></label>
               <div class="col-sm-10">
                 <div class="custom-control custom-radio custom-control-inline">
                   <input 
@@ -124,17 +124,17 @@
       </div>
       <div class="panel-footer">
         <button 
-          class="btn btn-sm btn-primary" 
-          @click="onSubmit"
-        >                        
-          Save
-        </button>
-        <button 
           class="btn btn-sm btn-light" 
           @click="onHide"
         >                        
           Cancel
         </button>
+        <button 
+          class="btn btn-sm btn-primary" 
+          @click="onSubmit"
+        >                        
+          Save
+        </button>        
       </div>
     </div>
   </div>
@@ -274,14 +274,14 @@ export default {
 .jobModal {
   top: 0;
   left: 0;
-  width: 320px;
+  width: 400px;
   padding: 20px;
   z-index: 1050;
   border-radius: 5px;
   position: absolute;
   font-size: 0.875rem;
   background-color: white;
-  transform: translate(27%, 40%);
+  transform: translate(10%, 40%);
 }
 
 .jobModal .panel-title,

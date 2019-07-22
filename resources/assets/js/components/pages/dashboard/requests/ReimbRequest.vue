@@ -90,7 +90,7 @@
         <!-- Details -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Details</label>
+            <label class="col-sm-2 col-form-label">Details <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <textarea
                 v-model="form.details"
@@ -118,7 +118,7 @@
         <!-- Amount -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Amount</label>
+            <label class="col-sm-2 col-form-label">Amount <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="form.amount"
@@ -154,7 +154,7 @@
         <!-- Tax -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Incl/Excl</label>
+            <label class="col-sm-2 col-form-label">Incl/Excl <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <div class="custom-control custom-radio custom-control-inline">
                 <input
@@ -192,7 +192,7 @@
         <!-- Date -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Date</label>
+            <label class="col-sm-2 col-form-label">Date <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="form.date"
@@ -214,7 +214,7 @@
         <!-- Job -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Expense To</label>
+            <label class="col-sm-2 col-form-label">Expense To <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <ts-select
                 v-model="form.job"
@@ -237,7 +237,7 @@
         <!-- Approver -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Approver</label>
+            <label class="col-sm-2 col-form-label">Approver <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <ts-select
                 v-model="form.approver"

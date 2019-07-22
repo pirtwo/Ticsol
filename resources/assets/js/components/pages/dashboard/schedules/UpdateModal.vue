@@ -24,7 +24,7 @@
             Update Event
           </h5>
           <button 
-            @click="onHide" 
+            @click="onClose" 
             type="button" 
             class="close" 
             aria-label="Close"
@@ -35,7 +35,9 @@
 
         <!-- Modal Body -->
         <div class="modal-body">
+          <!-- Event Form -->
           <form>
+            <!-- Resource -->
             <div class="form-group">
               <div class="form-row">
                 <label class="col-form-label col-sm-12">{{ view == 'user' ? 'User Name' : 'Job Name' }}</label>
@@ -51,9 +53,10 @@
               </div>              
             </div>
 
+            <!-- Event -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }}</label>
+                <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }} <i class="field-required">*</i></label>
                 <div class="col">
                   <ts-select
                     v-model="form.event_id"
@@ -74,59 +77,104 @@
                       <hr>
                     </template>  
                   </ts-select>
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.form.event_id.required"
+                  >
+                    Event is required.
+                  </div>
                 </div>
               </div>              
             </div>           
 
+            <!-- Start -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-form-label col-sm-12">Starts</label>
+                <label class="col-form-label col-sm-12">Starts <i class="field-required">*</i></label>
                 <div class="col">
                   <input 
-                    v-model="form.start" 
+                    v-model="form.startDate" 
                     name="start" 
                     type="date" 
-                    class="form-control"
+                    :class="[{'is-invalid' : $v.form.startDate.$error || $v.start.$error } ,'form-control']"
                   >
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.form.startDate.required"
+                  >
+                    Start date is required.
+                  </div>
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.start.before"
+                  >
+                    Start date should be before {{ $v.start.$params.before.date }}
+                  </div>
                 </div>
                 <div class="col">
                   <input 
                     v-model="form.startTime" 
                     type="time" 
-                    class="form-control"
-                  >                  
+                    :class="[{'is-invalid' : $v.form.startTime.$error } ,'form-control']"
+                  >
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.form.startTime.required"
+                  >
+                    Start time is required.
+                  </div>                  
                 </div>             
               </div>
             </div>
 
+            <!-- End -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-form-label col-sm-12">Ends</label>
+                <label class="col-form-label col-sm-12">Ends <i class="field-required">*</i></label>
                 <div class="col">
                   <input 
-                    v-model="form.end" 
+                    v-model="form.endDate" 
                     name="end" 
                     type="date" 
-                    class="form-control"
+                    :class="[{'is-invalid' : $v.form.endDate.$error || $v.end.$error } ,'form-control']"
                   >
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.form.endDate.required"
+                  >
+                    End date is required.
+                  </div>
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.end.after"
+                  >
+                    End date should be after {{ $v.end.$params.after.date }}
+                  </div>
                 </div>
                 <div class="col">
                   <input 
                     v-model="form.endTime" 
                     type="time" 
-                    class="form-control"
+                    :class="[{'is-invalid' : $v.form.endTime.$error } ,'form-control']"
                   >
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.form.endTime.required"
+                  >
+                    End time is required.
+                  </div>
                 </div>  
               </div>
             </div>            
 
+            <!-- Status -->
             <div class="form-row">
               <div class="form-group col-sm-7">
                 <div class="row no-gutters">
                   <label 
                     class="col-sm-12" 
                     for="status"
-                  >Status</label> 
+                  >Status <i class="field-required">*</i></label> 
                   <div class="col-sm-12">     
                     <div class="custom-control custom-radio custom-control-inline">
                       <input 
@@ -182,14 +230,14 @@
         </div><!-- End Body -->
 
         <!-- Modal Footer -->
-        <div class="modal-footer">
+        <div class="modal-footer">          
           <button 
-            @click="onSubmit" 
+            @click="onClose" 
             type="button" 
-            class="btn btn-primary"
+            class="btn btn-light"
           >
-            Update
-          </button>
+            Cancel
+          </button>      
           <button 
             @click="onDelete" 
             type="button" 
@@ -198,12 +246,12 @@
             Delete
           </button>
           <button 
-            @click="onHide" 
+            @click="onSubmit" 
             type="button" 
-            class="btn btn-light"
+            class="btn btn-primary"
           >
-            Cancel
-          </button>          
+            Update
+          </button>              
         </div><!-- End Footer -->
         <job-modal v-model="jobModal" />
       </div><!-- End Content  -->
@@ -212,6 +260,10 @@
 </template>
 
 <script>
+
+import moment from "moment";
+import { required } from "vuelidate/lib/validators";
+import { before, after } from "../../../../utils/custom-validations";
 import { mapGetters, mapActions } from "vuex";
 import CreateJobModal from "../schedules/CreateJobModal.vue";
 
@@ -248,10 +300,10 @@ export default {
         resource_id: null,
         event_id: {},
         status: "tentative",
+        startDate: "",
+        endDate: "",
         startTime: "",
         endTime: "",
-        start: "",
-        end: "",
         offsite: false
       },
       statusOptions: [
@@ -260,6 +312,31 @@ export default {
       ],
       jobModal: false
     };
+  },
+
+  validations() {
+    return {
+      start: { before: before(this.end) },
+      end: { after: after(this.start) },
+      form:{
+        event_id: { required },
+        status: { required },        
+        startDate: { required },
+        startTime: { required },
+        endDate: { required },
+        endTime: { required }
+      }      
+    }
+  },
+
+  watch: {
+    value: function(value) {
+      if (value) {
+        $("#updateModal").modal("show");
+      } else {
+        $("#updateModal").modal("hide");
+      }
+    },
   },
 
   computed: {
@@ -277,26 +354,24 @@ export default {
           return { key: obj.id, value: obj.name };
         });
       }
-    }
-  },
+    },
 
-  created() {
-    //
+    start: function() {      
+      return moment(`${this.form.startDate} ${this.form.startTime}`).format(
+        "YYYY-MM-DD HH:mm"
+      );
+    },
+
+    end: function() {
+      return moment(`${this.form.endDate} ${this.form.endTime}`).format(
+        "YYYY-MM-DD HH:mm"
+      );
+    }
   },
 
   mounted() {
     $("#updateModal").on("show.bs.modal", this.onShow);
-    $("#updateModal").on("hide.bs.modal", this.onHide);
-  },
-
-  watch: {
-    value: function(value) {
-      if (value) {
-        $("#updateModal").modal("show");
-      } else {
-        $("#updateModal").modal("hide");
-      }
-    }
+    $("#updateModal").on("hide.bs.modal", this.onClose);
   },
 
   methods: {
@@ -310,52 +385,65 @@ export default {
       this.fillForm();
     },
 
-    onHide() {
+    onClose() {
+      this.clearForm();
       this.$emit("input", false);
     },
 
     onSubmit(e) {
-      let event = {};
-      event.user_id =
-        this.view == "user" ? this.form.resource_id : this.form.event_id.key;
-      event.job_id =
-        this.view == "job" ? this.form.resource_id : this.form.event_id.key;
-      event.status = this.form.status.toLowerCase();
-      event.start = this.form.start + "T" + this.form.startTime + ":00";
-      event.end = this.form.end + "T" + this.form.endTime + ":00";
-      event.offsite = this.form.offsite;
-      e.target.innerHTML = "Updating...";
-      e.target.disabled = true;
+      e.preventDefault();
+      e.target.disabled = true;      
 
-      this.update({ resource: "schedule", id: this.event.id, data: event })
-        .then(respond => {
-          e.target.innerHTML = "Update";
-          e.target.disabled = false;
+      // Validate
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
+
+      // Populate form data
+      let form = {};
+      form.user_id =
+        this.view == "user" ? this.form.resource_id : this.form.event_id.key;
+      form.job_id =
+        this.view == "job" ? this.form.resource_id : this.form.event_id.key;
+      form.status = this.form.status.toLowerCase();
+      form.start = this.start;
+      form.end = this.end;
+      form.offsite = this.form.offsite;
+
+      e.target.innerHTML = "Updating...";
+
+      this.update({ resource: "schedule", id: this.event.id, data: form })
+        .then(respond => {          
           console.log("Event updated successfuly.");
           this.$emit("input", false);
         })
-        .catch(error => {
-          e.target.innerHTML = "Update";
-          e.target.disabled = false;
+        .catch(error => {          
           console.log(error.response);
           this.$formFeedback(error.response.data.errors);
+        })
+        .finally(()=>{
+          e.target.innerHTML = "Update";
+          e.target.disabled = false;
         });
     },
 
-    onDelete(event) {
-      event.target.innerHTML = "Deleting...";
-      event.target.disabled = true;
+    onDelete(e) {
+      e.target.innerHTML = "Deleting...";
+      e.target.disabled = true;
+
       this.delete({ resource: "schedule", id: this.event.id })
-        .then(respond => {
-          event.target.innerHTML = "Delete";
-          event.target.disabled = false;
+        .then(respond => {         
           console.log("Event deleted successfuly.");
           this.$emit("input", false);
         })
-        .catch(error => {
-          event.target.innerHTML = "Delete";
-          event.target.disabled = false;
+        .catch(error => {          
           console.log(error.response);
+        })
+        .finally(()=>{
+          e.target.innerHTML = "Delete";
+          e.target.disabled = false;
         });
     },
 
@@ -370,11 +458,11 @@ export default {
       this.form.status = this.event.status;
       this.form.offsite = this.event.offsite;
       this.form.break_length = this.event.break_length;
-      this.form.start = this.event.start
+      this.form.startDate = this.event.start
         .toDate()
         .toISOString()
         .split("T")[0];
-      this.form.end = this.event.end
+      this.form.endDate = this.event.end
         .toDate()
         .toISOString()
         .split("T")[0];
@@ -392,6 +480,21 @@ export default {
         hour: "2-digit",
         minute: "2-digit"
       });
+    },
+
+    clearForm() {
+      this.form.userName = "";
+      this.form.user_id = null;
+      this.form.job_id = null;
+      this.form.startDate = "";
+      this.form.startTime = "";
+      this.form.endDate = "";
+      this.form.endTime = "";
+      this.form.offsite = false;
+
+      this.$v.start.$reset();
+      this.$v.end.$reset();
+      this.$v.form.$reset();
     },
 
     onCreateJob() {

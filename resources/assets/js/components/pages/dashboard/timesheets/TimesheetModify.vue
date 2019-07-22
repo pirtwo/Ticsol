@@ -177,9 +177,10 @@
           slot-scope="{ item }"
         >
           <div class="p-2">
+            <!-- Day -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Day</label>
+                <label class="col-sm-2 col-form-lable">Day <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <ts-select
                     v-model="item.date"
@@ -193,9 +194,10 @@
               </div>
             </div>
 
+            <!-- Job -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Job</label>
+                <label class="col-sm-2 col-form-lable">Job <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <ts-select
                     v-model="item.job"
@@ -209,9 +211,10 @@
               </div>
             </div>
 
+            <!-- Start -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Start</label>
+                <label class="col-sm-2 col-form-lable">Start <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     class="form-control"
@@ -222,9 +225,10 @@
               </div>
             </div>
 
+            <!-- End -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">End</label>
+                <label class="col-sm-2 col-form-lable">End <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     class="form-control"
@@ -235,9 +239,10 @@
               </div>
             </div>
 
+            <!-- Break -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Break</label>
+                <label class="col-sm-2 col-form-lable">Break <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <ts-timepicker
                     class="form-control"
@@ -248,6 +253,7 @@
             </div>
           </div>
         </template>
+
         <template slot="footer">
           <tr>
             <td

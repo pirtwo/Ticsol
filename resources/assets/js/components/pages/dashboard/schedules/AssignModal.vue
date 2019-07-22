@@ -54,7 +54,7 @@
             <!-- Event -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }}</label>
+                <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }} <i class="field-required">*</i></label>
                 <div class="col">
                   <ts-select
                     v-model="form.event_id"
@@ -88,7 +88,7 @@
             <!-- Start -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-form-label col-sm-12">Starts</label>
+                <label class="col-form-label col-sm-12">Starts <i class="field-required">*</i></label>
                 <div class="col">
                   <input
                     v-model="form.startDate"
@@ -128,7 +128,7 @@
             <!-- End -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-form-label col-sm-12">Ends</label>
+                <label class="col-form-label col-sm-12">Ends <i class="field-required">*</i></label>
                 <div class="col">
                   <input
                     v-model="form.endDate"
@@ -172,7 +172,7 @@
                   <label
                     class="col-sm-12"
                     for="status"
-                  >Status</label>
+                  >Status <i class="field-required">*</i></label>
                   <div class="col-sm-12">
                     <div class="custom-control custom-radio custom-control-inline">
                       <input
@@ -230,19 +230,19 @@
 
         <div class="modal-footer">
           <button
-            @click="onSubmit"
-            type="button"
-            class="btn btn-primary"
-          >
-            Assign
-          </button>
-          <button
             @click="onClose"
             type="button"
             class="btn btn-light"
           >
             Cancel
           </button>
+          <button
+            @click="onSubmit"
+            type="button"
+            class="btn btn-primary"
+          >
+            Assign
+          </button>          
         </div>
         <!-- End Footer -->
         <job-modal v-model="jobModal" />
@@ -254,6 +254,7 @@
 </template>
 
 <script>
+
 import moment from "moment";
 import { required } from "vuelidate/lib/validators";
 import { before, after } from "../../../../utils/custom-validations";
@@ -313,8 +314,7 @@ export default {
       end: { after: after(this.start) },
       form:{
         event_id: { required },
-        status: { required },
-        
+        status: { required },        
         startDate: { required },
         startTime: { required },
         endDate: { required },

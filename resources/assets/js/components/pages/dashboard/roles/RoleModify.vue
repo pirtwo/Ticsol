@@ -58,10 +58,12 @@
     </template>
 
     <template slot="content">
-      <form class="needs-validation">
+      <!-- Role Form -->
+      <form>
+        <!-- Title -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Title</label>
+            <label class="col-sm-2 col-form-label">Title <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <input
                 v-model="form.name"
@@ -80,6 +82,7 @@
           </div>
         </div>
 
+        <!-- Permissions -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Jobs</label>

@@ -84,11 +84,12 @@
         </p>
       </div>
 
-      <!-- Report Form -->
+      <!-- Activity Form -->
       <form>
-        <div class="form-group">
+        <!-- Schedule item -->
+        <div class="form-group">          
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Schedule</label>
+            <label class="col-sm-2 col-form-lable">Schedule <i class="field-required">*</i></label>
             <div class="col-sm-10">
               <ts-select
                 v-model="scheduleItem"
@@ -109,9 +110,10 @@
           </div>
         </div>
 
+        <!-- From -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">From</label>
+            <label class="col-sm-2 col-form-lable">From <i class="field-required">*</i></label>
             <div class="col">
               <input
                 id="from"
@@ -148,9 +150,10 @@
           </div>
         </div>
 
+        <!-- Till -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Till</label>
+            <label class="col-sm-2 col-form-lable">Till <i class="field-required">*</i></label>
             <div class="col">
               <input
                 id="till"
@@ -187,6 +190,7 @@
           </div>
         </div>
 
+        <!-- Report -->
         <div class="form-group">
           <div class="form-row">
             <div class="col-sm-12">

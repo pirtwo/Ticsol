@@ -50,12 +50,14 @@
     </template>
 
     <template slot="content">
-      <form class="needs-validation">
+      <!-- Team Form -->
+      <form>
+        <!-- Team Name -->
         <div class="form-group">
           <div class="form-row">
             <div class="col-sm-6">
               <div class="row">
-                <label class="col-sm-2 col-form-label">Name</label>
+                <label class="col-sm-2 col-form-label">Name <i class="field-required">*</i></label>
                 <div class="col-sm-10">
                   <input
                     v-model="form.name"
@@ -68,7 +70,7 @@
                     class="invalid-feedback"
                     v-if="!$v.form.name.required"
                   >
-                    Team name is required.
+                    Name is required.
                   </div>
                 </div>
               </div>
@@ -131,12 +133,12 @@
             <td>{{ item.fullname }}</td>
             <td>
               <router-link
-                v-for="item in item.teams"
-                :key="item.id"
+                v-for="team in item.teams"
+                :key="team.id"
                 class="btn btn-sm btn-link"
-                :to="{ name : 'teamDetails', params : { id: item.id } }"
+                :to="{ name : 'teamDetails', params : { id: team.id } }"
               >
-                {{ item.name }}
+                {{ team.name }}
               </router-link>
               <span v-if="item.teams.length === 0">None</span>
             </td>
@@ -184,7 +186,7 @@ export default {
      * Watching the current team, update form on change.
      */
     team: function(val) {
-      this.populateForm();
+      this.populateForm(val);
     }
   },
 
@@ -219,8 +221,8 @@ export default {
      * Return the current team members.
      */
     teamMembers: function() {
-      if (!this.team) return this.form.users;
-      return this.team.users;
+      //if (!this.team) return this.form.users;
+      return this.form.users;
     }
   },
 
@@ -235,10 +237,6 @@ export default {
     this.clear("user");
     this.clear("team");
     next();
-  },
-
-  mounted() {
-    //this.loadAssets();
   },
 
   methods: {
@@ -271,10 +269,16 @@ export default {
     /**
      * Populate the form with current team.
      */
-    populateForm() {
-      this.form.name = this.team.name;
-      this.form.users = this.team.users.map(item => {
-        return { key: item.id, value: item.fullname, pic: item.meta.avatar };
+    populateForm(team) {
+      this.form.name = team.name;
+      this.form.users = team.users.map(item => {
+        return { 
+          key: item.id,
+          value: item.fullname,
+          pic: item.meta.avatar,
+          fullname: item.fullname,
+          teams: item.teams
+         };
       });
     },
 
@@ -328,12 +332,12 @@ export default {
       // Set request body
       let form = {};
       form.name = this.form.name;
-      form.users = this.form.users.map(item => item.id);
+      form.users = this.form.users.map(item => item.key);
 
       this.startLoading();
       this.update({ resource: "team", id: this.id, data: form })
         .then(() => {
-          this.showMessage("<b>Team</b> updated successfuly.", "success");
+          this.showMessage(`Team <b>${form.name}</b> updated successfuly.`, "success");
         })
         .catch(error => {
           this.showMessage(error.message, "danger");
