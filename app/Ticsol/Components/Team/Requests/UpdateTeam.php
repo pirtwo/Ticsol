@@ -26,8 +26,9 @@ class UpdateTeam extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required|string',
-            'users' => 'nullable|array'
+            'name'      => 'required|string',
+            'users'     => 'nullable|array',
+            'users.*'   => 'numeric'
         ];
     }
 

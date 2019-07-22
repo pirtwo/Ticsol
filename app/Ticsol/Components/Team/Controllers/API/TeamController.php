@@ -143,10 +143,9 @@ class TeamController extends Controller
             
             DB::beginTransaction();
             
-            $team = $this->repository
-                ->update($request->input('name'));
+            $team->update($request->only(['name']));
 
-            $team->sync($request->input('users', [])); 
+            $team->users()->sync($request->input('users', [])); 
             
             DB::commit();
             
