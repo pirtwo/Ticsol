@@ -78,6 +78,13 @@
             :item="currentRow"
           />
           <template slot="footer">
+            <button 
+              class="btn btn-light" 
+              type="button" 
+              @click="hideModal"
+            >
+              Cancel
+            </button>
             <button
               class="btn btn-primary"
               type="button"
@@ -86,6 +93,7 @@
             >
               Insert
             </button>
+
             <button
               class="btn btn-primary"
               type="button"
@@ -93,14 +101,7 @@
               @click="updateRow(currentRow, rowIndex)"
             >
               Save
-            </button>
-            <button 
-              class="btn btn-light" 
-              type="button" 
-              @click="hideModal"
-            >
-              Cancel
-            </button>
+            </button>            
           </template>
         </ts-modal>
       </table>

@@ -91,14 +91,11 @@
                   <div class="input-group-append">
                     <button
                       type="button"
-                      class="btn btn-outline-primary"
+                      class="btn btn-success"
                       title="Add filter to list"
                       @click="addFilter"
                     >
-                      <ts-icon
-                        icon="playlist_add"
-                        style="vertical-align: bottom;"
-                      />
+                      Add to list
                     </button>
                   </div>
                 </div>
@@ -115,6 +112,13 @@
                 @click="showFilters = !showFilters"
               >
                 <i>{{ this.showFilters ? "hide filters" : "show filters" }}</i>                
+              </button>
+              <button
+                type="button"
+                class="btn btn-link"
+                @click="clearAll"
+              >
+                <i>clear all</i>
               </button>
             </i>
           </div>        
@@ -169,26 +173,19 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-outline-primary"
-            @click="applyFilter"
-          >
-            Apply
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            @click="clearAll"
-          >
-            Clear
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary"
+            class="btn btn-light"
             data-dismiss="modal"
             @click="clearForm"
           >
-            Close
-          </button>
+            Cancel
+          </button>          
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="applyFilter"
+          >
+            Apply
+          </button>   
         </div>
       </div>
     </div>
