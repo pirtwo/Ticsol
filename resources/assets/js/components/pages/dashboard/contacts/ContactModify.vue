@@ -470,7 +470,7 @@
 import { mapActions, mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
-import GooglePlaces from "../../../Base/GooglePlaces.vue";
+import GooglePlaces from "../../../base/GooglePlaces.vue";
 
 export default {
   name: "ContactModify",
