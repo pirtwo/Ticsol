@@ -64,7 +64,7 @@
                     id="name"
                     type="text"
                     :class="[{'is-invalid' : $v.form.name.$error } ,'form-control']"
-                    placeholder="Please enter team name here..."
+                    placeholder="team name"
                   >
                   <div
                     class="invalid-feedback"
@@ -83,7 +83,7 @@
                     v-model="form.users"
                     :data="users"
                     :multi="true"
-                    :placeholder="'Please select team members...'"
+                    :placeholder="'team members'"
                   >
                     <template slot-scope="{ item }">
                       <img

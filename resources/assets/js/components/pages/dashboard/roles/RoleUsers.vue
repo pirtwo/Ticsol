@@ -110,7 +110,7 @@
             <td>
               <router-link 
                 class="btn btn-sm" 
-                :to="{ name : 'userDetails', params : { id: item.id } }"
+                :to="{ name : 'userProfile', params : { id: item.id } }"
               >
                 <i class="material-icons">visibility</i>
               </router-link>
@@ -118,12 +118,12 @@
             <td>{{ item.name }}</td>
             <td>
               <router-link 
-                v-for="item in item.roles" 
-                :key="item.id"
+                v-for="role in item.roles" 
+                :key="role.id"
                 class="btn btn-sm btn-link" 
-                :to="{ name : 'roleDetails', params : { id: item.id } }"
+                :to="{ name : 'roleDetails', params : { id: role.id } }"
               >
-                {{ item.name }}
+                {{ role.name }}
               </router-link>
             </td>
           </template>
