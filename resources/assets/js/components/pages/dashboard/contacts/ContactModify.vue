@@ -54,6 +54,19 @@
             Contacts
           </router-link>
         </li>
+        <li v-if="contact">
+          <router-link
+            :class="[{'disabled' : this.contact.jobs.length === 0}, 'btn btn-link' ]"
+            role="button"
+            :aria-disabled="this.contact.jobs.length === 0"
+            :to="{ name: 'jobList', params : { opt: 'in', col: 'job.contacts.id', val: this.id } }"
+          >
+            Related Jobs
+            <ts-badge class="badge-light ml-auto">
+              {{ contact.jobs.length }}
+            </ts-badge>
+          </router-link>
+        </li>
       </ul>
     </template>
 
@@ -71,9 +84,7 @@
               :key="index"
               v-if="item.$invalid"
             >
-              <div>
-                Row #{{ 1 + (+index) }}:
-              </div>
+              <div>Row #{{ 1 + (+index) }}:</div>
               <div v-if="!item.number.required">
                 Number is required.
               </div>
@@ -106,19 +117,24 @@
         <!-- Group -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Group <i class="field-required">*</i></label>
+            <label class="col-sm-2 col-form-lable">
+              Group
+              <i class="field-required">*</i>
+            </label>
             <div class="col-sm-10">
-              <select
+              <select              
+                id="group"
                 v-model="$v.form.group.$model"
                 :class="[{'is-invalid' : $v.form.group.$error } ,'custom-select']"
-                id="group"
+                :disabled="contact"
+                @change="form.email = ''"
               >
                 <option
                   selected
                   disabled
                 >
-                  Select a group...
-                </option>                
+                  Select contact group
+                </option>
                 <option value="customer">
                   Customer
                 </option>
@@ -162,14 +178,17 @@
         <!-- First Name -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">First Name <i class="field-required">*</i></label>
+            <label class="col-sm-2 col-form-lable">
+              First Name
+              <i class="field-required">*</i>
+            </label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.firstname.$model"
                 type="text"
                 :class="[{'is-invalid' : $v.form.firstname.$error } ,'form-control']"
                 id="firstname"
-                placeholder="Enter first name..."
+                placeholder="contact first name"
               >
               <div
                 class="invalid-feedback"
@@ -184,20 +203,51 @@
         <!-- Last Name -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Last Name <i class="field-required">*</i></label>
+            <label class="col-sm-2 col-form-lable">
+              Last Name
+              <i class="field-required">*</i>
+            </label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.lastname.$model"
                 type="text"
                 :class="[{'is-invalid' : $v.form.lastname.$error } ,'form-control']"
                 id="lastname"
-                placeholder="Enter last name..."
+                placeholder="contact last name"
               >
               <div
                 class="invalid-feedback"
                 v-if="!$v.form.lastname.required"
               >
                 Last name is required.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div
+          v-show="form.group === 'customer'"
+          class="form-group"
+        >
+          <div class="form-row">
+            <label class="col-sm-2 col-form-lable">
+              E-Mail
+              <i class="field-required">*</i>
+            </label>
+            <div class="col-sm-10">
+              <input
+                v-model="$v.form.email.$model"
+                type="text"
+                :class="[{'is-invalid' : $v.form.email.$error } ,'form-control']"
+                id="email"
+                placeholder="contact e-mail"
+              >
+              <div
+                class="invalid-feedback"
+                v-if="!$v.form.email.required"
+              >
+                E-Mail is required.
               </div>
             </div>
           </div>
@@ -213,7 +263,7 @@
                 type="tel"
                 class="form-control"
                 id="telephone"
-                placeholder="Enter Tel number..."
+                placeholder="contact tel number"
               >
             </div>
           </div>
@@ -222,14 +272,17 @@
         <!-- Mobile Num -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Mobile Number <i class="field-required">*</i></label>
+            <label class="col-sm-2 col-form-lable">
+              Mobile Number
+              <i class="field-required">*</i>
+            </label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.mobilephone.$model"
                 type="tel"
                 :class="[{'is-invalid' : $v.form.mobilephone.$error } ,'form-control']"
                 id="mobilephone"
-                placeholder="Enter mobile number..."
+                placeholder="contact mobile number"
               >
               <div
                 class="invalid-feedback"
@@ -241,7 +294,7 @@
           </div>
         </div>
       </form>
-      
+
       <ts-grid
         v-model="form.addresses"
         :columns="columns"
@@ -296,7 +349,10 @@
             <!-- Number -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Number <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Number
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.number"
@@ -312,7 +368,10 @@
             <!-- Street -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Street <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Street
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.street"
@@ -328,7 +387,10 @@
             <!-- Suburb -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Suburb <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Suburb
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.suburb"
@@ -344,7 +406,10 @@
             <!-- State -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">State <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  State
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.state"
@@ -360,7 +425,10 @@
             <!-- Country -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Country <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Country
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.country"
@@ -376,7 +444,10 @@
             <!-- Post Code -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Post Code <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Post Code
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     v-model="item.postcode"
@@ -419,6 +490,7 @@ export default {
         group: "",
         firstname: "",
         lastname: "",
+        email: "",
         telephone: "",
         mobilephone: "",
         addresses: []
@@ -435,23 +507,26 @@ export default {
     };
   },
 
-  validations: {
-    form: {
-      group: { required },
-      firstname: { required },
-      lastname: { required },
-      mobilephone: { required },
-      addresses: {
-        $each: {
-          number: { required },
-          street: { required },
-          suburb: { required },
-          state: { required },
-          country: { required },
-          postcode: { required }
+  validations() {
+    return {
+      form: {
+        group: { required },
+        firstname: { required },
+        lastname: { required },
+        email: this.form.group === "customer" ? { required } : {},
+        mobilephone: { required },
+        addresses: {
+          $each: {
+            number: { required },
+            street: { required },
+            suburb: { required },
+            state: { required },
+            country: { required },
+            postcode: { required }
+          }
         }
       }
-    }
+    };
   },
 
   watch: {
@@ -466,8 +541,8 @@ export default {
       getList: "resource/getList"
     }),
 
-    contact:function(){
-      if(!this.id) return null;
+    contact: function() {
+      if (!this.id) return null;
       return this.getList("contact")[0];
     }
   },
@@ -480,9 +555,10 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
+    this.clear("contact");
     next();
   },
- 
+
   methods: {
     ...mapActions({
       clear: "resource/clearResource",
@@ -496,7 +572,7 @@ export default {
       let p1 = this.id
         ? this.list({
             resource: "contact",
-            query: { eq: `id,${this.id}`, with: "addresses" }
+            query: { eq: `id,${this.id}`, with: "jobs,addresses" }
           })
         : new Promise(resolve => resolve());
 
@@ -528,7 +604,16 @@ export default {
         return;
       }
 
-      this.create({ resource: "contact", data: this.form })
+      let form = {};
+      form.group = this.form.group;
+      form.firstname = this.form.firstname;
+      form.lastname = this.form.lastname;
+      if(this.form.group === 'customer') form.email = this.form.email;
+      form.telephone = this.form.telephone;
+      form.mobilephone = this.form.mobilephone;
+      form.addresses = this.form.addresses;
+
+      this.create({ resource: "contact", data: form })
         .then(() => {
           e.target.disabled = false;
           this.showMessage(
@@ -553,7 +638,16 @@ export default {
         return;
       }
 
-      this.update({ resource: "contact", id: this.id, data: this.form })
+      let form = {};
+      form.group = this.form.group;
+      form.firstname = this.form.firstname;
+      form.lastname = this.form.lastname;
+      if(this.form.group === 'customer') form.email = this.form.email;
+      form.telephone = this.form.telephone;
+      form.mobilephone = this.form.mobilephone;
+      form.addresses = this.form.addresses;
+
+      this.update({ resource: "contact", id: this.id, data: form })
         .then(() => {
           e.target.disabled = false;
           this.showMessage(
@@ -581,7 +675,7 @@ export default {
 
     onCancel(e) {
       e.preventDefault();
-      this.$router.push({ name: "contactList" });
+      this.$router.go(-1);
     }
   }
 };
