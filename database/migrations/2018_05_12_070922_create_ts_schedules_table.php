@@ -30,6 +30,8 @@ class CreateTsSchedulesTable extends Migration
             $table->string('status');                      
             $table->dateTime('start');
             $table->dateTime('end');
+            $table->boolean('billable')
+                ->default(false);
             $table->boolean('offsite')
                 ->default(false);
             $table->time('break_length')

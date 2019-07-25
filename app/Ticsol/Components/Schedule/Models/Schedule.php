@@ -20,13 +20,11 @@ class Schedule extends Model
     protected $fillable = [
         'user_id',
         'job_id',
-        'parent_id',
-        'timesheet_id',
         'status',
-        'type',
         'event_type',
         'start',
         'end',
+        'billable',
         'offsite',
         'break_length',
     ];

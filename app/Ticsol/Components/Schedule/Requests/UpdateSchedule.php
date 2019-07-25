@@ -24,15 +24,14 @@ class UpdateSchedule extends FormRequest
     public function rules()
     {
         return [
-            'user_id'       => 'numeric|exists:ts_users,id',
-            'job_id'        => 'numeric|exists:ts_jobs,id',
-            'type'          => 'string|in:schedule',
-            'event_type'    => 'string|in:leave,unavailable,scheduled,RDO',
-            'status'        => 'string|in:tentative,confirmed',            
-            'start'         => 'date',
-            'end'           => 'date|after:start',
-            'offsite'       => 'boolean',
-            'break_length'  => 'numeric'
+            'user_id'       => 'nullable|numeric|exists:ts_users,id',
+            'job_id'        => 'nullable|numeric|exists:ts_jobs,id',            
+            'status'        => 'nullable|string|in:tentative,confirmed',            
+            'start'         => 'nullable|date',
+            'end'           => 'nullable|date|after:start',
+            'billable'      => 'nullable|boolean',
+            'offsite'       => 'nullable|boolean',
+            'break_length'  => 'nullable|numeric'
         ];
     }
 

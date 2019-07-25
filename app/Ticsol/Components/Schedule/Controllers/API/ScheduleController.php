@@ -5,6 +5,7 @@ namespace App\Ticsol\Components\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Schedule;
@@ -67,7 +68,6 @@ class ScheduleController extends Controller
      * Status       : tentative, confirmed
      * Event_type   : leave, unavailable, scheduled, RDO
      *
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -93,15 +93,7 @@ class ScheduleController extends Controller
             $schedule->creator_id = $creator_id;
             $schedule->type = 'schedule';
 
-            $schedule->fill($request->only([
-                'event_type',
-                'user_id',
-                'job_id',
-                'status',
-                'start',
-                'end',
-                'offsite',
-            ]));
+            $schedule->fill($request->all());
             $schedule->save();
 
         } else {
@@ -119,7 +111,7 @@ class ScheduleController extends Controller
                     $unav = new Schedule();
                     $unav->client_id = $client_id;
                     $unav->creator_id = $creator_id;
-                    $unavailable['type'] = 'schedule';
+                    $unav->type = 'schedule';
                     $unavailable['event_type'] = 'unavailable';
                     $unavailable['user_id'] = $request->input('user_id');
                     $unavailable['status'] = 'confirmed';
@@ -180,13 +172,20 @@ class ScheduleController extends Controller
             throw new NotFound();
         }
 
+        Validator::make(['type' => $schedule->type, 'event_type' => $schedule->event_type], [
+            'type' => 'in:schedule',
+            'event_type' => 'in:unavailable,scheduled,RDO',
+        ])->validate();
+
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
         $this->authorize('update', $schedule);
 
         $schedule->update($request->all());
+
         event(new Events\ScheduleUpdated($schedule));
+
         return $schedule;
     }
 
