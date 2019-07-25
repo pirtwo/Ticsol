@@ -25,17 +25,7 @@
               <div class="ml-2">
                 {{ message }}
               </div>
-            </div>
-            <div>
-              <button
-                v-show="!hash"
-                type="button"
-                class="btn btn-block btn-primary"
-                @click="requestAccessToken"
-              >
-                Login
-              </button>
-            </div>
+            </div>            
           </div>
         </div>
       </div>
@@ -44,11 +34,12 @@
 </template>
 
 <script>
-import { api } from "../../../api/http";
+import { api } from "../../api/http";
 import { mapGetters, mapActions } from "vuex";
+import { setTimeout } from 'timers';
 
 export default {
-  name: "IndexPage",
+  name: "Index",
 
   data() {
     return {
@@ -59,12 +50,11 @@ export default {
     };
   },
 
-  beforeRouteEnter(to, from, next) {
-    console.log(to);
-    console.log(from);
+  beforeRouteEnter(to, from, next) {    
     next(vm => {
       vm.hash = to.hash;
       if (vm.hash) vm.resolveHash();
+      else vm.requestAccessToken();
     });
   },
 
@@ -77,13 +67,16 @@ export default {
   methods: {
     ...mapActions({      
       extractToken: "user/extractToken",
-      fetchUserInfo: "user/fetchUserInfo",
+      me: "user/me",
       successfulAuth: "user/successfulAuth",
       connectToChannels: "core/connectToChannels"
     }),
 
     requestAccessToken() {
-      window.location.replace(this.authUrl);
+      this.message = "redirecting to login page...";
+      setTimeout(()=>{
+        window.location.href = this.authUrl;
+      }, 3000);      
     },
 
     async resolveHash() {
@@ -99,7 +92,7 @@ export default {
       this.message = "fetching your account details...";
 
       // test the token and fetch user information
-      await this.fetchUserInfo()
+      await this.me()
         .then(() => {
           this.message = "success, redirecting to dashboard...";
 
