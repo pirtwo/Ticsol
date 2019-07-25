@@ -74,7 +74,9 @@ class FormController extends Controller
         $form->creator_id = $request->user()->id;
         $form->fill($request->all());
         $form->save();
+
         event(new Events\FormCreated($form));
+
         return $form;
     }
 
@@ -119,7 +121,9 @@ class FormController extends Controller
         $this->authorize('update', $form);
 
         $form->update($request->all());
+
         event(new Events\FormUpdated($form));
+        
         return $form;
     }
 

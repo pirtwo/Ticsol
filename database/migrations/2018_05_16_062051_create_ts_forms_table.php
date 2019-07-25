@@ -20,6 +20,8 @@ class CreateTsFormsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
+            $table->unsignedInteger('parent_id')
+                ->nullable();
 
             // Attributes
             $table->string('name');
@@ -39,6 +41,10 @@ class CreateTsFormsTable extends Migration
             $table->foreign('creator_id')
                 ->references('id')
                 ->on('ts_users');
+
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('ts_forms');
         });
     }
 

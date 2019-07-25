@@ -2,9 +2,8 @@
 
 namespace App\Ticsol\Components\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Ticsol\Components\Models;
+use Illuminate\Database\Eloquent\Model;
 
 class Form extends Model
 {
@@ -20,7 +19,8 @@ class Form extends Model
      *
      * @var array
      */
-    protected $fillable = [        
+    protected $fillable = [
+        'parent_id',
         'name',
         'schema',
     ];
@@ -31,7 +31,7 @@ class Form extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     public function scopeOfClient($query, $clientId)
@@ -55,6 +55,14 @@ class Form extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    /**
+     * Parent of current job.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Form::class, 'parent_id');
     }
 
     /**
