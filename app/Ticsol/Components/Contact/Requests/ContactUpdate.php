@@ -24,9 +24,9 @@ class ContactUpdate extends FormRequest
     public function rules()
     {
         return [
-            'group'                 => 'nullable|string|in:user,customer,emergency',
             'firstname'             => 'nullable|string',
             'lastname'              => 'nullable|string',
+            'email'                 => 'sometimes|email',
             'telephone'             => 'nullable|string',
             'mobilephone'           => 'nullable|string',
             'addresses'             => 'nullable|array',

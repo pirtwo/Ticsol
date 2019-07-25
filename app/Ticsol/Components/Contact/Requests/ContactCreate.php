@@ -27,6 +27,7 @@ class ContactCreate extends FormRequest
             'group'                 => 'required|string|in:user,customer,emergency',
             'firstname'             => 'required|string',
             'lastname'              => 'required|string',
+            'email'                 => 'sometimes|required_if:group,customer|email',
             'telephone'             => 'nullable|string',
             'mobilephone'           => 'required|string',
             'addresses'             => 'nullable|array',

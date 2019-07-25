@@ -21,6 +21,7 @@ class Contact extends Model
         'group',
         'firstname',
         'lastname',
+        'email',
         'telephone',
         'mobilephone',
     ];

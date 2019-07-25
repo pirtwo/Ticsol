@@ -83,10 +83,11 @@ class ContactController extends Controller
             $contact->creator_id = $creatorId;
             if ($request->input('group') !== "customer") {
                 $contact->user_id = $creatorId;
+                $contact->fill($request->except(['email']));
             } else {
                 $contact->user_id = null;
-            }
-            $contact->fill($request->all());
+                $contact->fill($request->all());
+            }            
             $contact->save();
 
             if ($request->filled('addresses')) {
@@ -160,13 +161,11 @@ class ContactController extends Controller
         try {
             DB::beginTransaction();
 
-            if ($request->input('group') !== "customer") {
-                $contact->user_id = $creatorId;
-            } else {
-                $contact->user_id = null;
-            }
-
-            $contact->update($request->all());
+            if ($request->input('group') !== "customer") {                
+                $contact->update($request->except(['group', 'email']));
+            } else {                
+                $contact->update($request->except(['group']));
+            }            
 
             if ($request->has('addresses')) {
                 $items = $request->input('addresses');
