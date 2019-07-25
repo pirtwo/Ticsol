@@ -369,7 +369,7 @@ export default {
     let p2 = this.fetchList({ resource: "job" });
     let p3 = this.fetchList({
       resource: "schedule",
-      query: this.$queryBuilder(null, null, ["user", "job"], query)
+      query: this.$queryBuilder(null, null, ["user", "job", "request", "activities"], query)
     });
     Promise.all([p1, p2, p3])
       .then(() => {
@@ -417,7 +417,7 @@ export default {
       this.startLoading();
       this.fetchList({
         resource: "schedule",
-        query: this.$queryBuilder(null, null, ["user", "job"], query)
+        query: this.$queryBuilder(null, null, ["user", "job", "request", "activities"], query)
       })
         .then(() => {
           this.makeDraggable();

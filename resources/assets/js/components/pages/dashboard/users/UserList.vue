@@ -61,6 +61,32 @@
               height="40"
             >
             {{ item.name }}
+          </td>          
+          <td>
+            <span
+              v-for="role in item.roles"
+              :key="role.id"
+            >
+              <router-link 
+                class="btn btn-sm btn-link" 
+                :to="{ name : 'roleDetails', params : { id: role.id } }"
+              >
+                {{ role.name }}
+              </router-link> 
+            </span>
+          </td>
+          <td>
+            <span
+              v-for="team in item.teams"
+              :key="team.id"
+            >
+              <router-link 
+                class="btn btn-sm btn-link" 
+                :to="{ name : 'teamDetails', params : { id: team.id } }"
+              >
+                {{ team.name }}
+              </router-link> 
+            </span>
           </td>
           <td>
             <span
@@ -72,19 +98,6 @@
                 :to="{ name : 'contactDetails', params : { id: contact.id } }"
               >
                 {{ `${contact.firstname} ${contact.lastname}` }}
-              </router-link> 
-            </span>
-          </td>
-          <td>
-            <span
-              v-for="role in item.roles"
-              :key="role.id"
-            >
-              <router-link 
-                class="btn btn-sm btn-link" 
-                :to="{ name : 'roleDetails', params : { id: role.id } }"
-              >
-                {{ role.name }}
               </router-link> 
             </span>
           </td>
@@ -118,9 +131,10 @@ export default {
       },      
       header: [
         { value: "", orderBy: "" },
-        { value: "Name", orderBy: "name" },
+        { value: "Name", orderBy: "name" },        
+        { value: "Roles", orderBy: "roles" },
+        { value: "Teams", orderBy: "team" },
         { value: "Contacts", orderBy: "contact" },
-        { value: "Roles", orderBy: "roles" }
       ],
       order: "asc"
     };
@@ -154,7 +168,7 @@ export default {
       this.fetchList({
         resource: "user",
         query: {
-          with: "roles,contacts",
+          with: "roles,teams,contacts",
           page: this.pager.page,
           perPage: this.pager.perPage,
           [this.opt]: `${this.col},${this.val}`

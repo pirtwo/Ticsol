@@ -55,7 +55,7 @@
         >
           <td>
             <router-link
-              v-if="item.type === 'timesheet'"
+              v-if="item.type === 'timesheet' && item.timesheet"
               class="btn btn-sm"
               :to="{ name : 'timesheetDetails', params : { id: item.timesheet.id, start: item.timesheet.week_start, end: item.timesheet.week_end } }"
             >
@@ -77,7 +77,7 @@
             </router-link>
           </td>
           <td>{{ item.type }}</td>
-          <td>{{ item.assigned === null ? "None" : item.assigned.name }}</td>
+          <td>{{ item.assigned ? item.assigned.name : "None" }}</td>
           <td>{{ item.status }}</td>
           <td>{{ summary(item) }}</td>
           <td>{{ utcToLocal(item.created_at) }}</td>

@@ -1,12 +1,12 @@
 <template>
-  <app-main 
-    :scrollbar="true" 
-    :loading="isLoading" 
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-2"
   >
     <template slot="toolbar">
-      <ts-pagination 
-        v-model="pager" 
+      <ts-pagination
+        v-model="pager"
         :page-count="pager.pageCount"
       />
       <button
@@ -24,9 +24,9 @@
           Actions
         </li>
         <li>
-          <router-link 
-            tag="button" 
-            class="btn" 
+          <router-link
+            tag="button"
+            class="btn"
             :to="{ name: 'contactCreate' }"
           >
             New
@@ -34,44 +34,44 @@
         </li>
         <li class="menu-title">
           Links
-        </li>                
+        </li>
       </ul>
     </template>
 
     <template slot="content">
-      <ts-table 
-        class="table table-striped"         
-        :data="contacts" 
-        :header="header" 
-        :selection="false" 
-        order-by="name" 
+      <ts-table
+        class="table table-striped"
+        :data="contacts"
+        :header="header"
+        :selection="false"
+        order-by="name"
         order="asc"
       >
-        <template 
-          slot="header" 
+        <template
+          slot="header"
           slot-scope="{item}"
         >
           <div :data-orderBy="item.orderBy">
             {{ item.value }}
           </div>
         </template>
-        <template 
-          slot="body" 
+        <template
+          slot="body"
           slot-scope="{item}"
         >
           <td>
-            <router-link 
-              class="btn btn-sm" 
+            <router-link
+              class="btn btn-sm"
               :to="{ name : 'contactDetails', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>
-            </router-link>  
+            </router-link>
           </td>
           <td>{{ `${item.firstname} ${item.lastname}` }}</td>
           <td>{{ item.group.toUpperCase() }}</td>
           <td>{{ item.telephone ? item.telephone : "-" }}</td>
           <td>{{ item.mobilephone ? item.mobilephone : "-" }}</td>
-        </template> 
+        </template>
       </ts-table>
       <ts-filter
         v-model="query"
@@ -85,15 +85,14 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import pageMixin from '../../../../mixins/page-mixin';
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "ContactList",
 
-  mixins:[pageMixin],
+  mixins: [pageMixin],
 
-  components: {
-  },
+  components: {},
 
   props: ["col", "opt", "val"],
 
@@ -105,7 +104,7 @@ export default {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },      
+      },
       header: [
         { value: "", orderBy: "" },
         { value: "Name", orderBy: "name" },
@@ -128,7 +127,7 @@ export default {
       getList: "resource/getList"
     }),
 
-    contacts: function(){
+    contacts: function() {
       return this.getList("contact");
     },
 
@@ -174,12 +173,20 @@ export default {
     }
   },
 
+  beforeRouteLeave(to, from, next) {
+    this.clear("contact");
+    next();
+  },
+
   mounted() {
     this.feedTable();
   },
 
   methods: {
-    ...mapActions({ fetchList: "resource/list" }),
+    ...mapActions({
+      fetchList: "resource/list",
+      clear: "resource/clearResource"
+    }),
 
     feedTable() {
       this.startLoading();
@@ -193,8 +200,8 @@ export default {
           [],
           this.query
         )
-      })      
-        .then(respond => {         
+      })
+        .then(respond => {
           this.pager.pageCount = respond.last_page;
           this.stopLoading();
         })
