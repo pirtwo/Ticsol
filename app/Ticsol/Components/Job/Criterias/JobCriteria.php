@@ -9,14 +9,20 @@ use Illuminate\Http\Request;
 class JobCriteria extends Criteria
 {
     protected $request;
-    protected $contains;
+    protected $showAll;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->showAll = $request->query("showall", false);
     }
 
-    public function apply($model, IRepository $repository){  
+    public function apply($model, IRepository $repository){ 
+        
+        // show active jobs
+        if(!$this->showAll)
+            $model->where("isactive", true);
+
         return $model;
     }
 }

@@ -11,6 +11,7 @@ use App\Ticsol\Components\Models\Job;
 use App\Ticsol\Components\Job\Events;
 use App\Ticsol\Components\Job\Requests;
 use App\Ticsol\Components\Job\Repository;
+use App\Ticsol\Components\Job\Criterias;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 
@@ -47,6 +48,7 @@ class JobController extends Controller
         $request->query('with') != null ? explode(',', $request->query('with')) : [];
 
         $this->repository->pushCriteria(new CommonCriteria($request));
+        $this->repository->pushCriteria(new Criterias\JobCriteria($request));
         $this->repository->pushCriteria(new ClientCriteria($request));
 
         if ($page == null) {
