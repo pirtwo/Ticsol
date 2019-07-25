@@ -165,9 +165,9 @@
               </div>
             </div>
             
-            <div class="form-row">
+            <div class="form-row mt-4">
               <!-- Status -->
-              <div class="form-group col-sm-7">
+              <div class="form-group col-sm-6">
                 <div class="row no-gutters">
                   <label
                     class="col-sm-12"
@@ -207,8 +207,26 @@
                 </div>
               </div>
 
+              <!-- Billable -->
+              <div class="form-group col-sm-3">
+                <label for="billable">Billable</label>
+                <div class="custom-control custom-checkbox">
+                  <input
+                    v-model="form.billable"
+                    id="billable"
+                    name="billable"
+                    type="checkbox"
+                    class="custom-control-input"                    
+                  >
+                  <label
+                    class="custom-control-label"
+                    for="billable"
+                  >Billable</label>
+                </div>
+              </div>
+
               <!-- Offsite -->
-              <div class="form-group col-sm-5">
+              <div class="form-group col-sm-3">
                 <label for="offsite">Offsite</label>
                 <div class="custom-control custom-checkbox">
                   <input
@@ -221,7 +239,7 @@
                   <label
                     class="custom-control-label"
                     for="offsite"
-                  >Work Offsite</label>
+                  >Offsite</label>
                 </div>
               </div>
             </div>
@@ -260,9 +278,12 @@ import { required } from "vuelidate/lib/validators";
 import { before, after } from "../../../../utils/custom-validations";
 import { mapGetters, mapActions } from "vuex";
 import CreateJobModal from "../schedules/CreateJobModal.vue";
+import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
   name: "AssignJobModal",
+
+  mixins:[pageMixin],
 
   components: {
     "job-modal": CreateJobModal
@@ -292,12 +313,13 @@ export default {
       form: {
         resourceName: "",
         resource_id: null,
-        event_id: {},
+        event_id: null,
         status: "tentative",
         startDate: "",
         endDate: "",
         startTime: "",
         endTime: "",
+        billable: false,
         offsite: false
       },
       statusOptions: [
@@ -428,24 +450,25 @@ export default {
       form.status = this.form.status.toLowerCase();
       form.start = this.start;
       form.end = this.end;
+      form.billable = this.form.billable;
       form.offsite = this.form.offsite;
       form.break_length = 0;
-      form.type = "schedule";
       form.event_type = "scheduled";
 
       e.target.innerHTML = "Creating...";
       this.create({ resource: "schedule", data: form })
-        .then(respond => {          
-          this.clearForm();
-          this.$emit("input", false);
+        .then(respond => {   
+          this.showMessage(`Event assigned successfuly.`, "success");
         })
         .catch(error => {
           console.log(error.response);
+          this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
         })
-        .finally(()=>{
+        .finally(()=>{          
           e.target.innerHTML = "Assign";
           e.target.disabled = false;
+          $("#assignModal").modal("hide");
         });
     },
 
@@ -453,10 +476,12 @@ export default {
       this.form.userName = "";
       this.form.user_id = null;
       this.form.job_id = null;
+      this.form.status = "tentative";
       this.form.startDate = "";
       this.form.startTime = "";
       this.form.endDate = "";
       this.form.endTime = "";
+      this.form.billable = false;
       this.form.offsite = false;
 
       this.$v.start.$reset();
