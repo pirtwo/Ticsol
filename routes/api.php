@@ -95,7 +95,7 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
 
         // webhooks
         Route::post('hooks', 'WebhookController@subscribe');
-        Route::delete('hooks/{id}', 'WebhookController@delete');
+        Route::delete('hooks', 'WebhookController@delete');
         Route::get('polling/trigger', 'WebhookController@pollForTrigger');
     });
 
