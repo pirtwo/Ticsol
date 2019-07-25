@@ -2,15 +2,17 @@
 
 namespace App\Ticsol\Components\Controllers\API;
 
+use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Criteria\ClientCriteria;
+use App\Ticsol\Base\Criteria\CommonCriteria;
+use App\Ticsol\Base\Exceptions\NotFound;
+use App\Ticsol\Components\Models\User;
+use App\Ticsol\Components\User\Events;
+use App\Ticsol\Components\User\Repository;
+use App\Ticsol\Components\User\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
-use App\Ticsol\Base\Exceptions\NotFound;
-use App\Ticsol\Base\Criteria\CommonCriteria;
-use App\Ticsol\Base\Criteria\ClientCriteria;
-use App\Ticsol\Components\Models\User;
-use App\Ticsol\Components\User\Requests;
-use App\Ticsol\Components\User\Repository;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -69,7 +71,10 @@ class UserController extends Controller
         $this->authorize('create', User::class);
     }
 
-    public function current(Request $request)
+    /**
+     * show the current user info.
+     */
+    public function me(Request $request)
     {
         $with =
         $request->query('with') != null ? explode(',', $request->query('with')) : [];
@@ -118,24 +123,75 @@ class UserController extends Controller
             throw new NotFound();
         }
 
-        if ($request->has('isactive')) {
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('update', $user);
 
-            //----------------------------
-            //      AUTHORIZE ACTION
-            //----------------------------
-            $this->authorize('activation', $user);
+        $user->fill($request->all());
+        $meta = $user->meta;
 
-            $user->update($request->only(['isactive']));
+        // save new avatar
+        $defaultAvatar = "/img/avatar/default.png";
+        $oldAvatar = $meta["avatar"];
 
+        if ($request->file("avatar")) {
+            $meta["avatar"] = "/storage/" . $request->file('avatar')->store('img/avatar', 'public');
         } else {
-
-            //----------------------------
-            //      AUTHORIZE ACTION
-            //----------------------------
-            $this->authorize('update', $user);
-
-            $user->update($request->except(['isactive']));
+            $meta["avatar"] = $defaultAvatar;
         }
+
+        // delete old avatar
+        if ($oldAvatar != $defaultAvatar) {
+            Storage::disk("public")->delete(\substr($oldAvatar, 9)); 
+        }
+
+        $user->meta = $meta;
+        $user->save();
+
+        event(new Events\UserUpdated($user));
+
+        return $user;
+    }
+
+    /**
+     * enable user account.
+     */
+    public function enable(Request $request, $id)
+    {
+        $user = $this->repository->findBy('id', $id);
+        if ($user == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('activation', $user);
+
+        $user->isactive = true;
+        $user->save();
+
+        return $user;
+    }
+
+    /**
+     * disable user account.
+     */
+    public function disable(Request $request, $id)
+    {
+        $user = $this->repository->findBy('id', $id);
+        if ($user == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('activation', $user);
+
+        $user->isactive = false;
+        $user->save();
 
         return $user;
     }

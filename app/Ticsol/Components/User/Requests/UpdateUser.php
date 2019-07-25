@@ -28,9 +28,11 @@ class UpdateUser extends FormRequest
             'lastname'                  => 'nullable|string',   
             'email'                     => 'nullable|email',
             'password'                  => 'nullable|min:8',
-            'confirm_password'          => 'required_if:password|same:password',
-            'isactive'                  => 'nullable|boolean',
-            'meta'                      => 'nullable|array',            
+            'confirm_password'          => 'required_with:password|same:password',
+            'meta'                      => 'nullable|array',     
+            
+            // profile picture
+            'avatar'                    => 'nullable|mimes:jpg,jpeg,png|max:5120'
         ];
     }
 
