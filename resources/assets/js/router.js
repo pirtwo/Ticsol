@@ -376,13 +376,13 @@ export const router = new VueRouter({
                     name: 'settings',
                     meta: { requireAuth: true },
                     redirect: { name: 'roleList' },
-                    component: require('./components/pages/dashboard/Settings/Settings.vue').default,
+                    component: require('./components/pages/dashboard/settings/Settings.vue').default,
                     children: [
                         {
                             path: '/settings',
                             name: 'settingModify',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/Settings/SettingModify.vue').default,
+                            component: require('./components/pages/dashboard/settings/SettingModify.vue').default,
                         }]
                 },
             ]
