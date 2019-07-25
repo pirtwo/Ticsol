@@ -98,16 +98,12 @@
           <li v-if="!$v.gridData.required">
             Timesheets are required.
           </li>
-          <template
-            v-for="(item, index) in $v.gridData.$each.$iter"            
-          >
+          <template v-for="(item, index) in $v.gridData.$each.$iter">
             <li
               v-if="item.$invalid"
               :key="index"
             >
-              <div>
-                Row #{{ 1 + (+index) }}:
-              </div>
+              <div>Row #{{ 1 + (+index) }}:</div>
               <div v-if="!item.date.required">
                 Day is required.
               </div>
@@ -156,6 +152,9 @@
             </router-link>
           </td>
           <td>
+            {{ item.billable ? 'Yes' : 'No' }}
+          </td>
+          <td>
             <template v-if="item.startTime">
               {{ item.startTime }}
             </template>
@@ -180,7 +179,10 @@
             <!-- Day -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Day <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Day
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <ts-select
                     v-model="item.date"
@@ -197,7 +199,10 @@
             <!-- Job -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Job <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Job
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <ts-select
                     v-model="item.job"
@@ -214,7 +219,10 @@
             <!-- Start -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Start <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Start
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     class="form-control"
@@ -228,7 +236,10 @@
             <!-- End -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">End <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  End
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     class="form-control"
@@ -242,12 +253,39 @@
             <!-- Break -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Break <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-lable">
+                  Break
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <ts-timepicker
                     class="form-control"
                     v-model="item.break_length"
                   />
+                </div>
+              </div>
+            </div>
+
+            <!-- Billable -->
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-sm-2 col-form-lable">
+                  Billable                  
+                </label>
+                <div class="col-sm-10">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      v-model="item.billable"
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="billable"
+                      value="billable"
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="billable"
+                    >Billable</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -258,7 +296,7 @@
           <tr>
             <td
               v-if="gridData.length > 0"
-              colspan="7"
+              colspan="8"
               class="table-status"
             >
               <div class="ts-status d-flex flex-column">
@@ -386,6 +424,9 @@
               </router-link>
             </td>
             <td>
+              {{ item.billable ? 'Yes' : 'No' }}
+            </td>
+            <td>
               <template v-if="item.startTime">
                 {{ item.startTime }}
               </template>
@@ -452,6 +493,7 @@ export default {
       columns: [
         { key: "day", value: "Day" },
         { key: "job", value: "Job" },
+        { key: "billable", value: "Billable" },
         { key: "start-time", value: "Start" },
         { key: "end-time", value: "End" },
         { key: "break", value: "Break" },
@@ -460,6 +502,7 @@ export default {
       scheduleColumns: [
         { value: "Day", orderBy: "date.value" },
         { value: "Job", orderBy: "job.value" },
+        { value: "Billable", orderBy: "billable" },
         { value: "Start", orderBy: "startTime" },
         { value: "End", orderBy: "endTime" }
       ]
@@ -467,7 +510,11 @@ export default {
   },
 
   validations: {
-    approver: { required: requiredIf(function(){ return this.approverModal; }) },
+    approver: {
+      required: requiredIf(function() {
+        return this.approverModal;
+      })
+    },
     gridData: {
       required,
       $each: {
@@ -560,13 +607,17 @@ export default {
 
     weekStart: function() {
       if (this.start)
-        return moment(this.start, ["YYYY-MM-DD"]).startOf("d").format("YYYY-MM-DDTHH:mm:ss");
+        return moment(this.start, ["YYYY-MM-DD"])
+          .startOf("d")
+          .format("YYYY-MM-DDTHH:mm:ss");
       return this.week.start.format("YYYY-MM-DDTHH:mm:ss");
     },
 
     weekEnd: function() {
       if (this.end)
-        return moment(this.end, ["YYYY-MM-DD"]).endOf("d").format("YYYY-MM-DDTHH:mm:ss");
+        return moment(this.end, ["YYYY-MM-DD"])
+          .endOf("d")
+          .format("YYYY-MM-DDTHH:mm:ss");
       return this.week.end.format("YYYY-MM-DDTHH:mm:ss");
     },
 
@@ -620,7 +671,10 @@ export default {
     loadAssets() {
       return new Promise((resolve, reject) => {
         let loadJobs = this.list({ resource: "job" });
-        let loadUsers = this.list({ resource: "user" });
+        let loadUsers = this.list({
+          resource: "user",
+          query: { in: "user.roles.permissions.name,approve-timesheet" }
+        });
 
         Promise.all([loadJobs, loadUsers])
           .then(() => {
@@ -709,6 +763,7 @@ export default {
             timesheet.job = this.jobs.find(job => job.key == item.job.id);
             timesheet.startTime = item.start.slice(11, 16);
             timesheet.endTime = item.end.slice(11, 16);
+            timesheet.billable = item.billable;
             timesheet.break_length = item.break_length;
             items.push(timesheet);
           }
@@ -764,7 +819,7 @@ export default {
       this.gridData = newList;
     },
 
-    async onSubmit(e) {
+    onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
 
@@ -774,21 +829,24 @@ export default {
         return;
       }
 
+      let p = null;
       if (this.timesheet) {
-        await this.updateTimesheet("submitted", this.comment);
+        p = this.updateTimesheet("submitted", this.comment);
       } else {
-        await this.createTimesheet("submitted", this.comment);
+        p = this.createTimesheet("submitted", this.comment);
       }
 
-      if (this.comment) {
-        await this.createComment(this.timesheet.id, this.comment);
-      }
-
-      e.target.disabled = false;
-      this.approverModal = false;
+      p.then(() => {
+        if (this.comment) {
+          this.createComment(this.timesheet.id, this.comment);
+        }
+      }).finally(() => {
+        e.target.disabled = false;
+        this.approverModal = false;
+      });
     },
 
-    async onSave(e) {
+    onSave(e) {
       e.preventDefault();
       e.target.disabled = true;
 
@@ -798,13 +856,16 @@ export default {
         return;
       }
 
+      let p = null;
       if (this.timesheet) {
-        await this.updateTimesheet("draft");
+        p = this.updateTimesheet("draft");
       } else {
-        await this.createTimesheet("draft");
+        p = this.createTimesheet("draft");
       }
 
-      e.target.disabled = false;
+      p.finally(() => {
+        e.target.disabled = false;
+      });
     },
 
     onCancel() {
@@ -913,6 +974,7 @@ export default {
           type: "timesheet",
           event_type: "scheduled",
           status: "tentative",
+          billable: item.billable ? true : false,
           break_length: item.break_length,
           start: `${item.date.day.format("YYYY-MM-DD")} ${item.startTime}`,
           end: `${item.date.day.format("YYYY-MM-DD")} ${item.endTime}`
