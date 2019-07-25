@@ -29,18 +29,19 @@ class UpdateRequest extends FormRequest
             'assigned_id'       => 'nullable|integer',
             'schedule_id'       => 'nullable|integer',
             'status'            => 'required|string|in:submitted,suspended,draft,approved,rejected',
+            'type'              => 'required|string|in:leave,reimbursement',     
 
             // Leave     
-            'leave_status'      => 'required_if:type,leave|string|in:tentative,confirmed',       
-            'leave_type'        => 'required_if:type,leave|string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
-            'from'              => 'required_if:type,leave|date',
-            'till'              => 'required_if:type,leave|date|after:from',
+            'leave_status'      => 'string|in:tentative,confirmed',       
+            'leave_type'        => 'string|in:annual,long service,sick,bereavement,maternity/paternity,study,other',
+            'from'              => 'date',
+            'till'              => 'date|after:from',
 
             // Reimbursement
-            'details'           => 'required_if:type,reimbursement|string|between:1,1000',
-            'amount'            => 'required_if:type,reimbursement|numeric',
-            'tax'               => 'required_if:type,reimbursement|string|in:Incl,Excl',
-            'date'              => 'required_if:type,reimbursement|date',
+            'details'           => 'string|between:1,1000',
+            'amount'            => 'numeric',
+            'tax'               => 'string|in:Incl,Excl',
+            'date'              => 'date',
 
             // Attachments
             'attachments'       => 'nullable|array|max:5',

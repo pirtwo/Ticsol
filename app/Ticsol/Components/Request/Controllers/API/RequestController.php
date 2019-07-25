@@ -114,10 +114,10 @@ class RequestController extends Controller
             if ($request->input('type') == 'leave') {
                 $schedule->client_id = $clientId;
                 $schedule->creator_id = $userId;
+                $schedule->type = "schedule";
                 $schedule->fill([
                     'user_id' => $request->user()->id,
                     'status' => 'tentative',
-                    'type' => 'schedule',
                     'event_type' => 'leave',
                     'start' => $request->input('from'),
                     'end' => $request->input('till'),
