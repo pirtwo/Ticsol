@@ -448,51 +448,7 @@ export default {
     canApprove() {
       if (!this.request) return false;
       return this.request.assigned_id === this.userId;
-    },
-
-    onSave(e, status = "submitted") {
-      e.preventDefault();
-      e.target.disabled = true;
-
-      // validate form
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        e.target.disabled = false;
-        return;
-      }
-
-      // populate form data
-      let form = new FormData();
-      form.append("type", "reimbursement");
-      form.append("status", status);
-      form.append("job_id", this.form.job.key);
-      form.append("assigned_id", this.form.approver.key);
-      form.append("tax", this.form.tax);
-      form.append("amount", this.form.amount);
-      form.append("date", this.form.date);
-      form.append("details", this.form.details);
-
-      for (let i = 0; i < this.form.attachments.length; i++) {
-        let file = this.form.attachments[i];
-        form.append(`attachments[${i}]`, file);
-      }
-
-      this.update({ resource: "request", id: this.id, data: form })
-        .then(respond => {
-          this.showMessage(
-            `Reimbursement request ${status} successfuly.`,
-            "success"
-          );
-        })
-        .catch(error => {
-          console.log(error.response);
-          this.showMessage(error.message, "danger");
-          this.$formFeedback(error.response.data.errors);
-        })
-        .finally(() => {
-          e.target.disabled = false;
-        });
-    },
+    },    
 
     onSubmit(e) {
       e.preventDefault();
@@ -508,7 +464,7 @@ export default {
       // populate form data      
       let form = new FormData();
       form.append("type", "reimbursement");
-      form.append("status", status);
+      form.append("status", "submitted");
       form.append("job_id", this.form.job.key);
       form.append("assigned_id", this.form.approver.key);
       form.append("tax", this.form.tax);
@@ -530,6 +486,51 @@ export default {
         })
         .catch(error => {
           console.log(error);
+          this.showMessage(error.message, "danger");
+          this.$formFeedback(error.response.data.errors);
+        })
+        .finally(() => {
+          e.target.disabled = false;
+        });
+    },
+
+    onSave(e, status = "submitted") {
+      e.preventDefault();
+      e.target.disabled = true;
+
+      // validate form
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
+
+      // populate form data
+      let form = new FormData();               
+      form.append("_method", "PUT");
+      form.append("type", "reimbursement");
+      form.append("status", status);
+      form.append("job_id", this.form.job.key);
+      form.append("assigned_id", this.form.approver.key);
+      form.append("tax", this.form.tax);
+      form.append("amount", this.form.amount);
+      form.append("date", this.form.date);
+      form.append("details", this.form.details);
+
+      for (let i = 0; i < this.form.attachments.length; i++) {
+        let file = this.form.attachments[i];
+        form.append(`attachments[${i}]`, file);
+      }
+
+      this.update({ resource: "request", id: this.id, data: form, method: "POST", attachments: true })
+        .then(respond => {
+          this.showMessage(
+            `Reimbursement request ${status} successfuly.`,
+            "success"
+          );
+        })
+        .catch(error => {
+          console.log(error.response);
           this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
         })

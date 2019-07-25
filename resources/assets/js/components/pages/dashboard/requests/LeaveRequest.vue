@@ -482,6 +482,12 @@ export default {
       );
     },
 
+    diff: function(){
+        let from = moment(this.from);
+        let till = moment(this.till).add(this.form.daysRequested, "d");
+        return till.diff(from, "d", true);
+    },
+
     /**
      * Calculated requested days/hours.
      */
@@ -553,6 +559,8 @@ export default {
       this.form.approver = this.users.find(
         item => item.key === request.assigned_id
       );
+
+      this.form.display = this.diff < 1 ? "hours" : "days";
     },
 
     /**
@@ -591,7 +599,7 @@ export default {
       }
 
       // populate form data
-      let form = new FormData();
+      let form = new FormData();  
       form.append("type", "leave");
       form.append("status", "submitted");
       form.append("assigned_id", this.form.approver.key);
@@ -629,15 +637,21 @@ export default {
       }
 
       // populate form data
-      let form = { meta: {} };
-      form.type = "leave";
-      form.status = status;
-      form.assigned_id = this.form.approver.key;
-      form.meta.leave_type = this.form.leaveType;
-      form.meta.from = this.from;
-      form.meta.till = this.till;
+      let form = new FormData();          
+      form.append("_method", "PUT");
+      form.append("type", "leave");
+      form.append("status", status);
+      form.append("assigned_id", this.form.approver.key);
+      form.append("leave_type", this.form.leaveType);
+      form.append("from", this.from);
+      form.append("till", this.till);
 
-      this.update({ resource: "request", id: this.id, data: form })
+      for (let i = 0; i < this.form.attachments.length; i++) {
+        let file = this.form.attachments[i];
+        form.append(`attachments[${i}]`, file);
+      }
+
+      this.update({ resource: "request", id: this.id, data: form, method: "POST", hasAttachments: true })
         .then(respond => {
           e.target.disabled = false;
           this.showMessage(`Leave request ${status} successfuly.`, "success");
