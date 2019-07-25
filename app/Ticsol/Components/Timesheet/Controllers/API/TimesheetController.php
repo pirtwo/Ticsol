@@ -121,6 +121,7 @@ class TimesheetController extends Controller
                 $schedule = new Schedule();
                 $schedule->client_id = $client_id;
                 $schedule->creator_id = $creator_id;
+                $schedule->type = "timesheet";
                 $schedule->fill($item);
                 $schedule->timesheet()->associate($timesheet);
                 $schedule->save();
@@ -211,6 +212,7 @@ class TimesheetController extends Controller
                     $schedule = new Schedule();
                     $schedule->client_id = $client_id;
                     $schedule->creator_id = $creator_id;
+                    $schedule->type = "timesheet";
                     $schedule->fill($item);
                     $schedule->timesheet()->associate($timesheet);
                     $schedule->save();

@@ -65,15 +65,16 @@ class CreateTimesheet extends FormRequest
             'status' => 'required|string|in:submitted,draft',
 
             // Timesheet items
-            'items' => 'required|array',
-            'items.*.user_id' => 'required_with:items|numeric',
-            'items.*.job_id' => 'required_with:items|numeric',
-            'items.*.status' => 'required_with:items|string|in:tentative,confirmed',
-            'items.*.type' => 'required_with:items|string|in:timesheet',
-            'items.*.event_type' => 'required_with:items|string|in:leave,scheduled,RDO',
-            'items.*.start' => 'required_with:items|date',
-            'items.*.end' => 'required_with:items|date',
-            'items.*.break_length' => 'required_with:items|string',
+            'items'                 => 'required|array',
+            'items.*.user_id'       => 'required_with:items|numeric',
+            'items.*.job_id'        => 'required_with:items|numeric',
+            'items.*.status'        => 'required_with:items|string|in:tentative,confirmed',
+            'items.*.type'          => 'required_with:items|string|in:timesheet',
+            'items.*.event_type'    => 'required_with:items|string|in:leave,scheduled,RDO',
+            'items.*.start'         => 'required_with:items|date',
+            'items.*.end'           => 'required_with:items|date',
+            'items.*.billable'      => 'required_with:items|boolean',
+            'items.*.break_length'  => 'required_with:items|string',
         ];
     }
 

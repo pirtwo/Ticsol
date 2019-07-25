@@ -34,7 +34,8 @@ class UpdateTimesheet extends FormRequest
             'items.*.type'              => 'required_with:items|string|in:timesheet',
             'items.*.event_type'        => 'required_with:items|string|in:leave,scheduled,RDO',    
             'items.*.start'             => 'required_with:items|date',
-            'items.*.end'               => 'required_with:items|date',            
+            'items.*.end'               => 'required_with:items|date', 
+            'items.*.billable'          => 'required_with:items|boolean',           
             'items.*.break_length'      => 'required_with:items|string'
         ];
     }
