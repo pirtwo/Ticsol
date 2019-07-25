@@ -63,14 +63,17 @@
         <!-- profile Name -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Profile Name <i class="field-required">*</i></label>
+            <label class="col-sm-2 col-form-lable">
+              Profile Name
+              <i class="field-required">*</i>
+            </label>
             <div class="col-sm-10">
               <input
                 v-model="$v.form.name.$model"
                 id="title"
                 type="text"
                 :class="[{'is-invalid' : $v.form.name.$error } ,'form-control']"
-                placeholder="Enter name for profile..."
+                placeholder="profile name"
               >
               <div
                 class="invalid-feedback"
@@ -82,15 +85,29 @@
           </div>
         </div>
 
-        <!-- meta -->
-        <form-builder
-          v-model="frmBuilder"
-          :disable-fields="['hidden', 'button', 'paragraph', 'header']"
-          :disabled-attrs="['className', 'value']"
-          :disabled-action-buttons="[]"
-          :control-order="[]"
+        <!-- Parent -->
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-lable">Parent</label>
+            <div class="col-sm-10">
+              <ts-select
+                v-model="form.parent"
+                :data="profiles"
+                id="parent_id"
+                name="profileParent"
+                placeholder="profile parent"
+                search-placeholder="search..."
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- schema -->
+        <div
+          id="formBuilder"
+          class="mb-4"
         />
-      </form>      
+      </form>
     </template>
   </app-main>
 </template>
@@ -106,17 +123,15 @@ export default {
 
   mixins: [pageMixin],
 
-  components: {
-    "form-builder": FormBuilder
-  },
-
   props: ["id"],
 
   data() {
     return {
       frmBuilder: {},
+      profileList: [],
       form: {
         name: "",
+        parent: null,
         schema: ""
       }
     };
@@ -128,34 +143,86 @@ export default {
     }
   },
 
+  watch: {
+    profile: function(val) {
+      this.populateForm(val);
+    }
+  },
+
+  computed: {
+    ...mapGetters({
+      getList: "resource/getList"
+    }),
+
+    profile: function() {
+      if (!this.id) return null;
+      return this.getList("form")[0];
+    },
+
+    profiles: function() {
+      return this.profileList.map(item => {
+        return { key: item.id, value: item.name };
+      });
+    }
+  },
+
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
+      vm.loadAssets();
     });
   },
 
-  mounted() {
-    if (this.id) {
-      this.startLoading();
-      this.fetchItem({ resource: "form", id: this.id })
-        .then(respond => {
-          this.form.name = respond.name;
-          this.frmBuilder.actions.setData(JSON.stringify(respond.schema));
-          this.stopLoading();
-        })
-        .catch(error => {
-          console.log(error);
-          this.stopLoading();
-        });
-    }
+  beforeRouteLeave(to, from, next) {
+    this.clear("form");
+    next();
   },
 
   methods: {
     ...mapActions({
+      list: "resource/list",
       create: "resource/create",
       update: "resource/update",
-      fetchItem: "resource/show"
+      clear: "resource/clearResource"
     }),
+
+    async loadAssets() {
+      this.startLoading();
+
+      await $("#formBuilder")
+        .formBuilder({
+          disabledAttrs: ["className", "value"],
+          disableFields: ["hidden", "button", "paragraph", "header"],
+          controlOrder: [],
+          controlPosition: "right",
+          stickyControls: {
+            enable: false,
+            offset: { top: 5, bottom: "auto", right: "auto" }
+          },
+          showActionButtons: false,
+          disabledActionButtons: []
+        })
+        .promise.then(formBuilder => {
+          this.frmBuilder = formBuilder;
+        });
+
+      let p1 = await this.list({ resource: "form" }).then(data => {
+        this.profileList = data;
+      });
+      let p2 = this.id
+        ? await this.list({ resource: "form", query: { eq: `id,${this.id}` } })
+        : new Promise(resolve => resolve());
+
+      this.stopLoading();
+    },
+
+    populateForm(profile) {
+      this.form.name = profile.name;
+      this.form.parent = this.profiles.find(
+        item => item.key == profile.parent_id
+      );
+      this.frmBuilder.actions.setData(JSON.stringify(profile.schema));
+    },
 
     onSubmit(e) {
       e.preventDefault();
@@ -167,19 +234,24 @@ export default {
         return;
       }
 
-      this.form.schema = this.frmBuilder.actions.getData();
-      this.create({ resource: "form", data: this.form })
-        .then(() => {
-          e.target.disabled = false;
+      let form = {};
+      form.name = this.form.name;
+      if(this.form.parent) form.parent_id = this.form.parent.key;
+      form.schema = this.frmBuilder.actions.getData();
+      
+      this.create({ resource: "form", data: form })
+        .then(() => {          
           this.showMessage(
             `Profile <b>${this.form.name}</b> created successfuly.`,
             "success"
           );
         })
         .catch(error => {
-          e.target.disabled = false;
           this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
+        })
+        .finally(()=>{
+          e.target.disabled = false;
         });
     },
 
@@ -193,31 +265,37 @@ export default {
         return;
       }
 
-      this.form.schema = this.frmBuilder.actions.getData();
+      let form = {};
+      form.name = this.form.name;
+      if(this.form.parent) form.parent_id = this.form.parent.key;
+      form.schema = this.frmBuilder.actions.getData();
+
       this.update({ resource: "form", id: this.id, data: this.form })
-        .then(() => {
-          e.target.disabled = false;
+        .then(() => {         
           this.showMessage(
             `Profile <b>${this.form.name}</b> created successfuly.`,
             "success"
           );
         })
-        .catch(error => {
-          e.target.disabled = false;
+        .catch(error => {         
           this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
+        })
+        .finally(()=>{
+          e.target.disabled = false;
         });
     },
 
     clearForm() {
       this.form.name = "";
+      this.form.parent = null;
       this.form.schema = "";
       this.$v.form.$reset();
     },
 
     onCancel(e) {
       e.preventDefault();
-      this.$router.push({ name: "profileList" });
+      this.$router.go(-1);
     }
   }
 };
