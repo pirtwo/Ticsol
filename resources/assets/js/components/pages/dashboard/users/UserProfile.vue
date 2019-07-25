@@ -32,6 +32,33 @@
         <li class="menu-title">
           Links
         </li>
+
+        <li v-if="userProfile">
+          <router-link
+            role="button"
+            :class="[{ 'disabled' : this.contacts.length === 0 }, 'btn']"
+            :aria-disabled="this.contacts.length === 0"
+            :to="{ name:'contactList', params:{ opt:'in', col:'id', val: idToString(contacts) } }"
+          >
+            Contacts
+            <ts-badge class="badge-light ml-auto">
+              {{ contacts.length }}
+            </ts-badge>
+          </router-link>
+        </li>
+        <li v-if="userProfile">
+          <router-link
+            role="button"
+            :class="[{ 'disabled' : this.emergencyContacts.length === 0 }, 'btn']"
+            :aria-disabled="this.emergencyContacts.length === 0"
+            :to="{ name:'contactList', params:{ opt:'in', col:'id', val: idToString(emergencyContacts) } }"
+          >
+            Emergencey Contacts
+            <ts-badge class="badge-light ml-auto">
+              {{ emergencyContacts.length }}
+            </ts-badge>
+          </router-link>
+        </li>  
       </ul>
     </template>
 
@@ -39,6 +66,7 @@
       <!-- Profile info -->
       <form class="needs-validation">
         <div class="form-row">
+          <!-- profile picture -->
           <div class="form-group col-sm-4">
             <img
               v-show="!loadingAvatar"
@@ -62,17 +90,23 @@
               <strong>Loading profile picture...</strong>
             </div>
           </div>
+
+          <!-- profile info -->
           <div class="form-group col-sm-8">
+            <!-- first name -->
             <div class="form-group">
               <div class="form-row">
-                <!-- <label class="col-sm-12 col-form-lable">First Name</label> -->
-                <div class="col-sm-12">
+                <label class="col-sm-3 col-form-lable">
+                  First Name
+                  <i class="field-required">*</i>
+                </label>
+                <div class="col-sm-9">
                   <input
                     v-model="$v.form.firstname.$model"
                     id="firstname"
                     type="text"
                     :class="[{'is-invalid' : $v.form.firstname.$error } ,'form-control']"
-                    placeholder="Enter your first name..."
+                    placeholder="user first name"
                   >
                   <div
                     class="invalid-feedback"
@@ -83,16 +117,21 @@
                 </div>
               </div>
             </div>
+
+            <!-- last name -->
             <div class="form-group">
               <div class="form-row">
-                <!-- <label class="col-sm-12 col-form-lable">Last Name</label> -->
-                <div class="col-sm-12">
+                <label class="col-sm-3 col-form-lable">
+                  Last Name
+                  <i class="field-required">*</i>
+                </label>
+                <div class="col-sm-9">
                   <input
                     v-model="$v.form.lastname.$model"
                     id="lastname"
                     type="text"
                     :class="[{'is-invalid' : $v.form.lastname.$error } ,'form-control']"
-                    placeholder="Enter your last name..."
+                    placeholder="user last name"
                   >
                   <div
                     class="invalid-feedback"
@@ -103,39 +142,54 @@
                 </div>
               </div>
             </div>
+
+            <!-- e-mail -->
             <div class="form-group">
               <div class="form-row">
-                <!-- <label class="col-sm-12 col-form-lable">Email</label> -->
-                <div class="col-sm-12">
+                <label class="col-sm-3 col-form-lable">
+                  E-Mail
+                  <i class="field-required">*</i>
+                </label>
+                <div class="col-sm-9">
                   <input
                     v-model="$v.form.email.$model"
                     id="email"
                     type="text"
                     :class="[{'is-invalid' : $v.form.email.$error } ,'form-control']"
-                    placeholder="Enter your email..."
+                    placeholder="user e-mail"
                   >
                   <div
                     class="invalid-feedback"
                     v-if="!$v.form.email.required"
                   >
-                    Email is required.
+                    E-Mail is required.
+                  </div>
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.form.email.email"
+                  >
+                    Should be a valid e-mail address.
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- profile picture -->
             <div class="form-group">
               <div class="form-row">
-                <!-- <label class="col-sm-12 col-form-lable">Profile Picture</label> -->
-                <div class="col-sm-12">
+                <label class="col-sm-3 col-form-lable">Profile Picture</label>
+                <div class="col-sm-9">
                   <div class="custom-file">
                     <input
+                      id="avatar"
+                      name="avatar"
                       type="file"
                       class="custom-file-input"
-                      id="customFile"
+                      @change="onAttachment"
                     >
                     <label
+                      for="avatar"
                       class="custom-file-label"
-                      for="customFile"
                     >Choose Profile Picture</label>
                   </div>
                 </div>
@@ -152,7 +206,7 @@
       <ts-datescroller
         v-model="week"
         range="Week"
-        :week-start="locale === 'en-AU' ? 'Mon' : 'Sun'"
+        :week-start="'Sun'"
         @change="loadCalendar"
       />
       <calendar
@@ -262,7 +316,7 @@
       <!-- Event info modal -->
       <ts-modal
         :show.sync="eventInfoModal"
-        title="Event Info"
+        title="Event Details"
       >
         <div class="form-group">
           <div class="form-row">
@@ -339,9 +393,9 @@
 </template>
 
 <script>
-import moment from 'moment';
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import { required, email } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 import DPCalendarVue from "../../../base/DPCalendar.vue";
 
@@ -358,7 +412,6 @@ export default {
 
   data() {
     return {
-      locale: window.navigator.language,
       loadingAvatar: true,
       createEventModal: false,
       confirmDeleteModal: false,
@@ -372,7 +425,8 @@ export default {
         firstname: "",
         lastname: "",
         email: "",
-        avatar: ""
+        avatar: "",
+        attachment: ""
       },
       recurring: {
         repeat: "no repeat",
@@ -395,24 +449,17 @@ export default {
     form: {
       firstname: { required },
       lastname: { required },
-      email: { required }
+      email: { required, email }
     }
   },
 
   watch: {
     id: function(val) {
-      console.log(val);
-      let p1 = this.loadProfile();
-      let p2 = this.loadCalendar();
+      this.loadAssets();
+    },
 
-      Promise.all([p1, p2])
-        .then(() => {
-          this.stopLoading();
-        })
-        .catch(error => {
-          console.log(error);
-          this.showMessage(error.message, "danger");
-        });
+    userProfile: function(val){
+      this.populateForm(val);
     }
   },
 
@@ -422,12 +469,29 @@ export default {
       getList: "resource/getList"
     }),
 
-    weekStart:function(){
-      return this.week.start.format('YYYY-MM-DD');
+    userProfile: function() {
+      if(!this.id) return null;
+      return this.getList("user")[0];
     },
 
-    weekEnd:function(){
-      return this.week.end.format('YYYY-MM-DD');
+    weekStart: function() {
+      return this.week.start.format("YYYY-MM-DD");
+    },
+
+    weekEnd: function() {
+      return this.week.end.format("YYYY-MM-DD");
+    },
+
+    contacts: function() {
+      if(!this.userProfile) return "";
+      return this.userProfile.contacts
+        .filter(item => item.group == "user");
+    },
+
+    emergencyContacts: function() {
+      if(!this.userProfile) return "";
+      return this.userProfile.contacts
+        .filter(item => item.group == "emergency");
     },
 
     unavailables: function() {
@@ -452,24 +516,13 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.startLoading();
-      let p1 = vm.loadProfile();
-      let p2 = vm.loadCalendar();
-
-      Promise.all([p1, p2])
-        .then(() => {
-          vm.stopLoading();
-        })
-        .catch(error => {
-          console.log(error);
-          this.showMessage(error.message, "danger");
-        });
+      vm.loadAssets();
     });
   },
-  
-  beforeRouteLeave (to, from, next) {
-    this.clear('user');
-    this.clear('schedule');
+
+  beforeRouteLeave(to, from, next) {
+    this.clear("user");
+    this.clear("schedule");
     next();
   },
 
@@ -477,18 +530,33 @@ export default {
     ...mapActions({
       clear: "resource/clearResource",
       list: "resource/list",
-      show: "resource/show",
       create: "resource/create",
-      delete: "resource/delete"
+      update: "resource/update",
+      delete: "resource/delete",
+      updateUserInfo: "user/updateInfo"
     }),
+
+    loadAssets() {
+      this.startLoading();
+      let p1 = this.loadProfile();
+      let p2 = this.loadCalendar();
+
+      Promise.all([p1, p2])
+        .then(() => {
+          this.stopLoading();
+        })
+        .catch(error => {
+          console.log(error);
+          this.showMessage(error.message, "danger");
+        });
+    },
 
     loadProfile() {
       this.loadingAvatar = true;
-      return this.show({ resource: "user", id: this.id }).then(data => {
-        this.form.firstname = data.firstname;
-        this.form.lastname = data.lastname;
-        this.form.email = data.email;
-        this.form.avatar = data.meta.avatar;
+      return this.list({
+        resource: "user",
+        id: this.id,
+        query: { eq:`id,${this.id}`, with: "contacts" }
       });
     },
 
@@ -515,6 +583,19 @@ export default {
       });
     },
 
+    populateForm(profile){
+      this.form.firstname = profile.firstname;
+      this.form.lastname = profile.lastname;
+      this.form.email = profile.email;
+      this.form.avatar = profile.meta.avatar;
+    },
+
+    idToString(list){
+      if(!list) return "";
+      return list.map(item => item.id)
+        .reduce((acc,cur) => `${cur}${ acc ? ',':''}${acc}`, "");
+    },
+
     onRangeSelect(e) {
       this.recurring.event.start = e.start.slice(0, 10);
       this.recurring.event.end = e.end.slice(0, 10);
@@ -522,6 +603,7 @@ export default {
     },
 
     onEventClicked(e) {
+      console.log(e);
       this.selectedEvent.startDate = DayPilot.Date(e.e.data.start);
       this.selectedEvent.endDate = DayPilot.Date(e.e.data.end);
       this.selectedEvent.start = e.e.data.start.slice(0, 10);
@@ -529,11 +611,17 @@ export default {
       this.eventInfoModal = true;
     },
 
-    onEventMoved(e) {},
+    onEventMoved(e) {
+      console.log(e);
+    },
 
-    onEventResized(e) {},
+    onEventResized(e) {
+      console.log(e);
+    },
 
-    onEventDeleted(e) {},
+    onEventDeleted(e) {
+      console.log(e);
+    },
 
     onSubmitEvents(e) {
       // populate the form data
@@ -607,9 +695,55 @@ export default {
       this.recurring.event.end = "";
     },
 
-    onSave(e) {},
+    onSave(e) {
+      e.preventDefault();
+      e.target.disabled = true;
 
-    onCancel(e) {}
+      // validate
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
+
+      // populate form data
+      let form = new FormData();
+      form.append("_method", "PUT");
+      form.append("firstname", this.form.firstname);
+      form.append("lastname", this.form.lastname);
+      form.append("email", this.form.email);
+      form.append("avatar", this.form.attachment);
+
+      this.update({
+        resource: "user",
+        id: this.id,
+        data: form,
+        method: "POST",
+        hasAttachments: true
+      })
+        .then(respond => {
+          this.updateUserInfo(respond);
+          this.showMessage(`Profile updated successfuly.`, "success");
+        })
+        .catch(error => {
+          console.log(error.response);
+          this.showMessage(error.message, "danger");
+          this.$formFeedback(error.response.data.errors);
+        })
+        .finally(() => {
+          e.target.disabled = false;
+        });
+    },
+
+    onAttachment(e) {
+      console.log(e);
+      this.form.attachment = e.target.files[0];
+    },
+
+    onCancel(e) {
+      e.preventDefault();
+      this.$router.go(-1);
+    }
   }
 };
 </script>
