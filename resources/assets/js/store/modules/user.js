@@ -80,7 +80,7 @@ export const userModule = {
         },
 
         [MUTATIONS.USER_AUTH_TOKEN](state, token) {
-            console.log(token);
+            console.log(token.value);
             state.token = token;
         },
 
@@ -111,7 +111,7 @@ export const userModule = {
             });
         },
 
-        fetchUserInfo({ commit }) {
+        me({ commit }) {
             return new Promise((resolve, reject) => {
                 api.get({ url: URLs.USER_INFO }).then(respond => {
                     commit(MUTATIONS.USER_INFO, respond.data);
@@ -121,6 +121,10 @@ export const userModule = {
                     reject(error);
                 });
             })
+        },
+
+        updateInfo({ commit }, info){
+            commit(MUTATIONS.USER_INFO, info);
         },
 
         logout({ commit, dispatch }) {

@@ -10336,3 +10336,7 @@ main {
   font-size: 1vw;
   vertical-align: bottom;
 }
+
+.field-required {
+  color: red;
+}

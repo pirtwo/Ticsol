@@ -30,7 +30,7 @@ export const router = new VueRouter({
             path: '/',
             name: 'index',
             meta: { requireAuth: false },
-            component: require('./components/pages/index/IndexPage.vue').default,
+            component: require('./components/pages/Index.vue').default,
         },
 
         // Dashboard
@@ -398,13 +398,13 @@ router.beforeEach((to, from, next) => {
 
     // redirect to home if user authenticated.
     if (to.name === "index") {
-        if (user.isAuth) next('/home');
+        if (user.isAuth) next('/home');        
     }
 
     // if not authenticated 
     // redirect to login page
     if (to.meta.requireAuth && !user.isAuth) {
-        next(authUrl);
+        window.location.href = authUrl;
     }
 
     next();

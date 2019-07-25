@@ -129,11 +129,11 @@ export const resourceModule = {
             });
         },
 
-        update({ state, dispatch }, { resource, id, data, hasAttachments = false }) {
+        update({ state, dispatch }, { resource, id, data, method = "PUT", hasAttachments = false }) {
             dispatch("checkResource", resource);
             let res = state.resources.find(item => item.name === resource);
             return new Promise((resolve, reject) => {
-                api.update({ url: `${res.updateUrl}/${id}`, data: data, hasAttachments: hasAttachments })
+                api.update({ url: `${res.updateUrl}/${id}`, data: data, method:method, hasAttachments: hasAttachments })
                     .then(respond => {
                         resolve(respond.data);
                     }).catch(error => {

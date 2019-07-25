@@ -6,9 +6,9 @@
 export const AUTH_LOGOUT = '/logout';
 export const AUTH_PASSWORD_RESET = '/api/passwordreset';
 
+export const USER_INFO = '/api/me';
 export const USER_LIST = '/api/user';
 export const USER_SHOW = '/api/user/show';
-export const USER_INFO = '/api/user/info';
 export const USER_UPDATE = '/api/user/update';
 export const USER_DELETE = '/api/user/delete';
 

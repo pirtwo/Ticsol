@@ -11,7 +11,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         scope: "*",
-        clientId: 3,
+        clientId: 1,
         redirectUri: `${window.location.protocol}//${window.location.hostname}/`,
     },
     getters: {

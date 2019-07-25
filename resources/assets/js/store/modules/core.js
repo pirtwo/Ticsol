@@ -61,7 +61,7 @@ export const coreModule = {
         },
 
         getUiContentHeight(state) {
-            return state.ui.contentHeight - state.toolbar.height;
+            return state.ui.contentHeight - state.toolbar.height + 15;
         },
 
         getUiDocWidth(state) {

@@ -51,7 +51,7 @@ export const api = {
         });
     },
 
-    update({ url, data = null, query = [], method = 'POST', isJson = true, isAuth = true, hasAttachments = false }) {
+    update({ url, data = null, query = [], method = 'PUT', isJson = true, isAuth = true, hasAttachments = false }) {
         return makeRequest({
             method: method,
             url: url,
@@ -63,7 +63,7 @@ export const api = {
         });
     },
 
-    delete({ url, data = null, query = [], method = 'POST', isJson = true, isAuth = true }) {
+    delete({ url, data = null, query = [], method = 'DELETE', isJson = true, isAuth = true }) {
         return makeRequest({
             method: method,
             url: url,
