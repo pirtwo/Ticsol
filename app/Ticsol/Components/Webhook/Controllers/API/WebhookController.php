@@ -26,10 +26,9 @@ class WebhookController extends Controller
     /**
      * delete the hook.
      */
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $hookUrl = $request->input("hookUrl");
-        $webhook = Webhook::where("url", $hookUrl)->first();
+        $webhook = Webhook::find($id);
         $webhook->delete();
 
         return response()->json([
