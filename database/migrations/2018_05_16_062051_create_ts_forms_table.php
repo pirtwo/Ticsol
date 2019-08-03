@@ -27,7 +27,8 @@ class CreateTsFormsTable extends Migration
             $table->string('name');
             $table->string('type')
                 ->nullable();
-            $table->json('schema');
+            $table->json('schema')
+                ->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
