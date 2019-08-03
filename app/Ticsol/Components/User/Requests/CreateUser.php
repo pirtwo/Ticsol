@@ -23,15 +23,14 @@ class CreateUser extends FormRequest
      */
     public function rules()
     {
-        return [
-            'token'                     => 'required|string',
-            'name'                      => 'required|string',   
+        return [            
             'firstname'                 => 'required|string',            
             'lastname'                  => 'required|string',   
-            'email'                     => 'required|email',
-            'password'                  => 'required|min:8',
-            'confirm_password'          => 'required|same:password',            
-            'meta'                      => 'nullable|array',               
+            'email'                     => 'required|email|unique:ts_users',
+            'teams'                     => 'nullable|array',
+            'teams.*'                   => 'numeric|exists:ts_teams,id',
+            'roles'                     => 'nullable|array',
+            'roles.*'                   => 'numeric|exists:ts_roles,id'                      
         ];
     }
 

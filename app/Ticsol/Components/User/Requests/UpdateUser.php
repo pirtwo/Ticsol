@@ -24,12 +24,18 @@ class UpdateUser extends FormRequest
     public function rules()
     {
         return [
-            'firstname'                 => 'nullable|string',            
-            'lastname'                  => 'nullable|string',   
-            'email'                     => 'nullable|email',
-            'password'                  => 'nullable|min:8',
+            'firstname'                 => 'string',            
+            'lastname'                  => 'string',   
+            'email'                     => 'email',
+            'password'                  => 'min:8',
             'confirm_password'          => 'required_with:password|same:password',
-            'meta'                      => 'nullable|array',     
+
+            // settings 
+            'ical'                      => 'boolean',            
+            'theme'                     => 'string|in:default,urban,jungle,beach,night',
+            'schedule_view'             => 'string|in:employee,job',              
+            'schedule_range'            => 'string|in:week,month',  
+              
             
             // profile picture
             'avatar'                    => 'nullable|mimes:jpg,jpeg,png|max:5120'
