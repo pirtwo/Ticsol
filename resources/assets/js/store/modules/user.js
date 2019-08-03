@@ -33,6 +33,16 @@ export const userModule = {
             return state.info.name;
         },
 
+        getFirstname(state) {
+            if (!state.info) return "";
+            return state.info.firstname;
+        },
+
+        getLastname(state) {
+            if (!state.info) return "";
+            return state.info.lastname;
+        },
+
         getFullname(state) {
             if (!state.info) return "";
             return state.info.fullname;

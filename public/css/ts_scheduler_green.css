@@ -99,6 +99,7 @@
 	position: relative;
 	width: 15px !important;
 	height: 26px !important;
+	display: none;
 }
 
 .scheduler_green_header_icon_hide::before{
