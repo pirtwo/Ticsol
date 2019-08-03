@@ -14,15 +14,18 @@ use Illuminate\Http\Request;
  */
 
 Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\API'], function () {
-    /**
-     * Protected api routes
-     */
+
+    // Public api routes
+    Route::get('ical/{userId}/{icalId}', 'UserController@iCal');
+    
+    // Protected api routes
     Route::middleware('auth:api')->group(function () {
         // User
         Route::get('me', 'UserController@me');
-        Route::get('user', 'UserController@index');        
-        Route::get('user/show/{id}', 'UserController@show');
-        Route::put('user/update/{id}', 'UserController@update');
+        Route::get('user', 'UserController@index');             
+        Route::get('user/show/{id}', 'UserController@show');        
+        Route::post('user/store', 'UserController@store'); 
+        Route::put('user/update/{id}', 'UserController@update');        
 
         // Role
         Route::get('role', 'RoleController@index');
