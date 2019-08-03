@@ -24,9 +24,9 @@ class FormUpdate extends FormRequest
     public function rules()
     {
         return [
-            "name"          => "required|string",
+            "name"          => "string",
             "parent_id"     => "nullable|numeric|exists:ts_forms,id",
-            "schema"        => "nullable|string"
+            "schema"        => "array"
         ];
     }
 

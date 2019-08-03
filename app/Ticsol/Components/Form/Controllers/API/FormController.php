@@ -62,7 +62,7 @@ class FormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\FormCreate $request)
     {
         //----------------------------
         //      AUTHORIZE ACTION
@@ -108,7 +108,7 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\FormUpdate $request, $id)
     {
         $form = $this->repository->findBy('id', $id);
         if ($form == null) {
