@@ -68,7 +68,7 @@ export const router = new VueRouter({
                         {
                             name: 'leaveCreate',
                             meta: { requireAuth: true },
-                            path: 'leave/create',
+                            path: 'leave',
                             component: require('./components/pages/dashboard/requests/LeaveRequest.vue').default,
                         },
                         {
@@ -379,11 +379,49 @@ export const router = new VueRouter({
                     component: require('./components/pages/dashboard/settings/Settings.vue').default,
                     children: [
                         {
-                            path: '/settings',
-                            name: 'settingModify',
+                            path: 'user',
+                            name: 'userSettings',
                             meta: { requireAuth: true },
-                            component: require('./components/pages/dashboard/settings/SettingModify.vue').default,
-                        }]
+                            component: require('./components/pages/dashboard/settings/UserSettings.vue').default,
+                        },
+                        {
+                            path: 'client',
+                            name: 'clientSettings',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/settings/ClientSettings.vue').default,
+                        },
+                    ]
+                },
+
+                // wizards
+                {
+                    path: '/wizard',
+                    name: 'wizard',
+                    meta: { requireAuth: true },
+                    redirect: { name: 'clientWizard' },
+                    component: require('./components/pages/wizards/Wizards.vue').default,
+                    children: [
+                        {
+                            path: 'client',
+                            name: 'clientWizard',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/wizards/ClientWizard.vue').default,
+                        },
+                        {
+                            path: 'user',
+                            name: 'userWizard',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/wizards/UserWizard.vue').default,
+                        },
+                    ]
+                },
+
+                // 404
+                {
+                    path: '/*',
+                    name: 'NotFound',
+                    meta: { requireAuth: false },
+                    component: require('./components/pages/NotFound.vue').default,
                 },
             ]
         },
