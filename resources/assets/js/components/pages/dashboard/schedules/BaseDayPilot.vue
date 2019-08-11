@@ -239,7 +239,7 @@ export default {
   mounted() {
     var _this = this;
 
-    let dp = (this.dayPilot = new DayPilot.Scheduler("dp"));
+    let dp = (this.dayPilot = new window.DayPilot.Scheduler("dp"));
 
     dp.theme = "scheduler_green";
     //dp.width = "100%";
@@ -309,12 +309,15 @@ export default {
     dp.onEventDeleted = this.eventDeletedHandler;
     dp.onTimeRangeSelected = this.eventCreatedHandler;
 
-    // dp.onEventMove = this.eventMoveHandler;
+    dp.onEventMove = this.eventMoveHandler;
     // dp.onEventClicke = this.eventClickHandler;
     // dp.onEventResize = this.eventResizeHandler;
     // dp.onEventDelete = this.eventDeleteHandler;
     // dp.onTimeRangeSelect = this.eventCreateHandler;
 
+    /**
+     * Header render function.
+     */
     dp.onBeforeTimeHeaderRender = function(args) {
       if (args.header.level === 0) {
         if (
@@ -346,6 +349,9 @@ export default {
       }
     };
 
+    /**
+     * Resource render function.
+     */
     dp.onBeforeResHeaderRender = function(args) {
       let item = dp.resources.find(item => item.id == args.resource.id);
       if (this.view === "user") {
@@ -361,8 +367,16 @@ export default {
       args.resource.minHeight = 90;
     };
 
+    dp.onBeforeCellRender = function(args){
+      //
+    }
+
+    /**
+     * Event render function.
+     */
     dp.onBeforeEventRender = function(args) {
       let item = dp.events.list.find(item => item.id == args.data.id);
+      args.data.moveDisabled = args.data.resizeDisabled = item.type !== 'scheduled';
       args.data.cssClass = `${item.type} ${item.status}`;
       args.data.html = `
         <div class=''>${args.data.text}</div>
@@ -478,6 +492,12 @@ export default {
     },
 
     eventCreatedHandler(arg) {
+      if(arg.resource === "sys-001" || arg.resource === "sys-002"){
+        arg.allowed = false;
+        this.dayPilot.clearSelection();
+        return;
+      }
+
       this.$emit("range-selected", {
         resourceId: arg.resource,
         start: arg.start,
@@ -498,9 +518,17 @@ export default {
       }
     },
 
+    eventMoveHandler(arg){
+      if(arg.newResource === "sys-001" || arg.newResource === "sys-002"){
+        //rg.allowed = false;
+        arg.preventDefault();
+      }
+    },
+
     eventMovedHandler(arg) {
-      console.log(arg);
-      if (arg.external) {
+      console.log(arg);      
+
+      if (arg.external) {    
         this.$emit("event-dragged", {
           eventId: arg.e.id(),
           resourceId: arg.newResource,
@@ -540,7 +568,7 @@ export default {
 
       if (arg.e.end() !== arg.newEnd) {
         arg.newEnd = arg.newEnd.addDays(-1);
-        arg.newEnd = new DayPilot.Date(
+        arg.newEnd = new window.DayPilot.Date(
           arg.newEnd.toString().substr(0, 10) +
             "T" +
             arg.e
