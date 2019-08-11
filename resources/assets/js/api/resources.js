@@ -6,6 +6,10 @@
 export const AUTH_LOGOUT = '/logout';
 export const AUTH_PASSWORD_RESET = '/api/passwordreset';
 
+export const CLIENT_LIST = '/api/client';
+export const CLIENT_SHOW = '/api/client/show';
+export const CLIENT_UPDATE = '/api/client/update';
+
 export const USER_INFO = '/api/me';
 export const USER_LIST = '/api/user';
 export const USER_SHOW = '/api/user/show';
