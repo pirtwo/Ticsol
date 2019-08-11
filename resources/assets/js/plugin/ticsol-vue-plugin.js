@@ -19,7 +19,9 @@ import TsTable from '../components/base/TsTable.vue';
 import TsFilter from '../components/base/TsFilter.vue';
 import TsSpinner from '../components/base/TsSpinner.vue';
 import TsToast from '../components/base/TsToast.vue';
-import TsDateScroller from '../components/base/TsDateScroller.vue'
+import TsDateScroller from '../components/base/TsDateScroller.vue';
+import TsGroupbox from '../components/base/TsGroupbox.vue';
+import TsChipsbox from '../components/base/TsChipsbox.vue';
 
 
 const VueBase = {
@@ -47,7 +49,9 @@ const VueBase = {
         Vue.component('ts-filter', TsFilter);
         Vue.component('ts-spinner', TsSpinner);
         Vue.component('ts-toast', TsToast);
-        Vue.component('ts-datescroller', TsDateScroller);        
+        Vue.component('ts-datescroller', TsDateScroller); 
+        Vue.component('ts-groupbox', TsGroupbox); 
+        Vue.component('ts-chipsbox', TsChipsbox);        
     }
 }
 
