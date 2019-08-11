@@ -53,16 +53,7 @@
           >
             Jobs
           </router-link>
-        </li>
-        <!-- <li v-if="job">
-          <router-link
-            class="btn btn-link"
-            :to="{ name: 'jobList', params : { col: 'job_id', opt: 'eq', val: this.id } }"
-          >
-            Schedule
-            Items
-          </router-link>
-        </li> -->
+        </li>        
         <li v-if="job">
           <router-link   
             role="button"       
@@ -182,13 +173,13 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Parent</label>
             <div class="col-sm-10">
-              <ts-select
+              <ts-groupbox
                 v-model="form.parent"
                 :data="jobs"
                 id="parent_id"
                 name="jobParent"
-                placeholder="select parent..."
-                search-placeholder="search..."
+                placeholder="select job parent"
+                search-placeholder="search here..."
               />
             </div>
           </div>
@@ -199,13 +190,13 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Profile</label>
             <div class="col-sm-10">
-              <ts-select
+              <ts-groupbox
                 v-model="form.profile"
                 :data="profiles"
                 id="form_id"
                 name="jobProfile"
-                placeholder="select profile..."
-                search-placeholder="search..."
+                placeholder="select job profile"
+                search-placeholder="search here..."
               />
             </div>
           </div>
@@ -216,14 +207,14 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Contacts</label>
             <div class="col-sm-10">
-              <ts-select
+              <ts-chipsbox
                 v-model="form.contacts"
                 :data="contacts"
                 :multi="true"
                 id="contacts"
                 name="contacts"
-                placeholder="select contacts..."
-                search-placeholder="search..."
+                placeholder="select job contacts"
+                search-placeholder="search here..."
               />
             </div>
           </div>
@@ -280,6 +271,7 @@ import { mapGetters, mapActions } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import FormGen from "../../../base/formGenerator/BaseFormGenerator";
+import { constants } from 'crypto';
 
 export default {
   name: "JobModify",
@@ -301,8 +293,8 @@ export default {
         title: "",
         code: "",
         isactive: 1,
-        parent: {},
-        profile: {},
+        parent: null,
+        profile: null,
         contacts: [],
         meta: null
       }
@@ -316,12 +308,13 @@ export default {
     }
   },
 
-  watch: {
-    job:function(val){
-      this.populateForm(val);
-    },
-
+  watch: { 
     "form.profile": function(value) {
+      if(!value){
+        this.schema = [];
+        return;
+      } 
+
       if (value.key) {
         this.schema = this.getList(
           "form",
@@ -338,18 +331,19 @@ export default {
 
     job:function(){
       if(!this.id) return null;
-      return this.getList("job")[0];
+      return this.getList("job").find(item => item.id == this.id);
     },
 
     jobs: function() {
-      return this.jobList.map(item => {
-        return { key: item.id, value: item.title };
+      return this.getList("job").map(item => {
+        return { key: item.id, value: item.title, parentKey: item.parent_id };
       });
     },
 
     profiles: function() {
-      return this.getList("form").map(item => {
-        return { key: item.id, value: item.name };
+      return this.getList("form")
+      .map(item => {
+        return { key: item.id, value: item.name, parentKey: item.parent_id };
       });
     },
 
@@ -385,18 +379,16 @@ export default {
     async loadAssets(){
       this.startLoading();
 
-      let p1 = this.list({resource:'form'});      
-      let p2 = this.list({resource:'contact'});
-      let p3 = await this.list({resource:'job'})
-        .then((data) =>{ this.jobList = data; });
+      let p1 = await this.list({resource:'form'});      
+      let p2 = await this.list({resource:'contact'});
+      let p3 = await this.list({resource:'job', query: { 
+        with: "parent,profile,contacts" 
+      }});
 
-      let p4 = await this.id ? 
-        this.list({resource:'job', query: { 
-          eq: `id,${this.id}`, 
-          with: "parent,profile,contacts" 
-        }}) : new Promise((resolve)=>resolve());
-
-      Promise.all([p1,p2,p3,p4]).finally(()=>{
+      Promise.all([p1,p2,p3]).finally(()=>{        
+        if(this.id){
+          this.populateForm(this.job);
+        }      
         this.stopLoading();
       });
     },
@@ -404,8 +396,8 @@ export default {
     populateForm(job){
       this.form.title = job.title;
       this.form.code = job.code;
-      this.form.parent = job.parent ? { key: job.parent.id, value: job.parent.title } : {};
-      this.form.profile = job.profile ? { key: job.profile.id, value: job.profile.name } : {};
+      this.form.parent = job.parent ? { key: job.parent.id, value: job.parent.title } : null;
+      this.form.profile = job.profile ? { key: job.profile.id, value: job.profile.name } : null;
       this.form.contacts = job.contacts ? job.contacts.map(item=>{
         return { key: item.id, value: `${item.firstname} ${item.lastname}` };
       }) : [];
@@ -435,8 +427,8 @@ export default {
       form.title = this.form.title;
       form.code = this.form.code;
       form.isactive = this.form.isactive;
-      form.parent_id = this.form.parent.key;
-      form.form_id = this.form.profile.key;
+      form.parent_id = this.form.parent ? this.form.parent.key : null;
+      form.form_id = this.form.profile ? this.form.profile.key : null;
       form.contacts = this.form.contacts.map(item => item.key);
       form.meta = this.form.meta;
 
@@ -469,8 +461,8 @@ export default {
       form.title = this.form.title;
       form.code = this.form.code;
       form.isactive = this.form.isactive;
-      form.parent_id = this.form.parent.key;
-      form.form_id = this.form.profile.key;
+      form.parent_id = this.form.parent ? this.form.parent.key : null;
+      form.form_id = this.form.profile ? this.form.profile.key : null;
       form.contacts = this.form.contacts.map(item => item.key);
       form.meta = this.form.meta;
 
@@ -494,8 +486,8 @@ export default {
       this.form.title = "";
       this.form.code = "";
       this.form.isactive = 1;
-      this.form.parent = {};
-      this.form.profile = {};
+      this.form.parent = null;
+      this.form.profile = null;
       this.form.contacts = [];
       this.form.meta = null;
       this.$v.form.$reset();
