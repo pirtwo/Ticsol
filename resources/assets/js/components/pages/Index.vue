@@ -11,7 +11,7 @@
             class="app-logo"
           >
           <div class="text-center">
-            <h3>Wellcome to Web.TicSol</h3>
+            <h3>Welcome to Web.TicSol</h3>
             <div 
               v-show="loading" 
               class="py-3 text-muted d-flex align-items-center justify-content-center"
@@ -76,7 +76,7 @@ export default {
       this.message = "redirecting to login page...";
       setTimeout(()=>{
         window.location.href = this.authUrl;
-      }, 3000);      
+      }, 1000);      
     },
 
     async resolveHash() {

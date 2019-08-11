@@ -61,7 +61,7 @@ export default {
   created() {},
 
   mounted() {
-    this.autoComplete = new google.maps.places.Autocomplete(
+    this.autoComplete = new window.google.maps.places.Autocomplete(
       this.$refs.autoComplete,
       {}
     );

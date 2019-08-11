@@ -3,15 +3,38 @@
     <div class="d-flex align-items-stretch ml-auto">
       <notifications-log class="mr-1" />
 
-      <router-link
-        :to="{ name : 'settingModify' }"
-        class="btn"
-        role="button"
-      >
-        <i class="icon material-icons">settings</i>
-        <span class="caption">SETTINGS</span>
-      </router-link>
+      <!-- Settings -->
+      <div class="btn-group dropdown">
+        <button 
+          type="button" 
+          class="btn" 
+          data-toggle="dropdown" 
+          aria-haspopup="true" 
+          aria-expanded="false"
+        >
+          <i class="icon material-icons">
+            settings
+          </i>
+          <span class="caption">SETTINGS</span>
+        </button>
+        <div class="dropdown-menu">
+          <router-link
+            :to="{ name : 'userSettings' }"
+            class="dropdown-item"
+          >
+            <i class="icon material-icons">person</i>User            
+          </router-link>
 
+          <router-link
+            :to="{ name : 'clientSettings' }"
+            class="dropdown-item"
+          >
+            <i class="icon material-icons">domain</i>Golobal
+          </router-link>
+        </div>
+      </div>
+
+      <!-- Profile -->
       <div class="dropdown ml-1">
         <button
           class="btn h-100"

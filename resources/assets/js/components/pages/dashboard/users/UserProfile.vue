@@ -604,8 +604,8 @@ export default {
 
     onEventClicked(e) {
       console.log(e);
-      this.selectedEvent.startDate = DayPilot.Date(e.e.data.start);
-      this.selectedEvent.endDate = DayPilot.Date(e.e.data.end);
+      this.selectedEvent.startDate = window.DayPilot.Date(e.e.data.start);
+      this.selectedEvent.endDate = window.DayPilot.Date(e.e.data.end);
       this.selectedEvent.start = e.e.data.start.slice(0, 10);
       this.selectedEvent.end = e.e.data.end.slice(0, 10);
       this.eventInfoModal = true;

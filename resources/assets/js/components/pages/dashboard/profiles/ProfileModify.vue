@@ -270,7 +270,7 @@ export default {
       if(this.form.parent) form.parent_id = this.form.parent.key;
       form.schema = this.frmBuilder.actions.getData();
 
-      this.update({ resource: "form", id: this.id, data: this.form })
+      this.update({ resource: "form", id: this.id, data: form })
         .then(() => {         
           this.showMessage(
             `Profile <b>${this.form.name}</b> created successfuly.`,

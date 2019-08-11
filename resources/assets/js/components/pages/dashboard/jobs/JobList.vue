@@ -61,7 +61,7 @@
         >
           <td>
             <router-link
-              class="btn btn-sm btn-outline-primary"
+              class="btn btn-sm"
               :to="{ name : 'jobDetails', params : { id: item.id } }"
             >
               <i class="material-icons">visibility</i>

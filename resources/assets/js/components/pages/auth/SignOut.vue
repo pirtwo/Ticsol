@@ -11,16 +11,6 @@
           Hope to see you soon :D
         </p>
       </div> 
-      <div class="my-2 d-flex justify-content-center">        
-        <a
-          class="btn btn-primary w-50 mr-2"
-          href="/login"
-        >Login</a>
-        <a
-          class="btn btn-primary w-50"
-          href="/login"
-        >Ticsol.com</a>
-      </div>
     </div>     
   </div>
 </template>

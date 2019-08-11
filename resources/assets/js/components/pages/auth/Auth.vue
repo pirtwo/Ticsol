@@ -3,7 +3,7 @@
     :header="false" 
     :footer="false"
   >
-    <div class="wrap-content d-flex justify-content-center align-items-center">      
+    <div class="wrap-content d-flex justify-content-center align-items-center h-100">      
       <router-view />
     </div>
   </app-layout>
@@ -15,7 +15,4 @@ export default {
 </script>
 
 <style scoped>
-.wrap-content{
-  height: 100%;
-}
 </style>

@@ -170,7 +170,7 @@ export default {
     onAdd() {
       this.mode = "insert";
       this.currentRow = {};
-      this.modalTitle = "Add New Row";
+      this.modalTitle = "New Row";
       this.showModal();
     },
 

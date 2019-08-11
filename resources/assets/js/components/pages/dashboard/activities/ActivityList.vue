@@ -139,7 +139,7 @@ export default {
     },
 
     dateToString(date) {
-      return new DayPilot.Date(date).toString("ddd dd MMM yyyy");
+      return new window.DayPilot.Date(date).toString("ddd dd MMM yyyy");
     }
   }
 };
