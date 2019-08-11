@@ -227,12 +227,13 @@ export const coreModule = {
 
             let userChannel = pusher.subscribe(`private-App.Users.${user.info.id}`);
             userChannel.bind("User.Update", (data) => {
-                console.log(data);
+                //console.log(data);
                 dispatch('resource/onServerUpdate', data.resName, { root: true });
             });
 
-            let clientChannel = pusher.subscribe(`private-App.Clients.${user.info.client_id}`);
+            let clientChannel = pusher.subscribe(`private-App.Clients.${user.info.clientId}`);
             clientChannel.bind("Client.Update", (data) => {
+                //console.log(data);
                 dispatch('resource/onServerUpdate', data.resName, { root: true });
             });
 

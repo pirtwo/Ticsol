@@ -33,6 +33,7 @@ class Resource {
 }
 
 const resourceList = [
+    "client",
     "user",
     "role",
     "job",
