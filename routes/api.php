@@ -20,6 +20,12 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
     
     // Protected api routes
     Route::middleware('auth:api')->group(function () {
+
+        // Client
+        Route::get('client/show/{id}', 'ClientController@show');      
+        Route::post('client/store', 'ClientController@store'); 
+        Route::put('client/update/{id}', 'ClientController@update');      
+
         // User
         Route::get('me', 'UserController@me');
         Route::get('user', 'UserController@index');             
