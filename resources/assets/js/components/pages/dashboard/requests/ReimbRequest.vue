@@ -264,8 +264,8 @@
             <div class="col-sm-10">
               <div class="custom-file">
                 <input
-                  name="Attachments"
-                  id="customFile"
+                  name="attachments"
+                  id="attachments"
                   type="file"
                   class="custom-file-input"
                   multiple
@@ -273,7 +273,7 @@
                 >
                 <label
                   class="custom-file-label"
-                  for="customFile"
+                  for="attachments"
                 >choose files</label>
               </div>
             </div>
@@ -315,6 +315,7 @@ import { mapActions, mapGetters } from "vuex";
 import { required, decimal, between, maxLength } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 import downloadjs from "downloadjs";
+import bsCustomFileInput from "bs-custom-file-input";
 
 export default {
   name: "ReimbRequest",
@@ -392,6 +393,10 @@ export default {
     this.clear("user");
     this.clear("request");
     next();
+  },
+
+  mounted(){
+    bsCustomFileInput.init();
   },
 
   methods: {

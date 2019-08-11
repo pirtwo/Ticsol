@@ -311,16 +311,16 @@
             <div class="col-sm-10">
               <div class="custom-file">
                 <input
-                  name="Attachments"
-                  id="customFile"
+                  name="attachments"
+                  id="attachments"
                   type="file"
-                  class="custom-file-input"
-                  multiple
+                  class="custom-file-input"       
+                  multiple           
                   @change="onAttachment"
                 >
                 <label
                   class="custom-file-label"
-                  for="customFile"
+                  for="attachments"
                 >choose files</label>
               </div>
             </div>            
@@ -363,6 +363,7 @@ import { required, helpers } from "vuelidate/lib/validators";
 import moment from "moment";
 import downloadjs from "downloadjs";
 import pageMixin from "../../../../mixins/page-mixin";
+import bsCustomFileInput from "bs-custom-file-input";
 
 const before = (valueA, valueB) =>
   helpers.withParams(
@@ -523,6 +524,10 @@ export default {
     this.clear("user");
     this.clear("request");
     next();
+  },
+
+  mounted(){
+    bsCustomFileInput.init();
   },
 
   methods: {
