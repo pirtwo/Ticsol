@@ -141,6 +141,8 @@ class RequestController extends Controller
             event(new ScheduleEvents\ScheduleCreated($request->user(), 'leave'));
         }
 
+        $this->dispatchWebhook($req, "{$req->type}:created");  
+
         return $req;
     }
 
@@ -263,7 +265,9 @@ class RequestController extends Controller
         //----------------------------
         $this->authorize('approve', $req);
 
-        $req->update(['status' => 'approved']);
+        $req->update(['status' => 'approved']);        
+
+        $this->dispatchWebhook($req, "{$req->type}:approved");        
 
         return $req;
     }
@@ -281,6 +285,8 @@ class RequestController extends Controller
         $this->authorize('approve', $req);
 
         $req->update(['status' => 'rejected']);
+
+        $this->dispatchWebhook($req, "{$req->type}:rejected");  
 
         return $req;
     }
@@ -332,4 +338,22 @@ class RequestController extends Controller
 
         return $attachments;
     }
+
+    /**
+     * Send out the webhooks.
+     */
+    private function dispatchWebhook($request, $event)
+    {
+        $data = $request->toArray();
+
+        $hook = $request->user
+            ->webhooks()
+            ->where("event", $event)
+            ->first();
+
+        if($hook)
+            $hook->fire($data);
+    }
+
+
 }

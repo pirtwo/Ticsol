@@ -14,6 +14,7 @@ use App\Ticsol\Components\Job\Repository;
 use App\Ticsol\Components\Job\Criterias;
 use App\Ticsol\Base\Criteria\CommonCriteria;
 use App\Ticsol\Base\Criteria\ClientCriteria;
+use Spatie\WebhookServer\WebhookCall;
 
 class JobController extends Controller
 {
@@ -91,7 +92,12 @@ class JobController extends Controller
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
 
+        
         event(new Events\JobCreated($job));
+
+        // dispatch webhooks
+        $this->dispatchWebhooks($job, "job:created");
+
         return $job;
     }
 
@@ -163,5 +169,19 @@ class JobController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function dispatchWebhooks($job, $event)
+    {
+        $data = $job->toArray();
+
+        $hooks = $job->client
+            ->webhooks()
+            ->where("event", $event)
+            ->get();
+        
+        foreach ($hooks as $hook) {
+            $hook->fire($data);
+        }
     }
 }

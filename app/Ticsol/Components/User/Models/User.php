@@ -240,5 +240,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Team::class, 'ts_user_team');
     }
 
+    public function webhooks()
+    {
+        return $this->hasMany(Webhook::class);
+    }
+
     #endregion
 }

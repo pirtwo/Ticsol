@@ -33,7 +33,11 @@ class Webhook extends Model
 
     public function fire($data)
     {
-        WebhookCall::create()->url($this->url)->payload($data)->dispatch();
+        WebhookCall::create()
+            ->url($this->url)
+            ->payload($data)
+            ->useSecret('secret')
+            ->dispatch();
     }
       
 
@@ -52,7 +56,7 @@ class Webhook extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     #endregion
