@@ -14,57 +14,57 @@ export const userModule = {
             type: "",
             expire: ""
         },
-        info: null
+        info: {},
+        settings: {}
     },
 
     getters: {
         getId(state) {
-            if (!state.info) return "";
             return state.info.id;
         },
 
+        getClientId(state) {
+            return state.info.clientId;
+        },
+
         getInfo(state) {
-            if (!state.info) return "";
             return state.info;
         },
 
         getUsername(state) {
-            if (!state.info) return "";
             return state.info.name;
         },
 
         getFirstname(state) {
-            if (!state.info) return "";
             return state.info.firstname;
         },
 
         getLastname(state) {
-            if (!state.info) return "";
             return state.info.lastname;
         },
 
         getFullname(state) {
-            if (!state.info) return "";
             return state.info.fullname;
         },
 
         getAvatar(state) {
-            if (!state.info) return "";
-            if (state.info.meta.avatar) {
-                return state.info.meta.avatar;
-            } else {
-                return '/img/avatar/default.png';
-            }
+            return state.settings.avatar;
+        },
+
+        getScheduleView(state){
+            return state.settings.scheduleView;
+        },
+
+        getScheduleRange(state){
+            return state.settings.scheduleRange;
         },
 
         getPermissions(state) {
-            if (!state.info) return [];
             return state.info.permissions;
         },
 
         getSettings(state) {
-            if (!state.info) return [];
-            return state.info.meta;
+            return state.settings;
         },
 
         getIsAuth(state) {
@@ -78,7 +78,21 @@ export const userModule = {
 
     mutations: {
         [MUTATIONS.USER_INFO](state, payload) {
-            state.info = payload;
+            state.info.id = payload.id;
+            state.info.clientId = payload.client_id;
+            state.info.name = payload.name;
+            state.info.firstname = payload.firstname;
+            state.info.lastname = payload.lastname;
+            state.info.fullname = payload.fullname;
+            state.info.permissions = payload.permissions;
+        },
+
+        [MUTATIONS.USER_SETTINGS](state, payload) {
+            state.settings.avatar = payload.avatar;
+            state.settings.ical = payload.ical;
+            state.settings.theme = payload.theme;
+            state.settings.scheduleView = payload.schedule_view;
+            state.settings.scheduleRange = payload.schedule_range;
         },
 
         [MUTATIONS.USER_AUTH_SUCCESS](state) {
@@ -125,6 +139,7 @@ export const userModule = {
             return new Promise((resolve, reject) => {
                 api.get({ url: URLs.USER_INFO }).then(respond => {
                     commit(MUTATIONS.USER_INFO, respond.data);
+                    commit(MUTATIONS.USER_SETTINGS, respond.data.meta);
                     resolve(respond.data);
                 }).catch(error => {
                     console.log(error);
@@ -133,8 +148,8 @@ export const userModule = {
             })
         },
 
-        updateInfo({ commit }, info){
-            commit(MUTATIONS.USER_INFO, info);
+        updateSettings({ commit }, settings){
+            commit(MUTATIONS.USER_SETTINGS, settings);
         },
 
         logout({ commit, dispatch }) {
