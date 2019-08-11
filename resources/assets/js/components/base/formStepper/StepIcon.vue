@@ -1,14 +1,15 @@
 <template>
   <div 
-    :id="'step-sign-' + stepNumber" 
-    class="step-sign"
+    :id="'step-icon-' + stepNumber" 
+    class="step-icon"
   >
     <slot>
       <button 
         class="btn" 
         type="button"
-        :class="[value === stepNumber ? 'btn-success':'btn-primary']"  
+        :class="[value === stepNumber ? 'btn-success':'btn-light']"  
         @click="onClick"
+        :disabled="disabled"
       >
         {{ stepNumber }}
       </button>
@@ -19,20 +20,28 @@
 
 <script>
 export default {
-  name: "BaseFormStepSign",
+  name: "StepIcon",
 
   props: {
     value: {
-      type: Number
+      type: Number,
+      default: 1
     },
     stepNumber: {
-      type: Number
+      type: Number,
+      default: 1
     },
     label: {
-      type: String
+      type: String,
+      default: ""
     },
     icon: {
-      type: String
+      type: String,
+      default: ""
+    },
+    disabled:{
+      type: Boolean,
+      default: false
     }
   },
 
@@ -45,27 +54,26 @@ export default {
 </script>
 
 <style scoped>
-.step-sign {
-  min-width: 100px;
+.step-icon {
   text-align: center;
   padding: 10px;
   margin: 5px 10px;
   z-index: 1;
 }
 
-.step-sign button {
+.step-icon button {
   width: 40px;
   height: 40px;
   padding: 4px;
   border-radius: 0px;
 }
 
-.step-sign label {
+.step-icon label {
   text-transform: uppercase;
 }
 
-.step-sign button,
-.step-sign label {
+.step-icon button,
+.step-icon label {
   margin: auto;
   display: block;
 }

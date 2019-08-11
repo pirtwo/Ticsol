@@ -1,20 +1,25 @@
 <template>
-  <div class="form-stepper">        
-    <div class="stepper-signs d-flex justify-content-center">
-      <slot name="signs" />
+  <div class="form-stepper d-flex flex-column">
+    <!-- stepper nav -->        
+    <div class="stepper-nav d-flex justify-content-center">
+      <slot name="nav" />
     </div>
-    <div class="stepper-body">
+
+    <!-- stepper body -->
+    <div class="stepper-body h-100">
       <slot name="body" />
     </div>
-    <div class="stepper-nav">
-      <slot name="nav" />
+
+    <!-- stepper footer -->
+    <div class="stepper-footer align-self-end">
+      <slot name="footer" />
     </div>        
   </div>
 </template>
 
 <script>
 export default {
-  name: "BaseFormStepper",
+  name: "Stepper",
 
   props: {
     value: {
@@ -37,24 +42,23 @@ export default {
   position: relative;
 }
 
-.stepper-signs {
+.stepper-nav {
   height: 20%;
   position: relative;
 }
 
 .stepper-body {
-  height: 70%;
   padding: 0px 5px;
   margin-bottom: 10px;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-.stepper-nav {
-  height: 10%;  
+.stepper-footer {
+  width: 100%; 
 }
 
-.stepper-signs::before {
+.stepper-nav::before {
   position: absolute;
   content: " ";
   background-color: #d4d4d4;
@@ -63,9 +67,5 @@ export default {
   top: 35px;
   left: 0px;
   z-index: 0;
-}
-
-.stepper-nav .btn {
-  border-radius: 0px;
 }
 </style>
