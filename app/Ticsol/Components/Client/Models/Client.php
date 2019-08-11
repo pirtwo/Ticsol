@@ -34,6 +34,13 @@ class Client extends Model
 
     ];
 
+
+    public function scopeOfClient($query, $clientId)
+    {
+        return $query->where('client_id', $clientId);
+    }
+    
+
     #region Eloquent_Relationships
 
     /**
@@ -122,6 +129,14 @@ class Client extends Model
     public function activities()
     {
         return $this->hasMany(Activity::class);
+    }
+
+     /**
+     * Associated webhooks to current client.
+     */
+    public function webhooks()
+    {
+        return $this->hasMany(Webhook::class);
     }
 
     #endregion
