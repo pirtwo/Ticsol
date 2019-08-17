@@ -58,6 +58,8 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::get('timesheet/show/{id}', 'TimesheetController@show');
         Route::post('timesheet/store', 'TimesheetController@store');
         Route::put('timesheet/update/{id}', 'TimesheetController@update');
+        Route::put('timesheet/approve/{id}', 'TimesheetController@approve');
+        Route::put('timesheet/reject/{id}', 'TimesheetController@reject');
         Route::delete('timesheet/delete/{id}', 'TimesheetController@delete');
 
         // Team
@@ -103,6 +105,7 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::delete('comment/delete/{id}', 'CommentController@delete');
 
         // webhooks
+        Route::get('hooks', 'WebhookController@index');
         Route::post('hooks', 'WebhookController@subscribe');
         Route::delete('hooks/{id}', 'WebhookController@delete');
         Route::get('polling/trigger', 'WebhookController@pollForTrigger');

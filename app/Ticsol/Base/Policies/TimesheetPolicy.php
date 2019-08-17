@@ -83,4 +83,56 @@ class TimesheetPolicy
     {
         return false;
     }
+
+    /**
+     * Determine whether the user can approve the timesheet.
+     *
+     * @param  \App\Ticsol\Components\Models\User  $user
+     * @param  \App\Ticsol\Components\Models\Timesheet  $timesheet
+     * @return mixed
+     */
+    public function approve(User $user, Timesheet $timesheet)
+    {
+        $canApproveTimesheet = false;
+
+        if ($user->client_id != $timesheet->client_id) {
+            return false;
+        }
+
+        if ($user->id != $timesheet->request->assigned_id) {
+            return false;
+        }
+
+        $permissions = $user->permissions;
+
+        $canApproveTimesheet = $permissions->contains('approve-timesheet');
+
+        return $canApproveTimesheet;
+    }
+
+    /**
+     * Determine whether the user can reject the timesheet.
+     *
+     * @param  \App\Ticsol\Components\Models\User  $user
+     * @param  \App\Ticsol\Components\Models\Timesheet  $timesheet
+     * @return mixed
+     */
+    public function reject(User $user, Timesheet $timesheet)
+    {
+        $canRejectTimesheet = false;
+
+        if ($user->client_id != $timesheet->client_id) {
+            return false;
+        }
+
+        if ($user->id != $timesheet->request->assigned_id) {
+            return false;
+        }
+
+        $permissions = $user->permissions;
+
+        $canRejectTimesheet = $permissions->contains('reject-timesheet');
+
+        return $canRejectTimesheet;
+    }
 }

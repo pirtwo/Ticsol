@@ -96,14 +96,14 @@ class TimesheetController extends Controller
 
             DB::beginTransaction();
 
-            // populate new request model            
+            // create new timesheet request           
             $req->client_id = $client_id;
             $req->user_id = $creator_id;
             $req->type = 'timesheet';
             $req->fill($request->only(['status', 'assigned_id']));
             $req->save();
 
-            // populate new timesheet model
+            // create new timesheet
             $timesheet->client_id = $client_id;
             $timesheet->creator_id = $creator_id;
             $timesheet->request_id = $req->id;
@@ -116,7 +116,7 @@ class TimesheetController extends Controller
             ]));
             $timesheet->save();
 
-            // populate timesheet items
+            // create timesheet items
             foreach ($items as &$item) {
                 $schedule = new Schedule();
                 $schedule->client_id = $client_id;
@@ -136,6 +136,9 @@ class TimesheetController extends Controller
 
         event(new TimesheetEvents\TimesheetCreated($timesheet));
         event(new RequestEvents\RequestCreated($req));
+
+        // fire webhooks
+        $this->dispatchWebhook($timesheet, "timesheet:created");
 
         return $timesheet;
     }
@@ -195,6 +198,8 @@ class TimesheetController extends Controller
 
             $timesheet->update($request->only(['total_hours']));
 
+            // if status is equals to draft then
+            // remove request assigned_id
             if ($request->input('status') == 'draft') {
                 $timesheet->request()
                     ->update(['status' => 'draft', 'assigned_id' => null]);
@@ -241,5 +246,71 @@ class TimesheetController extends Controller
     public function delete($id)
     {
         //
+    }
+
+
+    /**
+     * Approve timesheet with id.
+     */
+    public function approve(Request $request, $id)
+    {
+        $timesheet = $this->repository->find($id);
+
+        if ($timesheet == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('approve', $timesheet);
+
+        $timesheet->request()->update(["status" => "approved"]);
+
+        // fire webhooks
+        $this->dispatchWebhook($timesheet, "timesheet:approved");
+
+        return $timesheet;
+    }
+
+
+    /**
+     * Reject the timesheet with id.
+     */
+    public function reject(Request $request, $id)
+    {
+        $timesheet = $this->repository->find($id);
+
+        if ($timesheet == null) {
+            throw new NotFound();
+        }
+
+        //----------------------------
+        //      AUTHORIZE ACTION
+        //----------------------------
+        $this->authorize('approve', $timesheet);
+
+        $timesheet->request()->update(["status" => "rejected"]);
+
+        // fire webhooks
+        $this->dispatchWebhook($timesheet, "timesheet:rejected");
+
+        return $timesheet;
+    }
+
+    /**
+     * Send out the webhooks.
+     */
+    private function dispatchWebhook($timesheet, $event)
+    {
+        $data = $timesheet->toArray();
+
+        $hook = $timesheet->creator
+            ->webhooks()
+            ->where("event", $event)
+            ->first();
+
+        if($hook)
+            $hook->fire($data);
     }
 }
