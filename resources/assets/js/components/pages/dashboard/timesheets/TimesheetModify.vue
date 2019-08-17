@@ -610,7 +610,7 @@ export default {
         return moment(this.start, ["YYYY-MM-DD"])
           .startOf("d")
           .format("YYYY-MM-DDTHH:mm:ss");
-      return this.week.start.format("YYYY-MM-DDTHH:mm:ss");
+      return this.week.start.startOf("d").format("YYYY-MM-DDTHH:mm:ss");
     },
 
     weekEnd: function() {
@@ -618,7 +618,7 @@ export default {
         return moment(this.end, ["YYYY-MM-DD"])
           .endOf("d")
           .format("YYYY-MM-DDTHH:mm:ss");
-      return this.week.end.format("YYYY-MM-DDTHH:mm:ss");
+      return this.week.end.endOf("d").format("YYYY-MM-DDTHH:mm:ss");
     },
 
     totalHours: function() {
