@@ -78,6 +78,7 @@ export const userModule = {
 
     mutations: {
         [MUTATIONS.USER_INFO](state, payload) {
+            state.info = {};
             state.info.id = payload.id;
             state.info.clientId = payload.client_id;
             state.info.name = payload.name;
@@ -88,6 +89,7 @@ export const userModule = {
         },
 
         [MUTATIONS.USER_SETTINGS](state, payload) {
+            state.settings = {};
             state.settings.avatar = payload.avatar;
             state.settings.ical = payload.ical;
             state.settings.theme = payload.theme;
@@ -111,10 +113,11 @@ export const userModule = {
         [MUTATIONS.USER_AUTH_LOGOUT](state) {
             state.isAuth = false;
             state.token.value = "";
+            state.token.type = "";
             state.token.expire = "";
-            state.info = null;
+            state.info = {};
+            state.settings = {};
         }
-
     },
 
     actions: { 
@@ -146,6 +149,10 @@ export const userModule = {
                     reject(error);
                 });
             })
+        },
+
+        updateInfo({ commit }, info){
+            commit(MUTATIONS.USER_INFO, info);
         },
 
         updateSettings({ commit }, settings){
