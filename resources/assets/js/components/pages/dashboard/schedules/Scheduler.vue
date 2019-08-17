@@ -83,13 +83,15 @@
             <li
               :key="res.id"
               :data-id="res.id"
-              class="res-user"
+              class="res-user d-flex align-items-center"
             >
               <img
                 :src="res.meta.avatar"
                 class="rounded"
               >
-              <span class="caption">{{ res.name }}</span>
+              <div class="res__caption">
+                {{ res.name }}
+              </div>
             </li>
           </template>
         </template>
@@ -100,9 +102,12 @@
               :data-id="res.id"
               class="res-job"
             >
-              <span class="caption">{{ res.title }}</span>
-              <br>
-              <span class="caption">Code: {{ res.code }}</span>
+              <div class="res__title">
+                {{ res.title }}
+              </div>
+              <div class="res__caption">
+                Code: {{ res.code }}
+              </div>
             </li>
           </template>
         </template>
@@ -157,7 +162,6 @@
 <script>
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
-import uuid from "../../../../utils/uuid";
 import BaseDayPilot from "../schedules/BaseDayPilot.vue";
 import AssignModal from "../schedules/AssignModal.vue";
 import UpdateModal from "../schedules/UpdateModal.vue";
@@ -185,13 +189,14 @@ export default {
       currDate: null,
       assignModal: false,
       updateModal: false,
+      businessHours: [],
       leaveJob: {
-        id: uuid(),
+        id: "sys-001",
         name: "LEAVE",
         code: "LEAVE-SYS"
       },
       unaviJob: {
-        id: uuid(),
+        id: "sys-002",
         name: "UNAVAILABLE",
         code: "UNAVAILABLE-SYS"
       }
@@ -200,13 +205,16 @@ export default {
 
   computed: {
     ...mapGetters({
+      clientId: "user/getClientId",      
       getList: "resource/getList",
-      dpHeight: "core/getUiContentHeight"
+      dpHeight: "core/getUiContentHeight",
+      userScheduleView: "user/getScheduleView",
+      userScheduleRange: "user/getScheduleRange",
     }),
 
     startDate: function() {
       if (!this.currDate) return "";
-      return this.currDate.start.format("YYYY-MM-DDTHH:mm:ss");
+      return this.currDate.start.startOf("d").format("YYYY-MM-DDTHH:mm:ss");
     },
 
     endDate: function() {
@@ -256,8 +264,8 @@ export default {
           return {
             id: item.id,
             resource: item.user_id,
-            start: new DayPilot.Date(item.start),
-            end: new DayPilot.Date(item.end),
+            start: new window.DayPilot.Date(item.start),
+            end: new window.DayPilot.Date(item.end),
             text: eventText,
             type: item.event_type,
             status: item.status
@@ -275,8 +283,8 @@ export default {
           return {
             id: item.id,
             resource: eventResource,
-            start: new DayPilot.Date(item.start),
-            end: new DayPilot.Date(item.end),
+            start: new window.DayPilot.Date(item.start),
+            end: new window.DayPilot.Date(item.end),
             text: item.user.name,
             type: item.event_type,
             status: item.status
@@ -356,7 +364,10 @@ export default {
     next();
   },
 
-  mounted() {
+  mounted() {    
+    this.view = this.userScheduleView || "user";
+    this.range = this.userScheduleRange || "Month";
+
     let query = [];
     query.push({
       opt: "inRange",
@@ -371,7 +382,11 @@ export default {
       resource: "schedule",
       query: this.$queryBuilder(null, null, ["user", "job", "request", "activities"], query)
     });
-    Promise.all([p1, p2, p3])
+    let p4 = this.show({resource:"client", id: this.clientId }).then(data=>{
+      this.businessHours = data.meta.business_hours;
+    });
+
+    Promise.all([p1, p2, p3, p4])
       .then(() => {
         this.makeDraggable();
         this.stopLoading();
@@ -387,7 +402,8 @@ export default {
       clear: "resource/clearResource",
       fetchList: "resource/list",
       create: "resource/create",
-      update: "resource/update"
+      update: "resource/update",
+      show: "resource/show",
     }),
 
     makeDraggable() {
@@ -430,11 +446,18 @@ export default {
     },
 
     // DP Handlers
-    rangeSelectHandler(event) {
+    rangeSelectHandler(event) {  
       event.name = this.scheduleResources.find(
         item => item.id == event.resourceId
       ).name;
       this.event = event;
+      
+      this.event.start = new window.DayPilot.Date(
+        `${event.start.toString("yyyy-MM-dd")}T${this.getBusinessHourStart(event.start.getDayOfWeek())}`);
+
+      this.event.end = new window.DayPilot.Date(
+        `${event.end.toString("yyyy-MM-dd")}T${this.getBusinessHourEnd(event.end.getDayOfWeek())}`);
+        
       this.assignModal = true;
     },
 
@@ -464,12 +487,14 @@ export default {
       item.user_id = this.view == "user" ? event.resourceId : event.eventId;
       item.job_id = this.view == "job" ? event.resourceId : event.eventId;
       item.status = "tentative";
-      item.start = event.start;
-      item.end = event.end;
+      item.start = `${event.start.toString("yyyy-MM-dd")} ${this.getBusinessHourStart(event.start.getDayOfWeek())}`;
+      item.end = `${event.end.toString("yyyy-MM-dd")} ${this.getBusinessHourEnd(event.end.getDayOfWeek())}`;
       item.offsite = false;
       item.break_length = 0;
       item.type = "schedule";
       item.event_type = "scheduled";
+
+      console.log(item);
 
       this.create({ resource: "schedule", data: item })
         .then(respond => {
@@ -477,7 +502,7 @@ export default {
           this.$emit("input", false);
         })
         .catch(error => {
-          this.showMessage(error.message, "danger");
+          this.showMessage(error.response.data.message, "danger");
         });
     },
 
@@ -498,7 +523,7 @@ export default {
           this.showMessage(`Event updated successfuly.`, "success");
         })
         .catch(error => {
-          this.showMessage(error.message, "danger");
+          this.showMessage(error.response.data.message, "danger");
         });
     },
 
@@ -515,9 +540,23 @@ export default {
           this.showMessage(`Event updated successfuly.`, "success");
         })
         .catch(error => {
-          this.showMessage(error.message, "danger");
+          this.showMessage(error.response.data.message, "danger");
         });
-    }
+    },
+
+    getBusinessHourStart(dayNum){
+      let day = this.businessHours.find(item => item.day == dayNum);
+      if(!day)
+        return "00:00:00";
+      return `${day.start}:00`;
+    },
+
+    getBusinessHourEnd(dayNum){
+      let day = this.businessHours.find(item => item.day == dayNum);
+      if(!day)
+        return "00:01:00";
+      return `${day.end}:00`;
+    },
   }
 };
 </script>
@@ -552,11 +591,11 @@ export default {
 }
 
 .res-menu li {
-  padding: 5px;
+  padding: 7.5px 12px;
   cursor: move;
-  margin-bottom: 5px;
+  margin: 8px 5px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .res-menu li:active {
@@ -575,5 +614,19 @@ export default {
   width: 40px;
   height: 40px;
   background-color: transparent;
+}
+
+.res__title {
+  font-size: medium;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.res__caption {
+  font-size: small;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
