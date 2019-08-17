@@ -51,7 +51,7 @@
         <li v-if="canApprove()">
           <button
             class="btn"
-            @click="onSave($event, 'approved')"
+            @click="approve"
           >
             Approve
           </button>
@@ -60,7 +60,7 @@
         <li v-if="canApprove()">
           <button
             class="btn"
-            @click="onSave($event, 'rejected')"
+            @click="reject"
           >
             Reject
           </button>
@@ -357,11 +357,11 @@
 </template>
 
 <script>
+import moment from "moment";
+import downloadjs from "downloadjs";
 import { api } from "../../../../api/http";
 import { mapActions, mapGetters } from "vuex";
 import { required, helpers } from "vuelidate/lib/validators";
-import moment from "moment";
-import downloadjs from "downloadjs";
 import pageMixin from "../../../../mixins/page-mixin";
 import bsCustomFileInput from "bs-custom-file-input";
 
@@ -667,6 +667,36 @@ export default {
           this.showMessage(error.message, "danger");
           this.$formFeedback(error.response.data.errors);
         });
+    },
+
+    approve(e){
+      e.preventDefault();
+      e.target.disabled = true;
+
+      api.update({url:`/api/request/approve/${this.id}`}).then(()=>{
+        this.showMessage(`Request approved successfuly.`, "success");        
+      })
+      .catch((error)=>{
+        this.showMessage(error.message, "danger");
+      })
+      .finally(()=>{
+        e.target.disabled = false;
+      });
+    },
+
+    reject(e){
+      e.preventDefault();
+      e.target.disabled = true;
+
+      api.update({url:`/api/request/reject/${this.id}`}).then(()=>{
+        this.showMessage(`Request rejected successfuly.`, "success");        
+      })
+      .catch((error)=>{
+        this.showMessage(error.message, "danger");
+      })
+      .finally(()=>{
+        e.target.disabled = false;
+      });
     },
 
     clearForm() {

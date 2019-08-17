@@ -51,7 +51,7 @@
         <li v-if="canApprove()">
           <button
             class="btn"
-            @click="onSave($event, 'approved')"
+            @click="approve"
           >
             Approve
           </button>
@@ -60,7 +60,7 @@
         <li v-if="canApprove()">
           <button
             class="btn"
-            @click="onSave($event, 'rejected')"
+            @click="reject"
           >
             Reject
           </button>
@@ -391,6 +391,7 @@ export default {
 
   beforeRouteLeave(to, from, next) {
     this.clear("user");
+    this.clear("job");
     this.clear("request");
     next();
   },
@@ -453,7 +454,37 @@ export default {
     canApprove() {
       if (!this.request) return false;
       return this.request.assigned_id === this.userId;
-    },    
+    },  
+    
+    approve(e){
+      e.preventDefault();
+      e.target.disabled = true;
+
+      api.update({url:`/api/request/approve/${this.id}`}).then(()=>{
+        this.showMessage(`Request approved successfuly.`, "success");        
+      })
+      .catch((error)=>{
+        this.showMessage(error.message, "danger");
+      })
+      .finally(()=>{
+        e.target.disabled = false;
+      });
+    },
+
+    reject(e){
+      e.preventDefault();
+      e.target.disabled = true;
+
+      api.update({url:`/api/request/reject/${this.id}`}).then(()=>{
+        this.showMessage(`Request rejected successfuly.`, "success");        
+      })
+      .catch((error)=>{
+        this.showMessage(error.message, "danger");
+      })
+      .finally(()=>{
+        e.target.disabled = false;
+      });
+    },
 
     onSubmit(e) {
       e.preventDefault();
