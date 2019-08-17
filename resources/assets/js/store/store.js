@@ -9,7 +9,7 @@ import { resourceModule } from './modules/resource';
 Vue.use(Vuex);
 
 const redirectUri = env() === "local"
-    ? "https://server.dev/" : "https://www.app.ticsol.com.au/";
+    ? "https://server.dev/" : "https://app.ticsol.com.au/";
 
 export const store = new Vuex.Store({
     state: {
