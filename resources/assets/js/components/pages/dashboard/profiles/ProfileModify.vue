@@ -90,14 +90,14 @@
           <div class="form-row">
             <label class="col-sm-2 col-form-lable">Parent</label>
             <div class="col-sm-10">
-              <ts-select
+              <ts-groupbox
                 v-model="form.parent"
                 :data="profiles"
                 id="parent_id"
                 name="profileParent"
-                placeholder="profile parent"
-                search-placeholder="search..."
-              />
+                placeholder="Select profile parent"
+                search-placeholder="search here..."
+              />              
             </div>
           </div>
         </div>
@@ -161,7 +161,7 @@ export default {
 
     profiles: function() {
       return this.profileList.map(item => {
-        return { key: item.id, value: item.name };
+        return { key: item.id, value: item.name, parentKey: item.parent_id };
       });
     }
   },
@@ -220,7 +220,7 @@ export default {
       this.form.name = profile.name;
       this.form.parent = this.profiles.find(
         item => item.key == profile.parent_id
-      );
+      ) || null;
       this.frmBuilder.actions.setData(JSON.stringify(profile.schema));
     },
 
