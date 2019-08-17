@@ -221,11 +221,11 @@ export default {
       operators: [
         { key: "cnt", value: "Contains", type: ["string"] },
         { key: "ncnt", value: "Not Contains", type: ["string"] },
-        { key: "eq", value: "Equals", type: ["number", "string", "boolean"] },
+        { key: "eq", value: "Equals", type: ["number", "string", "boolean", "date"] },
         {
           key: "neq",
           value: "Not Equals",
-          type: ["number", "string", "boolean"]
+          type: ["number", "string", "boolean", "date"]
         },
         { key: "gt", value: "Greater Than", type: ["number", "date"] },
         { key: "lt", value: "Less Than", type: ["number", "date"] },
@@ -237,8 +237,8 @@ export default {
         { key: "lte", value: "Less Than Or Equal", type: ["number", "date"] },
         { key: "btw", value: "Between", type: ["number", "date"] },
         { key: "nbtw", value: "Not Btween", type: ["number", "date"] },
-        { key: "in", value: "In", type: ["number", "string", "date"] },
-        // { key: "orderby", value: "Orderby", type: ["boolean", "number", "string", "date"] }
+        { key: "in", value: "In", type: ["array", "number", "string", "date"] },
+        { key: "ob", value: "Orderby", type: ["boolean", "number", "string", "date"] }
       ]
     };
   },
@@ -252,7 +252,7 @@ export default {
 
   computed: {
     valuePlaceholder: function() {      
-      if(this.opt == "orderby") return "Ase or Des...";
+      if(this.opt == "ob") return "asc or desc...";
       if (!this.col) return "";
       return this.columns.find(item => item.key == this.col).placeholder;
     }
