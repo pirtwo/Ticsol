@@ -10,6 +10,13 @@
         :page-count="pager.pageCount"
         @input="feedTable"
       />
+      <button
+        type="button"
+        class="btn btn-sm mr-auto"
+        @click="showFilter = true"
+      >
+        <i class="material-icons">filter_list</i>
+      </button>
     </template>
 
     <template slot="drawer">
@@ -66,6 +73,12 @@
           <td>{{ dateToString(item.till) }}</td>
         </template>
       </ts-table>
+      <ts-filter
+        v-model="query"
+        :show.sync="showFilter"
+        :columns="filterColumns"
+        @apply="feedTable"
+      />
     </template>
   </app-main>
 </template>
@@ -85,6 +98,8 @@ export default {
 
   data() {
     return {
+      query: [],
+      showFilter: false,
       pager: {
         page: 1,
         perPage: 10,
@@ -107,6 +122,35 @@ export default {
 
     reports: function() {
       return this.getList("activity");
+    },
+
+    filterColumns: function() {
+      return [
+        {
+          key: "from",
+          value: "From",
+          type: "date",
+          placeholder: "Enter from date, eg. 2019-01-01"
+        },
+        {
+          key: "till",
+          value: "Till",
+          type: "date",
+          placeholder: "Enter till date, eg. 2019-01-01"
+        },
+        {
+          key: "activity.job.title",
+          value: "Job\\Title",
+          type: "string",
+          placeholder: "Enter job title"
+        },
+        {
+          key: "activity.job.profile.name",
+          value: "Job\\Profile\\Title",
+          type: "string",
+          placeholder: "Enter job profile"
+        },
+      ];
     }
   },
 
@@ -119,13 +163,15 @@ export default {
 
     feedTable() {
       this.startLoading();
+      if (this.opt)
+        this.query.push({ opt: this.opt, col: this.col, val: this.val });
       this.fetch({
         resource: "activity",
         query: this.$queryBuilder(
           this.pager.page,
           this.pager.perPage,
           ["schedule", "job"],
-          this.opt ? [{ opt: this.opt, col: this.col, val: this.val }] : []
+          this.query
         )
       })
         .then(respond => {
