@@ -2,19 +2,19 @@
 
 namespace App\Ticsol\Components\Controllers\API;
 
+use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Criteria\ClientCriteria;
+use App\Ticsol\Base\Criteria\CommonCriteria;
+use App\Ticsol\Base\Exceptions\NotFound;
+use App\Ticsol\Components\Models\Schedule;
+use App\Ticsol\Components\Schedule\Criterias\ScheduleCriteria;
+use App\Ticsol\Components\Schedule\Events;
+use App\Ticsol\Components\Schedule\Repository;
+use App\Ticsol\Components\Schedule\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Controller;
-use App\Ticsol\Base\Exceptions\NotFound;
-use App\Ticsol\Components\Models\Schedule;
-use App\Ticsol\Components\Schedule\Events;
-use App\Ticsol\Components\Schedule\Requests;
-use App\Ticsol\Components\Schedule\Repository;
-use App\Ticsol\Base\Criteria\ClientCriteria;
-use App\Ticsol\Base\Criteria\CommonCriteria;
-use App\Ticsol\Components\Schedule\Criterias\ScheduleCriteria;
 
 class ScheduleController extends Controller
 {
@@ -73,24 +73,32 @@ class ScheduleController extends Controller
      */
     public function store(Requests\CreateSchedule $request)
     {
-        $client_id = $request->user()->client_id;
-        $creator_id = $request->user()->id;
+        $clientId = $request->user()->client_id;
+        $creatorId = $request->user()->id;
         $eventType = $request->input('event_type');
+        $userId = $request->input('user_id');
 
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        $this->authorize('create', [Schedule::class, $request->input('user_id'), $eventType]);
+        $this->authorize('create', [Schedule::class, $userId, $eventType]);
 
         $schedule = new Schedule();
         $unavCollec = collect([]);
 
         if ($eventType == 'scheduled') {
 
-            // Schedule item setup
+            // check if date is available
+            $start = $request->input("start");
+            $end = $request->input("end");
 
-            $schedule->client_id = $client_id;
-            $schedule->creator_id = $creator_id;
+            if ($this->isBooked($start, $end, $userId, $clientId)) {
+                return response()->json(['error' => true, 'message' => "{$start} till {$end} is not available."], 400);
+            }
+
+            // setup schedule item
+            $schedule->client_id = $clientId;
+            $schedule->creator_id = $creatorId;
             $schedule->type = 'schedule';
 
             $schedule->fill($request->all());
@@ -98,7 +106,7 @@ class ScheduleController extends Controller
 
         } else {
 
-            // Unavailable hours setup
+            // setup unavalilable hours
 
             $unavailables =
             $request->input('unavailables');
@@ -109,8 +117,8 @@ class ScheduleController extends Controller
 
                 foreach ($unavailables as &$unavailable) {
                     $unav = new Schedule();
-                    $unav->client_id = $client_id;
-                    $unav->creator_id = $creator_id;
+                    $unav->client_id = $clientId;
+                    $unav->creator_id = $creatorId;
                     $unav->type = 'schedule';
                     $unavailable['event_type'] = 'unavailable';
                     $unavailable['user_id'] = $request->input('user_id');
@@ -172,6 +180,11 @@ class ScheduleController extends Controller
             throw new NotFound();
         }
 
+        $clientId = $schedule->client_id;
+        $userId = $schedule->user_id;
+        $type = $schedule->type;
+        $eventType = $schedule->event_type;
+
         Validator::make(['type' => $schedule->type, 'event_type' => $schedule->event_type], [
             'type' => 'in:schedule',
             'event_type' => 'in:unavailable,scheduled,RDO',
@@ -181,6 +194,16 @@ class ScheduleController extends Controller
         //      AUTHORIZE ACTION
         //----------------------------
         $this->authorize('update', $schedule);
+
+        // check if date is available
+        if ($eventType === "scheduled" && ($request->has("start") || $request->has("end"))) {
+            $start = $request->input("start", $schedule->start);
+            $end = $request->input("end", $schedule->end);
+
+            if ($this->isBooked($start, $end, $userId, $clientId)) {
+                return response()->json(['error' => true, 'message' => "{$start} till {$end} is not available."], 400);
+            }
+        }
 
         $schedule->update($request->all());
 
@@ -208,5 +231,44 @@ class ScheduleController extends Controller
         $this->authorize('delete', $schedule);
 
         return $this->repository->delete('id', $id, false);
+    }
+
+
+    /**
+     * returns true if there is at least one leave or unavailable event
+     * between start and end dates.
+     */
+    private function isBooked($start, $end, $userId, $clientId)
+    {
+        $unavailable = Schedule::where("client_id", $clientId)
+            ->where("user_id", $userId)
+            ->where(function ($query) {
+                $query->where("event_type", "leave")
+                    ->orWhere("event_type", "unavailable");
+            })
+            ->where(function ($query) use ($start, $end) {
+                $query->where([
+                    ['start', '<', $start],
+                    ['end', '>', $end],
+                ])
+                    ->orWhere([
+                        ['start', '>=', $start],
+                        ['start', '<=', $end],
+                        ['end', '<=', $end],
+                        ['end', '>=', $start],
+                    ])
+                    ->orWhere([
+                        ['start', '<', $start],
+                        ['end', '>=', $start],
+                        ['end', '<=', $end],
+                    ])
+                    ->orWhere([
+                        ['start', '>=', $start],
+                        ['start', '<=', $end],
+                        ['end', '>', $end],
+                    ]);
+            })->first();
+
+        return $unavailable != null;
     }
 }
