@@ -10,12 +10,12 @@ use App\Ticsol\Components\Models\User;
 use App\Ticsol\Components\User\Events;
 use App\Ticsol\Components\User\Repository;
 use App\Ticsol\Components\User\Requests;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-Use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -79,22 +79,22 @@ class UserController extends Controller
 
             $user = new User();
             $user->client_id = $request->user()->client_id;
-            
+
             $user->name = $request->input("firstname") . " " . $request->input("lastname");
-            $user->password = \bcrypt(Str::random(8));        
+            $user->password = \bcrypt(Str::random(8));
             $user->fill($request->all());
             $user->save();
 
             $user->teams()->sync($request->input("teams"));
-            $user->roles()->sync($request->input("roles"));            
-            
-            DB::commit();            
-            
+            $user->roles()->sync($request->input("roles"));
+
+            DB::commit();
+
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
-        
+
         return $user;
     }
 
@@ -156,7 +156,7 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         $user->fill($request->all());
-        
+
         $user = $this->setupAvatar($request, $user);
         $user = $this->setupSettings($request, $user);
 
@@ -215,8 +215,9 @@ class UserController extends Controller
             ->where("meta->ical", $icalId)
             ->first();
 
-        if($user == null)
+        if ($user == null) {
             return "";
+        }
 
         $data = $this->createIcalContent($user->schedules()->where("type", "schedule")->get());
         $path = "ical/" . Str::random(8) . ".ics";
@@ -239,13 +240,13 @@ class UserController extends Controller
     private function createIcalContent($eventList)
     {
         $vCal = "BEGIN:VCALENDAR\nVERSION:2.0";
-        for ($i=0; $i < \sizeof($eventList); $i++) { 
+        for ($i = 0; $i < \sizeof($eventList); $i++) {
             $event = $eventList[$i];
-            $summary = $event->job ? "Booked for {$event->job->title}" : \strtoupper($event->event_type);            
+            $summary = $event->job ? "Booked for {$event->job->title}" : \strtoupper($event->event_type);
             $start = Carbon::create($event->start)->format("Ymd His");
             $start = \str_replace(" ", "T", $start);
             $end = Carbon::create($event->end)->format("Ymd His");
-            $end = \str_replace(" ", "T", $end);            
+            $end = \str_replace(" ", "T", $end);
             $vEvent = "\nBEGIN:VEVENT\nUID:{$event->id}\nSUMMARY:{$summary}\nDTSTART:{$start}\nDTEND:{$end}\nEND:VEVENT";
             $vCal = $vCal . $vEvent;
         }
@@ -257,19 +258,32 @@ class UserController extends Controller
      * Setup the user settings.
      */
     private function setupSettings($request, $user)
-    {    
+    {
         $meta = $user->meta;
 
-        if($request->has("theme"))
+        if ($request->has("theme")) {
             $meta["theme"] = $request->input("theme");
-        if($request->has("schedule_view"))
+        }
+
+        if ($request->has("schedule_view")) {
             $meta["schedule_view"] = $request->input("schedule_view");
-        if($request->has("schedule_range"))
+        }
+
+        if ($request->has("schedule_range")) {
             $meta["schedule_range"] = $request->input("schedule_range");
-        if($request->has("ical") && $meta["ical"] == "" && $request->input("ical", false))
-            $meta["ical"] = Str::random(20);
-        if($request->has("ical") && !$request->input("ical", false))
+        }
+
+        if ($request->has("ical") && $request->input("ical", false)) {
+            if (array_key_exists("ical", $meta)) {
+                $meta["ical"] = $meta["ical"] == "" ? $meta["ical"] = Str::random(20) : $meta["ical"];
+            } else {
+                $meta["ical"] = Str::random(20);
+            }
+        }
+
+        if ($request->has("ical") && !$request->input("ical", false)) {
             $meta["ical"] = "";
+        }
 
         $user->meta = $meta;
 
@@ -282,19 +296,23 @@ class UserController extends Controller
     private function setupAvatar($request, $user)
     {
         $meta = $user->meta;
-
         $defaultAvatar = "/img/avatar/default.png";
-        $oldAvatar = $meta["avatar"];
+
+        if (array_key_exists("avatar", $meta)) {
+            $oldAvatar = $meta["avatar"];
+        } else {
+            $meta["avatar"] = $defaultAvatar;
+        }
 
         if ($request->file("avatar")) {
             $meta["avatar"] = "/storage/" . $request->file('avatar')->store('img/avatar', 'public');
 
             // delete old avatar
             if ($oldAvatar != $defaultAvatar) {
-                Storage::disk("public")->delete(\substr($oldAvatar, 9)); 
+                Storage::disk("public")->delete(\substr($oldAvatar, 9));
             }
-        } 
-        
+        }
+
         $user->meta = $meta;
 
         return $user;

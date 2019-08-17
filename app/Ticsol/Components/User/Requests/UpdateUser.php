@@ -33,8 +33,8 @@ class UpdateUser extends FormRequest
             // settings 
             'ical'                      => 'boolean',            
             'theme'                     => 'string|in:default,urban,jungle,beach,night',
-            'schedule_view'             => 'string|in:employee,job',              
-            'schedule_range'            => 'string|in:week,month',  
+            'schedule_view'             => 'string|in:user,job',              
+            'schedule_range'            => 'string|in:Week,Month',  
               
             
             // profile picture
