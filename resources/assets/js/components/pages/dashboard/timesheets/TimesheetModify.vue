@@ -47,7 +47,7 @@
           <button
             type="button"
             class="btn"
-            @click="onApprove"
+            @click="approve"
           >
             Approve
           </button>
@@ -56,7 +56,7 @@
           <button
             type="button"
             class="btn"
-            @click="onReject"
+            @click="reject"
           >
             Reject
           </button>
@@ -461,6 +461,7 @@
 
 <script>
 import moment from "moment";
+import { api } from "../../../../api/http";
 import { required, requiredIf } from "vuelidate/lib/validators";
 import { mapActions, mapGetters } from "vuex";
 import pageMixin from "../../../../mixins/page-mixin";
@@ -794,12 +795,29 @@ export default {
       } else return this.timesheet.request.assigned_id == this.userId;
     },
 
-    onApprove() {
-      this.updateRequest("approved");
+    approve(e) {
+      e.preventDefault();
+      e.target.disabled = true;
+
+      api.update({url:`/api/timesheet/approve/${this.id}`})
+      .then(()=>{
+        this.showMessage(`Timesheet <b>approved</b> successfuly.`, "success");
+      }).catch(error=>{
+        this.showMessage(error.message, "danger");
+      }).finally(()=>{
+        e.target.disabled = false;
+      });
     },
 
-    onReject() {
-      this.updateRequest("rejected");
+    reject(e) {
+      api.update({url:`/api/timesheet/reject/${this.id}`})
+      .then(()=>{
+        this.showMessage(`Timesheet <b>rejected</b> successfuly.`, "success");
+      }).catch(error=>{
+        this.showMessage(error.message, "danger");
+      }).finally(()=>{
+        e.target.disabled = false;
+      });
     },
 
     onGenerate() {
