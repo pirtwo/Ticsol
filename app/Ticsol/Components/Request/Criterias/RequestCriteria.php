@@ -20,7 +20,7 @@ class RequestCriteria extends Criteria
     public function apply($model, IRepository $repository)
     {
         $model->OfUser($this->userId);
-        $model->orderby('created_at', 'desc');
+        $model->orderby('updated_at', 'desc');
         return $model;
     }
 }

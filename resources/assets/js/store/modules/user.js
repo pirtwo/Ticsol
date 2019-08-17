@@ -51,11 +51,11 @@ export const userModule = {
             return state.settings.avatar;
         },
 
-        getScheduleView(state){
+        getScheduleView(state) {
             return state.settings.scheduleView;
         },
 
-        getScheduleRange(state){
+        getScheduleRange(state) {
             return state.settings.scheduleRange;
         },
 
@@ -120,8 +120,8 @@ export const userModule = {
         }
     },
 
-    actions: { 
-        
+    actions: {
+
         successfulAuth({ commit }) {
             commit(MUTATIONS.USER_AUTH_SUCCESS);
         },
@@ -151,20 +151,24 @@ export const userModule = {
             })
         },
 
-        updateInfo({ commit }, info){
+        updateInfo({ commit }, info) {
             commit(MUTATIONS.USER_INFO, info);
         },
 
-        updateSettings({ commit }, settings){
+        updateSettings({ commit }, settings) {
             commit(MUTATIONS.USER_SETTINGS, settings);
         },
 
         logout({ commit, dispatch }) {
-            api.post({ url: URLs.AUTH_LOGOUT }).then(() => {
-                commit(MUTATIONS.USER_AUTH_LOGOUT);
-                dispatch('core/clearNotificationLog', null, { root: true });
-            }).catch(error => {
-                console.log(error);
+            return new Promise((resolve, reject) => {
+                api.post({ url: URLs.AUTH_LOGOUT }).then(() => {
+                    commit(MUTATIONS.USER_AUTH_LOGOUT);
+                    dispatch('core/clearNotificationLog', null, { root: true });
+                    resolve();
+                }).catch(error => {
+                    console.log(error);
+                    reject();
+                });
             });
         },
 

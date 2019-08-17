@@ -77,7 +77,7 @@
           <td>{{ item.assigned ? item.assigned.fullname : "None" }}</td>
           <td>{{ item.status }}</td>
           <td>{{ summary(item) }}</td>
-          <td>{{ utcToLocal(item.created_at) }}</td>
+          <td>{{ utcToLocal(item.updated_at) }}</td>
         </template>
       </ts-table>
       <!-- Filter view -->

@@ -107,6 +107,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
+          this.showMessage(error.message, "danger");
         });
     }
   }
