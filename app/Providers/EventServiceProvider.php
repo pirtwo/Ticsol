@@ -12,19 +12,16 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
-        // 'App\Events\Event' => [
-        //     'App\Listeners\EventListener',
-        // ],
-        'App\Ticsol\Components\Events\InvitationCreated' => [
-            'App\Ticsol\Components\Listeners\InvitationCreated',
+    protected $listen = [        
+
+        'Spatie\WebhookServer\Events\WebhookCallSucceededEvent' => [
+            'App\Ticsol\Components\Webhook\Listeners\WebhookCallSuccess'
         ],
-        'Laravel\Passport\Events\AccessTokenCreated' => [
-            'App\Ticsol\Components\Base\Listeners\RevokeOldTokens',
+
+        'Spatie\WebhookServer\Events\WebhookCallFailedEvent' => [
+            'App\Ticsol\Components\Webhook\Listeners\WebhookCallFail'
         ],
-        'Laravel\Passport\Events\RefreshTokenCreated' => [
-            'App\Ticsol\Components\Base\Listeners\RevokeOldRefreshTokens',
-        ],
+
     ];
 
     /**

@@ -101,20 +101,15 @@ class RequestPolicy
         }
 
         $permissions = $user->permissions;
-        $canApproveLeave = $permissions->contains('approve-leave');   
-        $canApproveTimesheet = $permissions->contains('approve-timesheet');
+        $canApproveLeave = $permissions->contains('approve-leave');  
         $canApproveReimbursement = $permissions->contains('approve-reimbursement');        
 
-        if ($request->type === 'leave' && $canApproveLeave) {
-            return true;
+        if ($request->type === 'leave') {
+            return $canApproveLeave;
         }
 
-        if ($request->type === 'timesheet' && $canApproveTimesheet) {
-            return true;
-        }
-
-        if ($request->type === 'reimbursement' && $canApproveReimbursement) {
-            return true;
+        if ($request->type === 'reimbursement') {
+            return $canApproveReimbursement;
         }
 
         return false;

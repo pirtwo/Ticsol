@@ -4,14 +4,23 @@ namespace App\Ticsol\Components\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Ticsol\Components\Models\Webhook;
+use App\Ticsol\Components\Webhook\Requests;
 use Illuminate\Http\Request;
 
 class WebhookController extends Controller
 {
     /**
+     * returns a list of hooks.
+     */
+    public function index(Request $request)
+    {  
+        return $request->user()->webhooks;
+    }
+
+    /**
      * subscribe to hook.
      */
-    public function subscribe(Request $request)
+    public function subscribe(Requests\CreateWebhook $request)
     {
         $webhook = new Webhook();
         $webhook->client_id = $request->user()->client_id;
