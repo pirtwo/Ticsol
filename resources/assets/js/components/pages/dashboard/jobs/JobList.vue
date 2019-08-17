@@ -8,6 +8,7 @@
       <ts-pagination
         v-model="pager"
         :page-count="pager.pageCount"
+        @input="feedTable"
       />
       <button
         type="button"
@@ -44,8 +45,6 @@
         :data="jobs"
         :header="header"
         :selection="false"
-        order-by="title"
-        order="asc"
       >
         <template
           slot="header"
@@ -117,12 +116,6 @@ export default {
       ],
       order: "asc"
     };
-  },
-
-  watch: {
-    pager: function(value) {
-      this.feedTable();
-    }
   },
 
   computed: {

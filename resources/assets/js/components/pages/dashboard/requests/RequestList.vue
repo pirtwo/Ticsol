@@ -8,6 +8,7 @@
       <ts-pagination
         v-model="pager"
         :page-count="pager.pageCount"
+        @input="feedTable"
       />
       <button
         type="button"
@@ -22,12 +23,7 @@
       <ul class="v-menu">
         <li class="menu-title">
           Actions
-        </li>
-        <li>
-          <router-link :to="{ name: 'profileCreate' }">
-            New
-          </router-link>
-        </li>
+        </li>       
         <li class="menu-title">
           Links
         </li>
@@ -77,7 +73,8 @@
             </router-link>
           </td>
           <td>{{ item.type }}</td>
-          <td>{{ item.assigned ? item.assigned.name : "None" }}</td>
+          <td>{{ item.user ? item.user.fullname : "" }}</td>
+          <td>{{ item.assigned ? item.assigned.fullname : "None" }}</td>
           <td>{{ item.status }}</td>
           <td>{{ summary(item) }}</td>
           <td>{{ utcToLocal(item.created_at) }}</td>
@@ -120,19 +117,14 @@ export default {
       header: [
         { value: "", orderBy: "" },
         { value: "Type", orderBy: "type" },
-        { value: "Approver", orderBy: "name" },
+        { value: "Creator", orderBy: "user.fullname" },
+        { value: "Approver", orderBy: "assigned.fullname" },
         { value: "Status", orderBy: "status" },
         { value: "Summary", orderBy: "" },
         { value: "Submitted At", orderBy: "created_at" }
       ],
       order: "asc"
     };
-  },
-
-  watch: {
-    pager: function(value) {
-      this.feedTable();
-    }
   },
 
   computed: {
@@ -186,12 +178,20 @@ export default {
     }
   },
 
+  beforeRouteLeave (to, from, next) {
+    this.clear("request");
+    next();
+  },
+
   mounted() {
     this.feedTable();
   },
 
   methods: {
-    ...mapActions({ fetchList: "resource/list" }),
+    ...mapActions({ 
+      fetchList: "resource/list",
+      clear: "resource/clearResource",
+    }),
 
     feedTable() {
       this.startLoading();
@@ -202,7 +202,7 @@ export default {
         query: this.$queryBuilder(
           this.pager.page,
           this.pager.perPage,
-          ["job", "assigned", "timesheet"],
+          ["job", "user", "assigned", "timesheet"],
           this.query
         )
       })

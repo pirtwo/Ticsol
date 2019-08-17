@@ -8,6 +8,7 @@
       <ts-pagination
         v-model="pager"
         :page-count="pager.pageCount"
+        @input="feedTable"
       />
       <button
         type="button"
@@ -116,12 +117,6 @@ export default {
     };
   },
 
-  watch: {
-    pager: function(value) {
-      this.feedTable();
-    }
-  },
-
   computed: {
     ...mapGetters({
       getList: "resource/getList"
@@ -137,38 +132,50 @@ export default {
           key: "firstname",
           value: "Firstname",
           type: "string",
-          placeholder: "Search for Firstname..."
+          placeholder: "Enter contact first name"
         },
         {
           key: "lastname",
           value: "Lastname",
           type: "string",
-          placeholder: "Search for Lastname..."
+          placeholder: "Enter contact last name"
         },
         {
           key: "group",
-          value: "group",
+          value: "Group",
           type: "string",
-          placeholder: "Search for Group..."
+          placeholder: "Enter contact group name"
         },
         {
           key: "contact.addresses.street",
           value: "Address\\Street",
           type: "string",
-          placeholder: "Search for Contact\\Addresses\\Street..."
+          placeholder: "Enter address street"
         },
         {
           key: "contact.addresses.state",
-          value: "Contact\\State",
+          value: "Address\\State",
           type: "string",
-          placeholder: "Search for Contact\\Addresses\\State..."
+          placeholder: "Enter address state"
         },
         {
           key: "contact.addresses.country",
-          value: "Contacts\\Country",
+          value: "Address\\Country",
           type: "string",
-          placeholder: "Search for Contact\\Addresses\\Country..."
-        }
+          placeholder: "Enter address country"
+        },
+        {
+          key: "contact.jobs.title",
+          value: "Contact\\Jobs\\Title",
+          type: "array",
+          placeholder: "seperate values with comma..."
+        },
+        {
+          key: "contact.jobs.profile.name",
+          value: "Contact\\Jobs\\Profile",
+          type: "array",
+          placeholder: "seperate values with comma..."
+        },
       ];
     }
   },

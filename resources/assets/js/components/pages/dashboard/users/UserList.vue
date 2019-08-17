@@ -8,6 +8,7 @@
       <ts-pagination 
         v-model="pager" 
         :page-count="pager.pageCount"
+        @input="feedTable"
       />
     </template>
 
@@ -138,12 +139,6 @@ export default {
       ],
       order: "asc"
     };
-  },
-
-  watch: {
-    pager: function(value) {
-      this.feedTable();
-    }
   },
 
   computed:{
