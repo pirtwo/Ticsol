@@ -10,13 +10,13 @@
     <div      
       tabindex="0"
       @click="show = true"
-      ref="ezSelectbox"      
-      class="ez-selectbox form-control"      
+      ref="tsChipsbox"      
+      class="ts-chipsbox form-control"      
       slot-scope="{selects, options, dropdownStatus, isFocused, isSelected, onKeyDown, toggleOption, deSelectOption, highlightText}"
     >
       <!-- input -->
       <div  
-        class="ez-selectbox__input"
+        class="ts-chipsbox__input"
       >
         <span 
           class="text-muted" 
@@ -57,35 +57,43 @@
         </template>
       </div>
 
+      <!-- toggole btn-->
+      <button
+        type="button"
+        class="ts-chipsbox__toggleBtn btn btn-sm btn-link"
+      >
+        <i class="material-icons">{{ show ? 'expand_less' : 'expand_more' }}</i>
+      </button>
+
       <!-- dropdown -->
       <div
         tabindex="0"
         v-show="show"
         @keydown="onKeyDown"       
-        :class="[{ 'ez-selectbox__dropdown--open' : show, 'ez-selectbox__dropdown--close' : !show }, 'ez-selectbox__dropdown']"          
+        :class="[{ 'ts-chipsbox__dropdown--open' : show, 'ts-chipsbox__dropdown--close' : !show }, 'ts-chipsbox__dropdown']"          
       >
         <input
           type="text"
           v-model="query"
           :placeholder="searchPlaceholder"
-          class="ez-selectbox__search form-control form-control-sm"
+          class="ts-chipsbox__search form-control form-control-sm"
         >              
         <ul
-          class="ez-selectbox__list"
+          class="ts-chipsbox__list"
           @keydown="onKeyDown"
         >
           <li
             tabindex="0"
             v-for="opt in options"
             :key="opt.key"
-            :class="[{'ez-selectbox__options--selected': isSelected(opt)}, 'ez-selectbox__options']"
+            :class="[{'ts-chipsbox__options--selected': isSelected(opt)}, 'ts-chipsbox__options']"
             @click="toggleOption(opt)"            
             @keydown="onKeyDown($event, opt)"
           >
-            <div class="ez-selectbox__options__content">
+            <div class="ts-chipsbox__options__content">
               <slot :item="opt" />  
               <div
-                class="ez-selectbox__options__lable"
+                class="ts-chipsbox__options__lable"
                 v-html="highlightText(opt.value, '#ff0000')"
               />
             </div>
@@ -128,7 +136,7 @@ export default {
 
   methods: {
     onClose(e) {
-      let elm = this.$refs.ezSelectbox;
+      let elm = this.$refs.tsChipsbox;
       let target = e.target;
       if (elm !== target && !elm.contains(target)) this.show = false;
     }
@@ -137,12 +145,12 @@ export default {
 </script>
 
 <style scoped>
-.ez-selectbox {
+.ts-chipsbox {
   position: relative;
   height: auto !important;
 }
 
-.ez-selectbox__input {
+.ts-chipsbox__input {
   width: 100%;
   padding: 0px;
   display: flex;
@@ -154,7 +162,22 @@ export default {
   cursor: default;
 }
 
-.ez-selectbox__dropdown {
+.ts-chipsbox__toggleBtn {
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  position: absolute;
+}
+
+.ts-chipsbox__toggleBtn i {
+  line-height: 100%;
+}
+
+.is-invalid .ts-chipsbox__toggleBtn {  
+  right: 20px;  
+}
+
+.ts-chipsbox__dropdown {
   top: 100%;
   left: 0px;
   width: 100%;
@@ -168,12 +191,12 @@ export default {
   position: absolute;
 }
 
-.ez-selectbox__dropdown--open {
+.ts-chipsbox__dropdown--open {
   animation-duration: 0.3s;
   animation-name: dropdown-open;
 }
 
-.ez-selectbox__dropdown--close {
+.ts-chipsbox__dropdown--close {
   animation-duration: 0.3s;
   animation-name: dropdown-close;
 }
@@ -196,40 +219,40 @@ export default {
   }
 }
 
-.ez-selectbox__search {
+.ts-chipsbox__search {
   width: 100%;
   margin-top: 7px;
   margin-bottom: 7px;
 }
 
-.ez-selectbox__list {
+.ts-chipsbox__list {
   margin: 0px;
   padding: 0px;
-  max-height: 300px;
+  max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
   list-style: none;
 }
 
-.ez-selectbox__options {
+.ts-chipsbox__options {
   padding: 5px;
   cursor: pointer;
 }
 
-.ez-selectbox__options--selected {
+.ts-chipsbox__options--selected {
   background-color: #ffeb3b;
 }
 
-.ez-selectbox__options--focused,
-.ez-selectbox__options:hover {
+.ts-chipsbox__options--focused,
+.ts-chipsbox__options:hover {
   background-color: #f5f5f5;
 }
 
-.ez-selectbox__options__lable {
+.ts-chipsbox__options__lable {
   padding-left: 10px;
 }
 
-.ez-selectbox__options__content {
+.ts-chipsbox__options__content {
   display: flex;
   align-items: center;
   flex-direction: row;

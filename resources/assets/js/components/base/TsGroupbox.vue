@@ -10,13 +10,13 @@
     <div
       tabindex="0"
       @click="show = true"
-      ref="ezSelectbox"
-      class="ez-selectbox form-control"
+      ref="tsGroupbox"
+      class="ts-groupbox form-control"
       slot-scope="{selects, options, dropdownStatus, isFocused, isSelected, onKeyDown, toggleOption, deSelectOption, highlightText}"
     >
       <!-- input -->
       <div
-        class="ez-selectbox__input"        
+        class="ts-groupbox__input"        
       >
         <span 
           class="text-muted" 
@@ -57,40 +57,70 @@
         </template>
       </div>
 
+      <!-- toggole btn-->
+      <button
+        type="button"
+        class="ts-groupbox__toggleBtn btn btn-sm btn-link"
+      >
+        <i class="material-icons">{{ show ? 'expand_less' : 'expand_more' }}</i>
+      </button>
+
       <!-- dropdown -->
       <div
         tabindex="0"
         v-show="show"
         @keydown="onKeyDown" 
-        :class="[{ 'ez-selectbox__dropdown--open' : show, 'ez-selectbox__dropdown--close' : !show }, 'ez-selectbox__dropdown']"        
+        :class="[{ 'ts-groupbox__dropdown--open' : show, 'ts-groupbox__dropdown--close' : !show }, 'ts-groupbox__dropdown']"        
       >
         <input
           type="text"
           v-model="query"
           :placeholder="searchPlaceholder"
-          class="ez-selectbox__search form-control form-control-sm"
+          class="ts-groupbox__search form-control form-control-sm"
         >
-        <tree
-          :roots="query ? options : data.filter(item=>item.parentKey === null)"
-          :data="data"
-          class="ez-selectbox__list"          
-        >
-          <template
-            slot-scope="{ item }"
-            class="ez-selectbox__options__content"
+        <template v-if="query">
+          <ul class="ts-groupbox__list">
+            <li
+              tabindex="0"
+              v-for="opt in options"
+              :key="opt.key"
+              :class="[{'ts-groupbox__options--selected': isSelected(opt)}, 'ts-groupbox__options']"
+              @click="toggleOption(opt)"            
+              @keydown="onKeyDown($event, opt)"
+            >
+              <div class="ts-groupbox__options__content">
+                <slot :item="opt" />  
+                <div
+                  class="ts-groupbox__options__lable"
+                  v-html="highlightText(opt.value, '#ff0000')"
+                />
+              </div>
+            </li>
+          </ul>
+        </template>
+        <template v-else>
+          <tree
+            :roots="parents"
+            :data="data"
+            class="ts-groupbox__list"          
           >
-            <div
-              class="ez-selectbox__options__content"
-              @click="toggleOption(item)"              
-              :class="[{'ez-selectbox__options--selected': isSelected(item) }, 'ez-selectbox__options']"
+            <template
+              slot-scope="{ item }"
+              class="ts-groupbox__options__content"
             >
               <div
-                class="ez-selectbox__options__lable"
-                v-html="highlightText(item.value, '#ff0000')"
-              />
-            </div>
-          </template>
-        </tree>        
+                class="ts-groupbox__options__content"
+                @click="toggleOption(item)"              
+                :class="[{'ts-groupbox__options--selected': isSelected(item) }, 'ts-groupbox__options']"
+              >
+                <div
+                  class="ts-groupbox__options__lable"
+                  v-html="highlightText(item.value, '#ff0000')"
+                />
+              </div>
+            </template>
+          </tree>    
+        </template>            
       </div>
       <!-- END dropdown -->
     </div>
@@ -120,6 +150,12 @@ export default {
     };
   },  
 
+  computed:{
+    parents:function(){
+      return this.data.filter(item=>item.parentKey === null);
+    }
+  },
+
   mounted() {
     document.addEventListener("click", this.onClose);
   },
@@ -130,7 +166,7 @@ export default {
 
   methods: {
     onClose(e) {
-      let elm = this.$refs.ezSelectbox;
+      let elm = this.$refs.tsGroupbox;
       let target = e.target;
       if (elm !== target && !elm.contains(target)) this.show = false;
     }
@@ -139,14 +175,15 @@ export default {
 </script>
 
 <style scoped>
-.ez-selectbox {
+.ts-groupbox {
   position: relative;  
   height: auto !important;
 }
 
-.ez-selectbox__input {
+.ts-groupbox__input {
   width: 100%;
   padding: 0px;
+  padding-right: 100px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -156,7 +193,22 @@ export default {
   cursor: default;
 }
 
-.ez-selectbox__dropdown {
+.ts-groupbox__toggleBtn {
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  position: absolute;
+}
+
+.ts-groupbox__toggleBtn i {
+  line-height: 100%;
+}
+
+.is-invalid .ts-groupbox__toggleBtn {  
+  right: 20px;  
+}
+
+.ts-groupbox__dropdown {
   top: 100%;
   left: 0px;
   width: 100%;
@@ -170,12 +222,12 @@ export default {
   transition: all 0.3s;
 }
 
-.ez-selectbox__dropdown--open {
+.ts-groupbox__dropdown--open {
   animation-duration: 0.3s;
   animation-name: dropdown-open;
 }
 
-.ez-selectbox__dropdown--close {
+.ts-groupbox__dropdown--close {
   animation-duration: 0.3s;
   animation-name: dropdown-close;
 }
@@ -198,40 +250,40 @@ export default {
   }
 }
 
-.ez-selectbox__search {
+.ts-groupbox__search {
   width: 100%;
   margin-top: 7px;
   margin-bottom: 7px;
 }
 
-.ez-selectbox__list {
+.ts-groupbox__list {
   margin: 0px;
   padding: 0px;
-  max-height: 300px;
+  max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
   list-style: none;
 }
 
-.ez-selectbox__options {
+.ts-groupbox__options {
   padding: 5px;
   cursor: pointer;
 }
 
-.ez-selectbox__options--selected {
+.ts-groupbox__options--selected {
   background-color: #ffeb3b;
 }
 
-.ez-selectbox__options--focused,
-.ez-selectbox__options:hover {
+.ts-groupbox__options--focused,
+.ts-groupbox__options:hover {
   background-color: #f5f5f5;
 }
 
-.ez-selectbox__options__lable {
+.ts-groupbox__options__lable {
   padding-left: 10px;
 }
 
-.ez-selectbox__options__content {
+.ts-groupbox__options__content {
   display: flex;
   align-items: center;
   flex-direction: row;
