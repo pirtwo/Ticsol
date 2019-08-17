@@ -48,7 +48,7 @@
                 :data="themes"
                 id="parent_id"
                 name="jobParent"
-                placeholder="select parent..."
+                placeholder="select app theme"
                 search-placeholder="search..."
               />
             </div>
@@ -269,9 +269,12 @@ export default {
       this.form.theme = this.themes.find(
         item => item.value.toLowerCase() === settings.theme
       );
-      this.setTheme(this.form.theme.value);
-      this.form.scheduleView = settings.schedule_view;
-      this.form.scheduleRange = settings.schedule_range;
+
+      if(this.form.theme)
+        this.setTheme(this.form.theme.value);
+
+      this.form.scheduleView = settings.schedule_view ? settings.schedule_view : "";
+      this.form.scheduleRange = settings.schedule_range ? settings.schedule_range : "";
       this.form.ical = settings.ical ? true : false;
       this.form.icalUrl = settings.ical
         ? `https://${window.location.hostname}/api/ical/${this.userId}/${settings.ical}`

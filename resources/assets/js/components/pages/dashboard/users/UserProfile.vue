@@ -398,6 +398,7 @@ import { mapGetters, mapActions } from "vuex";
 import { required, email } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 import DPCalendarVue from "../../../base/DPCalendar.vue";
+import bsCustomFileInput from "bs-custom-file-input";
 
 export default {
   name: "UserProfile",
@@ -526,6 +527,10 @@ export default {
     next();
   },
 
+  mounted(){
+    bsCustomFileInput.init();
+  },
+
   methods: {
     ...mapActions({
       clear: "resource/clearResource",
@@ -533,7 +538,8 @@ export default {
       create: "resource/create",
       update: "resource/update",
       delete: "resource/delete",
-      updateUserInfo: "user/updateInfo"
+      updateUserInfo: "user/updateInfo",
+      updateUserSettings: "user/updateSettings"
     }),
 
     loadAssets() {
@@ -721,8 +727,9 @@ export default {
         method: "POST",
         hasAttachments: true
       })
-        .then(respond => {
-          this.updateUserInfo(respond);
+        .then(data => {
+          this.updateUserInfo(data);
+          this.updateUserSettings(data.meta);
           this.showMessage(`Profile updated successfuly.`, "success");
         })
         .catch(error => {

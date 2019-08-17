@@ -5,7 +5,9 @@
   >    
     <div class="jobModal">
       <div class="panel-title">
-        <h5>Create New Job</h5>
+        <h5 class="d-inline-block">
+          Create New Job
+        </h5>
         <button 
           type="button" 
           class="close" 
@@ -28,8 +30,8 @@
                   name="title" 
                   id="title" 
                   type="text" 
-                  :class="[{'is-invalid' : $v.form.title.$error } ,'form-control']"
-                  placeholder="job title"
+                  :class="[{'is-invalid' : $v.form.title.$error } ,'form-control form-control-sm']"
+                  placeholder="Enter job title"
                 >
                 <div
                   class="invalid-feedback"
@@ -51,8 +53,8 @@
                   name="code" 
                   id="code" 
                   type="text" 
-                  :class="[{'is-invalid' : $v.form.code.$error } ,'form-control']"
-                  placeholder="display code"
+                  :class="[{'is-invalid' : $v.form.code.$error } ,'form-control  form-control-sm']"
+                  placeholder="Enter job code"
                 >
                 <div
                   class="invalid-feedback"
@@ -76,7 +78,7 @@
                   :multi="false"
                   id="parent_id"
                   name="jobParent"                                                                                                                                               
-                  placeholder="select parent..."
+                  placeholder="Select job parent"
                   search-placeholder="search..."
                 />
               </div>

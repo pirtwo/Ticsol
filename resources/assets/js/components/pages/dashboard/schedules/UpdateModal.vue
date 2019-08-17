@@ -502,8 +502,8 @@ export default {
         })
         .catch(error => {
           console.log(error.response);
-          this.showMessage(error.message, "danger");
-          this.$formFeedback(error.response.data.errors);
+          this.showMessage(error.response.data.message, "danger");
+          //this.$formFeedback(error.response.data.errors);
         })
         .finally(() => {
           this.clearForm();
