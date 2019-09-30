@@ -78,10 +78,12 @@ class UserController extends Controller
             DB::beginTransaction();
 
             $user = new User();
+            $password = Str::random(8);
             $user->client_id = $request->user()->client_id;
 
             $user->name = $request->input("firstname") . " " . $request->input("lastname");
-            $user->password = \bcrypt(Str::random(8));
+            $user->password = \bcrypt($password);
+            $user->meta = [];
             $user->fill($request->all());
             $user->save();
 
@@ -94,6 +96,8 @@ class UserController extends Controller
             DB::rollback();
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+        
+        event(new Events\UserCreated($user, $password));
 
         return $user;
     }
