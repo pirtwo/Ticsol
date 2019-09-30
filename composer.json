@@ -13,7 +13,8 @@
         "laravel/tinker": "~1.0",
         "nesbot/carbon": "^2.0",
         "pusher/pusher-php-server": "~3.0",
-        "spatie/laravel-webhook-server": "^1.0"
+        "quickbooks/v3-php-sdk": "^5.2",
+        "spatie/laravel-webhook-server": "^1.4"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
