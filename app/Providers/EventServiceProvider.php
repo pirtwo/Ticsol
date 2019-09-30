@@ -22,6 +22,18 @@ class EventServiceProvider extends ServiceProvider
             'App\Ticsol\Components\Webhook\Listeners\WebhookCallFail'
         ],
 
+        // user event listeners
+        'App\Ticsol\Components\User\Events\UserCreated' => [
+            'App\Ticsol\Components\User\Listeners\SendInvitationEmail'
+        ],
+
+        // request event listeners
+        'App\Ticsol\Components\Request\Events\RequestApproved' => [
+            'App\Ticsol\Components\Request\Listeners\SendApprovedEmail'
+        ],
+        'App\Ticsol\Components\Request\Events\RequestRejected' => [
+            'App\Ticsol\Components\Request\Listeners\SendRejectedEmail'
+        ],
     ];
 
     /**
