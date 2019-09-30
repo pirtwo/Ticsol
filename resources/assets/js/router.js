@@ -413,6 +413,12 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             component: require('./components/pages/wizards/UserWizard.vue').default,
                         },
+                        {
+                            path: 'quickbooks',
+                            name: 'quickbooskWizard',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/wizards/QuickBooks.vue').default,
+                        },
                     ]
                 },
 
