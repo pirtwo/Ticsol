@@ -109,6 +109,10 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::post('hooks', 'WebhookController@subscribe');
         Route::delete('hooks/{id}', 'WebhookController@delete');
         Route::get('polling/trigger', 'WebhookController@pollForTrigger');
+
+        // QuickBooks
+        Route::get('quickbooks/token/{code}/{realmid?}', 'QuickBooksController@token');
+        Route::get('quickbooks/companyinfo', 'QuickBooksController@getCompanyInfo');
     });
 
 });
