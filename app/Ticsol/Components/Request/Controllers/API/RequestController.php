@@ -265,7 +265,12 @@ class RequestController extends Controller
         //----------------------------
         $this->authorize('approve', $req);
 
-        $req->update(['status' => 'approved']);        
+        if($req->status == "approved")
+            return $req;        
+
+        $req->update(['status' => 'approved']); 
+        
+        event(new RequestEvents\RequestApproved($req));
 
         $this->dispatchWebhook($req, "{$req->type}:approved");        
 
@@ -284,7 +289,12 @@ class RequestController extends Controller
         //----------------------------
         $this->authorize('approve', $req);
 
+        if($req->status == "rejected")
+            return $req;     
+
         $req->update(['status' => 'rejected']);
+
+        event(new RequestEvents\RequestRejected($req));
 
         $this->dispatchWebhook($req, "{$req->type}:rejected");  
 
