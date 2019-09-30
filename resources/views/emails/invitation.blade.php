@@ -3,12 +3,13 @@
 <body style="background: white; color: black">
 <h1>{{$title}}</h1>
 <p>
-    Dear {{$email}},
-    This is a invitation email for registering in Ticsol application, click the following link to register in app.
+    Dear {{$firstname}},
+    Your account is created in <a href="https://app.ticsol.com.au">app.ticsol</a>, please login to your 
+    account with the following credentials:
     <br/>
     
-    {{ url($url . '?token=' . $token) }}
-    
+    UserName: {{$username}}
+    Password: {{$password}}    
     
 </p>
 </body>
