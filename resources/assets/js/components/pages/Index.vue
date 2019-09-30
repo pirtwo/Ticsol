@@ -36,7 +36,6 @@
 <script>
 import { api } from "../../api/http";
 import { mapGetters, mapActions } from "vuex";
-import { setTimeout } from 'timers';
 
 export default {
   name: "Index",
