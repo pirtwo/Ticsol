@@ -12,6 +12,11 @@ class ClientsTableSeeder extends Seeder
      */
     public function run()
     {
+        Client::create([
+            'name' => "ticsol",
+            'meta' => ['type' => 'basic'],
+        ]);
+        
         factory(Client::class, 3)->create();
     }
 }
