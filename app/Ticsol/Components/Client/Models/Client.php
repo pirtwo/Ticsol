@@ -39,6 +39,24 @@ class Client extends Model
     {
         return $query->where('client_id', $clientId);
     }
+
+    public function getQBsToken()
+    {
+        return $this->meta["quickbooks"];
+    }
+
+    public function saveQBsToken($token)
+    {
+        $settings = $this->meta;
+        $settings["quickbooks"] = $token;
+        $this->meta = $settings;
+        $this->save();
+    }
+
+    public function hasQBsToken()
+    {
+        return $this->meta["quickbooks"] != null;
+    }
     
 
     #region Eloquent_Relationships
