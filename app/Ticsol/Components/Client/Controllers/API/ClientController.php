@@ -94,10 +94,11 @@ class ClientController extends Controller
 
         $client = $this->setupSettings($request, $client);
 
+        $client = $this->setupQBs($request, $client);
+
         $client->save();
 
-        return $client;       
-        
+        return $client;            
     }
 
     /**
@@ -109,6 +110,23 @@ class ClientController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function setupQBs($request, $client)
+    {
+        $meta = $client->meta !== null ?  $client->meta : [];
+
+        if($request->has("qbs_classes")){
+            $meta["classes"] = $request->input("qbs_classes");
+        }
+
+        if($request->has("qbs_departments")){
+            $meta["departments"] = $request->input("qbs_departments");
+        }
+
+        $client->meta = $meta;
+
+        return $client;
     }
 
     /**

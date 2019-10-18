@@ -23,15 +23,18 @@ class UpdateClient extends FormRequest
      */
     public function rules()
     {
-        return [        
+        return [  
+            'qbs_classes'               => 'array', 
+            'qbs_departments'           => 'array',    
+
             'hour_per_day'              => 'string',    
             'schedule_view'             => 'string|in:employee,job',
             'schedule_range'            => 'string|in:week,month',
-            'business_hours'           => 'array',            
-            'business_hours.*.day'     => 'required_with:business_hours|numeric|between:0,6', //Sunday as 0 and Saturday as 6
-            'business_hours.*.start'   => 'required_with:business_hours|string',
-            'business_hours.*.end'     => 'required_with:business_hours|string',
-            'business_hours.*.isopen'  => 'required_with:business_hours|boolean'
+            'business_hours'            => 'array',            
+            'business_hours.*.day'      => 'required_with:business_hours|numeric|between:0,6', //Sunday as 0 and Saturday as 6
+            'business_hours.*.start'    => 'required_with:business_hours|string',
+            'business_hours.*.end'      => 'required_with:business_hours|string',
+            'business_hours.*.isopen'   => 'required_with:business_hours|boolean'
         ];
     }
 
