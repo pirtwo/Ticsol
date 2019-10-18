@@ -9,10 +9,10 @@ use QuickBooksOnline\API\DataService\DataService;
  * QuickBooks authentication class, manages quickbooks oauth2 protocol
  */
 class QBsAuth
-{
-    private $config = null;
-    private $dataService = null;
-    private $accessToken = null;
+{    
+    protected $config = null;
+    protected $dataService = null;
+    protected $accessToken = null;
 
     /**
      * @param Array $config
@@ -20,14 +20,8 @@ class QBsAuth
      * @param String $realmID
      */
     public function __construct($config, $token = null, $realmID = "")
-    {
+    {        
         $this->config = $config;
-
-        if (\is_array($token)) {
-            $this->accessToken = $this->arrayToOAuth2AccessToken($token, $realmID);
-        } else {
-            $this->accessToken = $token;
-        }
 
         $this->dataService = DataService::Configure(array(
             'auth_mode' => $this->config["auth_mode"],
@@ -37,6 +31,12 @@ class QBsAuth
             'scope' => $this->config["scope"],
             'baseUrl' => $this->config["baseUrl"],
         ));
+
+        if (\is_array($token)) {
+            $this->accessToken = $this->arrayToOAuth2AccessToken($token, $realmID);
+        } else {
+            $this->accessToken = $token;
+        }
 
         if ($this->accessToken) {
             $this->dataService->updateOAuth2Token($this->accessToken);
@@ -56,8 +56,9 @@ class QBsAuth
         $OAuth2LoginHelper = $this->dataService->getOAuth2LoginHelper();
         $this->accessToken = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken($code, $realmID);
         $this->dataService->updateOAuth2Token($this->accessToken);
+        $token = $this->accessTokenToArray();
 
-        return $this->accessTokenToArray();
+        return $token;
     }
 
     /**
@@ -65,8 +66,13 @@ class QBsAuth
      */
     public function updateAccessToken()
     {
-        $this->dataService::Configure(array(
+        $this->dataService = DataService::Configure(array(
+            'auth_mode' => $this->config["auth_mode"],
+            'ClientID' => $this->config["ClientID"],
+            'ClientSecret' => $this->config["ClientSecret"],
             'refreshTokenKey' => $this->accessToken->getRefreshToken(),
+            'RedirectURI' => $this->config["RedirectURI"],
+            'baseUrl' => "development",
             'QBORealmID' => $this->accessToken->getRealmID(),
         ));
 
@@ -85,7 +91,7 @@ class QBsAuth
         $now = $this->dateTimeNow();
         $now->modify("+5 minutes");
 
-        $tokenExpires = new DateTime($this->accessToken->getAccessTokenExpiresAt());
+        $tokenExpires = new \DateTime($this->accessToken->getAccessTokenExpiresAt());
 
         return $now > $tokenExpires;
     }
@@ -98,7 +104,7 @@ class QBsAuth
         $now = $this->dateTimeNow();
         $now->modify("+5 minutes");
 
-        $refreshExpires = new DateTime($this->accessToken->getRefreshTokenExpiresAt());
+        $refreshExpires = new \DateTime($this->accessToken->getRefreshTokenExpiresAt());
 
         return $now > $refreshExpires;
     }
@@ -124,10 +130,10 @@ class QBsAuth
             "realmid" => $this->accessToken->getRealmID(),
             "access_token" => $this->accessToken->getAccessToken(),
             "refresh_token" => $this->accessToken->getRefreshToken(),
-            "expires_in" => $this->accessToken->getAccessTokenValidationPeriodInSeconds(),
-            "x_refresh_token_expires_in" => $this->accessToken->getRefreshTokenValidationPeriodInSeconds(),
+            "expires_in" => $this->accessToken->getAccessTokenExpiresAt(),
+            "x_refresh_token_expires_in" => $this->accessToken->getRefreshTokenExpiresAt(),
         ];
-    }
+    }    
 
     /**
      * Create instance of OAuth2AccessToken from array
@@ -137,16 +143,22 @@ class QBsAuth
      *
      * @return \QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2AccessToken
      */
-    private function arrayToOAuth2AccessToken($token, $realmID = "")
+    protected function arrayToOAuth2AccessToken($token, $realmID = "")
     {
+        $accTkExp = new \DateTime($token["expires_in"]);
+        $refTkExp = new \DateTime($token["x_refresh_token_expires_in"]);
+
         $oauth2Token = new OAuth2AccessToken(
             $this->config["ClientID"],
             $this->config["ClientSecret"],
             $token["access_token"],
             $token["refresh_token"],
-            $token["expires_in"],
-            $token["x_refresh_token_expires_in"]
+            $accTkExp->getTimestamp(),
+            $refTkExp->getTimestamp()
         );
+
+        $oauth2Token->setAccessTokenValidationPeriodInSeconds(3600);
+        $oauth2Token->setRefreshTokenValidationPeriodInSeconds(8726400);
 
         $oauth2Token->setRealmID($realmID);
 
@@ -156,9 +168,9 @@ class QBsAuth
     /**
      * Return date time now
      */
-    private function dateTimeNow()
+    protected function dateTimeNow()
     {
-        return new DateTime("now");
+        return new \DateTime("now");
     }
 
 }
