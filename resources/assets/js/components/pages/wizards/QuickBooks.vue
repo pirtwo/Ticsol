@@ -29,30 +29,41 @@
       </template>
       <template slot="body">
         <!-- step 0 -->
-        <step-body v-model="currentStep" :step-number="1">
+        <step-body
+          v-model="currentStep"
+          :step-number="1"
+        >
           <div class="mt-4">
             <h3>QuickBook Setup</h3>
             <p class="text-justify">
-              Teams are any easy way to group and manage employees. The schedule or employee
-              lists can be easily filtered to show just a single team. An employee can belong
-              to one or many teams. Teams can be set up for different locations, states or
-              front and back of house. Please create some teams now. New teams can always be
-              added later.
+              TicSol is designed to work with QuickBooks Online. Integrating TicSol and Quickbooks 
+              Online provides the following benefits: <br>
+              1. Easy setup. <br>
+              2. Create Time Activities from TicSol Timesheets. <br>
+              3. Create Bills from TicSol reimbursements. <br>
+              4. Create Vendors from TicSol Clients. <br>
             </p>
             <button
               type="button"
               class="btn btn-success"
               :disabled="isLoading"
               @click="connectToQuickbook"
-            >{{ isLoading ? 'Processing, Please wait...' : 'Connect To QuickBook' }}</button>
+            >
+              {{ isLoading ? 'Processing, Please wait...' : 'Connect To QuickBook' }}
+            </button>
           </div>
         </step-body>
 
         <!-- step 1 -->
-        <step-body v-model="currentStep" :step-number="2">
+        <step-body
+          v-model="currentStep"
+          :step-number="2"
+        >
           <div class="mt-4">
             <h3>Company Info</h3>
-            <p class="text-justify">{{ companyinfo }}</p>
+            <p class="text-justify">
+              {{ companyinfo }}
+            </p>
           </div>
         </step-body>
       </template>
