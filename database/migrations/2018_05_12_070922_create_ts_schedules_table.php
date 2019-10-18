@@ -36,6 +36,8 @@ class CreateTsSchedulesTable extends Migration
                 ->default(false);
             $table->time('break_length')
                 ->default('00:00');
+            $table->json('billing')
+                ->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

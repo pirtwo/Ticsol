@@ -31,6 +31,10 @@ class CreateTsJobsTable extends Migration
             $table->boolean('isactive');
             $table->string('color')
                 ->nullable();
+            $table->json('billing')
+                ->nullable();
+            $table->json('qbs')
+                ->nullable();
             $table->json('meta')
                 ->nullable();
             $table->softDeletes();

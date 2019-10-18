@@ -20,8 +20,10 @@ class CreateTsClientsTable extends Migration
 
             // Attributes
             $table->string('name', 50);
-            $table->json('meta')
-                ->nullable();
+            $table->json('qbs')->nullable();
+            $table->json('billing_settings')->nullable();
+            $table->json('billing_defaults')->nullable();
+            $table->json('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -32,6 +32,8 @@ class CreateTsUsersTable extends Migration
                 ->default(false);
             $table->boolean('isactive')
                 ->default(true);
+            $table->json('qbs')
+                ->nullable();
             $table->json('meta')
                 ->nullable();            
             $table->softDeletes();

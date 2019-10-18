@@ -27,6 +27,8 @@ class CreateTsFormsTable extends Migration
             $table->string('name');
             $table->string('type')
                 ->nullable();
+            $table->boolean("billable")
+                ->default(false);
             $table->json('schema')
                 ->nullable();
             $table->softDeletes();
