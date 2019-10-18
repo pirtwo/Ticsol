@@ -109,10 +109,18 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::post('hooks', 'WebhookController@subscribe');
         Route::delete('hooks/{id}', 'WebhookController@delete');
         Route::get('polling/trigger', 'WebhookController@pollForTrigger');
+        
+        // QuickBooks Auth
+        Route::get('quickbooks/token/{code}/{realmid?}', 'QBsAuthController@token');
+        Route::get('quickbooks/refresh', 'QBsAuthController@refresh');
+        Route::get('quickbooks/hasvalidtoken', 'QBsAuthController@hasValidToken');
 
-        // QuickBooks
-        Route::get('quickbooks/token/{code}/{realmid?}', 'QuickBooksController@token');
-        Route::get('quickbooks/companyinfo', 'QuickBooksController@getCompanyInfo');
+        // QuickBooks API
+        Route::get('quickbooks/companyinfo', 'QuickBooksController@companyInfo');
+        Route::get('quickbooks/employee', 'QuickBooksController@employeeList'); 
+        Route::get('quickbooks/customer', 'QuickBooksController@customerList'); 
+        Route::get('quickbooks/class', 'QuickBooksController@classList'); 
+        Route::get('quickbooks/department', 'QuickBooksController@departmentList');         
     });
 
 });
