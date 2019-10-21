@@ -16,15 +16,15 @@ class CreateTsTeamsTable extends Migration
         Schema::create('ts_teams', function (Blueprint $table) {
 
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
 
             // Attributes
             $table->string('name');
+
             $table->softDeletes();
             $table->timestamps();
-
         });
 
         

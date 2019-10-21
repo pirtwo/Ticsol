@@ -14,7 +14,7 @@ class AddTimesheetsForeignKeyToComments extends Migration
     public function up()
     {
         Schema::table('ts_comments', function (Blueprint $table) {
-            $table->unsignedInteger('timesheet_id')
+            $table->unsignedBigInteger('timesheet_id')
                 ->after('request_id')
                 ->nullable();
 

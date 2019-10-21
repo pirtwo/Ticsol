@@ -17,16 +17,16 @@ class CreateTsRequestsTable extends Migration
         Schema::create('ts_requests', function (Blueprint $table) {
            
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('client_id');            
             $table->unsignedInteger('assigned_id')
                 ->nullable();
-            $table->unsignedInteger('job_id')
+            $table->unsignedBigInteger('job_id')
                 ->nullable(); 
-            $table->unsignedInteger('schedule_id')
+            $table->unsignedBigInteger('schedule_id')
                 ->nullable(); 
-            $table->unsignedInteger('form_id')
+            $table->unsignedBigInteger('form_id')
                 ->nullable();
 
             // Attributes

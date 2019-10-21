@@ -17,7 +17,7 @@ class CreateTsUserTeamsTable extends Migration
             
             // Keys
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('team_id');            
+            $table->unsignedBigInteger('team_id');            
 
             // Attributes
             $table->softDeletes();

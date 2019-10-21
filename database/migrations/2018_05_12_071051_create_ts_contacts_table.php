@@ -17,7 +17,7 @@ class CreateTsContactsTable extends Migration
         Schema::create('ts_contacts', function (Blueprint $table) {
             
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
             $table->unsignedInteger('user_id')

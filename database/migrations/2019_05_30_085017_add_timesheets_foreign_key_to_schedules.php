@@ -14,7 +14,7 @@ class AddTimesheetsForeignKeyToSchedules extends Migration
     public function up()
     {
         Schema::table('ts_schedules', function (Blueprint $table) {
-            $table->unsignedInteger('timesheet_id')
+            $table->unsignedBigInteger('timesheet_id')
                 ->after('job_id')
                 ->nullable();
 

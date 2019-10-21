@@ -21,28 +21,25 @@ class CreateTsUsersTable extends Migration
             $table->unsignedInteger('client_id');
 
             // Attributes
-            $table->string('name');
+            $table->string('email')->unique();
             $table->string("firstname");
-            $table->string("lastname");
-            $table->string('email')
-                ->unique();
-            $table->string('password');  
-            $table->rememberToken();          
-            $table->boolean('isowner')
-                ->default(false);
-            $table->boolean('isactive')
-                ->default(true);
-            $table->json('qbs')
-                ->nullable();
-            $table->json('meta')
-                ->nullable();            
+            $table->string("lastname");            
+            $table->string('password');                       
+            $table->boolean('isowner')->default(false);
+            $table->boolean('isactive')->default(true);
+            $table->rememberToken(); 
+
+            // json
+            $table->json('qbs')->nullable();
+            $table->json('settings')->nullable();
+            $table->json('meta')->nullable(); 
+
             $table->softDeletes();
             $table->timestamps();           
         });
         
 
-        Schema::table('ts_users', function (Blueprint $table) {
-            
+        Schema::table('ts_users', function (Blueprint $table) {            
             $table->foreign('client_id')
                 ->references('id')
                 ->on('ts_clients')

@@ -17,12 +17,12 @@ class CreateTsAclsTable extends Migration
         Schema::create('ts_acls', function (Blueprint $table) {
             
             // Keys
-            $table->increments('id');            
+            $table->bigIncrements('id');            
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('creator_id');
-            $table->unsignedInteger('role_id');
+            $table->unsignedInteger('creator_id');            
             $table->unsignedInteger('resource_id');
             $table->unsignedInteger('permission_id');
+            $table->unsignedBigInteger('role_id');
 
             // Attributes
             $table->string('name');

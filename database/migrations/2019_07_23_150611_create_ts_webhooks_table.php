@@ -14,7 +14,7 @@ class CreateTsWebhooksTable extends Migration
     public function up()
     {
         Schema::create('ts_webhooks', function (Blueprint $table) {
-            $table->increments("id");
+            $table->bigIncrements("id");
             $table->unsignedInteger("client_id");
             $table->unsignedInteger("user_id");
 

@@ -17,12 +17,12 @@ class CreateTsJobsTable extends Migration
         Schema::create('ts_jobs', function (Blueprint $table) {
             
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
-            $table->unsignedInteger('parent_id')
+            $table->unsignedBigInteger('parent_id')
                 ->nullable();
-            $table->unsignedInteger('form_id')
+            $table->unsignedBigInteger('form_id')
                 ->nullable();
 
             // Attributes
@@ -31,12 +31,13 @@ class CreateTsJobsTable extends Migration
             $table->boolean('isactive');
             $table->string('color')
                 ->nullable();
-            $table->json('billing')
-                ->nullable();
-            $table->json('qbs')
-                ->nullable();
-            $table->json('meta')
-                ->nullable();
+
+            // json
+            $table->json('qbs')->nullable();
+            $table->json('billing')->nullable();            
+            $table->json('profile')->nullable();
+            $table->json('meta')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

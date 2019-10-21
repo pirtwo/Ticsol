@@ -16,10 +16,10 @@ class CreateTsTimesheetsTable extends Migration
 
         Schema::create('ts_timesheets', function (Blueprint $table) {
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
-            $table->unsignedInteger('request_id');
+            $table->unsignedBigInteger('request_id');
 
             // Attribuets
             $table->string('year');
@@ -27,6 +27,10 @@ class CreateTsTimesheetsTable extends Migration
             $table->date('week_start');
             $table->date('week_end');
             $table->time('total_hours');
+
+            // json
+            $table->json('billing')->nullable(); 
+            
             $table->softDeletes();
             $table->timestamps();
         });

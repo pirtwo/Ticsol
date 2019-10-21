@@ -20,10 +20,16 @@ class CreateTsClientsTable extends Migration
 
             // Attributes
             $table->string('name', 50);
+            $table->boolean('isactive')->default(true);
+
+            // json
             $table->json('qbs')->nullable();
+            $table->json('settings')->nullable();
             $table->json('billing_settings')->nullable();
             $table->json('billing_defaults')->nullable();
+            $table->json('reimbursement_settings')->nullable();
             $table->json('meta')->nullable();
+            
             $table->softDeletes();
             $table->timestamps();
         });

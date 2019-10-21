@@ -18,7 +18,7 @@ class CreateTsUserRolesTable extends Migration
 
             // Keys
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('role_id');
+            $table->unsignedBigInteger('role_id');
 
             // Attributes
             $table->softDeletes();

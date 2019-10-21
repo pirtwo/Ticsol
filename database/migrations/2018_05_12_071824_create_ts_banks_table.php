@@ -17,10 +17,10 @@ class CreateTsBanksTable extends Migration
         Schema::create('ts_banks', function (Blueprint $table) {
             
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
-            $table->unsignedInteger('contact_id');
+            $table->unsignedBigInteger('contact_id');
             
             // Attributes
             $table->string('bsb');

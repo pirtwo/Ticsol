@@ -17,8 +17,8 @@ class CreateTsJobContactsTable extends Migration
         Schema::create('ts_job_contact', function (Blueprint $table) {
             
             // Keys
-            $table->unsignedInteger('job_id');
-            $table->unsignedInteger('contact_id');            
+            $table->unsignedBigInteger('job_id');
+            $table->unsignedBigInteger('contact_id');            
 
             // Attributes
             $table->string('type')

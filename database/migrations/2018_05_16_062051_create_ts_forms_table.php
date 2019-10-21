@@ -17,10 +17,10 @@ class CreateTsFormsTable extends Migration
         Schema::create('ts_forms', function (Blueprint $table) {
             
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
-            $table->unsignedInteger('parent_id')
+            $table->unsignedBigInteger('parent_id')
                 ->nullable();
 
             // Attributes
@@ -31,6 +31,7 @@ class CreateTsFormsTable extends Migration
                 ->default(false);
             $table->json('schema')
                 ->nullable();
+                
             $table->softDeletes();
             $table->timestamps();
         });

@@ -15,14 +15,14 @@ class CreateTsCommentsTable extends Migration
     {
         Schema::create('ts_comments', function (Blueprint $table) {
             // Keys
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
-            $table->unsignedInteger('job_id')
+            $table->unsignedBigInteger('job_id')
                 ->nullable();
-            $table->unsignedInteger('parent_id')
+            $table->unsignedBigInteger('parent_id')
                 ->nullable();
-            $table->unsignedInteger('request_id')
+            $table->unsignedBigInteger('request_id')
                 ->nullable();
             
             // Attributes
