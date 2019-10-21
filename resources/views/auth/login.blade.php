@@ -7,7 +7,7 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <!-- Username -->
+            <!-- E-mail -->
             <div class="form-group row">
                 <div class="col-sm-12">
                     <div class="input-group">
@@ -16,9 +16,9 @@
                                 <i class="icon material-icons">account_circle</i>
                             </div>
                         </div>
-                        <input id="name" type="name" placeholder="Username" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                        <input id="email" name="email" type="email" placeholder="E-mail" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                        @error('name')
+                        @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -78,12 +78,7 @@
                         {{ __('Login') }}
                     </button>
                 </div>
-            </div>            
-
-            {{--  <!-- Forgot password -->
-            <div class="form-group text-center mt-5">
-                
-            </div>  --}}
+            </div> 
         </form>
     </div>
 </div>

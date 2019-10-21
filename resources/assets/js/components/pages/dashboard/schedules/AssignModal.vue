@@ -281,7 +281,7 @@ import CreateJobModal from "../schedules/CreateJobModal.vue";
 import pageMixin from '../../../../mixins/page-mixin';
 
 export default {
-  name: "AssignJobModal",
+  name: "AssignModal",
 
   mixins:[pageMixin],
 
@@ -371,7 +371,7 @@ export default {
         });
       } else {
         return this.getList("user").map(obj => {
-          return { key: obj.id, value: obj.name };
+          return { key: obj.id, value: obj.fullname };
         });
       }
     },

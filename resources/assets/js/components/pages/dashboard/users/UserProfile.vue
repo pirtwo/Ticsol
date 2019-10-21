@@ -593,7 +593,7 @@ export default {
       this.form.firstname = profile.firstname;
       this.form.lastname = profile.lastname;
       this.form.email = profile.email;
-      this.form.avatar = profile.meta.avatar;
+      this.form.avatar = profile.avatar;
     },
 
     idToString(list){

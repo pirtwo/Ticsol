@@ -79,34 +79,34 @@
         class="res-menu"
       >
         <template v-if="view === 'job'">
-          <template v-for="res in this.sidebarResources">
+          <template v-for="user in this.sidebarResources">
             <li
-              :key="res.id"
-              :data-id="res.id"
+              :key="user.id"
+              :data-id="user.id"
               class="res-user d-flex align-items-center"
             >
               <img
-                :src="res.meta.avatar"
+                :src="user.avatar"
                 class="rounded"
               >
               <div class="res__caption">
-                {{ res.name }}
+                {{ user.fullname }}
               </div>
             </li>
           </template>
         </template>
         <template v-else>
-          <template v-for="res in this.sidebarResources">
+          <template v-for="job in this.sidebarResources">
             <li
-              :key="res.id"
-              :data-id="res.id"
+              :key="job.id"
+              :data-id="job.id"
               class="res-job"
             >
               <div class="res__title">
-                {{ res.title }}
+                {{ job.title }}
               </div>
               <div class="res__caption">
-                Code: {{ res.code }}
+                Code: {{ job.code }}
               </div>
             </li>
           </template>
@@ -240,7 +240,7 @@ export default {
           return this.getList(
             "user",
             item =>
-              item.name.toLowerCase().indexOf(this.sidebarQuery.toLowerCase()) >
+              item.fullname.toLowerCase().indexOf(this.sidebarQuery.toLowerCase()) >
               -1
           );
         return this.getList("user");
@@ -285,7 +285,7 @@ export default {
             resource: eventResource,
             start: new window.DayPilot.Date(item.start),
             end: new window.DayPilot.Date(item.end),
-            text: item.user.name,
+            text: item.user.fullname,
             type: item.event_type,
             status: item.status
           };
@@ -296,7 +296,7 @@ export default {
     scheduleResources: function() {
       if (this.view === "user")
         return this.getList("user").map(item => {
-          return { id: item.id, name: item.name, avatar: item.meta.avatar };
+          return { id: item.id, name: item.fullname, avatar: item.avatar };
         });
       else {
         let list = this.getList("job").map(item => {
@@ -383,7 +383,7 @@ export default {
       query: this.$queryBuilder(null, null, ["user", "job", "request", "activities"], query)
     });
     let p4 = this.show({resource:"client", id: this.clientId }).then(data=>{
-      this.businessHours = data.meta.business_hours;
+      this.businessHours = data.meta.business_hours ? data.meta.business_hours:[];
     });
 
     Promise.all([p1, p2, p3, p4])

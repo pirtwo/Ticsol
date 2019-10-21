@@ -49,8 +49,8 @@
             @edit="onEdit"
             @delete="onDelete"
             v-bind="parent"
-            :avatar="parent.creator.meta.avatar"
-            :username="parent.creator.name"            
+            :avatar="parent.creator.avatar"
+            :username="parent.creator.fullname"            
             :created-at="getPassedTime(parent.created_at)"
             :updated-at="parent.created_at !== parent.updated_at ? getPassedTime(parent.updated_at) : ''"
             :has-edit="parent.creator.id === userId"
@@ -69,8 +69,8 @@
                 @edit="onEdit"
                 @delete="onDelete"
                 v-bind="child"
-                :username="child.creator.name" 
-                :avatar="child.creator.meta.avatar"
+                :username="child.creator.fullname" 
+                :avatar="child.creator.avatar"
                 :created-at="getPassedTime(child.created_at)"
                 :updated-at="child.created_at !== child.updated_at ? getPassedTime(child.updated_at) : ''"
                 :has-reply="false"
@@ -274,7 +274,7 @@ export default {
 
     getCreatorName(commentId) {
       if (!commentId) return "";
-      return this.comments.find(item => item.id === commentId).creator.name;
+      return this.comments.find(item => item.id === commentId).creator.fullname;
     },
 
     getPassedTime(date) {

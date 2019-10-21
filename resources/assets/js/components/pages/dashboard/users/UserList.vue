@@ -56,12 +56,12 @@
           </td>
           <td> 
             <img
-              :src="item.meta.avatar"
+              :src="item.avatar"
               alt="user-avatar"
               width="40"
               height="40"
             >
-            {{ item.name }}
+            {{ item.fullname }}
           </td>          
           <td>
             <span

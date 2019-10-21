@@ -115,7 +115,7 @@
                 <i class="material-icons">visibility</i>
               </router-link>
             </td>
-            <td>{{ item.name }}</td>
+            <td>{{ item.fullname }}</td>
             <td>
               <router-link 
                 v-for="role in item.roles" 
@@ -167,7 +167,7 @@ export default {
 
     userList: function() {
       return this.getList("user").map(item => {
-        return { key: item.id, value: item.name, pic: item.meta.avatar };
+        return { key: item.id, value: item.fullname, pic: item.avatar };
       });
     },
 
@@ -193,7 +193,7 @@ export default {
         this.currentRole = data;
         this.form.name = this.currentRole.name;
         this.form.users = this.currentRole.users.map(item => {
-          return { key: item.id, value: item.name };
+          return { key: item.id, value: item.fullname };
         });
       });
     });

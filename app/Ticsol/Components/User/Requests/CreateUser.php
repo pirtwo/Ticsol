@@ -26,7 +26,7 @@ class CreateUser extends FormRequest
         return [            
             'firstname'                 => 'required|string',            
             'lastname'                  => 'required|string',   
-            'email'                     => 'required|email|unique:ts_users',
+            'email'                     => 'required|email|unique:ts_users,email',
             'teams'                     => 'nullable|array',
             'teams.*'                   => 'numeric|exists:ts_teams,id',
             'roles'                     => 'nullable|array',

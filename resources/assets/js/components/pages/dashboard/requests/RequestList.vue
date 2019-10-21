@@ -145,7 +145,7 @@ export default {
           placeholder: "Search for type..."
         },
         {
-          key: "request.assigned.name",
+          key: "request.assigned.fullname",
           value: "Assigned",
           type: "string",
           placeholder: "Search for assigned..."

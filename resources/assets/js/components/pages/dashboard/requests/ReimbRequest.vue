@@ -371,7 +371,7 @@ export default {
      */
     users: function() {
       return this.getList("user").map(item => {
-        return { key: item.id, value: item.name };
+        return { key: item.id, value: item.fullname };
       });
     },
 

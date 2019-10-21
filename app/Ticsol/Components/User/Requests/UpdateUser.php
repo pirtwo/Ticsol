@@ -26,7 +26,7 @@ class UpdateUser extends FormRequest
         return [
             'firstname'                 => 'string',            
             'lastname'                  => 'string',   
-            'email'                     => 'email',
+            'email'                     => 'email|unique:ts_users,email',
             'password'                  => 'min:8',
             'confirm_password'          => 'required_with:password|same:password',
 

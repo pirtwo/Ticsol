@@ -32,7 +32,7 @@ export const userModule = {
         },
 
         getUsername(state) {
-            return state.info.name;
+            return state.info.fullname;
         },
 
         getFirstname(state) {
@@ -48,7 +48,7 @@ export const userModule = {
         },
 
         getAvatar(state) {
-            return state.settings.avatar;
+            return state.info.avatar;
         },
 
         getScheduleView(state) {
@@ -81,7 +81,7 @@ export const userModule = {
             state.info = {};
             state.info.id = payload.id;
             state.info.clientId = payload.client_id;
-            state.info.name = payload.name;
+            state.info.avatar = payload.avatar;
             state.info.firstname = payload.firstname;
             state.info.lastname = payload.lastname;
             state.info.fullname = payload.fullname;
@@ -90,7 +90,6 @@ export const userModule = {
 
         [MUTATIONS.USER_SETTINGS](state, payload) {
             state.settings = {};
-            state.settings.avatar = payload.avatar;
             state.settings.ical = payload.ical;
             state.settings.theme = payload.theme;
             state.settings.scheduleView = payload.schedule_view;

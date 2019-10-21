@@ -210,7 +210,7 @@ export default {
         return {
           key: item.id,
           value: item.fullname,
-          pic: item.meta.avatar,
+          pic: item.avatar,
           fullname: item.fullname,
           teams: item.teams
         };
@@ -275,7 +275,7 @@ export default {
         return { 
           key: item.id,
           value: item.fullname,
-          pic: item.meta.avatar,
+          pic: item.avatar,
           fullname: item.fullname,
           teams: item.teams
          };

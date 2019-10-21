@@ -14,7 +14,7 @@ class User extends Authenticatable
     protected $table = 'ts_users';
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
-    protected $appends = ['permissions', 'fullname'];
+    protected $appends = ['fullname', 'avatar', 'permissions'];
     protected $casts = [
         'meta' => 'array',
     ];
@@ -25,9 +25,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'email',  
         'firstname',
-        'lastname',
-        'email',        
+        'lastname',              
         'meta',
     ];
 
@@ -42,16 +42,25 @@ class User extends Authenticatable
         'remember_token'
     ];
 
+    /**
+     * find database column for password.
+     */
     public function getAuthPassword()
     {
         return $this->password;
     }
 
+    /** 
+     * find user unique field for passport. 
+     */
     public function findForPassport($username)
     {
-        return $this->where('name', $username)->first();
+        return $this->where('email', $username)->first();
     }
 
+    /**
+     * filters users based on client ID.
+     */
     public function scopeOfClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
@@ -82,6 +91,23 @@ class User extends Authenticatable
     public function getFullnameAttribute()
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    /**
+     * User avatar attribute.
+     * 
+     * @return String;
+     */
+    public function getAvatarAttribute()
+    {
+        $meta = $this->meta;
+        $avatar = \array_key_exists("avatar", $meta) ? $meta["avatar"] : null;
+
+        if($avatar)
+            return $avatar;
+        else {
+            return '/img/avatar/default.png';
+        }
     }
 
     /**
