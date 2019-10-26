@@ -25,9 +25,11 @@ class QBsAuthController extends Controller
     public function token(Request $req, $code, $realmid = null)
     {
         $client = $req->user()->client;
-        $qbsAuth = new QBsAuth($client, $this->config);
+        $qbsAuth = new QBsAuth($this->config);
 
         $token = $qbsAuth->exchangeAuthCodeForToken($code, $realmid);
+
+        $client->saveQBsToken($token);
 
         return \response()->json(["success" => true], 200);
     }

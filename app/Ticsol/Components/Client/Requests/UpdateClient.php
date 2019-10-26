@@ -24,9 +24,34 @@ class UpdateClient extends FormRequest
     public function rules()
     {
         return [  
-            'qbs_classes'               => 'array', 
-            'qbs_departments'           => 'array',    
+            // QBs settings
+            'qbs_classes'                           => 'array', 
+            'qbs_departments'                       => 'array',  
+            
+            // Billing Settings
+            'billing_hours_round'                   => 'string|in:up,nearest',
+            'billing_hours_interval'                => 'numeric|in:6,15,30,60',
+            'billing_days_round'                    => 'string|in:up,nearest',
+            'billing_days_interval'                 => 'numeric|in:0.25,05,1',
+            'billing_hours_in_day'                  => 'numeric|between:1,24',
+            'billing_allow_prepaid_jobs'            => 'boolean',
+            'billing_revenue_accounts'              => 'array',
+            'billing_income_in_adv_account_id'      => 'nullable|numeric',
 
+            // Billing Defaults
+            'billing_defaults_payment_type'         => 'string|in:prepaid,inArrears',
+            'billing_defaults_allow_over_billing'   => 'boolean',
+            'billing_defaults_job_fallback_rate'    => 'string|in:sameRate,companyDefault',
+            'billing_defaults_unit_type'            => 'string|in:minutes,hours',
+            'billing_defaults_revenue_account_id'   => 'nullable|numeric',
+            'billing_defaults_company_rate'         => 'numeric',
+
+            // Reimbursement Settings
+            'reimbursement_rate'                    => 'numeric',
+            'reimbursement_measure'                 => 'string|in:kilometres,miles',
+            'reimbursement_expence_account_id'      => 'nullable|numeric',
+
+            // General settings
             'hour_per_day'              => 'string',    
             'schedule_view'             => 'string|in:employee,job',
             'schedule_range'            => 'string|in:week,month',

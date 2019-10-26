@@ -30,9 +30,7 @@ class QuickBooksController extends Controller
      */
     public function companyInfo(Request $req)
     {
-        $client = $req->user()->client;
-
-        $api = $this->createQBsAPI($client);
+        $api = $this->createQBsAPI($req);
 
         return \json_encode($api->getCompanyInfo());
     }
@@ -44,11 +42,21 @@ class QuickBooksController extends Controller
      */
     public function employeeList(Request $req)
     {
-        $client = $req->user()->client;
-
-        $api = $this->createQBsAPI($client);
+        $api = $this->createQBsAPI($req);
 
         return \json_encode($api->getEmployees());
+    }
+
+    /**
+     * method: GET
+     * 
+     * return the QBs vendor list.
+     */
+    public function vendorList(Request $req)
+    {
+        $api = $this->createQBsAPI($req);
+
+        return \json_encode($api->getVendors());
     }
 
     /**
@@ -58,9 +66,7 @@ class QuickBooksController extends Controller
      */
     public function customerList(Request $req)
     {
-        $client = $req->user()->client;
-
-        $api = $this->createQBsAPI($client);
+        $api = $this->createQBsAPI($req);
 
         return \json_encode($api->getCustomers());
     }
@@ -72,9 +78,7 @@ class QuickBooksController extends Controller
      */
     public function classList(Request $req)
     {
-        $client = $req->user()->client;
-
-        $api = $this->createQBsAPI($client);
+        $api = $this->createQBsAPI($req);
 
         return \json_encode($api->getClasses());
     }
@@ -85,13 +89,40 @@ class QuickBooksController extends Controller
      * return QBs departments(locations) list.
      */
     public function departmentList(Request $req)
-    {
-        $client = $req->user()->client;
-
-        $api = $this->createQBsAPI($client);
+    {        
+        $api = $this->createQBsAPI($req);
 
         return \json_encode($api->getDepartments());
     }  
+
+    public function accountList(Request $req)
+    {
+        $condition = "";
+        $type = $req->query('type', null);
+        $classification = $req->query('classification', null);
+
+        if($type){
+            $condition = "accountType = '{$type}'";
+        }elseif ($classification) {
+            $condition = "classification = '{$classification}'";
+        }
+
+        $api = $this->createQBsAPI($req);
+
+        return \json_encode($api->getAccounts([], $condition));
+    }    
+
+    /**
+     * method: POST
+     * 
+     * return created vendor object.
+     */
+    public function createVendor(Request $req)
+    {
+        $api = $this->createQBsAPI($req);
+
+        return \json_encode($api->createVendor($req->only(["GivenName", "FamilyName", "PrimaryEmailAddr"])));
+    }
     
     // ===== helpers =====
 
@@ -101,8 +132,10 @@ class QuickBooksController extends Controller
      * @param \App\Ticsol\components\Models\Client $client  
      * @return \App\Ticsol\components\QuickBooks\Classes\QBsAPI
      */
-    protected function createQBsAPI($client)
+    protected function createQBsAPI($request)
     {
+        $client = $request->user()->client;
+
         $auth = $this->createAuth($client);
 
         return new QBsAPI($auth);

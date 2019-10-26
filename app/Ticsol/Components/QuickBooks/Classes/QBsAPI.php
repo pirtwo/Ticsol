@@ -5,6 +5,8 @@ namespace App\Ticsol\Components\QuickBooks\Classes;
 use App\Ticsol\Components\QuickBooks\Classes\QBsAuth;
 use QuickBooksOnline\API\Core\Http\Serialization\JsonObjectSerializer;
 
+use QuickBooksOnline\API\Facades\Vendor;
+
 class QBsAPI
 {
     protected $auth;
@@ -68,12 +70,37 @@ class QBsAPI
         return $res;
     }
 
+    public function getAccounts($columns = [], $condition = "")
+    {
+        $query = $this->select("Account", $columns, $condition);
+
+        $res = $this->dataService->Query($query);
+
+        return $res;
+    }
+
+    public function createVendor($data)
+    {
+        $obj = Vendor::create($data);
+        $res = $this->dataService->Add($obj);
+
+        return $res;
+    }
+
+
+    // ======== Helpers =========
+
     protected function select($entityName, $columns = [], $condition = null)
     {
         $columns = sizeof($columns) > 0 ? implode(",", $columns) : "*";
         $condition = $condition != "" ? "WHERE {$condition}" : "";
 
-        return "SELECT {$columns} FROM {$entityName}" . $condition;
+        return "SELECT {$columns} FROM {$entityName} {$condition}";
+    }
+
+    protected function create()
+    {
+
     }
 
     protected function update()

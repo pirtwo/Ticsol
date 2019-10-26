@@ -12,6 +12,11 @@ class Client extends Model
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
     protected $casts = [
+        'qbs' => 'array',
+        'settings' => 'array',
+        'billing_settings' => 'array',
+        'billing_defaults' => 'array',
+        'reimbursement_settings' => 'array',
         'meta' => 'array',
     ];
 
@@ -34,30 +39,42 @@ class Client extends Model
 
     ];
 
-
     public function scopeOfClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
     }
 
+    /**
+     * return client QBs access token.
+     */
     public function getQBsToken()
     {
-        return $this->meta["quickbooks"];
+        $settings = $this->qbs ? $this->qbs : [];
+        return \array_key_exists("token", $settings) ? $settings["token"] : null;
     }
 
+    /**
+     * store client QBs access token.
+     */
     public function saveQBsToken($token)
     {
-        $settings = $this->meta;
-        $settings["quickbooks"] = $token;
-        $this->meta = $settings;
+        $settings = $this->qbs ? $this->qbs : [];
+        $settings["token"] = $token;
+        $this->qbs = $settings;
         $this->save();
     }
 
+    /**
+     * check client for QBs access token.
+     */
     public function hasQBsToken()
     {
-        return $this->meta["quickbooks"] != null;
+        $settings = $this->qbs;
+
+        if (!$settings) {return false;}
+
+        return \array_key_exists("token", $settings) && $settings["token"] != null;
     }
-    
 
     #region Eloquent_Relationships
 
@@ -75,7 +92,7 @@ class Client extends Model
     public function roles()
     {
         return $this->hasMany(Role::class);
-    }    
+    }
 
     /**
      * Client created forms.
@@ -149,7 +166,7 @@ class Client extends Model
         return $this->hasMany(Activity::class);
     }
 
-     /**
+    /**
      * Associated webhooks to current client.
      */
     public function webhooks()
