@@ -10,12 +10,11 @@ $factory->define(User::class, function (Faker $faker) {
     $lastname = $faker->lastname;
 
     return [
-        'client_id' => $faker->numberBetween(1, 3),
-        'name' => $firstname . " " . $lastname,
+        'client_id' => $faker->numberBetween(1, 3),        
         'firstname' => $firstname,
         'lastname' => $lastname,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),              
-        'meta' => [ 'avatar' => str_replace_array('?', [$index], '/img/avatar/pic_?.jpg') ]
+        'meta' => []
     ];
 });
