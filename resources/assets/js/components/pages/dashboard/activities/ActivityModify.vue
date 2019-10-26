@@ -276,6 +276,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userId: "user/getId",
       getList: "resource/getList"
     }),
 
@@ -350,6 +351,7 @@ export default {
           null,
           ["job"],
           [
+            { opt: "eq", col: "user_id", val: this.userId },
             { opt: "eq", col: "type", val: "schedule" },
             { opt: "eq", col: "event_type", val: "scheduled" },
             { opt: "ob", col: "start", val: "desc" }

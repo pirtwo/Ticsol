@@ -265,7 +265,9 @@ export default {
       );
     },
 
-    populateForm(settings) {      
+    populateForm(settings) {   
+      if(!settings) return;
+         
       this.form.theme = this.themes.find(
         item => item.value.toLowerCase() === settings.theme
       );

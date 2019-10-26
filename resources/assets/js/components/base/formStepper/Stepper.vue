@@ -43,7 +43,7 @@ export default {
 }
 
 .stepper-nav {
-  height: 20%;
+  height: auto;
   position: relative;
 }
 
@@ -58,7 +58,7 @@ export default {
   width: 100%; 
 }
 
-.stepper-nav::before {
+/* .stepper-nav::before {
   position: absolute;
   content: " ";
   background-color: #d4d4d4;
@@ -67,5 +67,5 @@ export default {
   top: 35px;
   left: 0px;
   z-index: 0;
-}
+} */
 </style>

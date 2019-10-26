@@ -7,32 +7,29 @@
     :flags="'gi'"
     @input="(selects)=>{ $emit('input', selects) }"
   >
-    <div      
+    <div
       tabindex="0"
-      @click="show = true"
-      ref="tsChipsbox"      
-      class="ts-chipsbox form-control"      
+      @click="show = !disabled ? true : false"
+      ref="tsChipsbox"
+      :class="[{ 'disabled': disabled }, 'ts-chipsbox form-control']"
       slot-scope="{selects, options, dropdownStatus, isFocused, isSelected, onKeyDown, toggleOption, deSelectOption, highlightText}"
     >
       <!-- input -->
-      <div  
-        class="ts-chipsbox__input"
-      >
-        <span 
-          class="text-muted" 
+      <div class="ts-chipsbox__input">
+        <span
+          class="text-muted"
           v-if="selects === null || selects.length === 0"
-        >
-          {{ placeholder }}
-        </span>
+        >{{ placeholder }}</span>
         <template v-if="multi">
-          <ts-chips            
+          <ts-chips
             v-for="item in value"
             :key="item.key"
             :btn-close="true"
+            :title="item.value"
             @close="deSelectOption(item)"
           >
             <div>{{ item.value }}</div>
-            <img 
+            <img
               v-if="item.icon"
               :src="item.icon"
               width="30"
@@ -43,12 +40,13 @@
         <template v-else>
           <ts-chips
             v-if="value"
+            :title="value.value"
             :btn-close="true"
             @close="deSelectOption(value)"
           >
             <div>{{ value.value }}</div>
             <img
-              v-if="item.icon"
+              v-if="value.icon"
               :src="value.icon"
               width="30"
               height="30"
@@ -59,6 +57,7 @@
 
       <!-- toggole btn-->
       <button
+        :disabled="disabled"
         type="button"
         class="ts-chipsbox__toggleBtn btn btn-sm btn-link"
       >
@@ -69,15 +68,15 @@
       <div
         tabindex="0"
         v-show="show"
-        @keydown="onKeyDown"       
-        :class="[{ 'ts-chipsbox__dropdown--open' : show, 'ts-chipsbox__dropdown--close' : !show }, 'ts-chipsbox__dropdown']"          
+        @keydown="onKeyDown"
+        :class="[{ 'ts-chipsbox__dropdown--open' : show, 'ts-chipsbox__dropdown--close' : !show }, 'ts-chipsbox__dropdown']"
       >
         <input
           type="text"
           v-model="query"
           :placeholder="searchPlaceholder"
           class="ts-chipsbox__search form-control form-control-sm"
-        >              
+        >
         <ul
           class="ts-chipsbox__list"
           @keydown="onKeyDown"
@@ -87,11 +86,11 @@
             v-for="opt in options"
             :key="opt.key"
             :class="[{'ts-chipsbox__options--selected': isSelected(opt)}, 'ts-chipsbox__options']"
-            @click="toggleOption(opt)"            
+            @click="toggleOption(opt)"
             @keydown="onKeyDown($event, opt)"
           >
             <div class="ts-chipsbox__options__content">
-              <slot :item="opt" />  
+              <slot :item="opt" />
               <div
                 class="ts-chipsbox__options__lable"
                 v-html="highlightText(opt.value, '#ff0000')"
@@ -117,14 +116,43 @@ export default {
     "base-selectbox": BaseSelectbox
   },
 
-  props: ["value", "data", "multi", "placeholder", "searchPlaceholder"],
+  props: {
+    value: {
+      type: [Object, Array],
+      default: () => {
+        return [];
+      }
+    },
+    data: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
+    multi: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    },
+    searchPlaceholder: {
+      type: String,
+      default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
 
   data() {
     return {
       query: "",
-      show: false,
+      show: false
     };
-  },  
+  },
 
   mounted() {
     document.addEventListener("click", this.onClose);
@@ -150,6 +178,10 @@ export default {
   height: auto !important;
 }
 
+.disabled {
+  background-color: #e9ecef !important;
+}
+
 .ts-chipsbox__input {
   width: 100%;
   padding: 0px;
@@ -173,8 +205,8 @@ export default {
   line-height: 100%;
 }
 
-.is-invalid .ts-chipsbox__toggleBtn {  
-  right: 20px;  
+.is-invalid .ts-chipsbox__toggleBtn {
+  right: 20px;
 }
 
 .ts-chipsbox__dropdown {
@@ -185,9 +217,9 @@ export default {
   z-index: 100;
   margin-top: 2px;
   border-top: 0px;
-  border: 1px solid rgba(0, 0, 0, 0.2);  
+  border: 1px solid rgba(0, 0, 0, 0.2);
   background-color: white;
-  transition: all 0.3s;  
+  transition: all 0.3s;
   position: absolute;
 }
 
