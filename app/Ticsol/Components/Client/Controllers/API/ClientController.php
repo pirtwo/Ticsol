@@ -67,7 +67,7 @@ class ClientController extends Controller
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        //$this->authorize('view', $client);
+        $this->authorize('view', $client);
 
         return $client;
     }
@@ -90,7 +90,7 @@ class ClientController extends Controller
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        //$this->authorize('update', $client);        
+        $this->authorize('update', $client);        
 
         $client = $this->setupQBsSettings($request, $client);
         $client = $this->steupBillingSettings($request, $client);
