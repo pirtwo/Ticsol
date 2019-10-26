@@ -26,7 +26,8 @@ class FormCreate extends FormRequest
         return [
             "name"          => "required|string",
             "parent_id"     => "nullable|numeric|exists:ts_forms,id",
-            "schema"        => "required|array"
+            "schema"        => "array",
+            "billable"      => "boolean"
         ];
     }
 

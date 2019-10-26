@@ -26,7 +26,8 @@ class FormUpdate extends FormRequest
         return [
             "name"          => "string",
             "parent_id"     => "nullable|numeric|exists:ts_forms,id",
-            "schema"        => "array"
+            "schema"        => "array",
+            "billable"      => "boolean"
         ];
     }
 

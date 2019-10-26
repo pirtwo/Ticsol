@@ -23,6 +23,7 @@ class Form extends Model
         'parent_id',
         'name',
         'schema',
+        'billable'
     ];
 
     /**
