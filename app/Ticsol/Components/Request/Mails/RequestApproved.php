@@ -33,7 +33,7 @@ class RequestApproved extends Mailable
     public function build()
     {
         return $this
-            ->from('ticsol.com.au@mailgun.org')
+            ->from(env('EMAIL_NOREPLY'))
             ->subject('Request Approved')
             ->view('emails.request')
             ->with([

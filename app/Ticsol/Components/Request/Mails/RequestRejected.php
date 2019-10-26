@@ -33,7 +33,7 @@ class RequestRejected extends Mailable
     public function build()
     {
         return $this
-            ->from('ticsol.com.au@mailgun.org')
+            ->from(env('EMAIL_NOREPLY'))
             ->subject('Request Rejected')
             ->view('emails.request')
             ->with([

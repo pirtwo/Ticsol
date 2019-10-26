@@ -35,13 +35,13 @@ class Invitation extends Mailable
     public function build()
     {
         return $this
-            ->from('ticsol.com.au@mailgun.org')
+            ->from(env('EMAIL_NOREPLY'))
             ->subject('TicSol Invitation')
             ->view('emails.invitation')
             ->with([
                 'title' => 'TicSol Invitation',
                 'firstname' => $this->user->firstname,
-                'username' => $this->user->name,
+                'email' => $this->user->email,
                 'password' => $this->pass
             ]);
     }

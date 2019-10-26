@@ -29,7 +29,7 @@ class RequestAssigned extends Mailable
     public function build()
     {
         return $this
-            ->from('app.ticsol.com.au')
+            ->from(env('EMAIL_NOREPLY'))
             ->subject('TicSol Invitation')
             ->view('emails.invitation')
             ->with([
