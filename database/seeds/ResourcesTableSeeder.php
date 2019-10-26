@@ -89,6 +89,18 @@ class ResourcesTableSeeder extends Seeder
         ]);
 
         Resource::create([
+            'name' => 'billing'
+        ]);
+
+        Resource::create([
+            'name' => 'hourly_cost'
+        ]);
+
+        Resource::create([
+            'name' => 'quickbooks'
+        ]);
+
+        Resource::create([
             'name' => 'xero'
         ]);
 
