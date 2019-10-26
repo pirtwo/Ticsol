@@ -30,7 +30,7 @@ class TeamPolicy
      */
     public function view(User $user, Team $team)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class TeamPolicy
      */
     public function update(User $user, Team $team)
     {
-        //
+        return true;
     }
 
     /**
@@ -65,7 +65,7 @@ class TeamPolicy
      */
     public function delete(User $user, Team $team)
     {
-        //
+        return true;
     }
 
     /**

@@ -19,9 +19,7 @@ class RolePolicy
     protected $delete;
 
     public function before($user, $ability)
-    {
-        return true;
-        
+    {   
         $this->owner = $user->isowner;
         
         $permissions = $user->permissions;        
