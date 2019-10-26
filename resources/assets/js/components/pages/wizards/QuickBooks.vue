@@ -6,29 +6,17 @@
           v-model="currentStep"
           :step-number="1"
           :lable="'Step 1'"
-          :disabled="currentStep > 1"
+          :disabled="true"
         />
         <step-icon
           v-model="currentStep"
           :step-number="2"
           :lable="'Step 2'"
-          :disabled="currentStep > 2"
-        />
-        <step-icon
-          v-model="currentStep"
-          :step-number="3"
-          :lable="'Step 3'"
-          :disabled="currentStep > 3"
-        />
-        <step-icon
-          v-model="currentStep"
-          :step-number="4"
-          :lable="'Step 4'"
-          :disabled="currentStep > 4"
+          :disabled="true"
         />
       </template>
       <template slot="body">
-        <!-- step 0 -->
+        <!-- step 1 -->
         <step-body
           v-model="currentStep"
           :step-number="1"
@@ -36,12 +24,14 @@
           <div class="mt-4">
             <h3>QuickBook Setup</h3>
             <p class="text-justify">
-              TicSol is designed to work with QuickBooks Online. Integrating TicSol and Quickbooks 
-              Online provides the following benefits: <br>
-              1. Easy setup. <br>
-              2. Create Time Activities from TicSol Timesheets. <br>
-              3. Create Bills from TicSol reimbursements. <br>
-              4. Create Vendors from TicSol Clients. <br>
+              TicSol is designed to work with QuickBooks Online. Integrating TicSol and Quickbooks
+              Online provides the following benefits: 
+              <br>
+              <br>1. Easy setup.
+              <br>2. Create Time Activities from TicSol Timesheets.
+              <br>3. Create Bills from TicSol reimbursements.
+              <br>4. Create Vendors from TicSol Clients.
+              <br>
             </p>
             <button
               type="button"
@@ -54,20 +44,47 @@
           </div>
         </step-body>
 
-        <!-- step 1 -->
+        <!-- step 2 -->
         <step-body
           v-model="currentStep"
           :step-number="2"
         >
           <div class="mt-4">
-            <h3>Company Info</h3>
+            <h3>Success</h3>
             <p class="text-justify">
-              {{ companyinfo }}
-            </p>
+              Your <b>{{ companyName }}</b> has been successfuly connected to TicSol. Continue the 
+              <router-link :to="{ name:'clientWizard' }">
+                Client Wizard
+              </router-link>
+              or go 
+              <router-link :to="{ name:'home' }">
+                Home
+              </router-link>.
+            </p>           
           </div>
         </step-body>
       </template>
     </stepper>
+
+    <!-- loading screen -->
+    <div
+      class="wrap-loading"
+      v-show="isLoading"
+    >
+      <div class="loading-box shadow-sm">
+        <div>
+          <div
+            class="spinner-border"
+            role="status"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div class="caption">
+          {{ loadingMsg }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -89,9 +106,10 @@ export default {
   data() {
     return {
       isLoading: false,
+      loadingMsg: "",
       currentStep: 1,
       firstStep: 1,
-      lastStep: 4,
+      lastStep: 2,
       companyinfo: "",
 
       // auth
@@ -103,6 +121,14 @@ export default {
       redirectURI: "https://server.dev/wizard/quickbooks",
       csrf: "1234"
     };
+  },
+
+  computed:{
+    companyName:function(){
+      if(this.companyinfo)
+        return this.companyinfo.CompanyName.toUpperCase();
+      else return "";
+    }
   },
 
   beforeRouteEnter(to, from, next) {
@@ -138,45 +164,34 @@ export default {
       }
     },
 
-    exchangeCodeForToken(code, companyId = null) {
+    async exchangeCodeForToken(code, companyId = null) {
       this.isLoading = true;
-      api
+      this.loadingMsg = "requesting access token from QiuckBooks...";
+      await api
         .get({
           url: `/api/quickbooks/token/${code}${
             companyId ? `/${companyId}` : ""
-          }`,
-          isJson: true,
-          isAuth: true
-        })
-        .then(res => {
-          console.log(res);
-          this.currentStep++;
-
-          api
-            .get({
-              url: "/api/quickbooks/companyinfo",
-              isJson: true,
-              isAuth: true
-            })
-            .then(res => {
-              console.log(res);
-              this.companyinfo = res;
-            })
-            .catch(error => {
-              console.log(error);
-            });
+          }`
         })
         .catch(error => {
           console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
         });
-    },
 
-    processStep() {
-      //
-    }
+      this.loadingMsg = "fetching company information from QiuckBooks...";
+      await api
+        .get({
+          url: "/api/quickbooks/companyinfo"
+        })
+        .then(res => {
+          this.companyinfo = res.data;
+          this.currentStep++;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+        this.isLoading = false;
+    }    
   }
 };
 </script>
@@ -188,5 +203,44 @@ export default {
   width: 50%;
   height: 70%;
   border-radius: 2px;
+  position: relative;
+}
+
+.wrap-loading {
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.15);
+  z-index: 9;
+}
+
+.loading-box {
+  left: 50%;
+  top: 50%;
+  width: 17vw;
+  height: auto;
+  padding: 1vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 0px;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.loading-box .spinner-border {
+  width: 2vw;
+  height: 2vw;
+  border: 0.4vw solid currentColor;
+  border-right-color: transparent;
+}
+
+.wrap-loading .caption {
+  margin-left: 10px;
+  display: inline;
+  text-align: left;
+  vertical-align: super;
 }
 </style>
