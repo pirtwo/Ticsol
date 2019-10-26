@@ -80,11 +80,12 @@ class UserController extends Controller
             $user = new User();
             $password = Str::random(8);
             $user->client_id = $request->user()->client_id;
-
-            $user->name = $request->input("firstname") . " " . $request->input("lastname");
             $user->password = \bcrypt($password);
+            $user->qbs = [];
             $user->meta = [];
+            $user->settings = [];
             $user->fill($request->all());
+            $user = $this->setupQBsSettings($request, $user);
             $user->save();
 
             $user->teams()->sync($request->input("teams"));
@@ -160,15 +161,26 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         $user->fill($request->all());
-
         $user = $this->setupAvatar($request, $user);
         $user = $this->setupSettings($request, $user);
+        $user = $this->setupQBsSettings($request, $user);
 
         $user->save();
 
         event(new Events\UserUpdated($user));
 
         return $user;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
     }
 
     /**
@@ -230,17 +242,6 @@ class UserController extends Controller
         return response()->download(Storage::disk("local")->path($path))->deleteFileAfterSend();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     private function createIcalContent($eventList)
     {
         $vCal = "BEGIN:VCALENDAR\nVERSION:2.0";
@@ -263,7 +264,7 @@ class UserController extends Controller
      */
     private function setupSettings($request, $user)
     {
-        $meta = $user->meta;
+        $meta = $user->meta !== null ? $user->meta : [];
 
         if ($request->has("theme")) {
             $meta["theme"] = $request->input("theme");
@@ -299,25 +300,40 @@ class UserController extends Controller
      */
     private function setupAvatar($request, $user)
     {
-        $meta = $user->meta;
-        $defaultAvatar = "/img/avatar/default.png";
+        $oldAvatar = null;
+        $meta = $user->meta !== null ? $user->meta : [];        
 
         if (array_key_exists("avatar", $meta)) {
             $oldAvatar = $meta["avatar"];
-        } else {
-            $meta["avatar"] = $defaultAvatar;
         }
 
         if ($request->file("avatar")) {
             $meta["avatar"] = "/storage/" . $request->file('avatar')->store('img/avatar', 'public');
 
             // delete old avatar
-            if ($oldAvatar != $defaultAvatar) {
+            if ($oldAvatar) {
                 Storage::disk("public")->delete(\substr($oldAvatar, 9));
             }
         }
 
         $user->meta = $meta;
+
+        return $user;
+    }
+
+    public function setupQBsSettings($request, $user)
+    {
+        $settings = $user->qbs ? $user->qbs : [];
+
+        if ($request->has("qbs_id")) {
+            $settings["id"] = $request->input("qbs_id");
+        }
+
+        if ($request->has("qbs_vendor_id")) {
+            $settings["vendor_id"] = $request->input("vendor_id");
+        }
+
+        $user->qbs = $settings;
 
         return $user;
     }

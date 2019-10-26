@@ -30,7 +30,12 @@ class CreateUser extends FormRequest
             'teams'                     => 'nullable|array',
             'teams.*'                   => 'numeric|exists:ts_teams,id',
             'roles'                     => 'nullable|array',
-            'roles.*'                   => 'numeric|exists:ts_roles,id'                      
+            'roles.*'                   => 'numeric|exists:ts_roles,id',
+            
+            // QBs
+            'qbs_id'                    => 'nullable|numeric',
+            'qbs_vendor_id'             => 'nullable|numeric',
+            'qbs_budgeted_cost_rate'    => 'nullable|numeric',
         ];
     }
 

@@ -16,6 +16,8 @@ class User extends Authenticatable
     protected $dates = ['deleted_at'];
     protected $appends = ['fullname', 'avatar', 'permissions'];
     protected $casts = [
+        'qbs' => 'array',
+        'settings' => 'array',
         'meta' => 'array',
     ];
 
@@ -27,7 +29,8 @@ class User extends Authenticatable
     protected $fillable = [
         'email',  
         'firstname',
-        'lastname',              
+        'lastname',  
+        'settings',            
         'meta',
     ];
 
@@ -38,7 +41,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'isowner',
         'remember_token'
     ];
 
@@ -100,7 +102,7 @@ class User extends Authenticatable
      */
     public function getAvatarAttribute()
     {
-        $meta = $this->meta;
+        $meta = $this->meta ? $this->meta : [];
         $avatar = \array_key_exists("avatar", $meta) ? $meta["avatar"] : null;
 
         if($avatar)

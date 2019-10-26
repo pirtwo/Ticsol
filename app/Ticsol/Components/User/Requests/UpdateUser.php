@@ -34,11 +34,15 @@ class UpdateUser extends FormRequest
             'ical'                      => 'boolean',            
             'theme'                     => 'string|in:default,urban,jungle,beach,night',
             'schedule_view'             => 'string|in:user,job',              
-            'schedule_range'            => 'string|in:Week,Month',  
-              
+            'schedule_range'            => 'string|in:Week,Month',             
             
             // profile picture
-            'avatar'                    => 'nullable|mimes:jpg,jpeg,png|max:5120'
+            'avatar'                    => 'nullable|mimes:jpg,jpeg,png|max:5120',
+
+            // QBs
+            'qbs_id'                    => 'nullable|numeric',
+            'qbs_vendor_id'             => 'nullable|numeric',
+            'qbs_budgeted_cost_rate'    => 'nullable|numeric',
         ];
     }
 
