@@ -20,17 +20,14 @@ class CreateTsJobsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('creator_id');
-            $table->unsignedBigInteger('parent_id')
-                ->nullable();
-            $table->unsignedBigInteger('form_id')
-                ->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('form_id')->nullable();
 
             // Attributes
             $table->string('title');
             $table->string('code');            
-            $table->boolean('isactive');
-            $table->string('color')
-                ->nullable();
+            $table->boolean('isactive')->default(true);
+            $table->string('color')->nullable();
 
             // json
             $table->json('qbs')->nullable();
