@@ -108,25 +108,26 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
         Route::get('hooks', 'WebhookController@index');
         Route::post('hooks', 'WebhookController@subscribe');
         Route::delete('hooks/{id}', 'WebhookController@delete');
-        Route::get('polling/trigger', 'WebhookController@pollForTrigger');
+        Route::get('polling/trigger', 'WebhookController@pollForTrigger');        
+
+        // QuickBooks
+        Route::middleware('can:edit-QBs')->group(function() {
+            // AUTH
+            Route::get('quickbooks/token/{code}/{realmid?}', 'QBsAuthController@token');
+            Route::get('quickbooks/refresh', 'QBsAuthController@refresh');
+            Route::get('quickbooks/hasvalidtoken', 'QBsAuthController@hasValidToken');
+
+            // API
+            Route::get('quickbooks/companyinfo', 'QuickBooksController@companyInfo');            
+            Route::get('quickbooks/employee', 'QuickBooksController@employeeList'); 
+            Route::get('quickbooks/vendor', 'QuickBooksController@vendorList');                
+            Route::post('quickbooks/vendor', 'QuickBooksController@createVendor'); 
+            Route::get('quickbooks/customer', 'QuickBooksController@customerList');               
+            Route::get('quickbooks/class', 'QuickBooksController@classList'); 
+            Route::get('quickbooks/department', 'QuickBooksController@departmentList');
+            Route::get('quickbooks/account', 'QuickBooksController@accountList');
+        });
         
-        // QuickBooks Auth
-        Route::get('quickbooks/token/{code}/{realmid?}', 'QBsAuthController@token');
-        Route::get('quickbooks/refresh', 'QBsAuthController@refresh');
-        Route::get('quickbooks/hasvalidtoken', 'QBsAuthController@hasValidToken');
-
-        // QuickBooks API
-        Route::get('quickbooks/companyinfo', 'QuickBooksController@companyInfo');
-        Route::get('quickbooks/employee', 'QuickBooksController@employeeList');
-
-        Route::get('quickbooks/vendor', 'QuickBooksController@vendorList'); 
-        Route::post('quickbooks/vendor', 'QuickBooksController@createVendor');  
-
-        Route::get('quickbooks/customer', 'QuickBooksController@customerList'); 
-        Route::get('quickbooks/class', 'QuickBooksController@classList'); 
-        Route::get('quickbooks/department', 'QuickBooksController@departmentList');  
-        
-        Route::get('quickbooks/account', 'QuickBooksController@accountList');
     });
 
 });
