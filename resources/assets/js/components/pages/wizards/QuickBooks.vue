@@ -90,7 +90,7 @@
 
 <script>
 import { api } from "../../../api/http";
-import env from '../utils/env';
+import env from '../../../utils/env';
 import Stepper from "../../base/formStepper/Stepper";
 import StepBody from "../../base/formStepper/StepBody";
 import StepIcon from "../../base/formStepper/StepIcon";
