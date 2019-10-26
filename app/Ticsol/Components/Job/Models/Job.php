@@ -18,6 +18,9 @@ class Job extends Model
         'childsCount'
     ];
     protected $casts = [
+        'qbs' => 'array',
+        'billing' => 'array',
+        'profile' => 'array',
         'meta' => 'array',
     ];
 

@@ -80,6 +80,10 @@ class JobController extends Controller
             $job->client_id = $request->user()->client_id;
             $job->creator_id = $request->user()->id;
             $job->fill($request->all());
+
+            // setup settings
+            $job = $this->setupQBsSettings($request, $job);
+                        
             $job->save();
             if ($request->filled('contacts')) {
                 $job->contacts()->sync($request->input('contacts'));
@@ -143,12 +147,16 @@ class JobController extends Controller
 
         try {
 
-            DB::beginTransaction();
+            DB::beginTransaction();            
 
             $job->update($request->all());
             if ($request->filled('contacts')) {
                 $job->contacts()->sync($request->input('contacts'));
             }
+
+            // setup settings
+            $job = $this->setupQBsSettings($request, $job);
+            $job->save();
 
             DB::commit();
 
@@ -156,6 +164,7 @@ class JobController extends Controller
             DB::rollback();
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
         event(new Events\JobUpdated($job));
         return $job;
     }
@@ -183,5 +192,18 @@ class JobController extends Controller
         foreach ($hooks as $hook) {
             $hook->fire($data);
         }
+    }
+
+    private function setupQBsSettings($request, $job)
+    {
+        $settings = $job->qbs ? $job->qbs : [];
+
+        if($request->has("qbs_id")){
+            $settings["id"] = $request->input("qbs_id");
+        }
+
+        $job->qbs = $settings;
+
+        return $job;
     }
 }

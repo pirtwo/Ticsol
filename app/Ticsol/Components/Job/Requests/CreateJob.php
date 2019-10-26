@@ -24,6 +24,7 @@ class CreateJob extends FormRequest
     public function rules()
     {
         return [
+            'qbs_id'    => 'integer',
             'parent_id' => 'nullable|integer',
             'form_id'   => 'nullable|integer',
             'title'     => 'required|string|between:1,100',
