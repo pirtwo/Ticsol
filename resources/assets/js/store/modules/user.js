@@ -89,6 +89,8 @@ export const userModule = {
         },
 
         [MUTATIONS.USER_SETTINGS](state, payload) {
+            if(!payload)
+                return;
             state.settings = {};
             state.settings.ical = payload.ical;
             state.settings.theme = payload.theme;
