@@ -51,6 +51,10 @@ export const userModule = {
             return state.info.avatar;
         },
 
+        isOwner(state){
+            return state.info.isowner;
+        },
+
         getScheduleView(state) {
             return state.settings.scheduleView;
         },
@@ -85,6 +89,7 @@ export const userModule = {
             state.info.firstname = payload.firstname;
             state.info.lastname = payload.lastname;
             state.info.fullname = payload.fullname;
+            state.info.isowner = payload.isowner;
             state.info.permissions = payload.permissions;
         },
 
