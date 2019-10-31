@@ -330,7 +330,11 @@ class UserController extends Controller
         }
 
         if ($request->has("qbs_vendor_id")) {
-            $settings["vendor_id"] = $request->input("vendor_id");
+            $settings["vendor_id"] = $request->input("qbs_vendor_id");
+        }
+
+        if ($request->has("qbs_budgeted_cost_rate")) {
+            $settings["budgeted_cost_rate"] = $request->input("qbs_budgeted_cost_rate");
         }
 
         $user->qbs = $settings;

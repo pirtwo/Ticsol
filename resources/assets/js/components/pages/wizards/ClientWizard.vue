@@ -118,7 +118,7 @@
             <h3>Step 3 - Roles</h3>
             <p class="text-justify">
               Roles control the permissions a user has.
-              New roles and changes to roles can always be made later by clicking on the Roles icon (show image).
+              New roles and changes to roles can always be made later by clicking on the Roles icon.
             </p>
             <ts-grid v-model="roles" :columns="[{key: 0, value:'Role Name'} ]" :has-toolbar="false">
               <template slot-scope="{ item }">
@@ -334,13 +334,17 @@
             </p>
             <ts-grid
               v-model="users"
-              :columns="[{key: 0, value:'First Name'}, {key: 1, value:'Last Name'}, {key: 3, value:'E-Mail'}]"
+              :columns="integration === 'qbs' ?[{key: 0, value:'First Name'}, {key: 1, value:'Last Name'}, {key: 2, value:'E-Mail'}, {key: 3, value:'Vendor'}, {key: 4, value:'Budgeted Cost Rate'}] : [{key: 0, value:'First Name'}, {key: 1, value:'Last Name'}, {key: 2, value:'E-Mail'}]"
               :has-toolbar="false"
             >
               <template slot-scope="{ item }">
                 <td>{{ item.firstname }}</td>
                 <td>{{ item.lastname }}</td>
                 <td>{{ item.email }}</td>
+                <template v-if="integration === 'qbs'">
+                  <td>{{ item.vendor ? item.vendor.value : '' }}</td>
+                  <td>{{ item.budgetCostRate }}</td>
+                </template>
               </template>
               <template slot="grid-modal" slot-scope="{ item }">
                 <!-- firstname -->
@@ -440,12 +444,20 @@
                 </div>
 
                 <template v-if="integration === 'qbs'">
-                  <!-- vendor ID -->
+                  <!-- vendor -->
                   <div class="form-group">
                     <div class="form-row">
-                      <label class="col-sm-3 col-form-lable">Vendor ID</label>
+                      <label class="col-sm-3 col-form-lable">Vendor</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" v-model="item.vendorId" />
+                        <ts-select
+                          v-model="item.vendor"
+                          :data="vendorAccountList"
+                          :multi="false"
+                          id="vendorAcc"
+                          name="vendorAcc"
+                          placeholder="Select vendor account"
+                          search-placeholder="search..."
+                        />
                       </div>
                     </div>
                   </div>
@@ -555,7 +567,7 @@
                 <td>{{ item.title }}</td>
                 <td>{{ item.code }}</td>
                 <td>{{ item.profile ? item.profile.value : '' }}</td>
-                <td>{{ item.parent ? item.parent.value : '' }}</td>                
+                <td>{{ item.parent ? item.parent.value : '' }}</td>
               </template>
               <template slot="grid-modal" slot-scope="{ item }">
                 <!-- title -->
@@ -1189,9 +1201,9 @@
 
       <template slot="footer">
         <div class="wrap-buttons w-100 d-flex">
-          <router-link to="/home" class="btn btn-light">Escape</router-link>
+          <router-link to="/home" class="btn btn-link">Escape</router-link>
+          <button type="button" class="btn btn-link" @click="onBack">Back</button>
           <div class="ml-auto">
-            <button type="button" class="btn btn-primary" @click="onBack">Back</button>
             <button
               type="button"
               class="btn btn-primary"
@@ -1203,16 +1215,7 @@
     </stepper>
 
     <!-- loading screen -->
-    <div class="wrap-loading" v-show="isLoading">
-      <div class="loading-box shadow-sm">
-        <div>
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
-        <div class="caption">{{ loadingMsg }}</div>
-      </div>
-    </div>
+    <loading-screen :show="isLoading" :message="loadingMsg" />
   </div>
 </template>
 
@@ -1223,7 +1226,7 @@ import * as QBs from "../../../api/qbs-endpoints";
 import { api } from "../../../api/http";
 import Stepper from "../../base/formStepper/Stepper";
 import StepBody from "../../base/formStepper/StepBody";
-import StepIcon from "../../base/formStepper/StepIcon";
+import LoadingScreen from "../../app/AppLoadingScreen";
 import { mapGetters, mapActions } from "vuex";
 import {
   required,
@@ -1240,7 +1243,8 @@ export default {
 
   components: {
     stepper: Stepper,
-    "step-body": StepBody
+    "step-body": StepBody,
+    "loading-screen": LoadingScreen
   },
 
   data() {
@@ -1251,7 +1255,11 @@ export default {
       firstStep: 0,
       lastStep: 10,
 
+      // Errors stack
+      errors: [],
+
       // raw lists
+      vendorAccounts: [],
       revenueAccounts: [],
       expenseAccounts: [],
       incomeInAdvAccounts: [],
@@ -1343,10 +1351,7 @@ export default {
         ],
         scheduleView: "employee",
         scheduleRange: "week"
-      },
-
-      // Errors stack
-      errors: []
+      }
     };
   },
 
@@ -1367,7 +1372,10 @@ export default {
       $each: {
         firstname: { required },
         lastname: { required },
-        email: { required, email }
+        email: { required, email },
+        budgetCostRate: {
+          decimal
+        }
       }
     },
 
@@ -1459,6 +1467,12 @@ export default {
       });
     },
 
+    vendorAccountList: function() {
+      return this.vendorAccounts.map(item => {
+        return { key: item.Id, value: `${item.GivenName} ${item.FamilyName}` };
+      });
+    },
+
     revenueAccList: function() {
       return this.revenueAccounts.map(item => {
         return { key: item.Id, value: item.Name };
@@ -1485,6 +1499,11 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
+    this.clear("team");
+    this.clear("role");
+    this.clear("user");
+    this.clear("job");
+    this.clear("form");
     next();
   },
 
@@ -1493,7 +1512,7 @@ export default {
       list: "resource/list",
       create: "resource/create",
       update: "resource/update",
-      clear: "resource/clear"
+      clear: "resource/clearResource"
     }),
 
     loadAssets() {
@@ -1622,7 +1641,8 @@ export default {
                   ? employee.PrimaryEmailAddr.Address
                   : "",
                 teams: [],
-                roles: []
+                roles: [],
+                vendor: null,
               });
             });
           }
@@ -1631,6 +1651,18 @@ export default {
         .catch(err => {
           console.log(err);
           this.errors.push("can't load employees, please try again.");
+          return Promise.reject(true);
+        });
+
+      this.loadingMsg = "Loading vendors from QuickBooks...";
+      await api
+        .get({ url: QBs.VENDOR })
+        .then(res => {
+          this.vendorAccounts = res.data ? res.data : [];
+        })
+        .catch(err => {
+          console.log(err);
+          this.errors.push("can't load vendors, please try again.");
           return Promise.reject(true);
         });
     },
@@ -1648,7 +1680,7 @@ export default {
                 title: customer.DisplayName,
                 code: this.generateCode(4),
                 parent: null,
-                profile: null
+                profile: null,
               });
             });
           }
@@ -1696,8 +1728,9 @@ export default {
       for (let i = 0; i < this.teams.length; i++) {
         console.log(this.teams[i]);
         await this.createResource("team", this.teams[i]).catch(() => {
-          this.errors.push(`Failed while creating ${this.teams[i].name}.`);
-          return Promise.reject(false);
+          this.errors.push(
+            `An error occurred while creating ${this.teams[i].name}. team`
+          );
         });
       }
       return Promise.resolve(true);
@@ -1709,8 +1742,9 @@ export default {
       for (let i = 0; i < this.roles.length; i++) {
         console.log(this.roles[i]);
         await this.createResource("role", this.roles[i]).catch(() => {
-          this.errors.push(`Failed while creating ${this.role[i].name}.`);
-          return Promise.reject(false);
+          this.errors.push(
+            `An error occurred while creating ${this.role[i].name}. role`
+          );
         });
       }
       return Promise.resolve(true);
@@ -1719,6 +1753,7 @@ export default {
     async createUsers() {
       for (let i = 0; i < this.users.length; i++) {
         // setup the form data
+        let fullname = `${this.users[i].firstname} ${this.users[i].lastname}`;
         let payload = {};
         payload.firstname = this.users[i].firstname;
         payload.lastname = this.users[i].lastname;
@@ -1728,11 +1763,15 @@ export default {
 
         if (this.integration === "qbs") {
           payload.qbs_id = this.users[i].qbsId;
-          payload.vendor_id = null;
-          payload.buget_cost_rate = this.users[i].budgetCostRate;
+          payload.qbs_vendor_id = null;
+          payload.qbs_budgeted_cost_rate = this.users[i].budgetCostRate ? this.users[i].budgetCostRate : null;
 
-          if (!this.users[i].vendorId) {
-            this.loadingMsg = `Creating vendor for ${this.users[i].firstname} ${this.users[i].lastname}...`;
+          // create vendor if not selected and not exists
+          if (
+            !this.users[i].vendor &&
+            !this.vendorAccounts.find(item => item.DisplayName === fullname)
+          ) {
+            this.loadingMsg = `Creating vendor for ${fullname}...`;
             await api
               .post({
                 url: QBs.VENDOR,
@@ -1755,8 +1794,8 @@ export default {
                   `Failed while creating vendor for ${this.users[i].firstname} ${this.users[i].lastname}.`
                 );
               });
-          } else {
-            payload.vendor_id = this.users[i].vendorId;
+          } else if(this.users[i].vendor) {
+            payload.qbs_vendor_id = this.users[i].vendor.key;
           }
         }
 
@@ -1765,7 +1804,9 @@ export default {
         this.loadingMsg = `Creating user accounts...`;
 
         await this.createResource("user", payload).catch(err => {
-          return Promise.reject(err);
+          this.errors.push(
+            `An error occurred while creating ${fullname} account.`
+          );
         });
       }
       return Promise.resolve(true);
@@ -1797,7 +1838,9 @@ export default {
         let payload = {};
         payload.title = this.jobs[i].title;
         payload.code = this.jobs[i].code.toString();
-        payload.parent_id = this.jobs[i].parent ? this.jobs[i].parent.key : null;
+        payload.parent_id = this.jobs[i].parent
+          ? this.jobs[i].parent.key
+          : null;
         payload.form_id = this.jobs[i].profile
           ? this.jobs[i].profile.key
           : null;
@@ -1808,8 +1851,9 @@ export default {
         }
 
         await this.createResource("job", payload).catch(() => {
-          this.errors.push(`Failed while creating ${this.job[i].title}.`);
-          return Promise.reject(false);
+          this.errors.push(
+            `An error occurred while creating ${this.job[i].title} job.`
+          );
         });
       }
       return Promise.resolve(true);
@@ -2074,43 +2118,5 @@ export default {
 
 .wrap-buttons {
   width: max-content;
-}
-
-.wrap-loading {
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.15);
-  z-index: 9;
-}
-
-.loading-box {
-  left: 50%;
-  top: 50%;
-  width: 17vw;
-  height: auto;
-  padding: 1vw;
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-radius: 0px;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
-.loading-box .spinner-border {
-  width: 2vw;
-  height: 2vw;
-  border: 0.4vw solid currentColor;
-  border-right-color: transparent;
-}
-
-.wrap-loading .caption {
-  margin-left: 10px;
-  display: inline;
-  text-align: left;
-  vertical-align: super;
 }
 </style>
