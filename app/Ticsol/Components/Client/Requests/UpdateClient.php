@@ -32,10 +32,10 @@ class UpdateClient extends FormRequest
             'billing_hours_round'                   => 'string|in:up,nearest',
             'billing_hours_interval'                => 'numeric|in:6,15,30,60',
             'billing_days_round'                    => 'string|in:up,nearest',
-            'billing_days_interval'                 => 'numeric|in:0.25,05,1',
+            'billing_days_interval'                 => 'numeric|in:0.25,0.5,1',
             'billing_hours_in_day'                  => 'numeric|between:1,24',
-            'billing_allow_prepaid_jobs'            => 'boolean',
-            'billing_revenue_accounts'              => 'array',
+            'billing_allow_prepaid_jobs'            => 'nullable|boolean',
+            'billing_revenue_accounts'              => 'nullable|array',
             'billing_income_in_adv_account_id'      => 'nullable|numeric',
 
             // Billing Defaults
@@ -51,8 +51,7 @@ class UpdateClient extends FormRequest
             'reimbursement_measure'                 => 'string|in:kilometres,miles',
             'reimbursement_expence_account_id'      => 'nullable|numeric',
 
-            // General settings
-            'hour_per_day'              => 'string',    
+            // General settings   
             'schedule_view'             => 'string|in:employee,job',
             'schedule_range'            => 'string|in:week,month',
             'business_hours'            => 'array',            
