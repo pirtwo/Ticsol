@@ -10,6 +10,7 @@ class JobPolicy
 {
     use HandlesAuthorization;
 
+    protected $isowner;
     protected $full;
     protected $list;
     protected $view;
@@ -19,8 +20,8 @@ class JobPolicy
 
     public function before($user, $ability)
     {
-        $permissions = $user->permissions;
-        
+        $permissions = $user->permissions;        
+        $this->isowner = $user->isowner;
         $this->full = $permissions->contains('full-job');
         $this->list = $permissions->contains('list-job');
         $this->view = $permissions->contains('view-job');
@@ -59,7 +60,7 @@ class JobPolicy
      */
     public function create(User $user)
     {        
-        return $this->full || $this->create;
+        return $this->isowner || $this->full || $this->create;
     }
 
     /**
@@ -75,7 +76,7 @@ class JobPolicy
             return false;
         }
 
-        return $this->full || $this->update;
+        return $this->isowner || $this->full || $this->update;
     }
 
     /**
@@ -91,6 +92,6 @@ class JobPolicy
             return false;
         }
 
-        return $this->full || $this->delete;
+        return $this->isowner || $this->full || $this->delete;
     }
 }

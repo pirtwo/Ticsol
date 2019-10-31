@@ -10,6 +10,7 @@ class FormPolicy
 {
     use HandlesAuthorization;
 
+    protected $isowner;
     protected $full;
     protected $list;
     protected $view;
@@ -19,14 +20,14 @@ class FormPolicy
 
     public function before($user, $ability)
     {
-        $permissions = $user->permissions;
-        
-        $this->full = $permissions->contains('full-job_profile');
-        $this->list = $permissions->contains('list-job_profile');
-        $this->view = $permissions->contains('view-job_profile');
-        $this->create = $permissions->contains('create-job_profile');
-        $this->update = $permissions->contains('update-job_profile');
-        $this->delete = $permissions->contains('delete-job_profile');    
+        $permissions = $user->permissions;        
+        $this->isowner = $user->isowner;
+        $this->full = $permissions->contains('full-job');
+        $this->list = $permissions->contains('list-job');
+        $this->view = $permissions->contains('view-job');
+        $this->create = $permissions->contains('create-job');
+        $this->update = $permissions->contains('update-job');
+        $this->delete = $permissions->contains('delete-job');        
     }
 
     /**
@@ -60,7 +61,7 @@ class FormPolicy
      */
     public function create(User $user)
     {
-        return $this->full || $this->create;
+        return $this->isowner || $this->full || $this->create;
     }
 
     /**
@@ -76,7 +77,7 @@ class FormPolicy
             return false;
         }
 
-        return $this->full || $this->update;
+        return $this->isowner || $this->full || $this->update;
     }
 
     /**
@@ -92,6 +93,6 @@ class FormPolicy
             return false;
         }
         
-        return $this->full || $this->delete;
+        return $this->isowner || $this->full || $this->delete;
     }
 }

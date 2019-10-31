@@ -9,6 +9,7 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    protected $isowner;
     protected $full;
     protected $list;
     protected $view;
@@ -18,14 +19,14 @@ class UserPolicy
 
     public function before($user, $ability)
     {
-        $permissions = $user->permissions;
-        
-        $this->full = $permissions->contains('full-user');
-        $this->list = $permissions->contains('list-user');
-        $this->view = $permissions->contains('view-user');
-        $this->create = $permissions->contains('create-user');
-        $this->update = $permissions->contains('update-user');
-        $this->delete = $permissions->contains('delete-user');       
+        $permissions = $user->permissions;        
+        $this->isowner = $user->isowner;
+        $this->full = $permissions->contains('full-job');
+        $this->list = $permissions->contains('list-job');
+        $this->view = $permissions->contains('view-job');
+        $this->create = $permissions->contains('create-job');
+        $this->update = $permissions->contains('update-job');
+        $this->delete = $permissions->contains('delete-job');        
     }
 
     /**
@@ -58,7 +59,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $this->full || $this->create;
+        return $this->isowner || $this->full || $this->create;
     }
 
     /**
@@ -74,7 +75,7 @@ class UserPolicy
             return false;
         }
 
-        return $user->id == $model->id;
+        return $this->isowner || $user->id == $model->id;
     }
 
     /**
@@ -86,7 +87,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return false;
+        return $this->isowner;
     }
 
     /**
@@ -102,6 +103,6 @@ class UserPolicy
             return false;
         }
 
-        return $this->full || $this->update;
+        return $this->isowner || $this->full || $this->update;
     }
 }

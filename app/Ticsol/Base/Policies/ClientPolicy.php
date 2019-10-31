@@ -4,12 +4,31 @@ namespace App\Ticsol\Base\Policies;
 
 use App\Ticsol\Components\Models\User;
 use App\Ticsol\Components\Models\Client;
-use App\Ticsol\Base\Policies\Traits\PolicyHelper;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ClientPolicy
 {
-    use HandlesAuthorization, PolicyHelper;
+    use HandlesAuthorization;
+
+    protected $isowner;
+    protected $full;
+    protected $list;
+    protected $view;
+    protected $create;
+    protected $update;
+    protected $delete;
+
+    public function before($user, $ability)
+    {
+        $permissions = $user->permissions;        
+        $this->isowner = $user->isowner;
+        $this->full = $permissions->contains('full-job');
+        $this->list = $permissions->contains('list-job');
+        $this->view = $permissions->contains('view-job');
+        $this->create = $permissions->contains('create-job');
+        $this->update = $permissions->contains('update-job');
+        $this->delete = $permissions->contains('delete-job');        
+    }
     
     /**
      * Determine whether the user can view any clients.
@@ -31,7 +50,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client)
     {
-        return $this->checkClient($client, $user);
+        return $client->id == $user->client_id;
     }
 
     /**
@@ -54,7 +73,11 @@ class ClientPolicy
      */
     public function update(User $user, Client $client)
     {
-        return $this->checkClient($client, $user) && $this->isOwner($user);
+        if ($client->id != $user->client_id) {
+            return false;
+        }
+
+        return $this->isowner || $this->full || $this->update;
     }
 
     /**

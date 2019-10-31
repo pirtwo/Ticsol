@@ -19,10 +19,9 @@ class RolePolicy
     protected $delete;
 
     public function before($user, $ability)
-    {   
-        $this->owner = $user->isowner;
-        
-        $permissions = $user->permissions;        
+    {          
+        $permissions = $user->permissions; 
+        $this->owner = $user->isowner;       
         $this->full = $permissions->contains('full-role');
         $this->list = $permissions->contains('list-role');
         $this->view = $permissions->contains('view-role');

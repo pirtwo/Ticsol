@@ -9,6 +9,26 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class TeamPolicy
 {
     use HandlesAuthorization;
+
+    protected $owner;
+    protected $full;
+    protected $list;
+    protected $view;
+    protected $create;
+    protected $update;
+    protected $delete;
+
+    public function before($user, $ability)
+    {          
+        $permissions = $user->permissions; 
+        $this->owner = $user->isowner;       
+        $this->full = $permissions->contains('full-role');
+        $this->list = $permissions->contains('list-role');
+        $this->view = $permissions->contains('view-role');
+        $this->create = $permissions->contains('create-role');
+        $this->update = $permissions->contains('update-role');
+        $this->delete = $permissions->contains('delete-role');    
+    }
     
     /**
      * Determine whether the user can view any teams.
@@ -30,7 +50,7 @@ class TeamPolicy
      */
     public function view(User $user, Team $team)
     {
-        return true;
+        return $team->client_id == $user->client_id;
     }
 
     /**
@@ -41,7 +61,7 @@ class TeamPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $this->isowner || $this->full || $this->create;
     }
 
     /**
@@ -53,7 +73,11 @@ class TeamPolicy
      */
     public function update(User $user, Team $team)
     {
-        return true;
+        if ($team->client_id != $user->client_id) {
+            return false;
+        }
+
+        return $this->isowner || $this->full || $this->update;
     }
 
     /**
@@ -65,7 +89,11 @@ class TeamPolicy
      */
     public function delete(User $user, Team $team)
     {
-        return true;
+        if ($team->client_id != $user->client_id) {
+            return false;
+        }
+
+        return $this->isowner || $this->full || $this->delete;
     }
 
     /**
