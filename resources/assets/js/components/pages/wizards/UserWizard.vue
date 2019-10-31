@@ -7,25 +7,21 @@
           v-model="currentStep"
           :step-number="1"
           :lable="'Step 1'"
-          :disabled="currentStep > 1"
         />
         <step-icon
           v-model="currentStep"
           :step-number="2"
           :lable="'Step 2'"
-          :disabled="currentStep > 2"
         />
         <step-icon
           v-model="currentStep"
           :step-number="3"
           :lable="'Step 3'"
-          :disabled="currentStep > 3"
         />
         <step-icon
           v-model="currentStep"
           :step-number="4"
           :lable="'Step 4'"
-          :disabled="currentStep > 4"
         />
       </template>
 
@@ -120,7 +116,7 @@
               </div>
             </div>
 
-            <!-- e-mail -->
+            <!-- e-mail
             <div class="form-group">
               <div class="form-row">
                 <label class="col-sm-3 col-form-lable">
@@ -149,7 +145,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </step-body>
 
@@ -857,38 +853,34 @@
       </template>
 
       <template slot="footer">
-        <div class="wrap-buttons ml-auto">
-          <router-link
-            to="/home"
-            class="btn btn-light"
-          >
-            Skip Wizard
-          </router-link>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="onNext"
-          >
-            <ts-spinner
-              v-if="isLoading"
-              :spinner-style="'border'"
-              class="spinner-border-sm"
-            />
-            {{ isLoading ? 'Processing...' : (currentStep === lastStep ? 'Finish' : 'Next') }}
-          </button>
+        <div class="wrap-buttons w-100 d-flex">
+          <router-link to="/home" class="btn btn-link">Escape</router-link>
+          <button type="button" class="btn btn-link" @click="onBack">Back</button>
+          <div class="ml-auto">            
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="onNext"
+            >{{ currentStep === lastStep ? 'Finish' : 'Next' }}</button>
+          </div>
         </div>
       </template>
     </stepper>
+
+    <!-- loading screen -->
+    <loading-screen :show="isLoading" :message="loadingMsg" />
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { required, email } from "vuelidate/lib/validators";
+
 import moment from "moment";
 import Stepper from "../../base/formStepper/Stepper";
 import StepBody from "../../base/formStepper/StepBody";
 import StepIcon from "../../base/formStepper/StepIcon";
-import { mapGetters, mapActions } from "vuex";
-import { required, email } from "vuelidate/lib/validators";
+import LoadingScreen from "../../app/AppLoadingScreen";
 import GooglePlaces from "../../base/GooglePlaces";
 import DPCalendarVue from "../../base/DPCalendar.vue";
 
@@ -899,7 +891,8 @@ export default {
     stepper: Stepper,
     "step-body": StepBody,
     "step-icon": StepIcon,
-    "goole-places": GooglePlaces,
+    "goole-places": GooglePlaces,    
+    "loading-screen": LoadingScreen,
     calendar: DPCalendarVue
   },
 
@@ -907,9 +900,13 @@ export default {
     return {
       place: {},
       isLoading: false,
+      loadingMsg: "",
       currentStep: 0,
       firstStep: 0,
       lastStep: 4,
+
+      // Errors stack
+      errors: [],
 
       // calendar vars
       createEventModal: false,
@@ -931,7 +928,7 @@ export default {
       user: {
         firstname: "",
         lastname: "",
-        email: ""
+        //email: ""
       },
       contact: {
         group: "user",
@@ -963,7 +960,7 @@ export default {
     user: {
       firstname: { required },
       lastname: { required },
-      email: { required, email }
+      //email: { required, email }
     },
 
     contact: {
@@ -1048,6 +1045,9 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
+    this.clear("user");
+    this.clear("contact");
+    this.clear("schedule");
     next();
   },
 
@@ -1056,23 +1056,22 @@ export default {
       list: "resource/list",
       create: "resource/create",
       update: "resource/update",
-      clear: "resource/clear"
+      clear: "resource/clearResource"
     }),
 
     loadAssets() {
       this.isLoading = true;
+      this.loadingMsg = "Loading, Please wait...";
+
       this.list({ resource: "user", query: { eq: `id,${this.userId}` } }).then(
         data => {
           let user = data[0];
           this.user.firstname = user.firstname;
           this.user.lastname = user.lastname;
-          this.user.email = user.email;
+          //this.user.email = user.email;
 
           this.contact.firstname = user.firstname;
           this.contact.lastname = user.lastname;
-
-          this.emergency.firstname = user.firstname;
-          this.emergency.lastname = user.lastname;
 
           this.isLoading = false;
         }
@@ -1100,20 +1099,18 @@ export default {
       }
     },
 
-    async processStep() {
-      switch (this.currentStep) {
-        case 0:
-          return true;
+    processStep() {
+      switch (this.currentStep) {        
         case 1:
-          return await this.saveInfo();
+          return this.saveInfo();
         case 2:
-          return await this.createContact();
+          return this.createContact();
         case 3:
-          return await this.createEmergency();
+          return this.createEmergency();
         case 4:
-          return await this.createUnavailables();
+          return this.createUnavailables();
         default:
-          return Promise.reject(false);
+          return Promise.resolve(true);
       }
     },
 
@@ -1262,6 +1259,7 @@ export default {
   width: 50%;
   height: 70%;
   border-radius: 2px;
+  position: relative;
 }
 
 .wrap-buttons {

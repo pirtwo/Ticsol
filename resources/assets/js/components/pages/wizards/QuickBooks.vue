@@ -67,24 +67,7 @@
     </stepper>
 
     <!-- loading screen -->
-    <div
-      class="wrap-loading"
-      v-show="isLoading"
-    >
-      <div class="loading-box shadow-sm">
-        <div>
-          <div
-            class="spinner-border"
-            role="status"
-          >
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
-        <div class="caption">
-          {{ loadingMsg }}
-        </div>
-      </div>
-    </div>
+    <loading-screen :show="isLoading" :message="loadingMsg" />
   </div>
 </template>
 
@@ -94,6 +77,7 @@ import env from '../../../utils/env';
 import Stepper from "../../base/formStepper/Stepper";
 import StepBody from "../../base/formStepper/StepBody";
 import StepIcon from "../../base/formStepper/StepIcon";
+import LoadingScreen from "../../app/AppLoadingScreen";
 
 export default {
   name: "QuickBook",
@@ -101,7 +85,8 @@ export default {
   components: {
     stepper: Stepper,
     "step-body": StepBody,
-    "step-icon": StepIcon
+    "step-icon": StepIcon,
+    "loading-screen": LoadingScreen,
   },
 
   data() {
@@ -205,43 +190,5 @@ export default {
   height: 70%;
   border-radius: 2px;
   position: relative;
-}
-
-.wrap-loading {
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.15);
-  z-index: 9;
-}
-
-.loading-box {
-  left: 50%;
-  top: 50%;
-  width: 17vw;
-  height: auto;
-  padding: 1vw;
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-radius: 0px;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
-.loading-box .spinner-border {
-  width: 2vw;
-  height: 2vw;
-  border: 0.4vw solid currentColor;
-  border-right-color: transparent;
-}
-
-.wrap-loading .caption {
-  margin-left: 10px;
-  display: inline;
-  text-align: left;
-  vertical-align: super;
 }
 </style>
