@@ -42,7 +42,7 @@ class UpdateClient extends FormRequest
             'billing_defaults_payment_type'         => 'string|in:prepaid,inArrears',
             'billing_defaults_allow_over_billing'   => 'boolean',
             'billing_defaults_job_fallback_rate'    => 'string|in:sameRate,companyDefault',
-            'billing_defaults_unit_type'            => 'string|in:minutes,hours',
+            'billing_defaults_unit_type'            => 'string|in:minutes,days',
             'billing_defaults_revenue_account_id'   => 'nullable|numeric',
             'billing_defaults_company_rate'         => 'numeric',
 
