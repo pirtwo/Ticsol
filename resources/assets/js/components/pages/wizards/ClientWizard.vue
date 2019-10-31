@@ -1320,7 +1320,7 @@ export default {
         jobFallbackRate: "sameRate",
 
         /**
-         * could be: minutes, hours.
+         * could be: minutes, days.
          */
         billingUnitType: "",
 
@@ -1897,12 +1897,12 @@ export default {
       form.billing_defaults_payment_type = this.billingDefaults.paymentType;
       form.billing_defaults_allow_over_billing = this.billingDefaults.allowOverbilling;
       form.billing_defaults_job_fallback_rate = this.billingDefaults.jobFallbackRate;
-      form.billing_defaults_billing_unit_type = this.billingDefaults.billingUnitType;
+      form.billing_defaults_unit_type = this.billingDefaults.billingUnitType;
       form.billing_defaults_revenue_account_id = this.billingDefaults
         .revenueAccount
         ? this.billingDefaults.revenueAccount.key
         : null;
-      form.billing_defaults_compant_rate = this.billingDefaults.companyRate;
+      form.billing_defaults_company_rate = this.billingDefaults.companyRate;
 
       console.log(form);
 
