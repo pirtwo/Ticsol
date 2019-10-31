@@ -10,7 +10,7 @@ class RolePolicy
 {
     use HandlesAuthorization;
 
-    protected $owner;
+    protected $isowner;
     protected $full;
     protected $list;
     protected $view;
@@ -21,7 +21,7 @@ class RolePolicy
     public function before($user, $ability)
     {          
         $permissions = $user->permissions; 
-        $this->owner = $user->isowner;       
+        $this->isowner = $user->isowner;       
         $this->full = $permissions->contains('full-role');
         $this->list = $permissions->contains('list-role');
         $this->view = $permissions->contains('view-role');
@@ -61,7 +61,7 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return $this->owner || $this->full || $this->create;
+        return $this->isowner || $this->full || $this->create;
     }
 
     /**
@@ -77,7 +77,7 @@ class RolePolicy
             return false;
         }
 
-        return $this->owner || $this->full || $this->update;
+        return $this->isowner || $this->full || $this->update;
     }
 
     /**
@@ -93,6 +93,6 @@ class RolePolicy
             return false;
         }
 
-        return $this->owner || $this->full || $this->delete;
+        return $this->isowner || $this->full || $this->delete;
     }
 }
