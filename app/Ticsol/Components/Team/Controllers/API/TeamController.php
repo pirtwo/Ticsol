@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Ticsol\Base\Exceptions\NotFound;
 use App\Ticsol\Components\Models\Team;
+use App\Ticsol\Components\Team\Events;
 use App\Ticsol\Components\Team\Requests;
 use App\Ticsol\Components\Team\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
@@ -71,7 +72,7 @@ class TeamController extends Controller
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        //$this->authorize('create');
+        $this->authorize('create', Team::class);
         
         try {
             
@@ -91,6 +92,8 @@ class TeamController extends Controller
             DB::rollback();
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new Events\TeamCreated($team));
 
         return $team;   
     }
@@ -114,7 +117,7 @@ class TeamController extends Controller
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        //$this->authorize('view', $team);
+        $this->authorize('view', $team);
 
         return $team;
     }
@@ -137,7 +140,7 @@ class TeamController extends Controller
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        //$this->authorize('update');
+        $this->authorize('update', $team);
         
         try {
             
@@ -153,6 +156,8 @@ class TeamController extends Controller
             DB::rollback();
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
+
+        event(new Events\TeamUpdated($team));
 
         return $team;   
     }
@@ -173,7 +178,7 @@ class TeamController extends Controller
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        //$this->authorize('delete');
+        $this->authorize('delete', $team);
 
         return $this->repository->delete('id', $id, false);
     }
