@@ -554,8 +554,8 @@
               <template slot-scope="{ item }">
                 <td>{{ item.title }}</td>
                 <td>{{ item.code }}</td>
-                <td>{{ item.parent ? item.parent.value : '' }}</td>
                 <td>{{ item.profile ? item.profile.value : '' }}</td>
+                <td>{{ item.parent ? item.parent.value : '' }}</td>                
               </template>
               <template slot="grid-modal" slot-scope="{ item }">
                 <!-- title -->
@@ -1645,7 +1645,7 @@ export default {
             list.forEach(customer => {
               this.jobs.push({
                 qbsId: customer.Id,
-                title: customer.FullyQualifiedName,
+                title: customer.DisplayName,
                 code: this.generateCode(4),
                 parent: null,
                 profile: null
@@ -1797,8 +1797,8 @@ export default {
         let payload = {};
         payload.title = this.jobs[i].title;
         payload.code = this.jobs[i].code.toString();
-        payload.form_id = this.jobs[i].parent ? this.jobs[i].parent.key : null;
-        payload.parent_id = this.jobs[i].profile
+        payload.parent_id = this.jobs[i].parent ? this.jobs[i].parent.key : null;
+        payload.form_id = this.jobs[i].profile
           ? this.jobs[i].profile.key
           : null;
         payload.isactive = true;
