@@ -854,21 +854,37 @@
 
       <template slot="footer">
         <div class="wrap-buttons w-100 d-flex">
-          <router-link to="/home" class="btn btn-link">Escape</router-link>
-          <button type="button" class="btn btn-link" @click="onBack">Back</button>
+          <router-link
+            to="/home"
+            class="btn btn-link"
+          >
+            Escape
+          </router-link>
+          <button
+            type="button"
+            class="btn btn-link"
+            @click="onBack"
+          >
+            Back
+          </button>
           <div class="ml-auto">            
             <button
               type="button"
               class="btn btn-primary"
               @click="onNext"
-            >{{ currentStep === lastStep ? 'Finish' : 'Next' }}</button>
+            >
+              {{ currentStep === lastStep ? 'Finish' : 'Next' }}
+            </button>
           </div>
         </div>
       </template>
     </stepper>
 
     <!-- loading screen -->
-    <loading-screen :show="isLoading" :message="loadingMsg" />
+    <loading-screen
+      :show="isLoading"
+      :message="loadingMsg"
+    />
   </div>
 </template>
 

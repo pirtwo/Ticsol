@@ -67,7 +67,10 @@
     </stepper>
 
     <!-- loading screen -->
-    <loading-screen :show="isLoading" :message="loadingMsg" />
+    <loading-screen
+      :show="isLoading"
+      :message="loadingMsg"
+    />
   </div>
 </template>
 

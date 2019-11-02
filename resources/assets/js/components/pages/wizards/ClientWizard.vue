@@ -3,25 +3,43 @@
     <!-- Client Wizard -->
     <stepper>
       <template slot="nav">
-        <h4 class="mt-3" v-show="currentStep != 0">STEP {{ currentStep }} OF {{ lastStep }}</h4>
+        <h4
+          class="mt-3"
+          v-show="currentStep != 0"
+        >
+          STEP {{ currentStep }} OF {{ lastStep }}
+        </h4>
       </template>
 
       <template slot="body">
         <!-- Errors -->
         <template v-for="(value, key) in errors">
-          <div class="alert alert-danger d-flex" role="alert" :key="key">
+          <div
+            class="alert alert-danger d-flex"
+            role="alert"
+            :key="key"
+          >
             <div>
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">{{ value }}</p>
+              <p class="mb-0">
+                {{ value }}
+              </p>
             </div>
-            <button type="button" class="close ml-auto" @click="errors.splice(key,1)">
+            <button
+              type="button"
+              class="close ml-auto"
+              @click="errors.splice(key,1)"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
         </template>
 
         <!-- step 0 -->
-        <step-body v-model="currentStep" :step-number="0">
+        <step-body
+          v-model="currentStep"
+          :step-number="0"
+        >
           <div class="mt-4">
             <h3>Welcome to TicSol.</h3>
             <p class="text-justify">
@@ -33,7 +51,10 @@
         </step-body>
 
         <!-- step 1 - Intigerations -->
-        <step-body v-model="currentStep" :step-number="1">
+        <step-body
+          v-model="currentStep"
+          :step-number="1"
+        >
           <div class="mt-4">
             <h3>Step 1 - Integrations</h3>
             <p class="text-justify">
@@ -45,9 +66,20 @@
               <div class="form-row">
                 <label class="col-sm-12 col-form-lable">Select your integration method</label>
                 <div class="col-sm-12">
-                  <select v-model="integration" class="custom-select">
-                    <option selected disabled />
-                    <option value="qbs" :disabled="!qbsAuth">QuickBooks</option>
+                  <select
+                    v-model="integration"
+                    class="custom-select"
+                  >
+                    <option
+                      selected
+                      disabled
+                    />
+                    <option
+                      value="qbs"
+                      :disabled="!qbsAuth"
+                    >
+                      QuickBooks
+                    </option>
                   </select>
                 </div>
               </div>
@@ -56,18 +88,29 @@
                 type="button"
                 class="btn btn-link mt-4"
                 @click="redirectToQBs"
-              >Setup QuickBooks</button>
+              >
+                Setup QuickBooks
+              </button>
             </div>
           </div>
         </step-body>
 
         <!-- step 2 - Teams -->
-        <step-body v-model="currentStep" :step-number="2">
+        <step-body
+          v-model="currentStep"
+          :step-number="2"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.teams.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.teams.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your teams list have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your teams list have some errors. Fix them to be able to continue.
+              </p>
             </div>
 
             <h3>Step 2 - Teams</h3>
@@ -78,11 +121,18 @@
               front and back of house. Please create some teams now. New teams can always be
               added later.
             </p>
-            <ts-grid v-model="teams" :columns="[{key: 0, value:'Team Name'}]" :has-toolbar="false">
+            <ts-grid
+              v-model="teams"
+              :columns="[{key: 0, value:'Team Name'}]"
+              :has-toolbar="false"
+            >
               <template slot-scope="{ item }">
                 <td>{{ item.name }}</td>
               </template>
-              <template slot="grid-modal" slot-scope="{ item }">
+              <template
+                slot="grid-modal"
+                slot-scope="{ item }"
+              >
                 <!-- team name -->
                 <div class="form-group">
                   <div class="form-row">
@@ -97,7 +147,7 @@
                         placeholder="team name"
                         class="form-control"
                         id="name"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -107,12 +157,21 @@
         </step-body>
 
         <!-- step 3 - Roles -->
-        <step-body v-model="currentStep" :step-number="3">
+        <step-body
+          v-model="currentStep"
+          :step-number="3"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.roles.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.roles.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your roles list have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your roles list have some errors. Fix them to be able to continue.
+              </p>
             </div>
 
             <h3>Step 3 - Roles</h3>
@@ -120,11 +179,18 @@
               Roles control the permissions a user has.
               New roles and changes to roles can always be made later by clicking on the Roles icon.
             </p>
-            <ts-grid v-model="roles" :columns="[{key: 0, value:'Role Name'} ]" :has-toolbar="false">
+            <ts-grid
+              v-model="roles"
+              :columns="[{key: 0, value:'Role Name'} ]"
+              :has-toolbar="false"
+            >
               <template slot-scope="{ item }">
                 <td>{{ item.name }}</td>
               </template>
-              <template slot="grid-modal" slot-scope="{ item }">
+              <template
+                slot="grid-modal"
+                slot-scope="{ item }"
+              >
                 <!-- role name -->
                 <div class="form-group">
                   <div class="form-row">
@@ -139,7 +205,7 @@
                         placeholder="role name"
                         class="form-control"
                         id="name"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -159,7 +225,7 @@
                           class="custom-control-input"
                           id="create-profile"
                           value="full-job_profile"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="create-profile"
@@ -173,8 +239,11 @@
                           class="custom-control-input"
                           id="full-job"
                           value="full-job"
-                        />
-                        <label class="custom-control-label" for="full-job">Can Create/Maintain Job</label>
+                        >
+                        <label
+                          class="custom-control-label"
+                          for="full-job"
+                        >Can Create/Maintain Job</label>
                       </div>
                     </div>
                   </div>
@@ -191,7 +260,7 @@
                           class="custom-control-input"
                           id="approve-timesheet"
                           value="approve-timesheet"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="approve-timesheet"
@@ -212,7 +281,7 @@
                           class="custom-control-input"
                           id="approve-leave"
                           value="approve-leave"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="approve-leave"
@@ -226,7 +295,7 @@
                           class="custom-control-input"
                           id="approve-reimbursement"
                           value="approve-reimbursement"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="approve-reimbursement"
@@ -247,7 +316,7 @@
                           class="custom-control-input"
                           id="full-user"
                           value="full-user"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="full-user"
@@ -261,7 +330,7 @@
                           class="custom-control-input"
                           id="full-role"
                           value="full-role"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="full-role"
@@ -282,7 +351,7 @@
                           class="custom-control-input"
                           id="full-schedule"
                           value="full-schedule"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="full-schedule"
@@ -303,7 +372,7 @@
                           class="custom-control-input"
                           id="full-xero"
                           value="full-xero"
-                        />
+                        >
                         <label
                           class="custom-control-label"
                           for="full-xero"
@@ -318,12 +387,21 @@
         </step-body>
 
         <!-- step 4 - Users -->
-        <step-body v-model="currentStep" :step-number="4">
+        <step-body
+          v-model="currentStep"
+          :step-number="4"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.users.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.users.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your users list have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your users list have some errors. Fix them to be able to continue.
+              </p>
             </div>
 
             <h3>Step 4 - Users</h3>
@@ -346,7 +424,10 @@
                   <td>{{ item.budgetCostRate }}</td>
                 </template>
               </template>
-              <template slot="grid-modal" slot-scope="{ item }">
+              <template
+                slot="grid-modal"
+                slot-scope="{ item }"
+              >
                 <!-- firstname -->
                 <div class="form-group">
                   <div class="form-row">
@@ -361,7 +442,7 @@
                         placeholder="user first name"
                         class="form-control"
                         id="firstname"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -380,7 +461,7 @@
                         placeholder="user last name"
                         class="form-control"
                         id="lastname"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -399,7 +480,7 @@
                         placeholder="user e-mail"
                         class="form-control"
                         id="email"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -467,7 +548,11 @@
                     <div class="form-row">
                       <label class="col-sm-3 col-form-lable">Budgeted cost rate</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" v-model="item.budgetCostRate" />
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="item.budgetCostRate"
+                        >
                       </div>
                     </div>
                   </div>
@@ -478,12 +563,21 @@
         </step-body>
 
         <!-- step 5 - Profiles -->
-        <step-body v-model="currentStep" :step-number="5">
+        <step-body
+          v-model="currentStep"
+          :step-number="5"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.profiles.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.profiles.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your profiles list have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your profiles list have some errors. Fix them to be able to continue.
+              </p>
             </div>
 
             <h3>Step 5 - Profiles</h3>
@@ -501,7 +595,10 @@
                 <td>{{ item.name }}</td>
                 <td>{{ item.billable ? 'YES' : 'NO' }}</td>
               </template>
-              <template slot="grid-modal" slot-scope="{ item }">
+              <template
+                slot="grid-modal"
+                slot-scope="{ item }"
+              >
                 <!-- profile name -->
                 <div class="form-group">
                   <div class="form-row">
@@ -516,7 +613,7 @@
                         placeholder="profile name"
                         class="form-control"
                         id="name"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -532,8 +629,11 @@
                           type="checkbox"
                           class="custom-control-input"
                           id="billable"
-                        />
-                        <label class="custom-control-label" for="billable">Billable</label>
+                        >
+                        <label
+                          class="custom-control-label"
+                          for="billable"
+                        >Billable</label>
                       </div>
                     </div>
                   </div>
@@ -544,12 +644,21 @@
         </step-body>
 
         <!-- step 6 - Jobs -->
-        <step-body v-model="currentStep" :step-number="6">
+        <step-body
+          v-model="currentStep"
+          :step-number="6"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.jobs.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.jobs.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your projects list have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your projects list have some errors. Fix them to be able to continue.
+              </p>
             </div>
 
             <h3>Step 6 - Clients & Projects</h3>
@@ -569,7 +678,10 @@
                 <td>{{ item.profile ? item.profile.value : '' }}</td>
                 <td>{{ item.parent ? item.parent.value : '' }}</td>
               </template>
-              <template slot="grid-modal" slot-scope="{ item }">
+              <template
+                slot="grid-modal"
+                slot-scope="{ item }"
+              >
                 <!-- title -->
                 <div class="form-group">
                   <div class="form-row">
@@ -584,7 +696,7 @@
                         class="form-control"
                         v-model="item.title"
                         placeholder="Enter job title"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -603,7 +715,7 @@
                         class="form-control"
                         v-model="item.code"
                         placeholder="Enter job code"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -649,12 +761,21 @@
         </step-body>
 
         <!-- step 7 - Billing-Settings -->
-        <step-body v-model="currentStep" :step-number="7">
+        <step-body
+          v-model="currentStep"
+          :step-number="7"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.billingSettings.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.billingSettings.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your settings have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your settings have some errors. Fix them to be able to continue.
+              </p>
             </div>
             <h3>Step 7 - Billing Settings</h3>
 
@@ -668,7 +789,10 @@
                 <div class="col-md-12">
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                      <label class="input-group-text" for="hoursRound">
+                      <label
+                        class="input-group-text"
+                        for="hoursRound"
+                      >
                         Round Hours
                         <i class="field-required">*</i>
                       </label>
@@ -680,9 +804,18 @@
                       id="hoursRound"
                       name="hoursRound"
                     >
-                      <option selected disabled>Choose Rounding...</option>
-                      <option value="up">Up</option>
-                      <option value="nearest">To Nearest</option>
+                      <option
+                        selected
+                        disabled
+                      >
+                        Choose Rounding...
+                      </option>
+                      <option value="up">
+                        Up
+                      </option>
+                      <option value="nearest">
+                        To Nearest
+                      </option>
                     </select>
                     <!-- interval -->
                     <select
@@ -691,14 +824,30 @@
                       id="hoursInterval"
                       name="hoursInterval"
                     >
-                      <option selected disabled>Choose interval...</option>
-                      <option value="6">6</option>
-                      <option value="15">15</option>
-                      <option value="30">30</option>
-                      <option value="60">60</option>
+                      <option
+                        selected
+                        disabled
+                      >
+                        Choose interval...
+                      </option>
+                      <option value="6">
+                        6
+                      </option>
+                      <option value="15">
+                        15
+                      </option>
+                      <option value="30">
+                        30
+                      </option>
+                      <option value="60">
+                        60
+                      </option>
                     </select>
                     <div class="input-group-append">
-                      <label class="input-group-text" for="hoursInterval">Minutes</label>
+                      <label
+                        class="input-group-text"
+                        for="hoursInterval"
+                      >Minutes</label>
                     </div>
                   </div>
                 </div>
@@ -716,7 +865,10 @@
                   <div class="input-group mb-3">
                     <!-- round -->
                     <div class="input-group-prepend">
-                      <label class="input-group-text" for="daysRound">Round Days</label>
+                      <label
+                        class="input-group-text"
+                        for="daysRound"
+                      >Round Days</label>
                     </div>
                     <select
                       v-model="billingSettings.daysRound"
@@ -724,9 +876,18 @@
                       id="daysRound"
                       name="daysRound"
                     >
-                      <option selected disabled>Choose Rounding...</option>
-                      <option value="up">Up</option>
-                      <option value="nearest">To Nearest</option>
+                      <option
+                        selected
+                        disabled
+                      >
+                        Choose Rounding...
+                      </option>
+                      <option value="up">
+                        Up
+                      </option>
+                      <option value="nearest">
+                        To Nearest
+                      </option>
                     </select>
 
                     <!-- interval -->
@@ -736,19 +897,37 @@
                       id="daysInterval"
                       name="daysInterval"
                     >
-                      <option selected disabled>Choose interval...</option>
-                      <option value="0.25">0.25</option>
-                      <option value="0.5">0.5</option>
-                      <option value="1">1</option>
+                      <option
+                        selected
+                        disabled
+                      >
+                        Choose interval...
+                      </option>
+                      <option value="0.25">
+                        0.25
+                      </option>
+                      <option value="0.5">
+                        0.5
+                      </option>
+                      <option value="1">
+                        1
+                      </option>
                     </select>
                     <div class="input-group-append">
-                      <label class="input-group-text" for="daysInterval">Day</label>
+                      <label
+                        class="input-group-text"
+                        for="daysInterval"
+                      >Day</label>
                     </div>
                     <!-- hours in day -->
                     <div class="input-group-prepend">
                       <span class="input-group-text">1 Day Equals</span>
                     </div>
-                    <input v-model="billingSettings.hoursInDay" type="text" class="form-control" />
+                    <input
+                      v-model="billingSettings.hoursInDay"
+                      type="text"
+                      class="form-control"
+                    >
                     <div class="input-group-append">
                       <span class="input-group-text">Hours</span>
                     </div>
@@ -763,7 +942,10 @@
                 <div class="form-row">
                   <label class="col-md-6 col-form-lable">
                     Revenue Accounts
-                    <i v-show="integration === 'qbs'" class="field-required">*</i>
+                    <i
+                      v-show="integration === 'qbs'"
+                      class="field-required"
+                    >*</i>
                   </label>
                   <div class="col-md-6">
                     <ts-chipsbox
@@ -785,7 +967,10 @@
                 <div class="form-row">
                   <label class="col-md-6 col-form-lable">
                     Allow Prepiad Jobs?
-                    <i v-show="integration === 'qbs'" class="field-required">*</i>
+                    <i
+                      v-show="integration === 'qbs'"
+                      class="field-required"
+                    >*</i>
                   </label>
                   <div class="col-md-6">
                     <div class="custom-control custom-switch">
@@ -794,8 +979,11 @@
                         v-model="billingSettings.allowPrepaidJobs"
                         class="custom-control-input"
                         id="allowPrepaidJobs"
+                      >
+                      <label
+                        class="custom-control-label"
+                        for="allowPrepaidJobs"
                       />
-                      <label class="custom-control-label" for="allowPrepaidJobs" />
                     </div>
                   </div>
                 </div>
@@ -824,12 +1012,21 @@
         </step-body>
 
         <!-- step 8 - Billing-Defaults -->
-        <step-body v-model="currentStep" :step-number="8">
+        <step-body
+          v-model="currentStep"
+          :step-number="8"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.billingDefaults.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.billingDefaults.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your settings have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your settings have some errors. Fix them to be able to continue.
+              </p>
             </div>
 
             <h3>Step 8 - Billing Defaults</h3>
@@ -855,8 +1052,11 @@
                     name="paymentType"
                     value="prepaid"
                     class="custom-control-input"
-                  />
-                  <label class="custom-control-label" for="prepaid">Prepaid</label>
+                  >
+                  <label
+                    class="custom-control-label"
+                    for="prepaid"
+                  >Prepaid</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input
@@ -866,8 +1066,11 @@
                     name="paymentType"
                     value="inArrears"
                     class="custom-control-input"
-                  />
-                  <label class="custom-control-label" for="inArrears">In Arrears</label>
+                  >
+                  <label
+                    class="custom-control-label"
+                    for="inArrears"
+                  >In Arrears</label>
                 </div>
               </div>
             </div>
@@ -885,8 +1088,11 @@
                       type="checkbox"
                       class="custom-control-input"
                       id="overBilling"
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="overBilling"
                     />
-                    <label class="custom-control-label" for="overBilling" />
                   </div>
                 </div>
               </div>
@@ -911,8 +1117,11 @@
                       id="sameRate"
                       name="jobFallbackRate"
                       class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="sameRate">Same Rate</label>
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="sameRate"
+                    >Same Rate</label>
                   </div>
                   <div class="custom-control custom-radio custom-control-inline">
                     <input
@@ -922,8 +1131,11 @@
                       id="companyDefault"
                       name="jobFallbackRate"
                       class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="companyDefault">Company Default</label>
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="companyDefault"
+                    >Company Default</label>
                   </div>
                 </div>
               </div>
@@ -944,9 +1156,18 @@
                   id="unitType"
                   class="custom-select"
                 >
-                  <option selected disabled>Choose Unit Type...</option>
-                  <option value="minutes">Minutes</option>
-                  <option value="days">Days</option>
+                  <option
+                    selected
+                    disabled
+                  >
+                    Choose Unit Type...
+                  </option>
+                  <option value="minutes">
+                    Minutes
+                  </option>
+                  <option value="days">
+                    Days
+                  </option>
                 </select>
               </div>
             </div>
@@ -957,7 +1178,10 @@
             <div class="form-row">
               <label class="col-md-6 col-form-lable">
                 Default Revenue Account
-                <i v-show="integration === 'qbs'" class="field-required">*</i>
+                <i
+                  v-show="integration === 'qbs'"
+                  class="field-required"
+                >*</i>
               </label>
               <div class="col-md-6">
                 <ts-chipsbox
@@ -988,19 +1212,28 @@
                   name="companyRate"
                   id="companyRate"
                   class="form-control"
-                />
+                >
               </div>
             </div>
           </div>
         </step-body>
 
         <!-- step 9 - Reimbirsment-Settings-->
-        <step-body v-model="currentStep" :step-number="9">
+        <step-body
+          v-model="currentStep"
+          :step-number="9"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.reimbSettings.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.reimbSettings.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your settings have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your settings have some errors. Fix them to be able to continue.
+              </p>
             </div>
             <h3>Step 9 - Reimbursement Settings</h3>
 
@@ -1014,7 +1247,10 @@
                 <div class="col-md-12">
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                      <label class="input-group-text" for="reimbRate">
+                      <label
+                        class="input-group-text"
+                        for="reimbRate"
+                      >
                         Reimburse Car Travel At
                         <i class="field-required">*</i>
                       </label>
@@ -1025,9 +1261,12 @@
                       name="reimbRate"
                       id="reimbRate"
                       class="form-control"
-                    />
+                    >
                     <div class="input-group-prepend input-group-append">
-                      <label class="input-group-text" for="reimbMeasure">
+                      <label
+                        class="input-group-text"
+                        for="reimbMeasure"
+                      >
                         Cents Per
                         <i class="field-required">*</i>
                       </label>
@@ -1038,9 +1277,18 @@
                       id="reimbMeasure"
                       name="reimbMeasure"
                     >
-                      <option selected disabled>Choose Measure...</option>
-                      <option value="kilometres">Kilometres</option>
-                      <option value="miles">Miles</option>
+                      <option
+                        selected
+                        disabled
+                      >
+                        Choose Measure...
+                      </option>
+                      <option value="kilometres">
+                        Kilometres
+                      </option>
+                      <option value="miles">
+                        Miles
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -1069,12 +1317,21 @@
         </step-body>
 
         <!-- step 10 - Settings -->
-        <step-body v-model="currentStep" :step-number="10">
+        <step-body
+          v-model="currentStep"
+          :step-number="10"
+        >
           <div class="mt-4">
             <!-- validation summary -->
-            <div v-if="$v.settings.$error" class="alert alert-danger" role="alert">
+            <div
+              v-if="$v.settings.$error"
+              class="alert alert-danger"
+              role="alert"
+            >
               <b class="alert-heading">whoops:</b>
-              <p class="mb-0">Your settings have some errors. Fix them to be able to continue.</p>
+              <p class="mb-0">
+                Your settings have some errors. Fix them to be able to continue.
+              </p>
             </div>
             <h3>Step 5 - Settings</h3>
 
@@ -1089,7 +1346,9 @@
                     class="form-row mt-1"
                   >
                     <!-- day label -->
-                    <div class="col-md-2">{{ getDayName(item.day) }}</div>
+                    <div class="col-md-2">
+                      {{ getDayName(item.day) }}
+                    </div>
 
                     <!-- isopen -->
                     <div class="col-md-2">
@@ -1099,8 +1358,11 @@
                           type="checkbox"
                           :id="`isopen-${index}`"
                           class="custom-control-input"
-                        />
-                        <label :for="`isopen-${index}`" class="custom-control-label">Open</label>
+                        >
+                        <label
+                          :for="`isopen-${index}`"
+                          class="custom-control-label"
+                        >Open</label>
                       </div>
                     </div>
 
@@ -1113,7 +1375,7 @@
                           type="time"
                           class="form-control col"
                           :disabled="!item.isopen"
-                        />
+                        >
                       </div>
                     </div>
 
@@ -1126,7 +1388,7 @@
                           type="time"
                           class="form-control col"
                           :disabled="!item.isopen"
-                        />
+                        >
                       </div>
                     </div>
                   </div>
@@ -1147,8 +1409,11 @@
                       name="views"
                       value="employee"
                       class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="view1">Employee</label>
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="view1"
+                    >Employee</label>
                   </div>
                   <div class="custom-control custom-radio custom-control-inline">
                     <input
@@ -1158,8 +1423,11 @@
                       name="views"
                       value="job"
                       class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="view2">Jobs</label>
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="view2"
+                    >Jobs</label>
                   </div>
                 </div>
               </div>
@@ -1178,8 +1446,11 @@
                       name="ranges"
                       value="week"
                       class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="range1">Week</label>
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="range1"
+                    >Week</label>
                   </div>
                   <div class="custom-control custom-radio custom-control-inline">
                     <input
@@ -1189,8 +1460,11 @@
                       name="ranges"
                       value="month"
                       class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="range2">Month</label>
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="range2"
+                    >Month</label>
                   </div>
                 </div>
               </div>
@@ -1201,21 +1475,37 @@
 
       <template slot="footer">
         <div class="wrap-buttons w-100 d-flex">
-          <router-link to="/home" class="btn btn-link">Escape</router-link>
-          <button type="button" class="btn btn-link" @click="onBack">Back</button>
+          <router-link
+            to="/home"
+            class="btn btn-link"
+          >
+            Escape
+          </router-link>
+          <button
+            type="button"
+            class="btn btn-link"
+            @click="onBack"
+          >
+            Back
+          </button>
           <div class="ml-auto">
             <button
               type="button"
               class="btn btn-primary"
               @click="onNext"
-            >{{ currentStep === lastStep ? 'Finish' : 'Next' }}</button>
+            >
+              {{ currentStep === lastStep ? 'Finish' : 'Next' }}
+            </button>
           </div>
         </div>
       </template>
     </stepper>
 
     <!-- loading screen -->
-    <loading-screen :show="isLoading" :message="loadingMsg" />
+    <loading-screen
+      :show="isLoading"
+      :message="loadingMsg"
+    />
   </div>
 </template>
 

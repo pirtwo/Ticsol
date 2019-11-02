@@ -1,12 +1,20 @@
 <template>
-  <div class="wrap-loading" v-show="show">
+  <div
+    class="wrap-loading"
+    v-show="show"
+  >
     <div class="loading-box shadow-sm">
       <div>
-        <div class="spinner-border" role="status">
+        <div
+          class="spinner-border"
+          role="status"
+        >
           <span class="sr-only">{{ message }}</span>
         </div>
       </div>
-      <div class="caption">{{ message }}</div>
+      <div class="caption">
+        {{ message }}
+      </div>
     </div>
   </div>
 </template>
