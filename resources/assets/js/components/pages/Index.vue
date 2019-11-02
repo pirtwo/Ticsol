@@ -64,9 +64,9 @@ export default {
   },
 
   methods: {
-    ...mapActions({      
-      extractToken: "user/extractToken",
-      me: "user/me",
+    ...mapActions({  
+      me: "user/me",    
+      extractToken: "user/extractToken",      
       successfulAuth: "user/successfulAuth",
       connectToChannels: "core/connectToChannels"
     }),
@@ -102,7 +102,7 @@ export default {
           this.connectToChannels();
 
           // redirect to dashboard
-          this.$router.push({ name: "dash" });
+          this.$router.push({ name: "home" });
         })
         .catch(error => {
           this.message = "can not fetch user information, try to refresh the page."

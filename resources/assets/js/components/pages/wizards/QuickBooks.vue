@@ -73,7 +73,7 @@
 
 <script>
 import { api } from "../../../api/http";
-import env from '../../../utils/env';
+import { origin } from '../../../utils/env';
 import Stepper from "../../base/formStepper/Stepper";
 import StepBody from "../../base/formStepper/StepBody";
 import StepIcon from "../../base/formStepper/StepIcon";
@@ -104,7 +104,7 @@ export default {
       responseType: "code",
       scope:
         "com.intuit.quickbooks.accounting openid profile email phone address",
-      redirectURI: env() === 'local' ? "https://server.dev/wizard/quickbooks" : "https://app.ticsol.com.au/wizard/quickbooks",
+      redirectURI: `${ origin() }/wizard/quickbooks`,
       csrf: "1234"
     };
   },
