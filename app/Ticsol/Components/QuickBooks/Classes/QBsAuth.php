@@ -3,13 +3,14 @@
 namespace App\Ticsol\Components\QuickBooks\Classes;
 
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2AccessToken;
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 use QuickBooksOnline\API\DataService\DataService;
 
 /**
  * QuickBooks authentication class, manages quickbooks oauth2 protocol
  */
 class QBsAuth
-{    
+{
     protected $config = null;
     protected $dataService = null;
     protected $accessToken = null;
@@ -20,7 +21,7 @@ class QBsAuth
      * @param String $realmID
      */
     public function __construct($config, $token = null, $realmID = "")
-    {        
+    {
         $this->config = $config;
 
         $this->dataService = DataService::Configure(array(
@@ -66,18 +67,9 @@ class QBsAuth
      */
     public function updateAccessToken()
     {
-        $this->dataService = DataService::Configure(array(
-            'auth_mode' => $this->config["auth_mode"],
-            'ClientID' => $this->config["ClientID"],
-            'ClientSecret' => $this->config["ClientSecret"],
-            'refreshTokenKey' => $this->accessToken->getRefreshToken(),
-            'RedirectURI' => $this->config["RedirectURI"],
-            'baseUrl' => "development",
-            'QBORealmID' => $this->accessToken->getRealmID(),
-        ));
-
-        $OAuth2LoginHelper = $this->dataService->getOAuth2LoginHelper();
-        $this->accessToken = $OAuth2LoginHelper->refreshToken();
+        $oauth2LoginHelper = new OAuth2LoginHelper($this->config["ClientID"], $this->config["ClientSecret"]);
+        $accessToken = $this->accessToken->getRefreshToken();
+        $this->accessToken = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($accessToken);
         $this->dataService->updateOAuth2Token($this->accessToken);
     }
 
@@ -133,7 +125,7 @@ class QBsAuth
             "expires_in" => $this->accessToken->getAccessTokenExpiresAt(),
             "x_refresh_token_expires_in" => $this->accessToken->getRefreshTokenExpiresAt(),
         ];
-    }    
+    }
 
     /**
      * Create instance of OAuth2AccessToken from array
