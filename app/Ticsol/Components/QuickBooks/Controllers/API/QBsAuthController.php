@@ -37,7 +37,7 @@ class QBsAuthController extends Controller
     public function refresh(Request $req)
     {
         $client = $req->user()->client;
-
+        $token = $client->getQBsToken();
         $auth = new QBsAuth($this->config, $token, $token["realmid"]);
 
         $auth->updateAccessToken();
