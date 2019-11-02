@@ -58,7 +58,7 @@
               {{ emergencyContacts.length }}
             </ts-badge>
           </router-link>
-        </li>  
+        </li>
       </ul>
     </template>
 
@@ -214,7 +214,6 @@
         :events="unavailables"
         :view-type="'Weeks'"
         :disabled="id != userId"
-        :message="calendarMsg"
         @range-selected="onRangeSelect"
         @event-clicked="onEventClicked"
       />
@@ -395,7 +394,7 @@
 <script>
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, sameAs, not } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 import DPCalendarVue from "../../../base/DPCalendar.vue";
 import bsCustomFileInput from "bs-custom-file-input";
@@ -417,7 +416,6 @@ export default {
       createEventModal: false,
       confirmDeleteModal: false,
       eventInfoModal: false,
-      calendarMsg: { msg: "", delay: 0 },
       week: {
         start: moment(),
         end: moment()
@@ -426,6 +424,7 @@ export default {
         firstname: "",
         lastname: "",
         email: "",
+        currentEmail: "",
         avatar: "",
         attachment: ""
       },
@@ -459,7 +458,7 @@ export default {
       this.loadAssets();
     },
 
-    userProfile: function(val){
+    userProfile: function(val) {
       this.populateForm(val);
     }
   },
@@ -471,7 +470,7 @@ export default {
     }),
 
     userProfile: function() {
-      if(!this.id) return null;
+      if (!this.id) return null;
       return this.getList("user")[0];
     },
 
@@ -484,15 +483,15 @@ export default {
     },
 
     contacts: function() {
-      if(!this.userProfile) return "";
-      return this.userProfile.contacts
-        .filter(item => item.group == "user");
+      if (!this.userProfile) return "";
+      return this.userProfile.contacts.filter(item => item.group == "user");
     },
 
     emergencyContacts: function() {
-      if(!this.userProfile) return "";
-      return this.userProfile.contacts
-        .filter(item => item.group == "emergency");
+      if (!this.userProfile) return "";
+      return this.userProfile.contacts.filter(
+        item => item.group == "emergency"
+      );
     },
 
     unavailables: function() {
@@ -527,7 +526,7 @@ export default {
     next();
   },
 
-  mounted(){
+  mounted() {
     bsCustomFileInput.init();
   },
 
@@ -542,12 +541,39 @@ export default {
       updateUserSettings: "user/updateSettings"
     }),
 
-    loadAssets() {
+    async loadAssets() {
       this.startLoading();
-      let p1 = this.loadProfile();
-      let p2 = this.loadCalendar();
 
-      Promise.all([p1, p2])
+      this.startLoading();
+      this.loadingAvatar = true;
+
+      let p1 = this.list({
+        resource: "user",
+        id: this.id,
+        query: { eq: `id,${this.id}`, with: "contacts" }
+      }).then(() => {
+        this.loadingAvatar = false;
+      });
+
+      let p2 = this.list({
+        resource: "schedule",
+        query: this.$queryBuilder(
+          null,
+          null,
+          ["user"],
+          [
+            { opt: "eq", col: "user_id", val: this.id },
+            { opt: "eq", col: "event_type", val: "unavailable" },
+            {
+              opt: "inRange",
+              col: "",
+              val: `${this.weekStart},${this.weekEnd}`
+            }
+          ]
+        )
+      });
+
+      await Promise.all([p1, p2])
         .then(() => {
           this.stopLoading();
         })
@@ -557,17 +583,8 @@ export default {
         });
     },
 
-    loadProfile() {
-      this.loadingAvatar = true;
-      return this.list({
-        resource: "user",
-        id: this.id,
-        query: { eq:`id,${this.id}`, with: "contacts" }
-      });
-    },
-
     loadCalendar() {
-      this.calendarMsg = { msg: "Loading, please wait...", delay: 2000 };
+      this.startLoading();
       return this.list({
         resource: "schedule",
         query: this.$queryBuilder(
@@ -584,22 +601,27 @@ export default {
             }
           ]
         )
-      }).catch(error => {
-        this.showMessage(error.message, "danger");
-      });
+      })
+        .then(() => {
+          this.stopLoading();
+        })
+        .catch(error => {
+          this.showMessage(error.message, "danger");
+        });
     },
 
-    populateForm(profile){
+    populateForm(profile) {
       this.form.firstname = profile.firstname;
       this.form.lastname = profile.lastname;
-      this.form.email = profile.email;
+      this.form.email = this.form.currentEmail = profile.email;
       this.form.avatar = profile.avatar;
     },
 
-    idToString(list){
-      if(!list) return "";
-      return list.map(item => item.id)
-        .reduce((acc,cur) => `${cur}${ acc ? ',':''}${acc}`, "");
+    idToString(list) {
+      if (!list) return "";
+      return list
+        .map(item => item.id)
+        .reduce((acc, cur) => `${cur}${acc ? "," : ""}${acc}`, "");
     },
 
     onRangeSelect(e) {
@@ -717,7 +739,8 @@ export default {
       form.append("_method", "PUT");
       form.append("firstname", this.form.firstname);
       form.append("lastname", this.form.lastname);
-      form.append("email", this.form.email);
+      if (this.form.email !== this.form.currentEmail)
+        form.append("email", this.form.email);
       form.append("avatar", this.form.attachment);
 
       this.update({
@@ -728,6 +751,7 @@ export default {
         hasAttachments: true
       })
         .then(data => {
+          this.populateForm(data);
           this.updateUserInfo(data);
           this.updateUserSettings(data.meta);
           this.showMessage(`Profile updated successfuly.`, "success");
