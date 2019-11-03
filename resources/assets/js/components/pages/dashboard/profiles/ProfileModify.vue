@@ -57,17 +57,16 @@
       </ul>
     </template>
 
-    <template slot="content">
-      <!-- Profile Form -->
-      <form>
-        <!-- profile Name -->
+    <template slot="content">      
+      <form>        
         <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">
-              Profile Name
-              <i class="field-required">*</i>
-            </label>
-            <div class="col-sm-10">
+          <div class="form-row">            
+            <div class="col-md-5">
+              <!-- profile Name -->
+              <label class="">
+                Profile Name
+                <i class="field-required">*</i>
+              </label>
               <input
                 v-model="$v.form.name.$model"
                 id="title"
@@ -82,14 +81,11 @@
                 Name is required.
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Parent -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Parent</label>
-            <div class="col-sm-10">
+            
+            <div class="col-md-5">
+              <!-- Parent -->
+              <label class="">Parent</label>
               <ts-groupbox
                 v-model="form.parent"
                 :data="profiles"
@@ -98,6 +94,22 @@
                 placeholder="Select profile parent"
                 search-placeholder="search here..."
               />              
+            </div>
+
+            <!-- Billable -->
+            <div class="col-md-2">              
+              <div class="custom-control custom-switch mt-md-5 ml-md-2">
+                <input
+                  v-model="form.billable"
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="billable"
+                >
+                <label
+                  class="custom-control-label"
+                  for="billable"
+                >Billable</label>
+              </div> 
             </div>
           </div>
         </div>
@@ -132,6 +144,7 @@ export default {
       form: {
         name: "",
         parent: null,
+        billable: false,
         schema: ""
       }
     };
@@ -221,6 +234,7 @@ export default {
       this.form.parent = this.profiles.find(
         item => item.key == profile.parent_id
       ) || null;
+      this.form.billable = profile.billable;
       this.frmBuilder.actions.setData(JSON.stringify(profile.schema));
     },
 
@@ -268,6 +282,7 @@ export default {
       let form = {};
       form.name = this.form.name;
       if(this.form.parent) form.parent_id = this.form.parent.key;
+      form.billable = this.form.billable;
       form.schema = this.frmBuilder.actions.getData();
 
       this.update({ resource: "form", id: this.id, data: form })
@@ -290,6 +305,7 @@ export default {
       this.form.name = "";
       this.form.parent = null;
       this.form.schema = "";
+      this.form.billable = false;
       this.$v.form.$reset();
     },
 
