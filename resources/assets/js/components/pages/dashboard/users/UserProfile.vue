@@ -15,6 +15,7 @@
         <li>
           <button
             class="btn"
+            :disabled="userId != id"
             @click="onSave"
           >
             Save
@@ -65,138 +66,140 @@
     <template slot="content">
       <!-- Profile info -->
       <form class="needs-validation">
-        <div class="form-row">
-          <!-- profile picture -->
-          <div class="form-group col-sm-4">
-            <img
-              v-show="!loadingAvatar"
-              :src="form.avatar"
-              @load="loadingAvatar = false"
-              :class="['rounded mx-auto d-block', (loadingAvatar ? 'position-absolute':'position-relative')]"
-              :style="{ opacity: (loadingAvatar) ? 0 : 1 }"
-              alt="Profile picture"
-              width="200"
-              height="200"
-            >
-            <div
-              v-if="loadingAvatar"
-              class="d-flex flex-column justify-content-center align-items-center h-100"
-            >
-              <ts-spinner
-                :spinner-style="'grow'"
-                class="spinner-grow-lg"
-                :sr="'loading...'"
-              />
-              <strong>Loading profile picture...</strong>
-            </div>
-          </div>
-
-          <!-- profile info -->
-          <div class="form-group col-sm-8">
-            <!-- first name -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-3 col-form-lable">
-                  First Name
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    v-model="$v.form.firstname.$model"
-                    id="firstname"
-                    type="text"
-                    :class="[{'is-invalid' : $v.form.firstname.$error } ,'form-control']"
-                    placeholder="user first name"
-                  >
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.firstname.required"
-                  >
-                    First name is required.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- last name -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-3 col-form-lable">
-                  Last Name
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    v-model="$v.form.lastname.$model"
-                    id="lastname"
-                    type="text"
-                    :class="[{'is-invalid' : $v.form.lastname.$error } ,'form-control']"
-                    placeholder="user last name"
-                  >
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.lastname.required"
-                  >
-                    Last name is required.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- e-mail -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-3 col-form-lable">
-                  E-Mail
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    v-model="$v.form.email.$model"
-                    id="email"
-                    type="text"
-                    :class="[{'is-invalid' : $v.form.email.$error } ,'form-control']"
-                    placeholder="user e-mail"
-                  >
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.email.required"
-                  >
-                    E-Mail is required.
-                  </div>
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.email.email"
-                  >
-                    Should be a valid e-mail address.
-                  </div>
-                </div>
-              </div>
-            </div>
-
+        <fieldset :disabled="userId != id">
+          <div class="form-row">
             <!-- profile picture -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-3 col-form-lable">Profile Picture</label>
-                <div class="col-sm-9">
-                  <div class="custom-file">
+            <div class="form-group col-sm-4">
+              <img
+                v-show="!loadingAvatar"
+                :src="form.avatar"
+                @load="loadingAvatar = false"
+                :class="['rounded mx-auto d-block', (loadingAvatar ? 'position-absolute':'position-relative')]"
+                :style="{ opacity: (loadingAvatar) ? 0 : 1 }"
+                alt="Profile picture"
+                width="200"
+                height="200"
+              >
+              <div
+                v-if="loadingAvatar"
+                class="d-flex flex-column justify-content-center align-items-center h-100"
+              >
+                <ts-spinner
+                  :spinner-style="'grow'"
+                  class="spinner-grow-lg"
+                  :sr="'loading...'"
+                />
+                <strong>Loading profile picture...</strong>
+              </div>
+            </div>
+
+            <!-- profile info -->
+            <div class="form-group col-sm-8">
+              <!-- first name -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-sm-3 col-form-lable">
+                    First Name
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-sm-9">
                     <input
-                      id="avatar"
-                      name="avatar"
-                      type="file"
-                      class="custom-file-input"
-                      @change="onAttachment"
+                      v-model="$v.form.firstname.$model"
+                      id="firstname"
+                      type="text"
+                      :class="[{'is-invalid' : $v.form.firstname.$error } ,'form-control']"
+                      placeholder="user first name"
                     >
-                    <label
-                      for="avatar"
-                      class="custom-file-label"
-                    >Choose Profile Picture</label>
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.firstname.required"
+                    >
+                      First name is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- last name -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-sm-3 col-form-lable">
+                    Last Name
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-sm-9">
+                    <input
+                      v-model="$v.form.lastname.$model"
+                      id="lastname"
+                      type="text"
+                      :class="[{'is-invalid' : $v.form.lastname.$error } ,'form-control']"
+                      placeholder="user last name"
+                    >
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.lastname.required"
+                    >
+                      Last name is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- e-mail -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-sm-3 col-form-lable">
+                    E-Mail
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-sm-9">
+                    <input
+                      v-model="$v.form.email.$model"
+                      id="email"
+                      type="text"
+                      :class="[{'is-invalid' : $v.form.email.$error } ,'form-control']"
+                      placeholder="user e-mail"
+                    >
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.email.required"
+                    >
+                      E-Mail is required.
+                    </div>
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.email.email"
+                    >
+                      Should be a valid e-mail address.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- profile picture -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-sm-3 col-form-lable">Profile Picture</label>
+                  <div class="col-sm-9">
+                    <div class="custom-file">
+                      <input
+                        id="avatar"
+                        name="avatar"
+                        type="file"
+                        class="custom-file-input"
+                        @change="onAttachment"
+                      >
+                      <label
+                        for="avatar"
+                        class="custom-file-label"
+                      >Choose Profile Picture</label>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </fieldset>
       </form>
 
       <br>
@@ -752,8 +755,10 @@ export default {
       })
         .then(data => {
           this.populateForm(data);
-          this.updateUserInfo(data);
-          this.updateUserSettings(data.meta);
+          if (this.userId === data.id) {
+            this.updateUserInfo(data);
+            this.updateUserSettings(data.meta);
+          }
           this.showMessage(`Profile updated successfuly.`, "success");
         })
         .catch(error => {
