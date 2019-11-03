@@ -256,7 +256,9 @@ export default {
     populateForm(settings) {
       if(settings.business_hours){
         for (let i = 0; i < settings.business_hours.length; i++) {
-          this.form.businessHours[i] = Object.assign({}, settings.business_hours[i]);    
+          this.form.businessHours[i].isopen = settings.business_hours[i].isopen; 
+          this.form.businessHours[i].start = settings.business_hours[i].start; 
+          this.form.businessHours[i].end = settings.business_hours[i].end;    
         }
       }
 
