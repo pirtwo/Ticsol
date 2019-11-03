@@ -251,6 +251,7 @@ export default {
       let form = {};
       form.name = this.form.name;
       if(this.form.parent) form.parent_id = this.form.parent.key;
+      form.billable = this.form.billable;
       form.schema = this.frmBuilder.actions.getData();
       
       this.create({ resource: "form", data: form })
