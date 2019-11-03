@@ -3,7 +3,6 @@
 namespace App\Ticsol\Components\QuickBooks\Classes;
 
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2AccessToken;
-use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 use QuickBooksOnline\API\DataService\DataService;
 
 /**
@@ -67,9 +66,17 @@ class QBsAuth
      */
     public function updateAccessToken()
     {
-        $oauth2LoginHelper = new OAuth2LoginHelper($this->config["ClientID"], $this->config["ClientSecret"]);
-        $accessToken = $this->accessToken->getRefreshToken();
-        $this->accessToken = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($accessToken);
+        $this->dataService = DataService::Configure(array(
+            'auth_mode' => $this->config["auth_mode"],
+            'ClientID' => $this->config["ClientID"],
+            'ClientSecret' => $this->config["ClientSecret"],
+            'refreshTokenKey' => $this->accessToken->getRefreshToken(),
+            'RedirectURI' => $this->config["RedirectURI"],
+            'baseUrl' => $this->config["baseUrl"],
+            'QBORealmID' => $this->accessToken->getRealmID(),
+        ));
+        $OAuth2LoginHelper = $this->dataService->getOAuth2LoginHelper();
+        $this->accessToken = $OAuth2LoginHelper->refreshToken();
         $this->dataService->updateOAuth2Token($this->accessToken);
     }
 
