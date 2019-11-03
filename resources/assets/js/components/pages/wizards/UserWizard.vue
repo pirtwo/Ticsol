@@ -855,7 +855,7 @@
       <template slot="footer">
         <div class="wrap-buttons w-100 d-flex">
           <router-link
-            to="/home"
+            :to="{name: 'home'}"
             class="btn btn-link"
           >
             Escape
@@ -1245,7 +1245,7 @@ export default {
           e.target.disabled = false;
           this.isLoading = false;
 
-          if (this.currentStep === this.lastStep) this.$router.push("/home");
+          if (this.currentStep === this.lastStep) this.$router.push({name:'home'});
 
           this.currentStep =
             this.currentStep < this.lastStep
