@@ -230,7 +230,12 @@ class ScheduleController extends Controller
         //----------------------------
         $this->authorize('delete', $schedule);
 
-        return $this->repository->delete('id', $id, false);
+        $clientId = $schedule->client_id;
+        $result = $this->repository->delete('id', $id, false);
+
+        event(new Events\ScheduleDeleted($id, $clientId));
+
+        return $result;
     }
 
 
