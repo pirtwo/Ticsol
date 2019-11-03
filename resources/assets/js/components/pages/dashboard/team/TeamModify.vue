@@ -125,7 +125,7 @@
             <td>
               <router-link
                 class="btn btn-sm"
-                :to="{ name : 'userDetails', params : { id: item.id } }"
+                :to="{ name : 'userProfile', params : { id: item.key } }"
               >
                 <i class="material-icons">visibility</i>
               </router-link>
@@ -181,7 +181,11 @@ export default {
     }
   },
 
-  watch: {
+  watch: {    
+    id: function(val){
+      this.loadAssets();
+    },
+
     /**
      * Watching the current team, update form on change.
      */
