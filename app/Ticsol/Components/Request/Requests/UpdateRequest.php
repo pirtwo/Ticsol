@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Request\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest

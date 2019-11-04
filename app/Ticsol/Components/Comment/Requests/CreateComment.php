@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Comment\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateComment extends FormRequest

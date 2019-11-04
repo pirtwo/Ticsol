@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Job\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateJob extends FormRequest

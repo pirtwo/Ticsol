@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Contact\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactUpdate extends FormRequest

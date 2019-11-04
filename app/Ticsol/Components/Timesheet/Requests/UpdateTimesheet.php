@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Timesheet\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTimesheet extends FormRequest
