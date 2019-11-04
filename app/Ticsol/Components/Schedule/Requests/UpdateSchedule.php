@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSchedule extends FormRequest
 {
+    protected $clientId = null;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +15,7 @@ class UpdateSchedule extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -24,14 +27,28 @@ class UpdateSchedule extends FormRequest
     public function rules()
     {
         return [
-            'user_id'       => 'nullable|numeric|exists:ts_users,id',
-            'job_id'        => 'nullable|numeric|exists:ts_jobs,id',            
             'status'        => 'nullable|string|in:tentative,confirmed',            
             'start'         => 'nullable|date',
             'end'           => 'nullable|date|after:start',
             'billable'      => 'nullable|boolean',
             'offsite'       => 'nullable|boolean',
-            'break_length'  => 'nullable|numeric'
+            'break_length'  => 'nullable|numeric',
+
+            'user_id'       => [
+                'nullable', 
+                'numeric', 
+                Rule::exists('ts_users')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'job_id'        => [
+                'nullable', 
+                'numeric', 
+                Rule::exists('ts_jobs')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],                 
         ];
     }
 

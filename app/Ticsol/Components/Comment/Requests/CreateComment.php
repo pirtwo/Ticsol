@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateComment extends FormRequest
 {
+    protected $clientId = null;
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +15,7 @@ class CreateComment extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -24,18 +27,46 @@ class CreateComment extends FormRequest
     public function rules()
     {
         return [
-            'body'              => 'required|string',   
-            'entity'            => 'required|string|in:job,request,timesheet',         
-            'job_id'            => 'required_if:entity,job|integer|exists:ts_jobs,id',
-            'request_id'        => 'required_if:entity,request|integer|exists:ts_requests,id', 
-            'timesheet_id'      => 'required_if:entity,timesheet|integer|exists:ts_timesheets,id', 
-            'parent_id'         => 'nullable|integer|exists:ts_comments,id',          
+            'body' => 'required|string',
+            'entity' => 'required|string|in:job,request,timesheet',
+
+            'job_id' => [
+                'required_if:entity,job',
+                'integer',
+                Rule::exists('ts_jobs')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'request_id' => [
+                'required_if:entity,request',
+                'integer',
+                Rule::exists('ts_requests')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'timesheet_id' => [
+                'required_if:entity,timesheet',
+                'integer',
+                Rule::exists('ts_timesheets')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+            
+            'parent_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('ts_comments')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
         ];
     }
 
     public function messages()
     {
-        return[
+        return [
             //
         ];
     }

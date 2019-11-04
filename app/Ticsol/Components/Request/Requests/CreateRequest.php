@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRequest extends FormRequest
 {
+    protected $clientId = null;
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +15,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -24,10 +27,38 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_id'            => 'required_if:type,reimbursement|integer|exists:ts_jobs,id',
-            'form_id'           => 'nullable|integer|exists:ts_forms,id',
-            'assigned_id'       => 'required|integer|exists:ts_users,id',
-            'schedule_id'       => 'nullable|integer|exists:ts_schedules,id',
+            'job_id'            => [
+                'required_if:type,reimbursement', 
+                'integer',
+                Rule::exists('ts_jobs')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'form_id'           => [
+                'nullable', 
+                'integer',
+                Rule::exists('ts_forms')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }), 
+            ],
+
+            'assigned_id'       => [
+                'required', 
+                'integer', 
+                Rule::exists('ts_users')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'schedule_id'       => [
+                'nullable', 
+                'integer', 
+                Rule::exists('ts_schedules')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+            
             'type'              => 'required|string|in:leave,reimbursement',            
             'status'            => 'required|string|in:submitted',            
             
@@ -44,7 +75,7 @@ class CreateRequest extends FormRequest
             
             // Attachments
             'attachments'       => 'nullable|array|max:5',
-            'attachments.*'     => 'mimes:jpg,jpeg,png,doc,docx,xls,xlsx,pdf|max:5120'
+            'attachments.*'     => 'mimes:jpg,jpeg,png,doc,docx,xls,xlsx,pdf|max:5120',
         ];
     }
 

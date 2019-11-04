@@ -28,22 +28,28 @@ class CreateRole extends FormRequest
     public function rules()
     {
         return [
-            'name'          => [
-                'string', 
-                Rule::unique('ts_roles')->where(function($query){
-                    $query->where('client_id', $this->clientId);
-                })],          
-            'permissions'   => 'nullable|array',
             'users'         => 'nullable|array',
-            'users.*'       => Rule::exists('ts_users')->where(function ($query) {
-                $query->where('client_id', $this->clientId);
-            })
+            'permissions'   => 'nullable|array',
+
+            'name'          => [
+                'string',
+                Rule::unique('ts_roles')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'users.*'       => [
+                'integer',
+                Rule::exists('ts_users')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
         ];
     }
 
     public function messages()
     {
-        return[
+        return [
             //
         ];
     }

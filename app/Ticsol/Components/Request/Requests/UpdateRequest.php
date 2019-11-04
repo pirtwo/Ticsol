@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
+    protected $clientId = null;
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +15,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -24,10 +27,38 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_id'            => 'nullable|integer',
-            'form_id'           => 'nullable|integer',
-            'assigned_id'       => 'nullable|integer',
-            'schedule_id'       => 'nullable|integer',
+            'job_id'            => [
+                'nullable', 
+                'integer', 
+                Rule::exists('ts_jobs')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'form_id'           => [
+                'nullable', 
+                'integer',
+                Rule::exists('ts_forms')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }), 
+            ],
+
+            'assigned_id'       => [
+                'nullable', 
+                'integer', 
+                Rule::exists('ts_users')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'schedule_id'       => [
+                'nullable', 
+                'integer', 
+                Rule::exists('ts_schedules')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
             'status'            => 'required|string|in:submitted,suspended,draft,approved,rejected',
             'type'              => 'required|string|in:leave,reimbursement',     
 

@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateSchedule extends FormRequest
 {
+    protected $clientId = null;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +15,7 @@ class CreateSchedule extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -25,10 +28,22 @@ class CreateSchedule extends FormRequest
     {
         return [            
             'event_type'                    => 'required|string|in:unavailable,scheduled,RDO',
-            'user_id'                       => 'required|numeric|exists:ts_users,id',
+            'user_id'                       => [
+                'required', 
+                'numeric', 
+                Rule::exists('ts_users')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
 
             // Schedule item rules            
-            'job_id'                        => 'required_if:event_type,scheduled|numeric|exists:ts_jobs,id',            
+            'job_id'                        => [
+                'required_if:event_type,scheduled', 
+                'numeric', 
+                Rule::exists('ts_jobs')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],            
             'status'                        => 'required_if:event_type,scheduled|string|in:tentative,confirmed',            
             'start'                         => 'required_if:event_type,scheduled|date',
             'end'                           => 'required_if:event_type,scheduled|date|after:start',

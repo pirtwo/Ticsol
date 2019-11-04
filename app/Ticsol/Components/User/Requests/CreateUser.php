@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUser extends FormRequest
 {
+    protected $clientId = null;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +15,7 @@ class CreateUser extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -27,10 +30,22 @@ class CreateUser extends FormRequest
             'firstname'                 => 'required|string',            
             'lastname'                  => 'required|string',   
             'email'                     => 'required|email|unique:ts_users,email',
-            'teams'                     => 'nullable|array',
-            'teams.*'                   => 'numeric|exists:ts_teams,id',
+            'teams'                     => 'nullable|array',            
             'roles'                     => 'nullable|array',
-            'roles.*'                   => 'numeric|exists:ts_roles,id',
+
+            'teams.*'                   => [
+                'numeric',
+                Rule::exists('ts_teams')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+            
+            'roles.*'                   => [
+                'numeric',
+                Rule::exists('ts_roles')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
             
             // QBs
             'qbs_id'                    => 'nullable|numeric',
