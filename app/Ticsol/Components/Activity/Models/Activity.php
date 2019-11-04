@@ -39,10 +39,10 @@ class Activity extends Model
     {
         return $query->where('client_id', $clientId);
     }
-
-    public function scopeOfUser($query, $userId)
+    
+    public function scopeOfCreator($query, $creatorId)
     {
-        return $query->where('creator_id', $userId);
+        return $query->where('creator_id', $creatorId);
     }
 
     #region Eloquent_Relationships

@@ -45,8 +45,6 @@
         :data="reports"
         :header="header"
         :selection="false"
-        order-by="id"
-        order="asc"
       >
         <template
           slot="header"
@@ -110,8 +108,7 @@ export default {
         { value: "Job", orderBy: "job" },
         { value: "From", orderBy: "from" },
         { value: "Till", orderBy: "till" }
-      ],
-      order: "asc"
+      ]
     };
   },
 

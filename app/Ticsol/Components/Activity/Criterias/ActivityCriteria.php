@@ -21,7 +21,7 @@ class ActivityCriteria extends Criteria
     public function apply($model, IRepository $repository)
     {
 
-        $model->OfUser($this->user_id)->orderby('created_at', 'desc');
+        $model->OfCreator($this->user_id)->orderby('created_at', 'desc');
 
         return $model;
     }

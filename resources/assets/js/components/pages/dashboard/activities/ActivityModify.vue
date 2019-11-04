@@ -362,8 +362,7 @@ export default {
       let p2 = this.id
         ? this.list({
             resource: "activity",
-            id: this.id,
-            query: { with: "job" }
+            query: { eq: `id,${this.id}`, with: "job" }
           })
         : new Promise(resolve => resolve());      
 
