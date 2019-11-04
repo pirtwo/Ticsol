@@ -77,6 +77,16 @@ export const userModule = {
 
         getToken(state) {
             return state.token;
+        },
+
+        can: (state, getters) => (resource, permissions) => {
+            let userCan = false;
+            let userPerm = getters.getPermissions;
+            permissions.forEach(permission => {
+                if (userPerm.indexOf(`${permission}-${resource}`) > -1)
+                    userCan = true;
+            });
+            return userCan;
         }
     },
 
