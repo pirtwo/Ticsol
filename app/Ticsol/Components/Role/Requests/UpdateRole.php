@@ -30,17 +30,23 @@ class UpdateRole extends FormRequest
     public function rules()
     {
         return [
-            'name'          => [
+            'users' => 'nullable|array',
+            'permissions' => 'nullable|array',            
+
+            'name' => [
                 'required',
-                Rule::unique('ts_roles')->where(function($query){
+                Rule::unique('ts_roles')->where(function ($query) {
                     $query->where('client_id', $this->clientId)
                         ->where('id', '!=', $this->roleId);
-                })],
-            'permissions'   => 'nullable|array',
-            'users'         => 'nullable|array',
-            'users.*'       => Rule::exists('ts_users', 'id')->where(function ($query) {
-                $query->where('client_id', $this->clientId);
-            })
+                }),
+            ],
+
+            'users.*' => [
+                'integer',
+                Rule::exists('ts_users', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
         ];
     }
 

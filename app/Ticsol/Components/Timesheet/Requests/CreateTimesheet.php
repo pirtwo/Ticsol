@@ -2,11 +2,13 @@
 
 namespace App\Ticsol\Components\Timesheet\Requests;
 
+use Illuminate\Validation\Rule;
 use App\Ticsol\Components\Timesheet\Rules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateTimesheet extends FormRequest
 {
+    protected $clientId = null;
     protected $user;
 
     /**
@@ -16,6 +18,7 @@ class CreateTimesheet extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         $this->user = $this->user();
         return true;
     }
@@ -28,10 +31,19 @@ class CreateTimesheet extends FormRequest
     public function rules()
     {
         return [
-            'assigned_id' => 'nullable|numeric|exists:ts_users,id',
-            'locale' => 'required|in:en-US,en-AU',
-            'year' => 'required|date_format:Y|regex:/^\d{4}$/',
-            'week_number' => [
+            'locale'            => 'required|in:en-US,en-AU',
+            'year'              => 'required|date_format:Y|regex:/^\d{4}$/',
+            'total_hours'       => 'required|string',
+            'status'            => 'required|string|in:submitted,draft',
+
+            'assigned_id'       => [
+                'nullable', 
+                'numeric',
+                Rule::exists('ts_users', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }), 
+            ],             
+            'week_number'       => [
                 'required',
                 'numeric',
                 new Rules\WeekRange(
@@ -43,7 +55,7 @@ class CreateTimesheet extends FormRequest
                     $this->input('year')
                 ),
             ],
-            'week_start' => [
+            'week_start'        => [
                 'required',
                 'date_format:Y-m-d',
                 new Rules\ValidWeekStart(
@@ -52,7 +64,7 @@ class CreateTimesheet extends FormRequest
                     $this->input('week_number')
                 ),
             ],
-            'week_end' => [
+            'week_end'          => [
                 'required',
                 'date_format:Y-m-d',
                 new Rules\ValidWeekEnd(
@@ -61,13 +73,9 @@ class CreateTimesheet extends FormRequest
                     $this->input('week_start')
                 ),
             ],
-            'total_hours' => 'required|string',
-            'status' => 'required|string|in:submitted,draft',
-
+            
             // Timesheet items
-            'items'                 => 'required|array',
-            'items.*.user_id'       => 'required_with:items|numeric',
-            'items.*.job_id'        => 'required_with:items|numeric',
+            'items'                 => 'required|array',            
             'items.*.status'        => 'required_with:items|string|in:tentative,confirmed',
             'items.*.type'          => 'required_with:items|string|in:timesheet',
             'items.*.event_type'    => 'required_with:items|string|in:leave,scheduled,RDO',
@@ -75,6 +83,22 @@ class CreateTimesheet extends FormRequest
             'items.*.end'           => 'required_with:items|date',
             'items.*.billable'      => 'required_with:items|boolean',
             'items.*.break_length'  => 'required_with:items|string',
+
+            'items.*.user_id'       => [
+                'required_with:items', 
+                'numeric',
+                Rule::exists('ts_users', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+            
+            'items.*.job_id'        => [
+                'required_with:items', 
+                'numeric',
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
         ];
     }
 

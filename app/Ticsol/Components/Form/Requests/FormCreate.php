@@ -2,10 +2,13 @@
 
 namespace App\Ticsol\Components\Form\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormCreate extends FormRequest
 {
+    protected $clientId = null;
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +16,7 @@ class FormCreate extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -24,16 +28,23 @@ class FormCreate extends FormRequest
     public function rules()
     {
         return [
-            "name"          => "required|string",
-            "parent_id"     => "nullable|numeric|exists:ts_forms,id",
-            "schema"        => "array",
-            "billable"      => "boolean"
+            "name"      => "required|string",
+            "schema"    => "array",
+            "billable"  => "boolean",
+
+            "parent_id" => [
+                "nullable",
+                "numeric",
+                Rule::exists('ts_forms', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],            
         ];
     }
 
     public function messages()
     {
-        return[
+        return [
             //
         ];
     }

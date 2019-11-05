@@ -2,10 +2,13 @@
 
 namespace App\Ticsol\Components\Job\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateJob extends FormRequest
 {
+    protected $clientId = null;
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +16,7 @@ class UpdateJob extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -24,12 +28,34 @@ class UpdateJob extends FormRequest
     public function rules()
     {
         return [
-            'parent_id' => 'nullable|integer',
-            'form_id'   => 'nullable|integer',
-            'title'     => 'required|string|between:1,100',
-            'code'      => 'required|string|between:1,100',
-            'isactive'  => 'required|boolean',
-            'meta'      => 'nullable'
+            'title'         => 'required|string|between:1,100',
+            'code'          => 'required|string|between:1,100',
+            'isactive'      => 'required|boolean',
+            'contacts'      => 'nullable|array',
+            'meta'          => 'nullable',
+
+            'parent_id'     => [
+                'nullable', 
+                'integer',
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'form_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('ts_forms', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],     
+                       
+            'contacts.*'    => [
+                'integer',
+                Rule::exists('ts_contacts', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                })
+            ],            
         ];
     }
 

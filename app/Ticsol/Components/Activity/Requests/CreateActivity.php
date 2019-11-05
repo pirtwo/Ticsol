@@ -2,10 +2,13 @@
 
 namespace App\Ticsol\Components\Activity\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateActivity extends FormRequest
 {
+    protected $clientId = null;
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +16,7 @@ class CreateActivity extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
@@ -24,17 +28,31 @@ class CreateActivity extends FormRequest
     public function rules()
     {
         return [
-            'schedule_id'   => 'required|numeric|exists:ts_schedules,id',
-            'job_id'        => 'required|numeric|exists:ts_jobs,id',
-            'from'          => 'required|date',
-            'till'          => 'nullable|date',
-            'desc'          => 'required|string|max:1000'
+            'from' => 'required|date',
+            'till' => 'nullable|date',
+            'desc' => 'required|string|max:1000',
+            
+            'schedule_id' => [
+                'required',
+                'numeric',
+                Rule::exists('ts_schedules', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],
+
+            'job_id' => [
+                'required',
+                'numeric',
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->clientId);
+                }),
+            ],            
         ];
     }
 
     public function messages()
     {
-        return[
+        return [
             //
         ];
     }

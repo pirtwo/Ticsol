@@ -2,10 +2,13 @@
 
 namespace App\Ticsol\Components\User\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUser extends FormRequest
 {
+    protected $clientId = null;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,6 +16,7 @@ class UpdateUser extends FormRequest
      */
     public function authorize()
     {
+        $this->clientId = $this->user()->client_id;
         return true;
     }
 
