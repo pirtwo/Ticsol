@@ -103,7 +103,7 @@ export default {
       this.logout()
         .then(() => {
           console.log("successful logout");
-          this.$router.push({ name: "signout" });
+          this.$router.push({ name: "loggedout" });
         })
         .catch(error => {
           console.log(error);
