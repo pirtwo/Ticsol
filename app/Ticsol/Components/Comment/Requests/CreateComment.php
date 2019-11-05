@@ -34,7 +34,7 @@ class CreateComment extends FormRequest
             'job_id' => [
                 'required_if:entity,job',
                 'integer',
-                Rule::exists('ts_jobs')->where(function ($query) {
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -42,7 +42,7 @@ class CreateComment extends FormRequest
             'request_id' => [
                 'required_if:entity,request',
                 'integer',
-                Rule::exists('ts_requests')->where(function ($query) {
+                Rule::exists('ts_requests', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -50,7 +50,7 @@ class CreateComment extends FormRequest
             'timesheet_id' => [
                 'required_if:entity,timesheet',
                 'integer',
-                Rule::exists('ts_timesheets')->where(function ($query) {
+                Rule::exists('ts_timesheets', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -58,7 +58,7 @@ class CreateComment extends FormRequest
             'parent_id' => [
                 'nullable',
                 'integer',
-                Rule::exists('ts_comments')->where(function ($query) {
+                Rule::exists('ts_comments', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],

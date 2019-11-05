@@ -35,7 +35,7 @@ class FormUpdate extends FormRequest
             "parent_id"     => [
                 "nullable",
                 "numeric",
-                Rule::exists('ts_forms')->where(function ($query) {
+                Rule::exists('ts_forms', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],

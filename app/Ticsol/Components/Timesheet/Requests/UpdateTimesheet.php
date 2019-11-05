@@ -42,7 +42,7 @@ class UpdateTimesheet extends FormRequest
             'items.*.user_id'           => [
                 'required_with:items', 
                 'numeric',
-                Rule::exists('ts_users')->where(function ($query) {
+                Rule::exists('ts_users', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -50,7 +50,7 @@ class UpdateTimesheet extends FormRequest
             'items.*.job_id'            => [
                 'required_with:items', 
                 'numeric',
-                Rule::exists('ts_jobs')->where(function ($query) {
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],            
@@ -58,7 +58,7 @@ class UpdateTimesheet extends FormRequest
             'assigned_id'               => [
                 'nullable', 
                 'numeric',
-                Rule::exists('ts_users')->where(function ($query) {
+                Rule::exists('ts_users', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }), 
             ], 

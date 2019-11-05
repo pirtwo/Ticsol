@@ -36,14 +36,14 @@ class CreateUser extends FormRequest
 
             'teams.*'                   => [
                 'numeric',
-                Rule::exists('ts_teams')->where(function ($query) {
+                Rule::exists('ts_teams', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
             
             'roles.*'                   => [
                 'numeric',
-                Rule::exists('ts_roles')->where(function ($query) {
+                Rule::exists('ts_roles', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],

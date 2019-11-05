@@ -38,7 +38,7 @@ class UpdateSchedule extends FormRequest
             'user_id'       => [
                 'nullable', 
                 'numeric', 
-                Rule::exists('ts_users')->where(function ($query) {
+                Rule::exists('ts_users', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -46,7 +46,7 @@ class UpdateSchedule extends FormRequest
             'job_id'        => [
                 'nullable', 
                 'numeric', 
-                Rule::exists('ts_jobs')->where(function ($query) {
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],                 

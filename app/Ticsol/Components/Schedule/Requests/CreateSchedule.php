@@ -32,7 +32,7 @@ class CreateSchedule extends FormRequest
             'user_id'                       => [
                 'required', 
                 'numeric', 
-                Rule::exists('ts_users')->where(function ($query) {
+                Rule::exists('ts_users', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -41,7 +41,7 @@ class CreateSchedule extends FormRequest
             'job_id'                        => [
                 'required_if:event_type,scheduled', 
                 'numeric', 
-                Rule::exists('ts_jobs')->where(function ($query) {
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],            

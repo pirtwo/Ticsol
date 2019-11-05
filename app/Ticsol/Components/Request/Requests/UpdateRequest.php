@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
             'job_id'            => [
                 'nullable', 
                 'integer', 
-                Rule::exists('ts_jobs')->where(function ($query) {
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -39,7 +39,7 @@ class UpdateRequest extends FormRequest
             'form_id'           => [
                 'nullable', 
                 'integer',
-                Rule::exists('ts_forms')->where(function ($query) {
+                Rule::exists('ts_forms', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }), 
             ],
@@ -47,7 +47,7 @@ class UpdateRequest extends FormRequest
             'assigned_id'       => [
                 'nullable', 
                 'integer', 
-                Rule::exists('ts_users')->where(function ($query) {
+                Rule::exists('ts_users', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -55,7 +55,7 @@ class UpdateRequest extends FormRequest
             'schedule_id'       => [
                 'nullable', 
                 'integer', 
-                Rule::exists('ts_schedules')->where(function ($query) {
+                Rule::exists('ts_schedules', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],

@@ -38,7 +38,7 @@ class CreateJob extends FormRequest
             'parent_id'     => [
                 'nullable', 
                 'integer',
-                Rule::exists('ts_jobs')->where(function ($query) {
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -46,14 +46,14 @@ class CreateJob extends FormRequest
             'form_id' => [
                 'nullable',
                 'integer',
-                Rule::exists('ts_forms')->where(function ($query) {
+                Rule::exists('ts_forms', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
             
             'contacts.*'    => [
                 'integer',
-                Rule::exists('ts_contacts')->where(function ($query) {
+                Rule::exists('ts_contacts', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 })
             ],            

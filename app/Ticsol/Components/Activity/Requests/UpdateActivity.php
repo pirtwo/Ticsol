@@ -35,7 +35,7 @@ class UpdateActivity extends FormRequest
             'schedule_id' => [
                 'required',
                 'numeric',
-                Rule::exists('ts_schedules')->where(function ($query) {
+                Rule::exists('ts_schedules', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],
@@ -43,7 +43,7 @@ class UpdateActivity extends FormRequest
             'job_id' => [
                 'required',
                 'numeric',
-                Rule::exists('ts_jobs')->where(function ($query) {
+                Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],            
