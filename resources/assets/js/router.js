@@ -8,22 +8,7 @@ export const router = new VueRouter({
     mode: 'history',
     linkActiveClass: 'active',
     linkExactActiveClass: 'active',
-    routes: [
-        // Auth
-        {
-            path: '/auth',
-            name: 'auth',
-            redirect: { name: 'signout' },
-            component: require('./components/pages/auth/Auth.vue').default,
-            children: [
-                {
-                    path: '/signout',
-                    name: 'signout',
-                    meta: { requireAuth: false },
-                    component: require('./components/pages/auth/SignOut.vue').default
-                }
-            ]
-        },
+    routes: [   
 
         // Landing
         {
@@ -31,7 +16,8 @@ export const router = new VueRouter({
             name: 'index',
             meta: { requireAuth: false },
             component: require('./components/pages/Index.vue').default,
-        },
+
+        },        
 
         // Dashboard
         {
@@ -40,6 +26,7 @@ export const router = new VueRouter({
             meta: { requireAuth: true },
             redirect: { name: 'home' },
             component: require('./components/pages/dashboard/Dashboard.vue').default,
+            beforeEnter: routerGaurd,            
             children: [
 
                 // Home
@@ -47,7 +34,8 @@ export const router = new VueRouter({
                     path: '/home',
                     name: 'home',
                     meta: { requireAuth: true },
-                    component: require('./components/pages/dashboard/Home.vue').default
+                    component: require('./components/pages/dashboard/Home.vue').default,
+                    beforeEnter: routerGaurd, 
                 },
 
                 // Inbox & Requests 
@@ -64,12 +52,14 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             path: '/inbox/:col?/:opt?/:val?',
                             component: require('./components/pages/dashboard/requests/RequestList.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             name: 'leaveCreate',
                             meta: { requireAuth: true },
                             path: 'leave',
                             component: require('./components/pages/dashboard/requests/LeaveRequest.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             props: true,
@@ -77,12 +67,14 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             path: 'leave/:id/details',
                             component: require('./components/pages/dashboard/requests/LeaveRequest.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             name: 'reimbCreate',
                             meta: { requireAuth: true },
                             path: 'reimbursement',
                             component: require('./components/pages/dashboard/requests/ReimbRequest.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             props: true,
@@ -90,6 +82,7 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             path: 'reimbursement/:id/details',
                             component: require('./components/pages/dashboard/requests/ReimbRequest.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                     ]
                 },
@@ -107,6 +100,7 @@ export const router = new VueRouter({
                             name: 'scheduler',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/schedules/Scheduler.vue').default,
+                            beforeEnter: routerGaurd, 
                         }
                     ]
                 },
@@ -125,19 +119,32 @@ export const router = new VueRouter({
                             props: true,
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/team/TeamList.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'create',
                             name: 'teamCreate',
-                            meta: { requireAuth: true },
+                            meta: { 
+                                resourceName: 'team',
+                                requireAuth: true,
+                                requirePermission: true,
+                                permissions: ['full', 'create']
+                             },
                             component: require('./components/pages/dashboard/team/TeamModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/details',
                             name: 'teamDetails',
                             props: true,
-                            meta: { requireAuth: true },
+                            meta: { 
+                                resourceName: 'team',
+                                requireAuth: true,
+                                requirePermission: true,
+                                permissions: ['full', 'update']
+                             },
                             component: require('./components/pages/dashboard/team/TeamModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         }
                     ]
                 },
@@ -155,6 +162,7 @@ export const router = new VueRouter({
                             name: 'timesheetCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/timesheets/TimesheetModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/:start/:end/details',
@@ -162,6 +170,7 @@ export const router = new VueRouter({
                             props: true,
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/timesheets/TimesheetModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         }
                     ]
                 },
@@ -185,6 +194,7 @@ export const router = new VueRouter({
                                 permissions: ['full', 'list']
                             },
                             component: require('./components/pages/dashboard/jobs/JobList.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'create',
@@ -192,10 +202,11 @@ export const router = new VueRouter({
                             meta: {
                                 resourceName: 'job',
                                 requireAuth: true,
-                                requirePermission: false,
+                                requirePermission: true,
                                 permissions: ['full', 'create']
                             },
                             component: require('./components/pages/dashboard/jobs/JobModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/details',
@@ -204,10 +215,11 @@ export const router = new VueRouter({
                             meta: {
                                 resourceName: 'job',
                                 requireAuth: true,
-                                requirePermission: false,
+                                requirePermission: true,
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/dashboard/jobs/JobModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         }
                     ]
                 },
@@ -226,12 +238,14 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             props: true,
                             component: require('./components/pages/dashboard/activities/ActivityList.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'create',
                             name: 'activityCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/activities/ActivityModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/details',
@@ -239,6 +253,7 @@ export const router = new VueRouter({
                             props: true,
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/activities/ActivityModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         }
                     ]
                 },
@@ -257,12 +272,14 @@ export const router = new VueRouter({
                             meta: { requireAuth: true },
                             props: true,
                             component: require('./components/pages/dashboard/contacts/ContactList.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'create',
                             name: 'contactCreate',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/contacts/ContactModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/details',
@@ -270,6 +287,7 @@ export const router = new VueRouter({
                             props: true,
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/contacts/ContactModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         }
                     ]
                 },
@@ -285,15 +303,15 @@ export const router = new VueRouter({
                         {
                             path: 'list/:col?/:opt?/:val?',
                             name: 'profileList',
+                            props: true,
                             meta: {
                                 resourceName: 'job_profile',
                                 requireAuth: true,
                                 requirePermission: true,
                                 permissions: ['full', 'list']
-                            },
-                            props: true,
+                            },                            
                             component: require('./components/pages/dashboard/profiles/ProfileList.vue').default,
-                            beforeEnter: checkPermissions
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'create',
@@ -305,6 +323,7 @@ export const router = new VueRouter({
                                 permissions: ['full', 'create']
                             },
                             component: require('./components/pages/dashboard/profiles/ProfileModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/details',
@@ -317,6 +336,7 @@ export const router = new VueRouter({
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/dashboard/profiles/ProfileModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         }
                     ]
                 },
@@ -340,13 +360,20 @@ export const router = new VueRouter({
                                 permissions: ['full', 'list']
                             },
                             component: require('./components/pages/dashboard/users/UserList.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             props: true,
                             path: ':id/profile',
                             name: 'userProfile',
-                            meta: { requireAuth: true },
+                            meta: { 
+                                resourceName: 'user',
+                                requireAuth: true,
+                                requirePermission: true,
+                                permissions: ['full', 'update']
+                             },
                             component: require('./components/pages/dashboard/users/UserProfile.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                     ]
                 },
@@ -362,14 +389,15 @@ export const router = new VueRouter({
                         {
                             path: 'list/:col?/:opt?/:val?',
                             name: 'roleList',
+                            props: true,
                             meta: {
                                 resourceName: 'role',
                                 requireAuth: true,
                                 requirePermission: true,
                                 permissions: ['full', 'list']
-                            },
-                            props: true,
+                            },                            
                             component: require('./components/pages/dashboard/roles/RoleList.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'create',
@@ -381,6 +409,7 @@ export const router = new VueRouter({
                                 permissions: ['full', 'create']
                             },
                             component: require('./components/pages/dashboard/roles/RoleModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/details',
@@ -393,6 +422,7 @@ export const router = new VueRouter({
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/dashboard/roles/RoleModify.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: ':id/users',
@@ -405,6 +435,7 @@ export const router = new VueRouter({
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/dashboard/roles/RoleUsers.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                     ]
                 },
@@ -423,6 +454,7 @@ export const router = new VueRouter({
                             props: true,
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/comments/CommentList.vue').default,
+                            beforeEnter: routerGaurd, 
                         }]
                 },
 
@@ -439,6 +471,7 @@ export const router = new VueRouter({
                             name: 'userSettings',
                             meta: { requireAuth: true },
                             component: require('./components/pages/dashboard/settings/UserSettings.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'client',
@@ -450,6 +483,7 @@ export const router = new VueRouter({
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/dashboard/settings/ClientSettings.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                     ]
                 },
@@ -472,12 +506,14 @@ export const router = new VueRouter({
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/wizards/ClientWizard.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'user',
                             name: 'userWizard',
                             meta: { requireAuth: true },
                             component: require('./components/pages/wizards/UserWizard.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                         {
                             path: 'quickbooks',
@@ -489,63 +525,58 @@ export const router = new VueRouter({
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/wizards/QuickBooks.vue').default,
+                            beforeEnter: routerGaurd, 
                         },
                     ]
-                },
-
-                // 403
-                {
-                    path: '/forbidden',
-                    name: 'forbidden',
-                    meta: { requireAuth: false },
-                    component: require('./components/pages/Forbidden.vue').default,
-                },
-
-                // 404
-                {
-                    path: '/*',
-                    name: 'NotFound',
-                    meta: { requireAuth: false },
-                    component: require('./components/pages/NotFound.vue').default,
-                },
+                },                
             ]
+        }, // End of dashboard
+
+        // LoggedOut
+        {
+            path: '/loggedout',
+            name: 'loggedout',
+            meta: { requireAuth: false },
+            component: require('./components/pages/LoggedOut.vue').default,
+        },
+
+        // 403
+        {
+            path: '/forbidden',
+            name: 'forbidden',
+            meta: { requireAuth: false },
+            component: require('./components/pages/Forbidden.vue').default,
+        },
+
+        // 404
+        {
+            path: '/*',
+            name: 'NotFound',
+            meta: { requireAuth: false },
+            component: require('./components/pages/NotFound.vue').default,
         },
     ]
 });
 
-// check auth
-router.beforeEach((to, from, next) => {
+
+function routerGaurd(to, from, next) {
     let user = store.state.user;
-    let can = store.getters['user/can'];
+    let userCan = store.getters['user/can'];
     let authUrl = store.getters.getAuthUrl;
 
-    // redirect to home if user authenticated.
-    if (to.name === "index") {
-        if (user.isAuth) next({ name: 'home' });
-    }
+    console.log(from);
+    console.log(to);
 
-    // if not authenticated 
-    // redirect to login page
+    // Check Authentication
     if (to.meta.requireAuth && !user.isAuth) {
         window.location.href = authUrl;
     }
 
-    // if user dosen't have permission then:
-    // redirect to forbidden.
-    // if (to.meta.requirePermission) {
-    //     if (!can(to.meta.resourceName, to.meta.permissions)) {
-    //         next({ name: 'forbidden' });
-    //     }
-    // }
+    // Check Permissions
+    if (to.meta.resourceName && to.meta.permissions)
+        if (!userCan(to.meta.resourceName, to.meta.permissions) && to.meta.requirePermission) {
+            next({ name: 'forbidden' });
+        }
 
     next();
-});
-
-function checkPermissions(to, from, next) {
-    let can = store.getters['user/can'];
-    if(can(to.meta.resourceName, to.meta.permissions)){
-        next();
-    }else{
-        next({ name: 'forbidden' });
-    }
 }
