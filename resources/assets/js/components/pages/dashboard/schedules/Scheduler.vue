@@ -553,7 +553,7 @@ export default {
 
     getBusinessHourEnd(dayNum){
       let day = this.businessHours.find(item => item.day == dayNum);
-      if(!day)
+      if(!day || day.end === '00:00')
         return "00:01:00";
       return `${day.end}:00`;
     },
