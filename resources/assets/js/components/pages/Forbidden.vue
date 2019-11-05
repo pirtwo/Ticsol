@@ -11,7 +11,7 @@
             class="app-logo"
           >
           <div class="text-center">
-            <h3>Sorry, Access Denied</h3>
+            <h3>Access Denied</h3>
             <p class="text-muted text-justify">
               You don't have permissions to see this page, for more information contact 
               your adminstrator. Go back to  
