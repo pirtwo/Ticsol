@@ -368,18 +368,18 @@
         <template slot="footer">
           <button
             type="button"
-            class="btn btn-primary"
-            @click="onSubmit"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
             class="btn btn-light"
             @click="approverModal = false"
           >
             Cancel
           </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="onSubmit"
+          >
+            Submit
+          </button>          
         </template>
       </ts-modal>
 
@@ -441,18 +441,18 @@
         <template slot="footer">
           <button
             type="button"
-            class="btn btn-primary"
-            @click="onGenerate"
-          >
-            Generate
-          </button>
-          <button
-            type="button"
             class="btn btn-light"
             @click="generateModal = false"
           >
             Cancel
           </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="onGenerate"
+          >
+            Generate
+          </button>          
         </template>
       </ts-modal>
     </template>

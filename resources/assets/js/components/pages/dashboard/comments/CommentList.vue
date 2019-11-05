@@ -114,6 +114,13 @@
         />
         <template slot="footer">
           <button
+            type="button"
+            class="btn btn-light"
+            @click="cancelModal"
+          >
+            Cancel
+          </button>
+          <button
             v-if="!editMode"
             type="button"
             class="btn btn-primary"
@@ -128,14 +135,7 @@
             @click="editComment"
           >
             Update
-          </button>
-          <button
-            type="button"
-            class="btn btn-light"
-            @click="cancelModal"
-          >
-            Cancel
-          </button>
+          </button>          
         </template>
       </ts-modal>
 
@@ -150,17 +150,17 @@
         </div>
         <template slot="footer">
           <button
-            class="btn btn-danger"
-            @click="deleteComment"
-          >
-            Delete
-          </button>
-          <button
             class="btn btn-light"
             @click="confirmModal = false"
           >
             Cancel
           </button>
+          <button
+            class="btn btn-danger"
+            @click="deleteComment"
+          >
+            Delete
+          </button>          
         </template>
       </ts-modal>
     </template>
