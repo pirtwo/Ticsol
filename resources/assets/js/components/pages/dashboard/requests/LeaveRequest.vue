@@ -291,7 +291,7 @@
                 :multi-select="false"
                 :class="[{'is-invalid' : $v.form.approver.$error } ,'form-control']"
                 id="assigned_id"
-                placeholder="please selet the approver..."
+                placeholder="please select the approver..."
                 search-placeholder="search..."
               />
               <div

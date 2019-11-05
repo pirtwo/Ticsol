@@ -371,7 +371,7 @@
             class="btn btn-primary"
             @click="onSubmit"
           >
-            Submitt
+            Submit
           </button>
           <button
             type="button"
