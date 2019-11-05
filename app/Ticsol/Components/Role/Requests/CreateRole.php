@@ -40,7 +40,7 @@ class CreateRole extends FormRequest
 
             'users.*'       => [
                 'integer',
-                Rule::exists('ts_users')->where(function ($query) {
+                Rule::exists('ts_users', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
             ],

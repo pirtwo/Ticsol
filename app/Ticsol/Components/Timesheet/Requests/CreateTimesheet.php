@@ -2,6 +2,7 @@
 
 namespace App\Ticsol\Components\Timesheet\Requests;
 
+use Illuminate\Validation\Rule;
 use App\Ticsol\Components\Timesheet\Rules;
 use Illuminate\Foundation\Http\FormRequest;
 
