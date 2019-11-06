@@ -21,18 +21,20 @@
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">
-          Actions
-        </li>
-        <li>
-          <router-link
-            tag="button"
-            class="btn"
-            :to="{ name: 'jobCreate' }"
-          >
-            New
-          </router-link>
-        </li>
+        <template v-if="userCan('job', ['full', 'create'])">
+          <li class="menu-title">
+            Actions
+          </li>
+          <li>
+            <router-link
+              tag="button"
+              class="btn"
+              :to="{ name: 'jobCreate' }"
+            >
+              New
+            </router-link>
+          </li>
+        </template>       
         <li class="menu-title">
           Links
         </li>
@@ -120,7 +122,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      getList: "resource/getList"
+      userCan: "user/can",
+      getList: "resource/getList",
     }),
 
     jobs: function() {

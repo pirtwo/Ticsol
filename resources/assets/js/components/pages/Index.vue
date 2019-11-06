@@ -52,20 +52,25 @@ export default {
   beforeRouteEnter(to, from, next) {    
     next(vm => {
       vm.hash = to.hash;
-      if (vm.hash) vm.resolveHash();
-      else vm.requestAccessToken();
+      if (vm.isAuth) {
+        vm.$router.push({name:'home'})
+      } else{
+        if (vm.hash) vm.resolveHash();
+        else vm.requestAccessToken();
+      } 
     });
   },
 
   computed:{
     ...mapGetters({
-      authUrl: "getAuthUrl"
+      authUrl: "getAuthUrl",
+      isAuth: "user/getIsAuth"
     })
   },
 
   methods: {
     ...mapActions({  
-      me: "user/me",    
+      me: "user/me",          
       extractToken: "user/extractToken",      
       successfulAuth: "user/successfulAuth",
       connectToChannels: "core/connectToChannels"

@@ -26,6 +26,7 @@
           </router-link>
 
           <router-link
+            v-if="userCan('client', ['full', 'update'])"
             :to="{ name : 'clientSettings' }"
             class="dropdown-item"
           >
@@ -91,6 +92,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userCan: "user/can",
       userId: "user/getId",
       avatar: "user/getAvatar",
       userName: "user/getUsername"
@@ -103,7 +105,7 @@ export default {
       this.logout()
         .then(() => {
           console.log("successful logout");
-          this.$router.push({ name: "signout" });
+          this.$router.push({ name: "loggedout" });
         })
         .catch(error => {
           console.log(error);

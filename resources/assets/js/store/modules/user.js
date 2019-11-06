@@ -1,4 +1,3 @@
-import Pusher from 'pusher-js';
 import { api } from "../../api/http";
 import * as URLs from "../../api/resources";
 import * as MUTATIONS from "../mutation-types";
@@ -51,7 +50,7 @@ export const userModule = {
             return state.info.avatar;
         },
 
-        isOwner(state){
+        isOwner(state) {
             return state.info.isowner;
         },
 
@@ -77,6 +76,21 @@ export const userModule = {
 
         getToken(state) {
             return state.token;
+        },
+
+        can: (state, getters) => (resource, permissions) => {
+            let userCan = false;
+            let userPerm = getters.getPermissions;
+
+            if(!state.isAuth) return false;
+
+            if (getters.isowner) return true;
+
+            permissions.forEach(permission => {
+                if (userPerm.indexOf(`${permission}-${resource}`) > -1)
+                    userCan = true;
+            });
+            return userCan;
         }
     },
 
@@ -94,7 +108,7 @@ export const userModule = {
         },
 
         [MUTATIONS.USER_SETTINGS](state, payload) {
-            if(!payload)
+            if (!payload)
                 return;
             state.settings = {};
             state.settings.ical = payload.ical;

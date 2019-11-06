@@ -358,6 +358,7 @@ export default {
   computed: {
     ...mapGetters({
       userId: "user/getId",
+      userCan: "user/can",
       getList: "resource/getList"
     }),
 
@@ -453,7 +454,7 @@ export default {
 
     canApprove() {
       if (!this.request) return false;
-      return this.request.assigned_id === this.userId;
+      return this.request.assigned_id === this.userId && this.userCan('reimbursement', ['full', 'approve']);
     },  
     
     approve(e){

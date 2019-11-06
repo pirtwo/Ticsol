@@ -11,19 +11,9 @@
             class="app-logo"
           >
           <div class="text-center">
-            <h3>Whoops, page not found</h3>
+            <h3>You logged out successfuly</h3>
             <p class="text-muted">
-              We didn't find the page. Go to  
-              <router-link to="/home">
-                home
-              </router-link> or
-              <button
-                class="btn btn-link"
-                type="button"
-                @click="goBack"
-              >
-                back
-              </button>
+              Hope to see you soon :D
             </p>
           </div> 
         </div>     
@@ -33,13 +23,9 @@
 </template>
 <script>
 export default {
-  name: "NotFound",
+  name: "LoggedOut",
 
-  methods:{
-    goBack(){
-      this.$router.go(-1);
-    }
-  }
+  methods:{}
 }
 </script>
 <style scoped>

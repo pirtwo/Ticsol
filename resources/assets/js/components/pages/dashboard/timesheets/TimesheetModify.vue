@@ -541,6 +541,7 @@ export default {
   computed: {
     ...mapGetters({
       userId: "user/getId",
+      userCan: "user/can",
       getList: "resource/getList"
     }),
 
@@ -792,7 +793,7 @@ export default {
     canApprove() {
       if (!this.timesheet) {
         return false;
-      } else return this.timesheet.request.assigned_id == this.userId;
+      } else return this.timesheet.request.assigned_id == this.userId && this.userCan('timesheet', ['full', 'approve']);
     },
 
     approve(e) {

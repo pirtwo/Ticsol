@@ -11,19 +11,13 @@
             class="app-logo"
           >
           <div class="text-center">
-            <h3>Whoops, page not found</h3>
-            <p class="text-muted">
-              We didn't find the page. Go to  
+            <h3>Access Denied</h3>
+            <p class="text-muted text-justify">
+              You don't have permissions to see this page, for more information contact 
+              your adminstrator. Go back to  
               <router-link to="/home">
-                home
-              </router-link> or
-              <button
-                class="btn btn-link"
-                type="button"
-                @click="goBack"
-              >
-                back
-              </button>
+                Dashboard
+              </router-link>.
             </p>
           </div> 
         </div>     
@@ -33,13 +27,9 @@
 </template>
 <script>
 export default {
-  name: "NotFound",
+  name: "Forbidden",
 
-  methods:{
-    goBack(){
-      this.$router.go(-1);
-    }
-  }
+  methods:{}
 }
 </script>
 <style scoped>
