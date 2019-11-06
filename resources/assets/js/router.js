@@ -215,7 +215,7 @@ export const router = new VueRouter({
                             meta: {
                                 resourceName: 'job',
                                 requireAuth: true,
-                                requirePermission: true,
+                                requirePermission: false,
                                 permissions: ['full', 'update']
                             },
                             component: require('./components/pages/dashboard/jobs/JobModify.vue').default,
@@ -369,7 +369,7 @@ export const router = new VueRouter({
                             meta: { 
                                 resourceName: 'user',
                                 requireAuth: true,
-                                requirePermission: true,
+                                requirePermission: false,
                                 permissions: ['full', 'update']
                              },
                             component: require('./components/pages/dashboard/users/UserProfile.vue').default,
@@ -530,7 +530,7 @@ export const router = new VueRouter({
                     ]
                 },                
             ]
-        }, // End of dashboard
+        },
 
         // LoggedOut
         {
@@ -563,9 +563,6 @@ function routerGaurd(to, from, next) {
     let user = store.state.user;
     let userCan = store.getters['user/can'];
     let authUrl = store.getters.getAuthUrl;
-
-    console.log(from);
-    console.log(to);
 
     // Check Authentication
     if (to.meta.requireAuth && !user.isAuth) {
