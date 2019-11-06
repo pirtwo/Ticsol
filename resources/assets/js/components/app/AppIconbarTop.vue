@@ -26,6 +26,7 @@
           </router-link>
 
           <router-link
+            v-if="userCan('client', ['full', 'update'])"
             :to="{ name : 'clientSettings' }"
             class="dropdown-item"
           >
@@ -91,6 +92,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userCan: "user/can",
       userId: "user/getId",
       avatar: "user/getAvatar",
       userName: "user/getUsername"
