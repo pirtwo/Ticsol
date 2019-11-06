@@ -84,7 +84,7 @@ export const userModule = {
 
             if(!state.isAuth) return false;
 
-            if (getters.isowner) return true;
+            if (getters.isOwner) return true;
 
             permissions.forEach(permission => {
                 if (userPerm.indexOf(`${permission}-${resource}`) > -1)
