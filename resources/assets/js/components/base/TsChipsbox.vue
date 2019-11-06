@@ -9,8 +9,8 @@
   >
     <div
       tabindex="0"
-      @click="show = !disabled ? true : false"
       ref="tsChipsbox"
+      @click="show = !disabled ? true : false"      
       :class="[{ 'disabled': disabled }, 'ts-chipsbox form-control']"
       slot-scope="{selects, options, dropdownStatus, isFocused, isSelected, onKeyDown, toggleOption, deSelectOption, highlightText}"
     >
@@ -24,7 +24,7 @@
           <ts-chips
             v-for="item in value"
             :key="item.key"
-            :btn-close="true"
+            :btn-close="!disabled"
             :title="item.value"
             @close="deSelectOption(item)"
           >
@@ -41,7 +41,7 @@
           <ts-chips
             v-if="value"
             :title="value.value"
-            :btn-close="true"
+            :btn-close="!disabled"
             @close="deSelectOption(value)"
           >
             <div>{{ value.value }}</div>

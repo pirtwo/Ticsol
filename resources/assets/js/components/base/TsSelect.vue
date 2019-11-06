@@ -3,8 +3,7 @@
     ref="vbSelect" 
     class="ts-select"
   >
-    <input
-      readonly
+    <input      
       ref="input"
       type="text"
       :class="[`form-control-${size}`,'ts-select__input form-control']"
@@ -269,7 +268,6 @@ export default {
 
 .ts-select__input {
   cursor: pointer;
-  background-color: white;
 }
 
 .ts-select__toggleBtn {

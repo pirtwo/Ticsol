@@ -9,9 +9,9 @@
   >
     <div
       tabindex="0"
-      @click="show = true"
       ref="tsGroupbox"
-      class="ts-groupbox form-control"
+      @click="show = !disabled ? true : false"      
+      :class="[{ 'disabled': disabled }, 'ts-groupbox form-control']"
       slot-scope="{selects, options, dropdownStatus, isFocused, isSelected, onKeyDown, toggleOption, deSelectOption, highlightText}"
     >
       <!-- input -->
@@ -28,7 +28,7 @@
           <ts-chips
             v-for="item in value"
             :key="item.key"
-            :btn-close="true"
+            :btn-close="!disabled"
             @close="deSelectOption(item)"
           >
             <div>{{ item.value }}</div>
@@ -43,7 +43,7 @@
         <template v-else>
           <ts-chips
             v-if="value"
-            :btn-close="true"
+            :btn-close="!disabled"
             @close="deSelectOption(value)"
           >
             <div>{{ value.value }}</div>
@@ -60,6 +60,7 @@
       <!-- toggole btn-->
       <button
         type="button"
+        :disabled="disabled"
         class="ts-groupbox__toggleBtn btn btn-sm btn-link"
       >
         <i class="material-icons">{{ show ? 'expand_less' : 'expand_more' }}</i>
@@ -141,7 +142,36 @@ export default {
     "base-selectbox": BaseSelectbox
   },
 
-  props: ["value", "data", "multi", "placeholder", "searchPlaceholder"],
+  props: {
+    value: {
+      type: [Object, Array],
+      default: () => {
+        return [];
+      }
+    },
+    data: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
+    multi: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    },
+    searchPlaceholder: {
+      type: String,
+      default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
 
   data() {
     return {
@@ -178,6 +208,10 @@ export default {
 .ts-groupbox {
   position: relative;  
   height: auto !important;
+}
+
+.disabled {
+  background-color: #e9ecef !important;
 }
 
 .ts-groupbox__input {
