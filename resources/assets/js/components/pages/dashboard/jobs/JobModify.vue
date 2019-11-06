@@ -8,41 +8,43 @@
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">
-          Actions
-        </li>
-        <li v-if="!this.id">
-          <button
-            class="btn"
-            @click="clearForm"
-          >
-            New
-          </button>
-        </li>
-        <li v-if="!this.id">
-          <button
-            class="btn"
-            @click="onSubmit"
-          >
-            Submit
-          </button>
-        </li>
-        <li v-if="this.id">
-          <button
-            class="btn"
-            @click="onSave"
-          >
-            Save
-          </button>
-        </li>
-        <li>
-          <button
-            class="btn"
-            @click="onCancel"
-          >
-            Cancel
-          </button>
-        </li>
+        <template v-if="userCan('job', ['full', 'create', 'update'])">
+          <li class="menu-title">
+            Actions
+          </li>
+          <li v-if="!this.id">
+            <button
+              class="btn"
+              @click="clearForm"
+            >
+              New
+            </button>
+          </li>
+          <li v-if="!this.id">
+            <button
+              class="btn"
+              @click="onSubmit"
+            >
+              Submit
+            </button>
+          </li>
+          <li v-if="this.id">
+            <button
+              class="btn"
+              @click="onSave"
+            >
+              Save
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn"
+              @click="onCancel"
+            >
+              Cancel
+            </button>
+          </li>
+        </template>       
         <li class="menu-title">
           Links
         </li>       
@@ -124,144 +126,150 @@
     <template slot="content">
       <!-- Job Form -->
       <form class="needs-validation">
-        <!-- title -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Title <i class="field-required">*</i></label>
-            <div class="col-sm-10">
-              <input
-                v-model="$v.form.title.$model"
-                id="title"
-                type="text"
-                :class="[{'is-invalid' : $v.form.title.$error } ,'form-control']"
-                placeholder="job title"
-              >
-              <div
-                class="invalid-feedback"
-                v-if="!$v.form.title.required"
-              >
-                Title is required.
+        <fieldset :disabled="!userCan('job', ['full', 'update'])">
+          <!-- title -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Title <i class="field-required">*</i></label>
+              <div class="col-sm-10">
+                <input
+                  v-model="$v.form.title.$model"
+                  id="title"
+                  type="text"
+                  :class="[{'is-invalid' : $v.form.title.$error } ,'form-control']"
+                  placeholder="job title"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.title.required"
+                >
+                  Title is required.
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Code -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Code <i class="field-required">*</i></label>
-            <div class="col-sm-10">
-              <input
-                v-model="$v.form.code.$model"
-                id="code"
-                type="text"
-                :class="[{'is-invalid' : $v.form.code.$error } ,'form-control']"
-                placeholder="display code"
-              >
-              <div
-                class="invalid-feedback"
-                v-if="!$v.form.code.required"
-              >
-                Code is required.
+          <!-- Code -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Code <i class="field-required">*</i></label>
+              <div class="col-sm-10">
+                <input
+                  v-model="$v.form.code.$model"
+                  id="code"
+                  type="text"
+                  :class="[{'is-invalid' : $v.form.code.$error } ,'form-control']"
+                  placeholder="display code"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.code.required"
+                >
+                  Code is required.
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Parent -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Parent</label>
-            <div class="col-sm-10">
-              <ts-groupbox
-                v-model="form.parent"
-                :data="jobs"
-                id="parent_id"
-                name="jobParent"
-                placeholder="select job parent"
-                search-placeholder="search here..."
-              />
+          <!-- Parent -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Parent</label>
+              <div class="col-sm-10">
+                <ts-groupbox
+                  v-model="form.parent"
+                  :data="jobs"
+                  id="parent_id"
+                  name="jobParent"
+                  placeholder="select job parent"
+                  search-placeholder="search here..."
+                  :disabled="!userCan('job', ['full', 'update'])"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Profile -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Profile</label>
-            <div class="col-sm-10">
-              <ts-groupbox
-                v-model="form.profile"
-                :data="profiles"
-                id="form_id"
-                name="jobProfile"
-                placeholder="select job profile"
-                search-placeholder="search here..."
-              />
+          <!-- Profile -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Profile</label>
+              <div class="col-sm-10">
+                <ts-groupbox
+                  v-model="form.profile"
+                  :data="profiles"
+                  id="form_id"
+                  name="jobProfile"
+                  placeholder="select job profile"
+                  search-placeholder="search here..."
+                  :disabled="!userCan('job', ['full', 'update'])"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- contact -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Contacts</label>
-            <div class="col-sm-10">
-              <ts-chipsbox
-                v-model="form.contacts"
-                :data="contacts"
-                :multi="true"
-                id="contacts"
-                name="contacts"
-                placeholder="select job contacts"
-                search-placeholder="search here..."
-              />
+          <!-- contact -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Contacts</label>
+              <div class="col-sm-10">
+                <ts-chipsbox
+                  v-model="form.contacts"
+                  :data="contacts"
+                  :multi="true"
+                  id="contacts"
+                  name="contacts"
+                  placeholder="select job contacts"
+                  search-placeholder="search here..."
+                  :disabled="!userCan('job', ['full', 'update'])"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Status -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Status <i class="field-required">*</i></label>
+          <!-- Status -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Status <i class="field-required">*</i></label>
 
-            <div class="custom-control custom-radio custom-control-inline">
-              <input
-                v-model="form.isactive"
-                type="radio"
-                id="jobEnable"
-                name="status"
-                value="1"
-                class="custom-control-input"
-                checked
-              >
-              <label
-                class="custom-control-label"
-                for="jobEnable"
-              >Enable</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-              <input
-                v-model="form.isactive"
-                type="radio"
-                id="jobDisable"
-                name="status"
-                value="0"
-                class="custom-control-input"
-              >
-              <label
-                class="custom-control-label"
-                for="jobDisable"
-              >Disable</label>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input
+                  v-model="form.isactive"
+                  type="radio"
+                  id="jobEnable"
+                  name="status"
+                  value="1"
+                  class="custom-control-input"
+                  checked
+                >
+                <label
+                  class="custom-control-label"
+                  for="jobEnable"
+                >Enable</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input
+                  v-model="form.isactive"
+                  type="radio"
+                  id="jobDisable"
+                  name="status"
+                  value="0"
+                  class="custom-control-input"
+                >
+                <label
+                  class="custom-control-label"
+                  for="jobDisable"
+                >Disable</label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <form-gen
-          :schema="schema"
-          v-model="form.meta"
-        />
-      </form>      
+          <!-- Custom Fields -->
+          <form-gen
+            :schema="schema"
+            v-model="form.meta"
+          />
+        </fieldset>     
+      </form>
     </template>
   </app-main>
 </template>
@@ -326,6 +334,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userCan: "user/can",
       getList: "resource/getList"
     }),
 

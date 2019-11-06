@@ -11,7 +11,7 @@
         <li class="menu-title">
           Actions
         </li>
-        <li v-if="!this.team">
+        <li v-if="!this.team && userCan('team', ['full', 'create'])">
           <button
             class="btn"
             @click="onSubmit"
@@ -19,7 +19,7 @@
             Submit
           </button>
         </li>
-        <li v-if="this.team">
+        <li v-if="this.team && userCan('team', ['full', 'update'])">
           <button
             class="btn"
             @click="onSave"
@@ -27,7 +27,7 @@
             Save
           </button>
         </li>
-        <li>
+        <li v-if="userCan('team', ['full', 'update'])">
           <button
             class="btn"
             @click="onCancel"
@@ -196,6 +196,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userCan: "user/can",
       getList: "resource/getList"
     }),
 

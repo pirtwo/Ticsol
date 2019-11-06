@@ -24,7 +24,7 @@
         <li class="menu-title">
           Actions
         </li>
-        <li>
+        <li v-if="userCan('team', ['full', 'create'])">
           <router-link
             tag="button"
             class="btn"
@@ -112,6 +112,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userCan: "user/can",
       getList: "resource/getList"
     }),
 

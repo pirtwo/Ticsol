@@ -83,7 +83,7 @@
             <li
               :key="user.id"
               :data-id="user.id"
-              class="res-user d-flex align-items-center"
+              :class="[{ 'draggable' : userCan('schedule', ['full', 'create']) }, 'res-user d-flex align-items-center']"
             >
               <img
                 :src="user.avatar"
@@ -100,7 +100,7 @@
             <li
               :key="job.id"
               :data-id="job.id"
-              class="res-job"
+              :class="[{ 'draggable' : userCan('schedule', ['full', 'create']) }, 'res-job']"
             >
               <div class="res__title">
                 {{ job.title }}
@@ -143,6 +143,7 @@
         :event="event"
         :view="view"
       />
+      
       <update-modal
         v-model="updateModal"
         :event="event"
@@ -205,6 +206,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userCan: "user/can",
       clientId: "user/getClientId",      
       getList: "resource/getList",
       dpHeight: "core/getUiContentHeight",
@@ -407,6 +409,8 @@ export default {
     }),
 
     makeDraggable() {
+      if(!this.userCan('schedule', ['full', 'create'])) return;
+
       var parent = document.getElementById("dp-draggable");
       var items = parent.getElementsByTagName("li");
       for (var i = 0; i < items.length; i++) {
@@ -591,8 +595,7 @@ export default {
 }
 
 .res-menu li {
-  padding: 7.5px 12px;
-  cursor: move;
+  padding: 7.5px 12px;  
   margin: 8px 5px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.7);
@@ -600,6 +603,10 @@ export default {
 
 .res-menu li:active {
   cursor: help;
+}
+
+.draggable{
+  cursor: move;
 }
 
 .res-menu li a {

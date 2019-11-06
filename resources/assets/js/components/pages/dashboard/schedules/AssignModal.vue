@@ -33,216 +33,218 @@
         <div class="modal-body">
           <!-- Event Form -->
           <form>
-            <!-- Resource -->
-            <div class="form-group">
-              <div class="form-row">
-                <label
-                  class="col-form-label col-sm-12"
-                >{{ view == 'user' ? 'User Name' : 'Job Name' }}</label>
-                <div class="col">
-                  <input
-                    v-model="form.resourceName"
-                    :name="view == 'user' ? 'user_id' : 'job_id'"
-                    class="form-control"
-                    type="text"
-                    readonly
-                  >
-                </div>
-              </div>
-            </div>
-
-            <!-- Event -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }} <i class="field-required">*</i></label>
-                <div class="col">
-                  <ts-select
-                    v-model="form.event_id"
-                    :data="eventList"
-                    :multi="false"
-                    :class="[{'is-invalid' : $v.form.event_id.$error } ,'form-control']"
-                    :name="view == 'user' ? 'job_id' : 'user_id'"
-                    :placeholder="view == 'user' ? 'please select job' : 'please select user'"
-                    search-placeholder="search..."
-                  >
-                    <template
-                      slot="fixed-top"
-                      v-if="view == 'user'"
+            <fieldset :disabled="!userCan('schedule', ['full', 'create'])">            
+              <!-- Resource -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label
+                    class="col-form-label col-sm-12"
+                  >{{ view == 'user' ? 'User Name' : 'Job Name' }}</label>
+                  <div class="col">
+                    <input
+                      v-model="form.resourceName"
+                      :name="view == 'user' ? 'user_id' : 'job_id'"
+                      class="form-control"
+                      type="text"
+                      readonly
                     >
-                      <li @click="onCreateJob">
-                        <i>-- CREATE NEW JOB --</i>
-                      </li>
-                      <hr>
-                    </template>
-                  </ts-select>
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.event_id.required"
-                  >
-                    Event is required.
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Start -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-form-label col-sm-12">Starts <i class="field-required">*</i></label>
-                <div class="col">
-                  <input
-                    v-model="form.startDate"
-                    name="start"
-                    type="date"
-                    :class="[{'is-invalid' : $v.form.startDate.$error || $v.start.$error } ,'form-control']"
-                  >
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.startDate.required"
-                  >
-                    Start date is required.
-                  </div>
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.start.before"
-                  >
-                    Start date should be before {{ $v.start.$params.before.date }}
-                  </div>
-                </div>
-                <div class="col">
-                  <input
-                    v-model="form.startTime"
-                    type="time"
-                    :class="[{'is-invalid' : $v.form.startTime.$error } ,'form-control']"
-                  >
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.startTime.required"
-                  >
-                    Start time is required.
+              <!-- Event -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-form-label col-sm-12">{{ view == 'user' ? 'Job' : 'User' }} <i class="field-required">*</i></label>
+                  <div class="col">
+                    <ts-select
+                      v-model="form.event_id"
+                      :data="eventList"
+                      :multi="false"
+                      :class="[{'is-invalid' : $v.form.event_id.$error } ,'form-control']"
+                      :name="view == 'user' ? 'job_id' : 'user_id'"
+                      :placeholder="view == 'user' ? 'please select job' : 'please select user'"
+                      search-placeholder="search..."
+                    >
+                      <template
+                        slot="fixed-top"
+                        v-if="view == 'user' && userCan('job', ['full', 'create'])"
+                      >
+                        <li @click="onCreateJob">
+                          <i>-- CREATE NEW JOB --</i>
+                        </li>
+                        <hr>
+                      </template>
+                    </ts-select>
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.event_id.required"
+                    >
+                      Event is required.
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- End -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-form-label col-sm-12">Ends <i class="field-required">*</i></label>
-                <div class="col">
-                  <input
-                    v-model="form.endDate"
-                    name="end"
-                    type="date"
-                    :class="[{'is-invalid' : $v.form.endDate.$error || $v.end.$error } ,'form-control']"
-                  >
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.endDate.required"
-                  >
-                    End date is required.
+              <!-- Start -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-form-label col-sm-12">Starts <i class="field-required">*</i></label>
+                  <div class="col">
+                    <input
+                      v-model="form.startDate"
+                      name="start"
+                      type="date"
+                      :class="[{'is-invalid' : $v.form.startDate.$error || $v.start.$error } ,'form-control']"
+                    >
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.startDate.required"
+                    >
+                      Start date is required.
+                    </div>
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.start.before"
+                    >
+                      Start date should be before {{ $v.start.$params.before.date }}
+                    </div>
                   </div>
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.end.after"
-                  >
-                    End date should be after {{ $v.end.$params.after.date }}
-                  </div>
-                </div>
-                <div class="col">
-                  <input
-                    v-model="form.endTime"
-                    type="time"
-                    :class="[{'is-invalid' : $v.form.endTime.$error } ,'form-control']"
-                  >
-                  <div
-                    class="invalid-feedback"
-                    v-if="!$v.form.endTime.required"
-                  >
-                    End time is required.
+                  <div class="col">
+                    <input
+                      v-model="form.startTime"
+                      type="time"
+                      :class="[{'is-invalid' : $v.form.startTime.$error } ,'form-control']"
+                    >
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.startTime.required"
+                    >
+                      Start time is required.
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+
+              <!-- End -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-form-label col-sm-12">Ends <i class="field-required">*</i></label>
+                  <div class="col">
+                    <input
+                      v-model="form.endDate"
+                      name="end"
+                      type="date"
+                      :class="[{'is-invalid' : $v.form.endDate.$error || $v.end.$error } ,'form-control']"
+                    >
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.endDate.required"
+                    >
+                      End date is required.
+                    </div>
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.end.after"
+                    >
+                      End date should be after {{ $v.end.$params.after.date }}
+                    </div>
+                  </div>
+                  <div class="col">
+                    <input
+                      v-model="form.endTime"
+                      type="time"
+                      :class="[{'is-invalid' : $v.form.endTime.$error } ,'form-control']"
+                    >
+                    <div
+                      class="invalid-feedback"
+                      v-if="!$v.form.endTime.required"
+                    >
+                      End time is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
             
-            <div class="form-row mt-4">
-              <!-- Status -->
-              <div class="form-group col-sm-6">
-                <div class="row no-gutters">
-                  <label
-                    class="col-sm-12"
-                    for="status"
-                  >Status <i class="field-required">*</i></label>
-                  <div class="col-sm-12">
-                    <div class="custom-control custom-radio custom-control-inline">
-                      <input
-                        v-model="form.status"
-                        type="radio"
-                        id="Tentative"
-                        name="status"
-                        value="tentative"
-                        class="custom-control-input"
-                        checked
-                      >
-                      <label
-                        class="custom-control-label"
-                        for="Tentative"
-                      >Tentative</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                      <input
-                        v-model="form.status"
-                        type="radio"
-                        id="Confirmed"
-                        name="status"
-                        value="confirmed"
-                        class="custom-control-input"
-                      >
-                      <label
-                        class="custom-control-label"
-                        for="Confirmed"
-                      >Confirmed</label>
+              <div class="form-row mt-4">
+                <!-- Status -->
+                <div class="form-group col-sm-6">
+                  <div class="row no-gutters">
+                    <label
+                      class="col-sm-12"
+                      for="status"
+                    >Status <i class="field-required">*</i></label>
+                    <div class="col-sm-12">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input
+                          v-model="form.status"
+                          type="radio"
+                          id="Tentative"
+                          name="status"
+                          value="tentative"
+                          class="custom-control-input"
+                          checked
+                        >
+                        <label
+                          class="custom-control-label"
+                          for="Tentative"
+                        >Tentative</label>
+                      </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input
+                          v-model="form.status"
+                          type="radio"
+                          id="Confirmed"
+                          name="status"
+                          value="confirmed"
+                          class="custom-control-input"
+                        >
+                        <label
+                          class="custom-control-label"
+                          for="Confirmed"
+                        >Confirmed</label>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Billable -->
-              <div class="form-group col-sm-3">
-                <label for="billable">Billable</label>
-                <div class="custom-control custom-checkbox">
-                  <input
-                    v-model="form.billable"
-                    id="billable"
-                    name="billable"
-                    type="checkbox"
-                    class="custom-control-input"                    
-                  >
-                  <label
-                    class="custom-control-label"
-                    for="billable"
-                  >Billable</label>
+                <!-- Billable -->
+                <div class="form-group col-sm-3">
+                  <label for="billable">Billable</label>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      v-model="form.billable"
+                      id="billable"
+                      name="billable"
+                      type="checkbox"
+                      class="custom-control-input"                    
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="billable"
+                    >Billable</label>
+                  </div>
+                </div>
+
+                <!-- Offsite -->
+                <div class="form-group col-sm-3">
+                  <label for="offsite">Offsite</label>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      v-model="form.offsite"
+                      name="offsite"
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="offsite"
+                    >
+                    <label
+                      class="custom-control-label"
+                      for="offsite"
+                    >Offsite</label>
+                  </div>
                 </div>
               </div>
-
-              <!-- Offsite -->
-              <div class="form-group col-sm-3">
-                <label for="offsite">Offsite</label>
-                <div class="custom-control custom-checkbox">
-                  <input
-                    v-model="form.offsite"
-                    name="offsite"
-                    type="checkbox"
-                    class="custom-control-input"
-                    id="offsite"
-                  >
-                  <label
-                    class="custom-control-label"
-                    for="offsite"
-                  >Offsite</label>
-                </div>
-              </div>
-            </div>
+            </fieldset>
           </form>
         </div>
 
@@ -255,6 +257,7 @@
             Cancel
           </button>
           <button
+            v-if="userCan('schedule', ['full', 'create'])"
             @click="onSubmit"
             type="button"
             class="btn btn-primary"
@@ -361,6 +364,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userCan: "user/can",
       getList: "resource/getList"
     }),
 
