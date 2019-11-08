@@ -550,14 +550,14 @@ export default {
 
     getBusinessHourStart(dayNum){
       let day = this.businessHours.find(item => item.day == dayNum);
-      if(!day)
+      if(!day || !day.isopen)
         return "00:00:00";
       return `${day.start}:00`;
     },
 
     getBusinessHourEnd(dayNum){
       let day = this.businessHours.find(item => item.day == dayNum);
-      if(!day || day.end === '00:00')
+      if(!day || !day.isopen)
         return "00:01:00";
       return `${day.end}:00`;
     },
