@@ -1014,7 +1014,6 @@ export default {
     },
 
     unavailables: {
-      required,
       $each: {
         start: { required },
         end: { required }
@@ -1154,7 +1153,8 @@ export default {
         })
       };
 
-      await this.create({ resource: "schedule", data: form });
+      if(form.unavailables.length > 0) 
+        await this.create({ resource: "schedule", data: form });
       return Promise.resolve(true);
     },
 
