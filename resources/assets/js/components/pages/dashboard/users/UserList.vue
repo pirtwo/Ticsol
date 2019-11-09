@@ -17,7 +17,15 @@
         <li class="menu-title">
           Actions
         </li> 
-       
+        <li>
+          <router-link
+            tag="button"
+            class="btn"
+            :to="{ name: 'clientWizard' }"
+          >
+            Invite New User
+          </router-link>
+        </li>
         <li class="menu-title">
           Links
         </li>                
