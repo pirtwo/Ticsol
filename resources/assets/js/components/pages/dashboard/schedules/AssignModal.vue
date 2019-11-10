@@ -364,6 +364,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userId: "user/getId",
       userCan: "user/can",
       getList: "resource/getList"
     }),
@@ -374,9 +375,14 @@ export default {
           return { key: obj.id, value: obj.title };
         });
       } else {
-        return this.getList("user").map(obj => {
-          return { key: obj.id, value: obj.fullname };
-        });
+        if(this.userCan('schedule', ['full']))
+          return this.getList("user").map(obj => {
+            return { key: obj.id, value: obj.fullname };
+          });
+        else
+          return this.getList("user").filter(item => item.id == this.userId).map(obj => {
+            return { key: obj.id, value: obj.fullname };
+          });
       }
     },
 
