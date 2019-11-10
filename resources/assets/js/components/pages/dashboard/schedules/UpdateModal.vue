@@ -22,7 +22,7 @@
             id="title"
           >
             Update Event
-          </h5>          
+          </h5>
           <button
             @click="onClose"
             type="button"
@@ -56,7 +56,7 @@
               </div>
             </div>
 
-            <fieldset :disabled="!userCan('schedule', ['full', 'update'])">
+            <fieldset :disabled="!canUpdate()">
               <!-- Event -->
               <div class="form-group">
                 <div class="form-row">
@@ -264,16 +264,16 @@
               </div>
             </fieldset>
 
-            <div class="d-flex justify-items-center align-items-center">              
-              <div>Links: </div>
-              <!-- related job link -->              
+            <div class="d-flex justify-items-center align-items-center">
+              <div>Links:</div>
+              <!-- related job link -->
               <button
                 v-if="event"
                 :disabled="!event.job"
                 @click="onJob"
                 type="button"
                 class="btn btn-link"
-              >                
+              >
                 Job
               </button>
 
@@ -284,7 +284,7 @@
                 @click="onRequest"
                 type="button"
                 class="btn btn-link"
-              >                
+              >
                 Request
               </button>
 
@@ -295,7 +295,7 @@
                 @click="onReports"
                 type="button"
                 class="btn btn-link mr-auto"
-              >                
+              >
                 Activities
               </button>
             </div>
@@ -314,7 +314,7 @@
           </button>
 
           <button
-            v-if="userCan('schedule', ['full', 'delete'])"
+            v-if="canDelete()"
             @click="onDelete"
             type="button"
             class="btn btn-danger"
@@ -323,7 +323,7 @@
           </button>
 
           <button
-            v-if="userCan('schedule', ['full', 'update'])"
+            v-if="canUpdate()"
             @click="onSubmit"
             type="button"
             class="btn btn-primary"
@@ -346,12 +346,12 @@ import { required } from "vuelidate/lib/validators";
 import { before, after } from "../../../../utils/custom-validations";
 import { mapGetters, mapActions } from "vuex";
 import CreateJobModal from "../schedules/CreateJobModal.vue";
-import pageMixin from '../../../../mixins/page-mixin';
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "UpdateModal",
 
-  mixins:[pageMixin],
+  mixins: [pageMixin],
 
   components: {
     "job-modal": CreateJobModal
@@ -425,6 +425,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      userId: "user/getId",
       userCan: "user/can",
       getList: "resource/getList"
     }),
@@ -585,6 +586,20 @@ export default {
       this.$v.start.$reset();
       this.$v.end.$reset();
       this.$v.form.$reset();
+    },
+
+    canUpdate() {
+      if(!this.event) return false;
+      return this.event.user_id == this.userId
+        ? this.userCan("schedule", ["full", "update"])
+        : this.userCan("schedule", ["full"]);
+    },
+
+    canDelete() {
+      if(!this.event) return false;
+      return this.event.user_id == this.userId
+        ? this.userCan("schedule", ["full", "delete"])
+        : this.userCan("schedule", ["full"]);
     },
 
     onJob() {
