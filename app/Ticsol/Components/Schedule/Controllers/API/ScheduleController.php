@@ -76,12 +76,12 @@ class ScheduleController extends Controller
         $clientId = $request->user()->client_id;
         $creatorId = $request->user()->id;
         $eventType = $request->input('event_type');
-        $userId = $request->input('user_id');
+        $assigneeId = $request->input('user_id');
 
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        $this->authorize('create', [Schedule::class, $userId, $eventType]);
+        $this->authorize('create', [Schedule::class, $assigneeId, $eventType]);
 
         $schedule = new Schedule();
         $unavCollec = collect([]);
@@ -92,7 +92,7 @@ class ScheduleController extends Controller
             $start = $request->input("start");
             $end = $request->input("end");
 
-            if ($this->isBooked($start, $end, $userId, $clientId)) {
+            if ($this->isBooked($start, $end, $assigneeId, $clientId)) {
                 return response()->json(['error' => true, 'message' => "{$start} till {$end} is not available."], 400);
             }
 
@@ -180,27 +180,32 @@ class ScheduleController extends Controller
             throw new NotFound();
         }
 
-        $clientId = $schedule->client_id;
-        $userId = $schedule->user_id;
         $type = $schedule->type;
         $eventType = $schedule->event_type;
+        $clientId = $schedule->client_id;
+        $assigneeId = $request->input('user_id', $schedule->user_id);
 
-        Validator::make(['type' => $schedule->type, 'event_type' => $schedule->event_type], [
-            'type' => 'in:schedule',
-            'event_type' => 'in:unavailable,scheduled,RDO',
-        ])->validate();
+        Validator::make(
+            [
+                'type' => $schedule->type, 
+                'event_type' => $schedule->event_type,
+            ],
+            [
+                'type' => 'in:schedule',
+                'event_type' => 'in:unavailable,scheduled,RDO',
+            ])->validate();
 
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
-        $this->authorize('update', $schedule);
+        $this->authorize('update', [$schedule, $assigneeId]);
 
         // check if date is available
         if ($eventType === "scheduled" && ($request->has("start") || $request->has("end"))) {
             $start = $request->input("start", $schedule->start);
             $end = $request->input("end", $schedule->end);
 
-            if ($this->isBooked($start, $end, $userId, $clientId)) {
+            if ($this->isBooked($start, $end, $assigneeId, $clientId)) {
                 return response()->json(['error' => true, 'message' => "{$start} till {$end} is not available."], 400);
             }
         }
@@ -238,15 +243,14 @@ class ScheduleController extends Controller
         return $result;
     }
 
-
     /**
      * returns true if there is at least one leave or unavailable event
      * between start and end dates.
      */
-    private function isBooked($start, $end, $userId, $clientId)
+    private function isBooked($start, $end, $assigneeId, $clientId)
     {
         $unavailable = Schedule::where("client_id", $clientId)
-            ->where("user_id", $userId)
+            ->where("user_id", $assigneeId)
             ->where(function ($query) {
                 $query->where("event_type", "leave")
                     ->orWhere("event_type", "unavailable");

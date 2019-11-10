@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
@@ -27,10 +27,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email',  
+        'email',
         'firstname',
-        'lastname',  
-        'settings',            
+        'lastname',
+        'settings',
         'meta',
     ];
 
@@ -41,7 +41,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
     ];
 
     /**
@@ -52,8 +52,8 @@ class User extends Authenticatable
         return $this->password;
     }
 
-    /** 
-     * find user unique field for passport. 
+    /**
+     * find user unique field for passport.
      */
     public function findForPassport($username)
     {
@@ -68,10 +68,9 @@ class User extends Authenticatable
         return $query->where('client_id', $clientId);
     }
 
-
     /**
      * User premissions attribute.
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getPermissionsAttribute()
@@ -79,15 +78,19 @@ class User extends Authenticatable
         $roles = $this->roles()->get();
         $permissions = collect([]);
         foreach ($roles as $role) {
-            $permissions = $permissions->concat($role->permissions);
+            $rolePermissions = $role->permissions()->get();
+            foreach ($rolePermissions as $permission) {
+                if (!$permissions->contains($permission->name)) {
+                    $permissions->push($permission->name);
+                }
+            }
         }
-
-        return $permissions->map(function($item,$key){ return $item->name; });
+        return $permissions;
     }
 
     /**
      * User fullname attribute.
-     * 
+     *
      * @return String;
      */
     public function getFullnameAttribute()
@@ -97,7 +100,7 @@ class User extends Authenticatable
 
     /**
      * User avatar attribute.
-     * 
+     *
      * @return String;
      */
     public function getAvatarAttribute()
@@ -105,9 +108,9 @@ class User extends Authenticatable
         $meta = $this->meta ? $this->meta : [];
         $avatar = \array_key_exists("avatar", $meta) ? $meta["avatar"] : null;
 
-        if($avatar)
+        if ($avatar) {
             return $avatar;
-        else {
+        } else {
             return '/img/avatar/default.png';
         }
     }
