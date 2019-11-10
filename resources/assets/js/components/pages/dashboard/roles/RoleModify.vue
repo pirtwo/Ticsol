@@ -249,6 +249,27 @@
 
         <div class="form-group">
           <div class="form-row">
+            <label class="col-sm-2 col-form-label">Activity Reports</label>
+            <div class="col-sm-10">
+              <div class="custom-control custom-checkbox">
+                <input
+                  v-model="form.permissions"
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="activity"
+                  value="list_all-activity,view_all-activity"
+                >
+                <label
+                  class="custom-control-label"
+                  for="activity"
+                >Can View Other Users Activity Reports</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-row">
             <label class="col-sm-2 col-form-label">Xero</label>
             <div class="col-sm-10">
               <div class="custom-control custom-checkbox">
@@ -375,6 +396,22 @@ export default {
           1
         );
         this.form.permissions.push("create-schedule,update-schedule,delete-schedule");
+      }
+
+      // combine list_all-activity, view_all-activity into one rule
+      if (
+        this.form.permissions.indexOf("list_all-activity") > -1 &&
+        this.form.permissions.indexOf("view_all-activity") > -1
+      ) {
+        this.form.permissions.splice(
+          this.form.permissions.indexOf("list_all-activity"),
+          1
+        );
+        this.form.permissions.splice(
+          this.form.permissions.indexOf("view_all-activity"),
+          1
+        );
+        this.form.permissions.push("list_all-activity,view_all-activity");
       }
     },
 

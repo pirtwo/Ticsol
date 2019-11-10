@@ -66,6 +66,7 @@
               <i class="material-icons">visibility</i>
             </router-link>
           </td>
+          <td>{{ item.creator.fullname }}</td>
           <td>{{ item.job.title }}</td>
           <td>{{ dateToString(item.from) }}</td>
           <td>{{ dateToString(item.till) }}</td>
@@ -105,7 +106,8 @@ export default {
       },
       header: [
         { value: "", orderBy: "" },
-        { value: "Job", orderBy: "job" },
+        { value: "Creator", orderBy: "creator.fullname" },
+        { value: "Job", orderBy: "job.title" },
         { value: "From", orderBy: "from" },
         { value: "Till", orderBy: "till" }
       ]
@@ -124,16 +126,28 @@ export default {
     filterColumns: function() {
       return [
         {
+          key: "activity.creator.firstname",
+          value: "Creator\\FirstName",
+          type: "date",
+          placeholder: "Enter creator firstname"
+        },
+        {
+          key: "activity.creator.lastname",
+          value: "Creator\\LastName",
+          type: "date",
+          placeholder: "Enter creator lastname"
+        },
+        {
           key: "from",
           value: "From",
           type: "date",
-          placeholder: "Enter from date, eg. 2019-01-01"
+          placeholder: "yyyy-mm-dd"
         },
         {
           key: "till",
           value: "Till",
           type: "date",
-          placeholder: "Enter till date, eg. 2019-01-01"
+          placeholder: "yyyy-mm-dd"
         },
         {
           key: "activity.job.title",
@@ -145,7 +159,7 @@ export default {
           key: "activity.job.profile.name",
           value: "Job\\Profile\\Title",
           type: "string",
-          placeholder: "Enter job profile"
+          placeholder: "Enter job profile name"
         },
       ];
     }
@@ -167,7 +181,7 @@ export default {
         query: this.$queryBuilder(
           this.pager.page,
           this.pager.perPage,
-          ["schedule", "job"],
+          ["creator", "schedule", "job"],
           this.query
         )
       })
