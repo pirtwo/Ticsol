@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     // General Settings
@@ -224,16 +226,23 @@ export default {
     },
 
     range: function(value) {
-      this.dayPilot.days = this.getDays();   
+      this.dayPilot.days = this.getDays();
       this.dayPilot.update();
     },
 
     startDate: function(value) {
       console.log(value);
       this.dayPilot.startDate = new window.DayPilot.Date(value);
-      this.dayPilot.days = this.getDays();      
+      this.dayPilot.days = this.getDays();
       this.dayPilot.update();
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      userId: "user/getId",
+      userCan: "user/can"
+    })
   },
 
   mounted() {
@@ -367,16 +376,35 @@ export default {
       args.resource.minHeight = 90;
     };
 
-    dp.onBeforeCellRender = function(args){
+    dp.onBeforeCellRender = function(args) {
       //
-    }
+    };
 
     /**
      * Event render function.
      */
     dp.onBeforeEventRender = function(args) {
       let item = dp.events.list.find(item => item.id == args.data.id);
-      args.data.moveDisabled = args.data.resizeDisabled = item.type !== 'scheduled';
+
+      // check permissions on move and resize
+      if (item.type !== "scheduled") {
+        // disable unavHours and leaves
+        args.data.moveDisabled = args.data.resizeDisabled = true;
+      } else {
+        // check maintain own permission
+        if (
+          item.userId == _this.userId &&
+          !_this.userCan("schedule", ["full", "update"])
+        ) {
+          args.data.moveDisabled = args.data.resizeDisabled = true;
+        }
+
+        // check maintain others permission
+        if (item.userId != _this.userId && !_this.userCan("schedule", ["full"])) {
+          args.data.moveDisabled = args.data.resizeDisabled = true;
+        }
+      }
+
       args.data.cssClass = `${item.type} ${item.status}`;
       args.data.html = `
         <div class=''>${args.data.text}</div>
@@ -492,10 +520,34 @@ export default {
     },
 
     eventCreatedHandler(arg) {
-      if(arg.resource === "sys-001" || arg.resource === "sys-002"){
+      if (arg.resource === "sys-001" || arg.resource === "sys-002") {
         arg.allowed = false;
         this.dayPilot.clearSelection();
         return;
+      }
+
+      // check maintain own permission
+      if (this.view === "user") {
+        if (
+          arg.resource == this.userId &&
+          !this.userCan("schedule", ["full", "create"])
+        ) {
+          arg.allowed = false;
+          this.dayPilot.clearSelection();
+          return;
+        }
+      }
+
+      // check maintain others permission
+      if (this.view === "user") {
+        if (
+          arg.resource != this.userId &&
+          !this.userCan("schedule", ["full"])
+        ) {
+          arg.allowed = false;
+          this.dayPilot.clearSelection();
+          return;
+        }
       }
 
       this.$emit("range-selected", {
@@ -518,17 +570,40 @@ export default {
       }
     },
 
-    eventMoveHandler(arg){
-      if(arg.newResource === "sys-001" || arg.newResource === "sys-002"){
-        //rg.allowed = false;
+    eventMoveHandler(arg) {
+      console.log(arg);
+
+      // prevent drag and drop on leave and unavailable swim lanes
+      if (arg.newResource === "sys-001" || arg.newResource === "sys-002") {        
         arg.preventDefault();
       }
+
+      // check permissions on drag and drops
+      if (arg.external) {
+        let eventUserId = this.view == 'user' ? arg.newResource : arg.e.data.id;
+
+        // check maintain own permission        
+        if (
+          eventUserId == this.userId &&
+          !this.userCan("schedule", ["full", "update"])
+        ) {
+          arg.preventDefault();
+        }
+
+        // check maintain others permission
+        if (
+          eventUserId != this.userId &&
+          !this.userCan("schedule", ["full"])
+        ) {
+          arg.preventDefault();
+        }
+      } 
     },
 
     eventMovedHandler(arg) {
-      console.log(arg);      
+      console.log(arg);
 
-      if (arg.external) {    
+      if (arg.external) {
         this.$emit("event-dragged", {
           eventId: arg.e.id(),
           resourceId: arg.newResource,
