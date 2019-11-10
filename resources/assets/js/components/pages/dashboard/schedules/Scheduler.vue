@@ -207,8 +207,8 @@ export default {
   computed: {
     ...mapGetters({
       userCan: "user/can",
-      clientId: "user/getClientId",      
       getList: "resource/getList",
+      clientId: "user/getClientId",         
       dpHeight: "core/getUiContentHeight",
       userScheduleView: "user/getScheduleView",
       userScheduleRange: "user/getScheduleRange",
@@ -265,6 +265,7 @@ export default {
 
           return {
             id: item.id,
+            userId: item.user_id,
             resource: item.user_id,
             start: new window.DayPilot.Date(item.start),
             end: new window.DayPilot.Date(item.end),
@@ -284,6 +285,7 @@ export default {
 
           return {
             id: item.id,
+            userId: item.user_id,
             resource: eventResource,
             start: new window.DayPilot.Date(item.start),
             end: new window.DayPilot.Date(item.end),
@@ -518,7 +520,6 @@ export default {
         resource: "schedule",
         id: event.eventId,
         data: {
-          user_id: event.resourceId,
           start: event.newStart,
           end: event.newEnd
         }
