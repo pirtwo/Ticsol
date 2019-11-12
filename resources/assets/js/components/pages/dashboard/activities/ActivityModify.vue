@@ -8,41 +8,57 @@
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">
-          Actions
-        </li>
-        <li v-if="!activity">
-          <button
-            class="btn"
-            @click="clearForm"
-          >
-            New
-          </button>
-        </li>
-        <li v-if="!activity">
-          <button
-            class="btn"
-            @click="onSubmit"
-          >
-            Submit
-          </button>
-        </li>
-        <li v-if="activity">
-          <button
-            class="btn"
-            @click="onSave"
-          >
-            Save
-          </button>
-        </li>
-        <li>
-          <button
-            class="btn"
-            @click="onCancel"
-          >
-            Cancel
-          </button>
-        </li>
+        <template v-if="!this.id">
+          <li class="menu-title">
+            Actions
+          </li>
+          <li>
+            <button
+              class="btn"
+              @click="clearForm"
+            >
+              New
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn"
+              @click="onSubmit"
+            >
+              Submit
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn"
+              @click="onCancel"
+            >
+              Cancel
+            </button>
+          </li>
+        </template>
+        <template v-if="this.id && canModify">
+          <li class="menu-title">
+            Actions
+          </li>
+          <li>
+            <button
+              class="btn"
+              @click="onSave"
+            >
+              Save
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn"
+              @click="onCancel"
+            >
+              Cancel
+            </button>
+          </li>
+        </template>
+        
         <li class="menu-title">
           Links
         </li>
@@ -86,109 +102,111 @@
 
       <!-- Activity Form -->
       <form>
-        <!-- Schedule item -->
-        <div class="form-group">          
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Schedule <i class="field-required">*</i></label>
-            <div class="col-sm-10">
-              <ts-select
-                v-model="scheduleItem"
-                :data="scheduleItems"
-                :class="[{'is-invalid' : $v.scheduleItem.$error } ,'form-control']"
-                @change="onScheduleChange"
-                id="schedule_id"
-                placeholder="Select the schedule..."
-                search-placeholder="search..."
-              />
-              <div
-                class="invalid-feedback"
-                v-if="!$v.scheduleItem.required"
-              >
-                Schedule is required.
+        <fieldset :disabled="!canModify">        
+          <!-- Schedule item -->
+          <div class="form-group">          
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Schedule <i class="field-required">*</i></label>
+              <div class="col-sm-10">
+                <ts-select
+                  v-model="scheduleItem"
+                  :data="scheduleItems"
+                  :class="[{'is-invalid' : $v.scheduleItem.$error } ,'form-control']"                
+                  @change="onScheduleChange"
+                  id="schedule_id"
+                  placeholder="Select the schedule..."
+                  search-placeholder="search..."
+                />
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.scheduleItem.required"
+                >
+                  Schedule is required.
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- From -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">From <i class="field-required">*</i></label>
-            <div class="col">
-              <input
-                id="from"
-                v-model="$v.form.fromDate.$model"
-                type="date"
-                :class="[{'is-invalid' : $v.form.fromDate.$error || $v.from.$error } ,'form-control']"
-              >
-              <div
-                class="invalid-feedback"
-                v-if="!$v.form.fromDate.required"
-              >
-                From date is required.
+          <!-- From -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">From <i class="field-required">*</i></label>
+              <div class="col">
+                <input
+                  id="from"
+                  v-model="$v.form.fromDate.$model"
+                  type="date"
+                  :class="[{'is-invalid' : $v.form.fromDate.$error || $v.from.$error } ,'form-control']"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.fromDate.required"
+                >
+                  From date is required.
+                </div>
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.from.between"
+                >
+                  Must be between {{ $v.from.$params.between.min }} and {{ $v.from.$params.between.max }}
+                </div>
               </div>
-              <div
-                class="invalid-feedback"
-                v-if="!$v.from.between"
-              >
-                Must be between {{ $v.from.$params.between.min }} and {{ $v.from.$params.between.max }}
-              </div>
-            </div>
-            <div class="col">
-              <input
-                v-model="$v.form.fromTime.$model"
-                type="time"
-                :class="[{'is-invalid' : $v.form.fromTime.$error } ,'form-control']"
-              >
-              <div
-                class="invalid-feedback"
-                v-if="!$v.form.fromTime.required"
-              >
-                From time is required.
+              <div class="col">
+                <input
+                  v-model="$v.form.fromTime.$model"
+                  type="time"
+                  :class="[{'is-invalid' : $v.form.fromTime.$error } ,'form-control']"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.fromTime.required"
+                >
+                  From time is required.
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Till -->
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-2 col-form-lable">Till <i class="field-required">*</i></label>
-            <div class="col">
-              <input
-                id="till"
-                v-model="$v.form.tillDate.$model"
-                type="date"
-                :class="[{'is-invalid' : $v.form.tillDate.$error || $v.till.$error } ,'form-control']"
-              >
-              <div
-                class="invalid-feedback"
-                v-if="!$v.form.tillDate.required"
-              >
-                Till date is required.
+          <!-- Till -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Till <i class="field-required">*</i></label>
+              <div class="col">
+                <input
+                  id="till"
+                  v-model="$v.form.tillDate.$model"
+                  type="date"
+                  :class="[{'is-invalid' : $v.form.tillDate.$error || $v.till.$error } ,'form-control']"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.tillDate.required"
+                >
+                  Till date is required.
+                </div>
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.till.between"
+                >
+                  Must be between {{ $v.till.$params.between.min }} and {{ $v.till.$params.between.max }}
+                </div>
               </div>
-              <div
-                class="invalid-feedback"
-                v-if="!$v.till.between"
-              >
-                Must be between {{ $v.till.$params.between.min }} and {{ $v.till.$params.between.max }}
-              </div>
-            </div>
-            <div class="col">
-              <input
-                v-model="$v.form.tillTime.$model"
-                type="time"
-                :class="[{'is-invalid' : $v.form.tillTime.$error } ,'form-control']"
-              >
-              <div
-                class="invalid-feedback"
-                v-if="!$v.form.tillTime.required"
-              >
-                Till time is required.
+              <div class="col">
+                <input
+                  v-model="$v.form.tillTime.$model"
+                  type="time"
+                  :class="[{'is-invalid' : $v.form.tillTime.$error } ,'form-control']"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.form.tillTime.required"
+                >
+                  Till time is required.
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </fieldset>
 
         <!-- Report -->
         <div class="form-group">
@@ -267,13 +285,7 @@ export default {
       }
     };
   },
-
-  watch: {
-    activity: function(val) {
-      this.populateForm(val);
-    }
-  },
-
+  
   computed: {
     ...mapGetters({
       userId: "user/getId",
@@ -308,6 +320,24 @@ export default {
     },
 
     scheduleItems: function() {
+      // if watching the other user report, populate the
+      // schedule selectbox with current activity
+      if (this.activity) {
+        if (this.activity.creator_id != this.userId) {
+          let sch = this.activity.schedule;
+          let job = this.activity.job;
+          return [
+            {
+              start: sch.start,
+              end: sch.end,
+              job: job,
+              key: sch.id,
+              value: `${moment(sch.start).format("DD MMM")} - ${job.title}`
+            }
+          ];
+        }
+      }
+
       return this.getList("schedule").map(obj => {
         return {
           start: obj.start,
@@ -317,6 +347,13 @@ export default {
           value: `${moment(obj.start).format("DD MMM")} - ${obj.job.title}`
         };
       });
+    },
+
+    canModify: function(){
+      if(this.activity)
+        return this.activity.creator_id == this.userId;
+      else
+        return true;
     }
   },
 
@@ -362,7 +399,9 @@ export default {
       let p2 = this.id
         ? this.list({
             resource: "activity",
-            query: { eq: `id,${this.id}`, with: "job" }
+            query: { eq: `id,${this.id}`, with: "job,schedule" }
+          }).then((data) => {
+            this.populateForm(data[0])
           })
         : new Promise(resolve => resolve());      
 
