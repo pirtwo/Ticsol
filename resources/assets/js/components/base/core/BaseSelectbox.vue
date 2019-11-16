@@ -21,11 +21,8 @@ export default {
     },
 
     data: function() {
-      if (this.multi) {
-        this.$emit("input", []);
-      } else {
-        this.$emit("input", null);
-      }
+      if(!this.isAnOption(this.value))
+        this.clearSelects();
     }
   },
 
