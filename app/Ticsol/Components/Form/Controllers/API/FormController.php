@@ -2,16 +2,18 @@
 
 namespace App\Ticsol\Components\Controllers\API;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\Ticsol\Base\Exceptions\NotFound;
-use App\Ticsol\Components\Models\Form;
-use App\Ticsol\Components\Form\Events;
-use App\Ticsol\Components\Form\Requests;
-use App\Ticsol\Components\Form\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
+use App\Ticsol\Base\Exceptions\NotFound;
+use App\Ticsol\Components\Form\Events;
+use App\Ticsol\Components\Form\Repository;
+use App\Ticsol\Components\Form\Requests;
+use App\Ticsol\Components\Form\Rules;
+use App\Ticsol\Components\Models\Form;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class FormController extends Controller
 {
@@ -119,11 +121,22 @@ class FormController extends Controller
         //      AUTHORIZE ACTION
         //----------------------------
         $this->authorize('update', $form);
+        $parent_id = $request->input('parent_id', null);
+
+        $this->repository->newQuery();
+        $parent = $this->repository->findBy('id', $parent_id);
+        Validator::make(
+            [
+                'parent_id' => $request->input('parent_id', null),
+            ],
+            [
+                'parent_id' => [new Rules\HierarchyDepth($form, $parent, 3), new Rules\HierarchyCycle($form)],
+            ])->validate();
 
         $form->update($request->all());
 
         event(new Events\FormUpdated($form));
-        
+
         return $form;
     }
 
