@@ -103,10 +103,9 @@ export default {
 
       // auth
       authEndPoint: "https://appcenter.intuit.com/connect/oauth2",
-      clientID: "ABVz6DhHFhZcfqM3rmeQNtSYyfEzquOzy5LXC94dqQkYaWUSR5",
+      clientID: "ABbdbDv4wp2xpKgou4wIwlAn6VOaHCoanKeqZPAFiY5VOavESw",
       responseType: "code",
-      scope:
-        "com.intuit.quickbooks.accounting openid profile email phone address",
+      scope: "com.intuit.quickbooks.accounting openid profile email phone address",
       redirectURI: `${ origin() }/wizard/quickbooks`,
       csrf: "1234"
     };
