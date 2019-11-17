@@ -68,9 +68,9 @@
               <i class="material-icons">visibility</i>
             </router-link>
           </td>
-          <td>{{ item.title }}</td>          
-          <td>{{ item.parent ? item.parent.title : "-" }}</td>
-          <td>{{ item.profile ? item.profile.name : "-" }}</td>
+          <td>{{ item.title }}</td>   
+          <td>{{ item.profile ? item.profile.name : "-" }}</td>       
+          <td>{{ item.parent ? item.parent.title : "-" }}</td>          
           <td>{{ item.code }}</td>
           <td>{{ item.isactive ? "Yes" : "No" }}</td>
         </template>
@@ -111,12 +111,11 @@ export default {
       header: [
         { value: "", orderBy: "" },
         { value: "Title", orderBy: "title" },
-        { value: "Parent", orderBy: "parent.title" },
         { value: "Profile", orderBy: "profile.name" },
+        { value: "Parent", orderBy: "parent.title" },        
         { value: "Code", orderBy: "code" },
         { value: "Active", orderBy: "active" }
-      ],
-      order: "asc"
+      ]
     };
   },
 
