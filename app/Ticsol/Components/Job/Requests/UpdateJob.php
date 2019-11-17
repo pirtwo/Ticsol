@@ -4,9 +4,16 @@ namespace App\Ticsol\Components\Job\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Ticsol\Base\Rules;
+use App\Ticsol\Components\Models\Job;
+use App\Ticsol\Components\Models\Form;
+use App\Ticsol\Components\Job\Rules as JobRules;
 
 class UpdateJob extends FormRequest
 {
+    protected $job;
+    protected $parent;
+    protected $profile;
     protected $clientId = null;
     
     /**
@@ -16,7 +23,15 @@ class UpdateJob extends FormRequest
      */
     public function authorize()
     {
-        $this->clientId = $this->user()->client_id;
+        $jobId = $this->route()->parameter("id");
+        $parentId = $this->input('parent_id', null);
+        $profileId = $this->input('form_id', null);
+
+        $this->clientId = $this->user()->client_id;   
+        $this->job = Job::where('id', $jobId)->first();             
+        $this->parent = Job::where('id', $parentId)->first();      
+        $this->profile = Form::where('id', $profileId)->first();
+
         return true;
     }
 
@@ -40,6 +55,10 @@ class UpdateJob extends FormRequest
                 Rule::exists('ts_jobs', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
+                new JobRules\JobParent($this->profile),
+                new Rules\HierarchyDepth($this->parent, 3),
+                new Rules\HierarchyCycle($this->job),
+                new Rules\HierarchyFatherMove($this->job)
             ],
 
             'form_id' => [
