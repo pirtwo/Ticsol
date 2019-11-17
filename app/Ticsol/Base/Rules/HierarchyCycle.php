@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ticsol\Components\Form\Rules;
+namespace App\Ticsol\Base\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
