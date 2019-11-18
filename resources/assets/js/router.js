@@ -497,7 +497,8 @@ export const router = new VueRouter({
                     component: require('./components/pages/wizards/Wizards.vue').default,
                     children: [
                         {
-                            path: 'client',
+                            path: 'client/:startstep?',
+                            props: true,
                             name: 'clientWizard',
                             meta: {
                                 resourceName: 'client',

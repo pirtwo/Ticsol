@@ -21,7 +21,7 @@
           <router-link
             tag="button"
             class="btn"
-            :to="{ name: 'clientWizard' }"
+            :to="{ name: 'clientWizard', params: { startstep: 4 } }"
           >
             Invite New User
           </router-link>

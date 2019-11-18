@@ -1525,11 +1525,12 @@ import {
   decimal,
   between
 } from "vuelidate/lib/validators";
+import { isNumber } from 'util';
 
 export default {
   name: "ClientWizard",
 
-  props: ["step"],
+  props: ["startstep"],
 
   components: {
     stepper: Stepper,
@@ -1541,7 +1542,7 @@ export default {
     return {
       isLoading: false,
       loadingMsg: "",
-      currentStep: 0,
+      currentStep: +(parseInt(this.startstep) >= 0 ? this.startstep : 0),
       firstStep: 0,
       lastStep: 10,
 
@@ -1723,7 +1724,7 @@ export default {
       scheduleView: { required },
       scheduleRange: { required }
     }
-  },
+  },  
 
   computed: {
     ...mapGetters({
@@ -1932,7 +1933,7 @@ export default {
                   : "",
                 teams: [],
                 roles: [],
-                vendor: null,
+                vendor: null
               });
             });
           }
@@ -1970,7 +1971,7 @@ export default {
                 title: customer.DisplayName,
                 code: this.generateCode(4),
                 parent: null,
-                profile: null,
+                profile: null
               });
             });
           }
@@ -2054,7 +2055,9 @@ export default {
         if (this.integration === "qbs") {
           payload.qbs_id = this.users[i].qbsId;
           payload.qbs_vendor_id = null;
-          payload.qbs_budgeted_cost_rate = this.users[i].budgetCostRate ? this.users[i].budgetCostRate : null;
+          payload.qbs_budgeted_cost_rate = this.users[i].budgetCostRate
+            ? this.users[i].budgetCostRate
+            : null;
 
           // create vendor if not selected and not exists
           if (
@@ -2084,7 +2087,7 @@ export default {
                   `Failed while creating vendor for ${this.users[i].firstname} ${this.users[i].lastname}.`
                 );
               });
-          } else if(this.users[i].vendor) {
+          } else if (this.users[i].vendor) {
             payload.qbs_vendor_id = this.users[i].vendor.key;
           }
         }
@@ -2344,7 +2347,8 @@ export default {
         this.processCurrentStep()
           .then(() => {
             console.log("step processed.");
-            if (this.currentStep === this.lastStep) this.$router.push({name:'home'});
+            if (this.currentStep === this.lastStep)
+              this.$router.push({ name: "home" });
 
             this.currentStep =
               this.currentStep < this.lastStep
