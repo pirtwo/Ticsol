@@ -1,40 +1,248 @@
-$urban-background: '';
-$urban-primary-color: #FFFFFF;
-$urban-secondary-color: #FFFFFF;
+// ----- COLORS -------
+$urban-primary: #9e5a63;
+$urban-secondary: #314455;
+$urban-third: #97aabd;
+$urban-primary-tp: rgba(158, 90, 99, 0.9);
+$urban-secondary-tp: rgba(49, 68, 85, 0.9);
+$urban-third-tp: rgba(151, 170, 189, 0.9);
 
-$urban-primary-bgColor: rgba(217, 191, 154, 0.5);
-$urban-secondary-bgColor: rgba(217, 191, 154, 0.7);
+$urban-text-primary: whitesmoke;
+$urban-text-secondary: black;
+$urban-text-danger: orange;
 
-$urban-primary-fontColor: rgba(18, 22, 23, 0.9);
-$urban-secondary-fontColor: #121617;
+$urban-schedule-confirm: #314455;
+$urban-schedule-tentative: #C96567;
+$urban-schedule-leave: red;
+$urban-schedule-unavi: orange;
 
-#app.urban{
-  background-image: url("~/img/theme/Urban.jpg");
+#app.urban {
+  text-emphasis: none;
+  color: $urban-text-primary;
   font-family: $app-primary-font;
-  color: $urban-primary-fontColor;
+  background-image: url("~/img/theme/urban.jpg");
 
-  .main .wrap-drawer .wrap-content .navbar,
-  .main .wrap-drawer .wrap-content .content,
-  .main .wrap-drawer .drawer .drawer-toolbar {   
-    background-color: $urban-primary-bgColor;
+  // ------ Toolbars -----
+  .toolbar-top,
+  .toolbar-bot {
+    .btn {
+      color: $urban-text-primary;
+      background-color: $urban-secondary-tp;
+    }
+
+    .btn:hover,
+    .btn.active {
+      color: $urban-text-primary;
+      background-color: $urban-third-tp;
+    }
   }
 
-  .main .wrap-drawer .drawer .drawer-body {
-    background-color: $urban-secondary-bgColor;
+  // ------- DRAWER ---------------
+  #drawer {
+    .drawer__content,
+    .drawer__drawer,
+    .drawer__toolbar {      
+      background-color: $urban-primary-tp;
+    }
+
+    // toolbar
+    .drawer__toolbar {
+      .btn {
+        color: $urban-text-primary;
+        background-color: $urban-secondary;
+      }    
+
+      .btn:focus {
+        box-shadow: none;
+      }
+
+      .btn:hover,
+      .btn:active,
+      .btn.active,
+      .btn-group .btn.active {
+        color: $urban-text-primary;
+        background-color: $urban-third;
+      }
+    }
   }
 
-  .main .wrap-drawer .wrap-content .loading-box{
-    background-color: $urban-secondary-bgColor;
+  // ------ V-MENUE -----------
+  .v-menu {
+    color: $urban-text-primary;
+
+    .menu-title {
+      color: $urban-text-primary;
+      background-color: rgba(49, 68, 85, 0.5);
+    }
+
+    li a,
+    li .btn {
+      color: $urban-text-primary;
+      background-color: $urban-primary;
+    }
+
+    li a:hover,
+    li .btn:hover {
+      background-color: $urban-third;
+    }
   }
 
-  .toolbar-top .btn,
-  .toolbar-bot .btn {
-    color: $urban-primary-fontColor;
-    background-color: $urban-primary-bgColor !important;
+  //------- MODAL --------------
+  .modal-content {
+    background-color: $urban-primary;
   }
 
-  // Daypilot settings
-  .scheduler_green_main{
+  // ------ DROPDOWN -----------
+  .dropdown-menu {
+    background-color: $urban-secondary;
+
+    .dropdown-item {
+      color: $urban-text-primary;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:active,
+    .dropdown-item.active {
+      color: $urban-text-primary;
+      background-color: $urban-third;
+    }
+  }
+
+  // ------ TABLE -----------------
+  .table {
+    color: $urban-text-primary;
+
+    th, td{
+      border-top: 0px;
+    }
+
+    tr,
+    tr a,
+    tr .btn{
+      color: $urban-text-primary;
+    }
+
+    tbody tr:hover {      
+      background-color: $urban-third;
+    }
+  }
+
+  //------- FORM ------------------
+  .field-required,
+  .invalid-feedback {
+    color: $urban-text-danger;
+  }
+
+  // ----- BUTTONS ---------------- 
+  .close {
+    color: $urban-text-primary;
+  }
+
+  .close:hover {
+    color: $urban-third;
+    text-shadow: none;
+  }
+
+  // ----- SCHEDULER ---------------
+  .scheduler_green_main {
     font-family: $app-secondary-font !important;
+    background-color: $urban-primary;
   }
+  
+  .scheduler_green_rowheader,
+  .scheduler_green_timeheadercol_inner,
+  .scheduler_green_timeheadergroup_inner{
+    color: $urban-text-primary;
+  }  
+
+  .scheduler_green_corner,
+  .scheduler_green_rowheader,
+  .scheduler_green_timeheadercol,
+  .scheduler_green_timeheadergroup{
+    background-color: $urban-primary;
+  }
+
+  .scheduler_green_crosshair_top,
+  .scheduler_green_crosshair_left,
+  .scheduler_green_shadow_inner {
+    opacity: 0.5;
+    background-color: $urban-third;   
+  }
+
+  .scheduler_green_divider,
+  .scheduler_green_resourcedivider,  
+  .scheduler_green_divider_horizontal,  
+  .scheduler_green_matrix_vertical_line,
+  .scheduler_green_matrix_horizontal_line {
+    background-color: rgba(49, 68, 85, 0.2);    
+  } 
+
+  .scheduler_green_timeheadergroup_inner{
+    border-right: 1px solid rgba(49, 68, 85, 0.2); 
+  }
+
+  .scheduler_green_timeheadercol_inner{
+    border-right: 1px solid rgba(49, 68, 85, 0.2); 
+    border-top: 1px solid rgba(49, 68, 85, 0.2); 
+  }
+
+  .scheduler_green_event_bar {
+    background-color: white;
+  }
+
+  .scheduler_green_event_bar_inner {
+    background-color: #ee0a0a;
+  }
+
+  .scheduled {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $urban-schedule-confirm;
+    }    
+  }
+
+  .scheduled.tentative .scheduler_green_event_inner {
+    background: repeating-linear-gradient(
+      45deg, 
+      $urban-schedule-confirm, 
+      $urban-schedule-confirm 10px, 
+      $urban-schedule-tentative 10px, 
+      $urban-schedule-tentative 12px) !important;
+  }
+
+  .leave {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $urban-schedule-leave
+    }   
+  }
+
+  .leave.tentative .scheduler_green_event_inner {
+    background: repeating-linear-gradient(
+      45deg, 
+      $urban-schedule-leave, 
+      $urban-schedule-leave 10px, 
+      $urban-schedule-tentative 10px, 
+      $urban-schedule-tentative 12px) !important;
+  }
+
+  .unavailable {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: $urban-text-primary;
+      background: $urban-schedule-unavi;
+    }
+  }
+  
+  .draggable {
+    color: $urban-text-primary;
+    border: 1px solid $urban-secondary-tp;
+    background-color: $urban-secondary;
+  }
+
+  .draggable:hover {
+    background-color: $urban-third;
+  }
+  
 }

@@ -1,76 +1,60 @@
-$default-background: "";
-$default-primary-color: #fffffff5;
-$default-secondary-color: #4d4d4d;
+// ----- COLORS -------
+$default-bg-primary: rgba(255, 255, 255, 0.9);
+$default-bg-secondary: red;
 
-$default-primary-bgColor: rgba(255, 255, 255, 0.9);
-$default-secondary-bgColor: rgba(255, 255, 255, 0.9);
+$default-primary: #d76165;
+$default-secondary: white;
+$default-success: green;
+$default-danger: #dc3545;
+$default-warning: red;
+$default-info: #ffc107;
+$default-light: white;
 
-$default-primary-fontColor: #000000;
-$default-secondary-fontColor: white;
-
-$default-btn-bg--idle: rgba(255, 255, 255, 0.8);
-$default-btn-bg--active: #d76165;
-
-// $default-bg-primary: red;
-// $default-bg-secondary: red;
-
-// $default-primary: red;
-// $default-secondary: red;
-// $default-success: red;
-// $default-danger: red;
-// $default-warning: red;
-// $default-info: red;
-// $default-light: red;
-
-// $default-tetx-primary: red;
-// $default-tetx-secondary: red;
-// $default-tetx-success: red;
-// $default-tetx-danger: red;
-// $default-tetx-warning: red;
-// $default-tetx-info: red;
-// $default-tetx-light: red;
-
-$default-scheduler-bg-primary: #007bff;
-$default-scheduler-bg-secondary: #6c757d;
-
-$default-scheduler-primary: #007bff;
-$default-scheduler-secondary: #6c757d;
-$default-scheduler-danger: #dc3545;
-$default-scheduler-warning: #ffc107;
-$default-scheduler-info: #17a2b8;
-$default-scheduler-light: #343a40;
+$default-text-primary: black;
+$default-text-secondary: white;
+$default-text-success: green;
+$default-text-danger: red;
+$default-text-warning: yellow;
+$default-text-info: blue;
+$default-text-light: white;
 
 #app.default {
   background-image: url("~/img/theme/Default.jpg");
   font-family: $app-primary-font;
-  color: $default-primary-fontColor;
+  color: $default-text-primary;
 
-  // Drawer
-  .main .wrap-drawer {
-    .wrap-content .navbar,
-    .wrap-content .content,
-    .drawer .drawer-toolbar {
-      background-color: $default-primary-bgColor;
+  // ------ Toolbars -----
+  .toolbar-top,
+  .toolbar-bot {
+    .btn {
+      color: $default-text-primary;
+      background-color: $default-bg-primary;
     }
 
-    .drawer .drawer-body {
-      background-color: $default-secondary-bgColor;
+    .btn:hover,
+    .btn.active {
+      color: $default-text-secondary;
+      background-color: $default-primary;
+    }
+  }
+
+  // ------- DRAWER ---------------
+  #drawer {
+    .drawer__content,
+    .drawer__drawer,
+    .drawer__toolbar {
+      background-color: $default-bg-primary;
     }
 
-    .wrap-content .loading-box {
-      color: $default-primary-fontColor;
-      background-color: $default-secondary-bgColor;
-    }
-
-    // main -> toolbar
-    .wrap-content .navbar {
+    // toolbar
+    .drawer__toolbar {
       .btn {
-        background-color: $default-btn-bg--idle;
+        background-color: $default-secondary;
       }
 
       .btn-group .btn.active {
-        color: $default-secondary-fontColor;
-        background-color: $default-btn-bg--active;
+        color: $default-text-secondary;
+        background-color: $default-primary;
       }
 
       .btn:focus {
@@ -80,108 +64,139 @@ $default-scheduler-light: #343a40;
       .btn:hover,
       .btn:active,
       .btn.active {
-        color: $default-secondary-fontColor;
-        background-color: $default-btn-bg--active;
+        color: $default-text-primary;
+        background-color: $default-primary;
       }
     }
   }
 
-  // Toolbar Top & Bot
-  .toolbar-top,
-  .toolbar-bot {
-    .btn {
-      color: $default-primary-fontColor;
-      background-color: $default-primary-bgColor;
-    }
-
-    .btn:hover,
-    .btn.active {
-      color: $default-secondary-fontColor;
-      background-color: $default-btn-bg--active;
-    }
-  }
-
-  // Drawer Vertical Menue
+  // ------ V-MENUE -----------
   .v-menu {
     .menu-title {
-      background-color: $default-primary-bgColor;
+      background-color: $default-text-primary;
     }
 
     li a,
     li .btn {
-      color: $default-primary-fontColor;
+      color: $default-text-secondary;
     }
 
     li a:hover,
     li .btn:hover {
-      color: $default-secondary-fontColor;
-      background-color: $default-btn-bg--active;
+      color: $default-text-secondary;
+      background-color: $default-primary;
     }
   }
 
+  //------- MODAL --------------
+  .modal-content{
+    background-color: $default-primary;
+  }
+
+  // ------ DROPDOWN -----------
   .dropdown-menu {
-    background-color: $default-primary-color;
+    background-color: $default-bg-primary;
 
     .dropdown-item:hover,
     .dropdown-item:active,
     .dropdown-item.active {
-      color: $default-secondary-fontColor;
-      background-color: $default-btn-bg--active;
+      color: $default-text-primary;
+      background-color: $default-primary;
     }
   }
 
-  // .table-hover tr:hover {
-  //   color: $default-secondary-fontColor;
-  //   background-color: $default-btn-bg--active;
+  // ------ TABLE -----------------
+  .table-hover tr:hover {
+    color: $default-text-primary;
+    background-color: $default-primary;
+  }
+
+  .table-hover tr:hover a {
+    color: $default-text-secondary;
+    text-decoration: underline;
+  }
+
+  // ----- BUTTONS ----------------
+  // .btn.disabled {
+  //   color: #a1a1a1 !important;
   // }
 
-  .btn.disabled {
-    color: #a1a1a1 !important;
-  }
+  // .btn-primary {
+  //   color: $default-text-secondary;    
+  //   border-color: $default-primary;
+  //   background-color: $default-primary;
+  // }
 
-  .btn-outline-primary,
-  .btn-outline-secondary {
-    color: $default-primary-fontColor;
-    border-color: $default-secondary-color;
-  }
+  // .btn-secondary {
+  //   color: $default-text-secondary;    
+  //   border-color: $default-secondary;
+  //   background-color: $default-secondary;
+  // }
 
-  .btn-outline-primary:hover,
-  .btn-outline-secondary:hover {
-    color: $default-secondary-fontColor;
-    border-color: $default-btn-bg--active;
-    background-color: $default-btn-bg--active;
-  }
-
-  // Daypilot settings
+  // ----- SCHEDULER ---------------
   .scheduler_green_main {
     font-family: $app-secondary-font !important;
   }
 
-  .scheduled .scheduler_green_event_inner {
-    border: 0px;
-    color: #ffffff;
-    background: $default-scheduler-primary;
+  .scheduled {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $default-primary;
+    }
+
+    .scheduler_green_event_bar {
+      background-color: white;
+    }
+
+    .scheduler_green_event_bar_inner {
+      background-color: #72e2f4;
+    }
   }
 
-  .tentative .scheduled.scheduler_green_event_inner {
+  .scheduled.tentative .scheduler_green_event_inner {
     background: repeating-linear-gradient(
       45deg,
       blue,
       blue 5px,
-      $default-scheduler-primary 5px,
-      $default-scheduler-primary 12px
+      $default-primary 5px,
+      $default-primary 12px
     ) !important;
   }
 
-  .leave .scheduler_green_event_inner {
-    border: 0px;
-    color: #ffffff;
-    background: $default-scheduler-danger;
+  .leave {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $default-danger;
+    }
+
+    .scheduler_green_event_bar {
+      background-color: white;
+    }
+
+    .scheduler_green_event_bar_inner {
+      background-color: #72e2f4;
+    }
   }
 
-  .unavailable .scheduler_green_event_inner {
-    border: 0px;
-    color: #333333;
-    background: $default-scheduler-warning;
+  .leave.tentative .scheduler_green_event_inner {
+    background: repeating-linear-gradient(45deg, red, red 5px, $default-danger 5px, $default-danger 12px) !important;
+  }
+
+  .unavailable {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #333333;
+      background: $default-warning;
+    }
+
+    .scheduler_green_event_bar {
+      background-color: white;
+    }
+
+    .scheduler_green_event_bar_inner {
+      background-color: #ee0a0a;
+    }
   }
 }

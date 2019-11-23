@@ -161,8 +161,7 @@ div {
   margin-top: 2px;
   margin-right: 3px;
   border-radius: 2px;
-  background-color: transparent;
-  border: 1px solid #0000004d;
+  border: none;
 }
 
 .pag-text {

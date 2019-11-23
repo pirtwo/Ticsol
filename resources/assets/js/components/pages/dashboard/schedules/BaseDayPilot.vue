@@ -252,7 +252,7 @@ export default {
 
     dp.theme = "scheduler_green";
     //dp.width = "100%";
-    dp.height = this.height - this.timeHeaderHeight * 2 - 4;
+    dp.height = this.height - this.timeHeaderHeight * 2;
     dp.heightSpec = "Fixed";
     dp.resources = this.resource;
     dp.events.list = this.events;

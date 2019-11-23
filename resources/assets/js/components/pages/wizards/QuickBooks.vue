@@ -190,7 +190,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 30px;
   width: 50%;
-  height: 70%;
+  height: 100%;
   border-radius: 2px;
   position: relative;
 }

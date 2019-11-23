@@ -58,7 +58,6 @@ export default {
   align-items: center;
   border-radius: 0px;
   transform: translate(-50%, -50%);
-  background-color: white;
 }
 
 .loading-box .spinner-border {
