@@ -86,7 +86,7 @@
             <div class="col-md-5">
               <!-- Parent -->
               <label class="">Parent</label>
-              <ts-groupbox
+              <ts-chipsbox
                 v-model="form.parent"
                 :data="profiles"
                 id="parent_id"
@@ -174,7 +174,7 @@ export default {
 
     profiles: function() {
       return this.profileList.map(item => {
-        return { key: item.id, value: item.name, parentKey: item.parent_id };
+        return { key: item.id, value: item.hierarchy, parentKey: item.parent_id };
       });
     }
   },
@@ -250,7 +250,7 @@ export default {
 
       let form = {};
       form.name = this.form.name;
-      if(this.form.parent) form.parent_id = this.form.parent.key;
+      form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.billable = this.form.billable;
       form.schema = this.frmBuilder.actions.getData();
       
@@ -282,7 +282,7 @@ export default {
 
       let form = {};
       form.name = this.form.name;
-      if(this.form.parent) form.parent_id = this.form.parent.key;
+      form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.billable = this.form.billable;
       form.schema = this.frmBuilder.actions.getData();
 

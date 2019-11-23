@@ -4,9 +4,12 @@ namespace App\Ticsol\Components\Form\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Ticsol\Base\Rules;
+use App\Ticsol\Components\Models\Form;
 
 class FormCreate extends FormRequest
 {
+    protected $parent;
     protected $clientId = null;
     
     /**
@@ -16,7 +19,11 @@ class FormCreate extends FormRequest
      */
     public function authorize()
     {
+        $parentId = $this->input('parent_id', null);
+
         $this->clientId = $this->user()->client_id;
+        $this->parent = Form::where('id', $parentId)->first();
+        
         return true;
     }
 
@@ -38,6 +45,7 @@ class FormCreate extends FormRequest
                 Rule::exists('ts_forms', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);
                 }),
+                new Rules\HierarchyDepth($this->parent, 3)
             ],            
         ];
     }

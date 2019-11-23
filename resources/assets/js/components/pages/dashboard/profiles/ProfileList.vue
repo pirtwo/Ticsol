@@ -69,6 +69,7 @@
             </router-link>
           </td>
           <td>{{ item.name }}</td>
+          <td>{{ item.parent ? item.parent.name : "-" }}</td>
           <td>{{ item.created_at }}</td>
           <td>{{ item.updated_at }}</td>
         </template>
@@ -109,6 +110,7 @@ export default {
       header: [
         { value: "", orderBy: "" },
         { value: "Title", orderBy: "name" },
+        { value: "Parent", orderBy: "parent_id" },
         { value: "Create", orderBy: "created_at" },
         { value: "Update", orderBy: "updated_at" }
       ],
@@ -165,7 +167,7 @@ export default {
         query: this.$queryBuilder(
           this.pager.page,
           this.pager.perPage,
-          [],
+          ['parent'],
           this.query
         )
       })

@@ -44,10 +44,10 @@
               Cancel
             </button>
           </li>
-        </template>       
+        </template>
         <li class="menu-title">
           Links
-        </li>       
+        </li>
         <li>
           <router-link
             class="btn btn-link"
@@ -55,10 +55,10 @@
           >
             Jobs
           </router-link>
-        </li>        
+        </li>
         <li v-if="job">
-          <router-link   
-            role="button"       
+          <router-link
+            role="button"
             class="btn btn-link"
             :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }"
           >
@@ -127,10 +127,32 @@
       <!-- Job Form -->
       <form class="needs-validation">
         <fieldset :disabled="!userCan('job', ['full', 'update'])">
+          <!-- Profile -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Profile</label>
+              <div class="col-sm-10">
+                <ts-chipsbox
+                  v-model="form.profile"
+                  :data="profiles"
+                  :multi="false"
+                  id="form_id"
+                  name="jobProfile"
+                  placeholder="select job profile"
+                  search-placeholder="search here..."
+                  :disabled="!userCan('job', ['full', 'update'])"
+                />
+              </div>
+            </div>
+          </div>
+
           <!-- title -->
           <div class="form-group">
             <div class="form-row">
-              <label class="col-sm-2 col-form-lable">Title <i class="field-required">*</i></label>
+              <label class="col-sm-2 col-form-lable">
+                Title
+                <i class="field-required">*</i>
+              </label>
               <div class="col-sm-10">
                 <input
                   v-model="$v.form.title.$model"
@@ -152,7 +174,10 @@
           <!-- Code -->
           <div class="form-group">
             <div class="form-row">
-              <label class="col-sm-2 col-form-lable">Code <i class="field-required">*</i></label>
+              <label class="col-sm-2 col-form-lable">
+                Code
+                <i class="field-required">*</i>
+              </label>
               <div class="col-sm-10">
                 <input
                   v-model="$v.form.code.$model"
@@ -176,32 +201,15 @@
             <div class="form-row">
               <label class="col-sm-2 col-form-lable">Parent</label>
               <div class="col-sm-10">
-                <ts-groupbox
+                <ts-chipsbox
                   v-model="form.parent"
                   :data="jobs"
+                  :multi="false"
                   id="parent_id"
                   name="jobParent"
                   placeholder="select job parent"
                   search-placeholder="search here..."
-                  :disabled="!userCan('job', ['full', 'update'])"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Profile -->
-          <div class="form-group">
-            <div class="form-row">
-              <label class="col-sm-2 col-form-lable">Profile</label>
-              <div class="col-sm-10">
-                <ts-groupbox
-                  v-model="form.profile"
-                  :data="profiles"
-                  id="form_id"
-                  name="jobProfile"
-                  placeholder="select job profile"
-                  search-placeholder="search here..."
-                  :disabled="!userCan('job', ['full', 'update'])"
+                  :disabled="!userCan('job', ['full', 'update']) || !form.profile"
                 />
               </div>
             </div>
@@ -229,7 +237,10 @@
           <!-- Status -->
           <div class="form-group">
             <div class="form-row">
-              <label class="col-sm-2 col-form-lable">Status <i class="field-required">*</i></label>
+              <label class="col-sm-2 col-form-lable">
+                Status
+                <i class="field-required">*</i>
+              </label>
 
               <div class="custom-control custom-radio custom-control-inline">
                 <input
@@ -268,7 +279,7 @@
             :schema="schema"
             v-model="form.meta"
           />
-        </fieldset>     
+        </fieldset>
       </form>
     </template>
   </app-main>
@@ -279,7 +290,7 @@ import { mapGetters, mapActions } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import FormGen from "../../../base/formGenerator/BaseFormGenerator";
-import { constants } from 'crypto';
+import { constants } from "crypto";
 
 export default {
   name: "JobModify",
@@ -316,12 +327,12 @@ export default {
     }
   },
 
-  watch: { 
+  watch: {
     "form.profile": function(value) {
-      if(!value){
+      if (!value) {
         this.schema = [];
         return;
-      } 
+      }
 
       if (value.key) {
         this.schema = this.getList(
@@ -330,7 +341,7 @@ export default {
         )[0].schema;
       }
     }
-  }, 
+  },
 
   computed: {
     ...mapGetters({
@@ -338,21 +349,35 @@ export default {
       getList: "resource/getList"
     }),
 
-    job:function(){
-      if(!this.id) return null;
+    job: function() {
+      if (!this.id) return null;
       return this.getList("job").find(item => item.id == this.id);
     },
 
     jobs: function() {
-      return this.getList("job").map(item => {
-        return { key: item.id, value: item.title, parentKey: item.parent_id };
-      });
+      if (this.form.profile) {
+        return this.getList("job")
+          .filter(item => {
+            return (
+              this.form.profile.parentKey != null &&
+              item.form_id == this.form.profile.parentKey
+            );
+          })
+          .map(item => {
+            return {
+              key: item.id,
+              value: item.hierarchy,
+              parentKey: item.parent_id
+            };
+          });
+      } else {
+        return [];
+      }
     },
 
     profiles: function() {
-      return this.getList("form")
-      .map(item => {
-        return { key: item.id, value: item.name, parentKey: item.parent_id };
+      return this.getList("form").map(item => {
+        return { key: item.id, value: item.hierarchy, parentKey: item.parent_id };
       });
     },
 
@@ -360,66 +385,85 @@ export default {
       return this.getList("contact").map(item => {
         return { key: item.id, value: `${item.firstname} ${item.lastname}` };
       });
-    }    
+    }
   },
 
-  beforeRouteEnter(to, from, next) {    
+  beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.clearForm();
       vm.loadAssets();
     });
   },
 
-  beforeRouteLeave (to, from, next) {
-    this.clear('job');
-    this.clear('contact');
-    this.clear('form');   
-    next(); 
-  },  
+  beforeRouteLeave(to, from, next) {
+    this.clear("job");
+    this.clear("contact");
+    this.clear("form");
+    next();
+  },
 
   methods: {
     ...mapActions({
-      clear: 'resource/clearResource',
+      clear: "resource/clearResource",
       list: "resource/list",
       create: "resource/create",
       update: "resource/update"
     }),
 
-    async loadAssets(){
+    async loadAssets() {
       this.startLoading();
 
-      let p1 = await this.list({resource:'form'});      
-      let p2 = await this.list({resource:'contact'});
-      let p3 = await this.list({resource:'job', query: { 
-        with: "parent,profile,contacts" 
-      }});
+      let p1 = await this.list({ resource: "form" });
+      let p2 = await this.list({ resource: "contact" });
+      let p3 = await this.list({
+        resource: "job",
+        query: {
+          with: "parent,profile,contacts"
+        }
+      });
 
-      Promise.all([p1,p2,p3]).finally(()=>{        
-        if(this.id){
+      Promise.all([p1, p2, p3]).finally(() => {
+        if (this.id) {
           this.populateForm(this.job);
-        }      
+        }
         this.stopLoading();
       });
     },
 
-    populateForm(job){
+    populateForm(job) {
       this.form.title = job.title;
       this.form.code = job.code;
-      this.form.parent = job.parent ? { key: job.parent.id, value: job.parent.title } : null;
-      this.form.profile = job.profile ? { key: job.profile.id, value: job.profile.name } : null;
-      this.form.contacts = job.contacts ? job.contacts.map(item=>{
-        return { key: item.id, value: `${item.firstname} ${item.lastname}` };
-      }) : [];
+      this.form.parent = job.parent
+        ? {
+            key: job.parent.id,
+            value: job.parent.hierarchy,
+            parentKey: job.parent.parent_id
+          }
+        : null;
+      this.form.profile = job.profile
+        ? {
+            key: job.profile.id,
+            value: job.profile.hierarchy,
+            parentKey: job.profile.parent_id
+          }
+        : null;
+      this.form.contacts = job.contacts
+        ? job.contacts.map(item => {
+            return {
+              key: item.id,
+              value: `${item.firstname} ${item.lastname}`
+            };
+          })
+        : [];
 
       this.form.meta = job.meta;
 
       this.schema =
         job.form_id !== null
-          ? this.getList(
-              "form",
-              item => item.id == job.form_id
-            )[0].schema
+          ? this.getList("form", item => item.id == job.form_id)[0].schema
           : null;
+      console.log(this.form.parent);
+      console.log(this.jobs);
     },
 
     onSubmit(e) {

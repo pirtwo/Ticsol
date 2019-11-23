@@ -11,6 +11,8 @@ class Job extends Model
     protected $table = 'ts_jobs';
     protected $primaryKey = 'id';
     protected $appends = [
+        'depth',
+        'hierarchy',
         'commentsCount', 
         'requestsCount', 
         'reportsCount', 
@@ -53,6 +55,41 @@ class Job extends Model
         return $query->where('client_id', $clientId);
     }
 
+    
+    //------ Attributes -------
+
+    public function getHierarchyAttribute()
+    {
+        $item = $this;
+        $hierarchy = collect([]);
+
+        for ($i = 0; $i < 3; $i++) {
+            $hierarchy->prepend($item->title);
+            $item = $item->parent()->first();
+            if ($item === null) {
+                break;
+            }
+        }
+
+        return $hierarchy->implode("/");
+    }
+
+    public function getDepthAttribute()
+    {
+        $item = $this;
+        $depth = 0;
+
+        for ($i = 0; $i < 3; $i++) {
+            $item = $item->parent()->first();
+            if ($item === null) {
+                break;
+            } else {
+                $depth++;
+            }
+        }
+
+        return $depth;
+    }
 
     public function getCommentsCountAttribute()
     {

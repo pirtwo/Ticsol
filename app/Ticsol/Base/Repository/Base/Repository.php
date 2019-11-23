@@ -68,6 +68,11 @@ abstract class Repository implements IRepository, ICriteria
         return $this->model = $model->newQuery();
     }
 
+    public function newQuery()
+    {
+        return $this->model = $this->makeModel();
+    }
+
     /**
      * @param array $columns
      * @return mixed
