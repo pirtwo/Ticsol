@@ -1,0 +1,180 @@
+.scheduler_green_main {
+  border: 0px;
+  font-size: 10px;
+}
+
+.scheduler_green_event {
+  height: auto !important;
+}
+
+.scheduler_green_event_inner {
+  margin-right: 1px;
+  font-size: 12px;
+  padding: 6px;
+  height: auto !important;
+  border-radius: 2px;
+}
+
+.scheduler_green_event_bar {
+  top: 2px;
+  left: 4px;
+  right: 4px;
+  height: 2px;
+}
+
+.scheduler_green_event_bar_inner {
+  height: 2px;
+  position: absolute;
+}
+
+.scheduler_green_timeheader {
+  cursor: default;
+  text-align: center;
+}
+
+.scheduler_green_timeheader_float_inner {  
+  text-align: center;
+  padding-top: 5px;
+  padding-left: 5px;
+}
+
+
+.scheduler_green_timeheadergroup_inner {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  text-align: center;
+  padding: 5px;
+}
+
+.scheduler_green_timeheadercol_inner {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  text-align: center;
+  padding: 5px;
+}
+
+.scheduler_green_rowheader {
+  //
+}
+
+.scheduler_green_rowheader_inner {
+  height: 100%;
+  padding: 15px 0px;  
+  vertical-align: middle;
+}
+
+.scheduler_green_corner {
+  //
+}
+
+.scheduler_green_resourceheader td {
+  border-bottom: 1px solid black;
+  padding: 0px;
+}
+
+.scheduler_green_divider {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.scheduler_green_divider_horizontal {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.scheduler_green_matrix_vertical_line {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.scheduler_green_matrix_vertical_break {
+  background-color: red;
+}
+.scheduler_green_matrix_horizontal_line {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.scheduler_green_resourcedivider {
+  background-color: rgba(204, 204, 204, 0.363);
+}
+
+.scheduler_green_shadow_inner {
+  background-color: #666666;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  height: 100%;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.scheduler_green_cell {
+  //
+}
+
+.scheduler_green_cellweekend {
+  background-color: red;
+}
+
+.scheduler_green_crosshair_top,
+.scheduler_green_crosshair_left {
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+/* Custom Classes */
+
+.header_weekDay_weekRange {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.header_weekDay_weekNumber {
+  color: inherit;
+  font-size: 8px;
+}
+
+.header_weekDay_dayNumber {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.header_weekDay_dayTxt {
+  font-size: 10px;
+}
+
+.res_user_name {
+  width: 100%;
+  line-height: 2;
+  font-size: 8px;
+  text-align: center;
+  display: inline-block;
+}
+
+.res_user_avatar {
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  border-radius: 3px;
+	display: block;
+}
+
+.res_job_name,
+.res_job_code {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+}
+
+.res_job_name {
+  padding: 0px 5px;
+  font-size: 12px;
+}
+
+.res_job_code {
+  padding: 5px 5px;
+  font-size: 10px;
+}
