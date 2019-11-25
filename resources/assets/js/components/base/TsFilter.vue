@@ -127,7 +127,7 @@
             v-show="showFilters"
             class="table-responsive"
           >
-            <table class="table table-sm table-dark">
+            <table class="table table-sm table-striped table-hover">
               <thead>
                 <tr>
                   <th scope="col">
@@ -143,11 +143,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  colspan="4"
+                <tr                  
                   v-show="filters.length < 1"
                 >
-                  No Filter
+                  <td colspan="4">
+                    No Filter
+                  </td>
                 </tr>
                 <tr
                   v-for="(query, index) in filters"

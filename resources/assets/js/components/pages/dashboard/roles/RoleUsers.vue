@@ -65,6 +65,7 @@
                 <label class="col-sm-2 col-form-label">Users</label>
                 <div class="col-sm-10">
                   <ts-select
+                    class="form-control"
                     v-model="form.users"
                     :data="userList"
                     :multi="true"

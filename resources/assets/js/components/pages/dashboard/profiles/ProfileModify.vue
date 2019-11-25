@@ -117,7 +117,7 @@
         <!-- schema -->
         <div
           id="formBuilder"
-          class="mb-4"
+          class="mb-4 text-dark"
         />
       </form>
     </template>

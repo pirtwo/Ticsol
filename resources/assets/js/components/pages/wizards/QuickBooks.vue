@@ -187,7 +187,6 @@ export default {
 
 <style scoped>
 .wrap-wizard {
-  background-color: rgba(255, 255, 255, 0.9);
   padding: 30px;
   width: 50%;
   height: 100%;

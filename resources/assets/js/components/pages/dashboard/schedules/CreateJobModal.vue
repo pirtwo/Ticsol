@@ -77,7 +77,8 @@
                   :data="jobs"
                   :multi="false"
                   id="parent_id"
-                  name="jobParent"                                                                                                                                               
+                  name="jobParent"      
+                  class="form-control"                                                                                                                                         
                   placeholder="Select job parent"
                   search-placeholder="search..."
                 />
