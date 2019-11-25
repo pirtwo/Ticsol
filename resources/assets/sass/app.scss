@@ -31,7 +31,7 @@ body {
     height: 100%;
     display: grid;
     justify-items: stretch;
-    grid-template-rows: auto 70% auto;
+    grid-template-rows: 80px calc(100% - 165px) 85px;
   }
 
   .main {
@@ -39,13 +39,11 @@ body {
   }
 
   .header {
-    padding: 10px;
-    min-height: 50px;
+    padding: 0px;
   }
 
   .footer {
-    padding: 10px;
-    min-height: 50px;
+    padding: 0px;
   }
 
   .toolbar-top {
@@ -68,21 +66,20 @@ body {
 .toolbar-bot {
   .icon,
   .icon {
-    font-size: 1.8vw !important;
+    font-size: 25px !important;
     font-weight: bold;
   }
 
-  .caption,
   .caption {
     display: block;
     padding-top: 1px;
-    font-size: 0.6vw;
+    font-size: 10px !important;
     text-align: center;
   }
 
   .btn {
     padding: 10px;
-    min-width: 4.7vw;
+    min-width: 75px;
     border: 0px transparent !important;
   }
 
@@ -138,7 +135,6 @@ body {
   .btn {
     min-width: 100px;
     border: 0px transparent !important;
-    background-color: rgba(255, 255, 255, 0) !important;
   }
 
   .btn:hover {
@@ -147,7 +143,7 @@ body {
 
   .icon,
   .caption {
-    color: rgb(132, 80, 168) !important;
+    //color: rgb(132, 80, 168) !important;
   }
 
   .icon {
@@ -238,5 +234,10 @@ body {
   li a i {
     line-height: 1.5;
     vertical-align: bottom;
+  }
+
+  li a,
+  li .btn{
+    background-color: transparent;
   }
 }
