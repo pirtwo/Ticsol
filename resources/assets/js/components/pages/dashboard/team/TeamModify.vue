@@ -80,6 +80,7 @@
                 <label class="col-sm-2 col-form-label">Members</label>
                 <div class="col-sm-10">
                   <ts-select
+                    class="form-control"
                     v-model="form.users"
                     :data="users"
                     :multi="true"

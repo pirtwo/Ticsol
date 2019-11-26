@@ -1,7 +1,6 @@
 .scheduler_green_main {
   border: 0px;
   font-size: 10px;
-  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .scheduler_green_event {
@@ -21,88 +20,24 @@
   left: 4px;
   right: 4px;
   height: 2px;
-  background-color: white;
 }
 
 .scheduler_green_event_bar_inner {
-  position: absolute;
   height: 2px;
-  background-color: rgb(53, 110, 216);
-}
-
-.scheduler_green_event_hover .scheduler_green_event_inner {
-  background: #bee74d;
-}
-
-.scheduler_green_red .scheduler_green_event_inner {
-  border: 1px solid #c00004;
-  background: #ab0000;
-  background: -moz-linear-gradient(top, #ff2819 0%, #ab0000);
-  background: -webkit-gradient(linear, left top, left bottom, from(#ff2819), to(#ab0000));
-  filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#ff2819", endColorStr="#ab0000");
-}
-
-.scheduler_green_message {
-  padding: 10px;
-  opacity: 0.9;
-  filter: alpha(opacity=90);
-
-  color: #ffffff;
-  background: #000;
-  background: -moz-linear-gradient(top, #999 0%, #666);
-  background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#666));
-  filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#999999", endColorStr="#666666");
-  text-shadow: 0px -1px 1px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.3);
-}
-
-.scheduler_green_header_icon {
-  color: black;
-  background-color: red;
-  position: relative;
-  width: 15px !important;
-  height: 26px !important;
-}
-
-.scheduler_green_header_icon::before {
-  content: "»";
   position: absolute;
-  font-size: 20px;
-  top: 0px;
-  left: 2px;
-}
-
-.scheduler_green_header_icon_hide {
-  color: black;
-  background-color: red;
-  position: relative;
-  width: 15px !important;
-  height: 26px !important;
-  display: none;
-}
-
-.scheduler_green_header_icon_hide::before {
-  content: "«";
-  position: absolute;
-  font-size: 20px;
-  top: 0px;
-  left: 2px;
 }
 
 .scheduler_green_timeheader {
   cursor: default;
-  color: #666;
   text-align: center;
 }
 
-.scheduler_green_timeheader_float_inner {
-  color: black;
+.scheduler_green_timeheader_float_inner {  
   text-align: center;
   padding-top: 5px;
   padding-left: 5px;
 }
 
-.scheduler_green_timeheadergroup {
-}
 
 .scheduler_green_timeheadergroup_inner {
   position: absolute;
@@ -112,7 +47,6 @@
   bottom: 0px;
   text-align: center;
   padding: 5px;
-  border-right: 1px solid rgba(000, 000, 000, 0.1);
 }
 
 .scheduler_green_timeheadercol_inner {
@@ -122,39 +56,26 @@
   top: 0px;
   bottom: 0px;
   text-align: center;
-  border-right: 1px solid rgba(000, 000, 000, 0.1);
-  border-top: 1px solid rgba(000, 000, 000, 0.1);
   padding: 5px;
 }
 
 .scheduler_green_rowheader {
-  color: black;
-  background-color: rgba(255, 255, 255, 0.1);
+  //
 }
 
 .scheduler_green_rowheader_inner {
-  padding: 15px 0px;
   height: 100%;
+  padding: 15px 0px;  
   vertical-align: middle;
 }
 
 .scheduler_green_corner {
-  color: black;
+  //
 }
 
 .scheduler_green_resourceheader td {
   border-bottom: 1px solid black;
   padding: 0px;
-}
-
-.scheduler_green_tree_image_no_children {
-  /* background-image: url('scheduler_green/tree_nochildren.png'); */
-}
-.scheduler_green_tree_image_expand {
-  /* background-image: url('scheduler_green/tree_expand.png'); */
-}
-.scheduler_green_tree_image_collapse {
-  /* background-image: url('scheduler_green/tree_collapse.png'); */
 }
 
 .scheduler_green_divider {
@@ -191,6 +112,7 @@
 }
 
 .scheduler_green_cell {
+  //
 }
 
 .scheduler_green_cellweekend {
@@ -211,8 +133,8 @@
 }
 
 .header_weekDay_weekNumber {
+  color: inherit;
   font-size: 8px;
-  color: rgb(78, 241, 37);
 }
 
 .header_weekDay_dayNumber {
@@ -243,7 +165,6 @@
 .res_job_name,
 .res_job_code {
   width: 100%;
-
   text-align: center;
   display: inline-block;
 }

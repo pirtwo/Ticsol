@@ -32,7 +32,7 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped"
+        class="table table-striped table-hover"
         :data="requests"
         :header="header"
         :selection="false"

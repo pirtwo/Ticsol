@@ -66,6 +66,7 @@
                   </label>
                   <div class="col">
                     <ts-select
+                      class="form-control"
                       v-model="form.event_id"
                       :default="form.event_id"
                       :data="eventList"

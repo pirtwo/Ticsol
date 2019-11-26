@@ -183,6 +183,7 @@
                 </label>
                 <div class="col-sm-10">
                   <ts-select
+                    class="form-control"
                     v-model="item.date"
                     :data="weekDays"
                     id="parent_id"
@@ -203,6 +204,7 @@
                 </label>
                 <div class="col-sm-10">
                   <ts-select
+                    class="form-control"
                     v-model="item.job"
                     :data="jobs"
                     id="parent_id"
@@ -331,6 +333,7 @@
             <label class="col-sm-12 col-form-lable">Approver</label>
             <div class="col-sm-12">
               <ts-select
+                class="form-control"
                 v-model="approver"
                 :data="users"
                 :class="[{'is-invalid' : $v.approver.$error } ,'form-control']"

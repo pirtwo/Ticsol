@@ -1,40 +1,285 @@
-$jungle-background: '';
-$jungle-primary-color: #00627A;
-$jungle-secondary-color: #00627A;
+// ----- COLORS -------
+$jungle-1st: #5CDB95;
+$jungle-2nd: #05386B;
+$jungle-3rd: #EDF5E1;
 
-$jungle-primary-bgColor: rgba(255, 250, 229, 0.4);
-$jungle-secondary-bgColor: rgba(255, 250, 229, 0.6);
+$jungle-1st-tp: rgba(92, 219, 149, 0.9);
+$jungle-2nd-tp: rgba(5, 56, 107, 0.9);
+$jungle-3rd-tp: rgba(237, 245, 225, 0.9);
 
-$jungle-primary-fontColor: rgba(2, 14, 15, 0.9);
-$jungle-secondary-fontColor: #020E0F;
+$jungle-text-1st: #05386B;
+$jungle-text-2nd: #EDF5E1;
+$jungle-text-danger: orange;
 
-#app.jungle{
-  background-image: url("~/img/theme/Jungle.jpg");
+$jungle-schedule-confirm: #05386B;
+$jungle-schedule-tentative: #379683;
+$jungle-schedule-leave: red;
+$jungle-schedule-unavi: orange;
+$jungle-schedule-shadow: rgba(0, 0, 0, 0.1);
+$jungle-schedule-matrix: rgba(0, 0, 0, 0.1);
+
+#app.jungle {
+  text-emphasis: none;
+  color: $jungle-text-1st;
   font-family: $app-primary-font;
-  color: $jungle-primary-fontColor;
+  background-image: url("~/img/theme/jungle.jpg");
 
-  .main .wrap-drawer .wrap-content .navbar,
-  .main .wrap-drawer .wrap-content .content,
-  .main .wrap-drawer .drawer .drawer-toolbar {   
-    background-color: $jungle-primary-bgColor;
+  // ------ DASHBOARD ----
+  .dashboard {    
+    background-color: $jungle-1st-tp;
+  
+      
+    .btn {
+      //
+    }
+  
+    .btn:hover {
+      background-color: rgba(255, 255, 255, 0.4) !important;
+    }
+  
+    .icon,
+    .caption {
+      color: $jungle-2nd;
+    }
   }
 
-  .main .wrap-drawer .drawer .drawer-body {
-    background-color: $jungle-secondary-bgColor;
+  // ------ Toolbars -----
+  .toolbar-top,
+  .toolbar-bot {
+    .btn {
+      color: $jungle-text-1st;
+      background-color: $jungle-3rd-tp;
+    }
+
+    .btn:hover,
+    .btn.active {
+      color: $jungle-text-2nd;
+      background-color: $jungle-2nd-tp;
+    }
   }
 
-  .main .wrap-drawer .wrap-content .loading-box{
-    background-color: $jungle-secondary-bgColor;
+  // ------- DRAWER ---------------
+  #drawer {
+    .drawer__content,
+    .drawer__drawer,
+    .drawer__toolbar {      
+      background-color: $jungle-1st-tp;
+    }
+
+    // toolbar
+    .drawer__toolbar {
+      .btn {
+        color: $jungle-text-1st;
+        background-color: $jungle-3rd;
+      }    
+
+      .btn:focus {
+        box-shadow: none;
+      }
+
+      .btn:hover,
+      .btn:active,
+      .btn.active,
+      .btn-group .btn.active {
+        color: $jungle-text-2nd;
+        background-color: $jungle-2nd;
+      }
+    }
   }
 
-  .toolbar-top .btn,
-  .toolbar-bot .btn {
-    color: $jungle-primary-fontColor;
-    background-color: $jungle-primary-bgColor !important;
+  // ------ V-MENUE -----------
+  .v-menu {
+    color: $jungle-text-1st;
+
+    .menu-title {
+      color: $jungle-text-1st;
+      background-color: $jungle-1st-tp;
+    }
+
+    li a,
+    li .btn {
+      color: $jungle-text-1st;
+    }
+
+    li a:hover,
+    li .btn:hover {
+      color: $jungle-text-2nd;
+      background-color: $jungle-2nd;
+    }
   }
 
-  // Daypilot settings
-  .scheduler_green_main{
+  // ------ LOADING SCREEN --------
+  .loading-box {
+    color: $jungle-text-1st;
+    background-color: $jungle-3rd;
+  }
+
+  //------- MODAL --------------
+  .modal-content {
+    background-color: $jungle-1st;
+  }
+
+  // ------ DROPDOWN -----------
+  .dropdown-menu {
+    background-color: $jungle-1st;
+
+    .dropdown-item {
+      color: $jungle-text-1st;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:active,
+    .dropdown-item.active {
+      color: $jungle-text-2nd;
+      background-color: $jungle-2nd;
+    }
+  }
+
+  // ------ TABLE -----------------
+  .table {
+    color: $jungle-text-1st;
+
+    th, td{
+      border-top: 0px;
+    }
+
+    tr,
+    tr a,
+    tr .btn{
+      transition: none;
+      color: $jungle-text-1st;
+    }
+
+    tbody tr:hover,
+    tbody tr:hover a,
+    tbody tr:hover button i { 
+      color: $jungle-text-2nd;     
+      background-color: $jungle-2nd;
+      transition: none;
+    }
+  }
+
+  //------- FORM ------------------
+  .field-required,
+  .invalid-feedback {
+    color: $jungle-text-danger;
+  }
+
+  // ----- BUTTONS ---------------- 
+  .close {
+    color: $jungle-text-1st;
+  }
+
+  .close:hover {
+    color: $jungle-2nd;
+    text-shadow: none;
+  }
+
+  // ----- WIZARD ------------------
+  .wrap-wizard{
+    background-color: $jungle-1st-tp;
+  }
+
+  // ----- SCHEDULER ---------------
+  .scheduler_green_main {
     font-family: $app-secondary-font !important;
+    background-color: $jungle-1st;
   }
+  
+  .scheduler_green_rowheader,
+  .scheduler_green_timeheadercol_inner,
+  .scheduler_green_timeheadergroup_inner{
+    color: $jungle-text-1st;
+  }  
+
+  .scheduler_green_corner,
+  .scheduler_green_rowheader,
+  .scheduler_green_timeheadercol,
+  .scheduler_green_timeheadergroup{
+    background-color: $jungle-1st;
+  }
+
+  .scheduler_green_crosshair_top,
+  .scheduler_green_crosshair_left,
+  .scheduler_green_shadow_inner {    
+    background-color: $jungle-schedule-shadow;
+  }
+
+  .scheduler_green_divider,
+  .scheduler_green_resourcedivider,  
+  .scheduler_green_divider_horizontal,  
+  .scheduler_green_matrix_vertical_line,
+  .scheduler_green_matrix_horizontal_line {
+    background-color: $jungle-schedule-matrix;    
+  } 
+
+  .scheduler_green_timeheadergroup_inner{
+    border-right: 1px solid $jungle-schedule-matrix; 
+  }
+
+  .scheduler_green_timeheadercol_inner{
+    border-right: 1px solid $jungle-schedule-matrix; 
+    border-top: 1px solid $jungle-schedule-matrix; 
+  }
+
+  .scheduler_green_event_bar {
+    background-color: white;
+  }
+
+  .scheduler_green_event_bar_inner {
+    background-color: #ee0a0a;
+  }
+
+  .scheduled {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $jungle-schedule-confirm;
+    }    
+  }
+
+  .scheduled.tentative .scheduler_green_event_inner {
+    background: repeating-linear-gradient(
+      45deg, 
+      $jungle-schedule-confirm, 
+      $jungle-schedule-confirm 10px, 
+      $jungle-schedule-tentative 10px, 
+      $jungle-schedule-tentative 12px) !important;
+  }
+
+  .leave {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $jungle-schedule-leave
+    }   
+  }
+
+  .leave.tentative .scheduler_green_event_inner {
+    background: repeating-linear-gradient(
+      45deg, 
+      $jungle-schedule-leave, 
+      $jungle-schedule-leave 10px, 
+      $jungle-schedule-tentative 10px, 
+      $jungle-schedule-tentative 12px) !important;
+  }
+
+  .unavailable {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: $jungle-text-1st;
+      background: $jungle-schedule-unavi;
+    }
+  }
+  
+  .draggable {
+    color: $jungle-text-1st;    
+    background-color: $jungle-1st;
+  }
+
+  .draggable:hover {
+    color: $jungle-text-2nd; 
+    background-color: $jungle-2nd;
+  }
+  
 }

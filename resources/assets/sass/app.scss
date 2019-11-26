@@ -3,15 +3,11 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-// Variables
 @import "variables";
-
 // Bootstrap
 @import "node_modules/bootstrap/scss/bootstrap";
-
-@import "public/css/ts_scheduler_green";
-
 // themes
+@import "schedule";
 @import "default";
 @import "urban";
 @import "jungle";
@@ -19,9 +15,10 @@
 @import "night";
 
 html,
-body,
-main {
+body {
   height: 100%;
+  margin: 0px;
+  padding: 0px;
 }
 
 #app {
@@ -32,19 +29,21 @@ main {
 
   .container-fluid {
     height: 100%;
-    padding: 0px 50px;
-    min-height: 500px;
+    display: grid;
+    justify-items: stretch;
+    grid-template-rows: 80px calc(100% - 165px) 85px;
   }
 
-  header,
-  footer {
+  .main {
+    height: 100%;
+  }
+
+  .header {
     padding: 0px;
-    margin: 0px;
-    position: relative;
   }
 
-  footer {
-    padding-top: 7px;
+  .footer {
+    padding: 0px;
   }
 
   .toolbar-top {
@@ -57,6 +56,7 @@ main {
   }
 }
 
+
 .toolbar-top {
   display: flex;
   align-items: center;
@@ -66,21 +66,20 @@ main {
 .toolbar-bot {
   .icon,
   .icon {
-    font-size: 1.8vw !important;
+    font-size: 25px !important;
     font-weight: bold;
   }
 
-  .caption,
   .caption {
     display: block;
     padding-top: 1px;
-    font-size: 0.6vw;
+    font-size: 10px !important;
     text-align: center;
   }
 
   .btn {
     padding: 10px;
-    min-width: 4.7vw;
+    min-width: 75px;
     border: 0px transparent !important;
   }
 
@@ -106,48 +105,6 @@ main {
   }
 }
 
-.main .wrap-drawer {
-  .wrap-content .navbar,
-  .wrap-content .content,
-  .drawer .drawer-toolbar {
-    //
-  }
-
-  .drawer .drawer-body {
-    //
-  }
-
-  .wrap-content .loading-box {
-    //
-  }
-
-  // main -> toolbar
-  .wrap-content .navbar {
-    font-size: 0.8vw;
-
-    .btn {
-      font-size: 0.8vw;
-    }
-
-    .btn i {
-      font-size: 1.3vw;
-    }
-
-    .btn-group .btn.active {
-      //
-    }
-
-    .btn:focus {
-      //
-    }
-  }
-}
-
-label,
-input,
-.form-control {
-  //
-}
 
 .table {
   tr {
@@ -158,6 +115,51 @@ input,
   th,
   thead th {
     vertical-align: middle;
+  }
+}
+
+.dashboard {
+  text-align: center;
+  border-radius: 2px;
+  padding: 100px 50px 50px 50px;
+  background-color: rgba(255, 255, 255, 0.8);
+
+  .app-logo {
+    display: block;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 35px;
+  }
+
+  .btn {
+    min-width: 100px;
+    border: 0px transparent !important;
+  }
+
+  .btn:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  .icon,
+  .caption {
+    //color: rgb(132, 80, 168) !important;
+  }
+
+  .icon {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 50px !important;
+  }
+
+  .caption {
+    display: block;
+    padding-top: 3px;
+    font-size: 0.85rem;
+    font-weight: normal;
+    text-align: center;
   }
 }
 
@@ -179,52 +181,6 @@ input,
   margin-bottom: 40px;
 }
 
-.dashboard {
-  text-align: center;
-  border-radius: 2px;
-  padding: 100px 50px 50px 50px;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-.dashboard .app-logo {
-  display: block;
-  width: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 35px;
-}
-
-.dashboard .btn {
-  min-width: 100px;
-  border: 0px transparent !important;
-  background-color: rgba(255, 255, 255, 0) !important;
-}
-
-.dashboard .btn:hover {
-  background-color: rgba(255, 255, 255, 0.4) !important;
-}
-
-.dashboard .icon,
-.dashboard .caption {
-  color: rgb(132, 80, 168) !important;
-}
-
-.dashboard .icon {
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  font-weight: bold;
-  font-size: 50px !important;
-}
-
-.dashboard .caption {
-  display: block;
-  padding-top: 3px;
-  font-size: 0.85rem;
-  font-weight: normal;
-  text-align: center;
-}
-
 //------ Dropdowns --------//
 .dropdown-menu {
   border-radius: 0px;
@@ -238,10 +194,9 @@ input,
 .v-menu {
   list-style: none;
   padding-left: 0px;
-  font-size: 1vw;
 
   .menu-title {
-    font-size: 1.2vw;
+    font-size: 12px;
     padding: 3px 7px;
     font-weight: bold;
   }
@@ -278,12 +233,11 @@ input,
 
   li a i {
     line-height: 1.5;
-    font-size: 1vw;
     vertical-align: bottom;
   }
-}
 
-//------ Form -------//
-.field-required {
-  color: red;
+  li a,
+  li .btn{
+    background-color: transparent;
+  }
 }

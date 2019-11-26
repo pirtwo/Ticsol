@@ -598,8 +598,6 @@ export default {
 .res-menu li {
   padding: 7.5px 12px;  
   margin: 8px 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .res-menu li:active {
@@ -607,12 +605,10 @@ export default {
 }
 
 .draggable{
-  cursor: move;
+  cursor: grab;
 }
 
 .res-menu li a {
-  cursor: -webkit-grab;
-  color: black;
   font-size: 12px;
   text-decoration: none;
 }

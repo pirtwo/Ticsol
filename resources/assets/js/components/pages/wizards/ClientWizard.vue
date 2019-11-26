@@ -494,6 +494,7 @@
                     <label class="col-sm-3 col-form-lable">Teams</label>
                     <div class="col-sm-9">
                       <ts-select
+                        class="form-control"
                         v-model="item.teams"
                         :data="teamList"
                         :multi="true"
@@ -512,6 +513,7 @@
                     <label class="col-sm-3 col-form-lable">Roles</label>
                     <div class="col-sm-9">
                       <ts-select
+                        class="form-control"
                         v-model="item.roles"
                         :data="roleList"
                         :multi="true"
@@ -531,6 +533,7 @@
                       <label class="col-sm-3 col-form-lable">Vendor</label>
                       <div class="col-sm-9">
                         <ts-select
+                          class="form-control"
                           v-model="item.vendor"
                           :data="vendorAccountList"
                           :multi="false"
@@ -726,6 +729,7 @@
                     <label class="col-sm-2 col-form-lable">Profile</label>
                     <div class="col-sm-10">
                       <ts-select
+                        class="form-control"
                         v-model="item.profile"
                         :data="profileList"
                         :multi="false"
@@ -744,6 +748,7 @@
                     <label class="col-sm-2 col-form-lable">Parent</label>
                     <div class="col-sm-10">
                       <ts-select
+                        class="form-control"
                         v-model="item.parent"
                         :data="jobList"
                         :multi="false"
@@ -2402,10 +2407,9 @@ export default {
 
 <style scoped>
 .wrap-wizard {
-  background-color: rgba(255, 255, 255, 0.9);
   padding: 30px;
   width: 50%;
-  height: 70%;
+  height: 100%;
   border-radius: 2px;
   position: relative;
 }

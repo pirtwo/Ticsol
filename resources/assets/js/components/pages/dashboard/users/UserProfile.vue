@@ -213,6 +213,7 @@
         @change="loadCalendar"
       />
       <calendar
+        class="mb-5"
         :start-date="weekStart"
         :events="unavailables"
         :view-type="'Weeks'"
