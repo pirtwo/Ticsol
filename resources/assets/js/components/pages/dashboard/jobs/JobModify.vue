@@ -209,7 +209,7 @@
                   name="jobParent"
                   placeholder="select job parent"
                   search-placeholder="search here..."
-                  :disabled="!userCan('job', ['full', 'update']) || !form.profile"
+                  :disabled="!userCan('job', ['full', 'update']) || !form.profile || jobs.length == 0"
                 />
               </div>
             </div>
