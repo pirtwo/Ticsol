@@ -27,6 +27,10 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
   // ------ DASHBOARD ----
   .dashboard {    
     background-color: $night-1st-tp;
+
+    .app-logo {
+      background-color: $night-2nd;
+    }
   
       
     .btn {
@@ -106,6 +110,12 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
       color: $night-text-2nd;
       background-color: $night-2nd;
     }
+  }
+
+  // ------ LOADING SCREEN --------
+  .loading-box {
+    color: $night-text-2nd;
+    background-color: $night-2nd;
   }
 
   //------- MODAL --------------

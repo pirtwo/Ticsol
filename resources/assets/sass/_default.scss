@@ -1,7 +1,7 @@
 // ----- COLORS -------
 $default-1st: white;
 $default-2nd: #d76165;
-$default-3rd: black;
+$default-3rd: whitesmoke;
 
 $default-1st-tp: rgba(255, 255, 255, 0.9);
 $default-2nd-tp: rgba(215, 97, 101, 0.9);
@@ -18,13 +18,11 @@ $default-schedule-unavi: orange;
 $default-schedule-shadow: rgba(0, 0, 0, 0.1);
 $default-schedule-matrix: rgba(0, 0, 0, 0.1);
 
-#app.default {
-  text-emphasis: none;
-  color: $default-text-1st;
+#app.default { 
   font-family: $app-primary-font;
-  background-image: url("~/img/theme/default.jpg");
+  background-image: url("~/img/theme/default.jpg");  
 
-  // ------ DASHBOARD ----
+  // ------ DASHBOARD -------------
   .dashboard {    
     background-color: $default-1st-tp;
   
@@ -32,18 +30,19 @@ $default-schedule-matrix: rgba(0, 0, 0, 0.1);
     .btn {
       //
     }
-  
-    .btn:hover {
-      background-color: rgba(255, 255, 255, 0.4) !important;
-    }
-  
+
     .icon,
     .caption {
-      color: $default-2nd;
+      color: #a726a5;
     }
+  
+    .btn:hover {      
+      background-color: rgba($color: #000000, $alpha: 0.1) !important;
+    }  
+    
   }
 
-  // ------ Toolbars -----
+  // ------ Toolbars --------------
   .toolbar-top,
   .toolbar-bot {
     .btn {
@@ -87,7 +86,7 @@ $default-schedule-matrix: rgba(0, 0, 0, 0.1);
     }
   }
 
-  // ------ V-MENUE -----------
+  // ------ V-MENUE ---------------
   .v-menu {
     color: $default-text-1st;
 
@@ -108,7 +107,13 @@ $default-schedule-matrix: rgba(0, 0, 0, 0.1);
     }
   }
 
-  //------- MODAL --------------
+  // ------ LOADING SCREEN --------
+  .loading-box {
+    color: $default-text-2nd;
+    background-color: #474747;
+  }
+
+  //------- MODAL -----------------
   .modal-content {
     background-color: $default-1st;
   }

@@ -108,6 +108,12 @@ $jungle-schedule-matrix: rgba(0, 0, 0, 0.1);
     }
   }
 
+  // ------ LOADING SCREEN --------
+  .loading-box {
+    color: $jungle-text-1st;
+    background-color: $jungle-3rd;
+  }
+
   //------- MODAL --------------
   .modal-content {
     background-color: $jungle-1st;

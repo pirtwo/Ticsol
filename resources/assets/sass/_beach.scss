@@ -108,6 +108,12 @@ $beach-schedule-matrix: rgba(0, 0, 0, 0.1);
     }
   }
 
+  // ------ LOADING SCREEN --------
+  .loading-box {
+    color: $beach-text-2nd;
+    background-color: $beach-2nd;
+  }
+
   //------- MODAL --------------
   .modal-content {
     background-color: $beach-1st;

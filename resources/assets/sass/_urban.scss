@@ -40,7 +40,7 @@ $urban-schedule-matrix: rgba(0, 0, 0, 0.1);
   
     .icon,
     .caption {
-      color: $urban-2nd;
+      color: $urban-3rd;
     }
   }
 
@@ -107,6 +107,12 @@ $urban-schedule-matrix: rgba(0, 0, 0, 0.1);
       color: $urban-text-2nd;
       background-color: $urban-2nd;
     }
+  }
+
+  // ------ LOADING SCREEN --------
+  .loading-box {
+    color: $urban-text-1st;
+    background-color: $urban-3rd;
   }
 
   //------- MODAL --------------
