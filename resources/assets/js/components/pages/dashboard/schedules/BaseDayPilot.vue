@@ -292,8 +292,8 @@ export default {
     dp.eventStackingLineHeight = this.eventStackLineHeight;
 
     // Rows
-    dp.rowMarginBottom = 20;
-    dp.rowHeaderHideIconEnabled = true;
+    dp.rowMarginBottom = 1;
+    dp.rowHeaderHideIconEnabled = false;
     dp.rowHeaderWidth = 120;
     dp.rowHeaderWidthMarginLeft = 0;
     dp.rowHeaderWidthMarginRight = 0;
@@ -371,7 +371,7 @@ export default {
       if (this.view === "job") {
         args.resource.html =
           `<div class='res_job_name'>${item.name}</div>` +
-          `<div class='res_job_code'>Code: ${item.code}</div>`;
+          `<div class='res_job_code'>${(item.id == 'sys-001' || item.id == 'sys-002') ? '' : `Code: ${item.code}`}</div>`;
       }
       args.resource.minHeight = 90;
     };
