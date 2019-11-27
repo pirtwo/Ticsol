@@ -91,11 +91,12 @@ class Job extends Model
 
         return $depth;
     }
+    
     public function getBillableAttribute()
     {
         $profile = $this->profile()->first();
         if($profile)
-            return $profile->billable;
+            return $profile->billable === 1;
         else return false;
     }
 

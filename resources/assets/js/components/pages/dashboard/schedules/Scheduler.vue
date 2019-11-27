@@ -271,7 +271,7 @@ export default {
             end: new window.DayPilot.Date(item.end),
             text: eventText,
             type: item.event_type,
-            status: item.status
+            status: item.status,
           };
         });
       else {
@@ -291,7 +291,7 @@ export default {
             end: new window.DayPilot.Date(item.end),
             text: item.user.fullname,
             type: item.event_type,
-            status: item.status
+            status: item.status,
           };
         });
       }
@@ -304,7 +304,7 @@ export default {
         });
       else {
         let list = this.getList("job").map(item => {
-          return { id: item.id, name: item.title, code: item.code };
+          return { id: item.id, name: item.title, code: item.code, billable: item.billable };
         });
 
         list.unshift(this.unaviJob, this.leaveJob);
@@ -453,10 +453,13 @@ export default {
 
     // DP Handlers
     rangeSelectHandler(event) {  
-      event.name = this.scheduleResources.find(
+      let resource = this.scheduleResources.find(
         item => item.id == event.resourceId
-      ).name;
+      );
+
       this.event = event;
+      this.event.name = resource.name;
+      if(this.view == 'job') this.event.billable = resource.billable;
       
       this.event.start = new window.DayPilot.Date(
         `${event.start.toString("yyyy-MM-dd")}T${this.getBusinessHourStart(event.start.getDayOfWeek())}`);

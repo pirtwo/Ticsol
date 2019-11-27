@@ -407,9 +407,9 @@ export default {
 
       args.data.cssClass = `${item.type} ${item.status}`;
       args.data.html = `
-        <div class=''>${args.data.text}</div>
-        <div class=''>${args.data.start.toString("hh:mm")}</div>
-        <div class=''>${args.data.end.toString("hh:mm")}</div>`;
+        <div class='event-text'>${args.data.text}</div>
+        <div class='event-start'>${args.data.start.toString("hh:mm")}</div>
+        <div class='event-end'>${args.data.end.toString("hh:mm")}</div>`;
     };
 
     dp.init();

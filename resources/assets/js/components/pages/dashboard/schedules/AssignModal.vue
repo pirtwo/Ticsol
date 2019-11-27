@@ -179,21 +179,6 @@
                         <input
                           v-model="form.status"
                           type="radio"
-                          id="Tentative"
-                          name="status"
-                          value="tentative"
-                          class="custom-control-input"
-                          checked
-                        >
-                        <label
-                          class="custom-control-label"
-                          for="Tentative"
-                        >Tentative</label>
-                      </div>
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input
-                          v-model="form.status"
-                          type="radio"
                           id="Confirmed"
                           name="status"
                           value="confirmed"
@@ -204,27 +189,44 @@
                           for="Confirmed"
                         >Confirmed</label>
                       </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input
+                          v-model="form.status"
+                          type="radio"
+                          id="Tentative"
+                          name="status"
+                          value="tentative"
+                          class="custom-control-input"
+                          checked
+                        >
+                        <label
+                          class="custom-control-label"
+                          for="Tentative"
+                        >Tentative</label>
+                      </div>                      
                     </div>
                   </div>
                 </div>
 
-                <!-- Billable -->
-                <div class="form-group col-sm-3">
-                  <label for="billable">Billable</label>
-                  <div class="custom-control custom-checkbox">
-                    <input
-                      v-model="form.billable"
-                      id="billable"
-                      name="billable"
-                      type="checkbox"
-                      class="custom-control-input"                    
-                    >
-                    <label
-                      class="custom-control-label"
-                      for="billable"
-                    >Billable</label>
+                <fieldset :disabled="!billable">
+                  <!-- Billable -->
+                  <div class="form-group col-sm-3">
+                    <label for="billable">Billable</label>
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        v-model="form.billable"
+                        id="billable"
+                        name="billable"
+                        type="checkbox"
+                        class="custom-control-input"                    
+                      >
+                      <label
+                        class="custom-control-label"
+                        for="billable"
+                      >Billable</label>
+                    </div>
                   </div>
-                </div>
+                </fieldset>                
 
                 <!-- Offsite -->
                 <div class="form-group col-sm-3">
@@ -313,23 +315,19 @@ export default {
 
   data() {
     return {
+      jobModal: false,
       form: {
         resourceName: "",
         resource_id: null,
         event_id: null,
-        status: "tentative",
+        status: "confirmed",
         startDate: "",
         endDate: "",
         startTime: "",
         endTime: "",
         billable: false,
         offsite: false
-      },
-      statusOptions: [
-        { key: 1, value: "Tentative" },
-        { key: 2, value: "Confirmed" }
-      ],
-      jobModal: false
+      }      
     };
   },
 
@@ -372,7 +370,7 @@ export default {
     eventList: function() {
       if (this.view == "user") {
         return this.getList("job").map(obj => {
-          return { key: obj.id, value: obj.title };
+          return { key: obj.id, value: obj.title, billable: obj.billable };
         });
       } else {
         if(this.userCan('schedule', ['full']))
@@ -396,6 +394,13 @@ export default {
       return moment(`${this.form.endDate} ${this.form.endTime}`).format(
         "YYYY-MM-DD HH:mm"
       );
+    },
+
+    billable: function(){
+      if(this.view == 'user')
+        return this.form.event_id ? this.form.event_id.billable : false;
+      else
+        return this.event ? this.event.billable : false;
     }
   },
 
@@ -483,10 +488,10 @@ export default {
     },
 
     clearForm() {
-      this.form.userName = "";
-      this.form.user_id = null;
-      this.form.job_id = null;
-      this.form.status = "tentative";
+      this.form.resourceName = "";
+      this.form.resource_id = null;
+      this.form.event_id = null;
+      this.form.status = "confirmed";
       this.form.startDate = "";
       this.form.startTime = "";
       this.form.endDate = "";

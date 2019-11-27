@@ -198,21 +198,6 @@
                         <input
                           v-model="form.status"
                           type="radio"
-                          id="updateTentative"
-                          name="status"
-                          value="tentative"
-                          class="custom-control-input"
-                          checked
-                        >
-                        <label
-                          class="custom-control-label"
-                          for="updateTentative"
-                        >Tentative</label>
-                      </div>
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input
-                          v-model="form.status"
-                          type="radio"
                           id="updateConfirmed"
                           name="status"
                           value="confirmed"
@@ -223,27 +208,44 @@
                           for="updateConfirmed"
                         >Confirmed</label>
                       </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input
+                          v-model="form.status"
+                          type="radio"
+                          id="updateTentative"
+                          name="status"
+                          value="tentative"
+                          class="custom-control-input"
+                          checked
+                        >
+                        <label
+                          class="custom-control-label"
+                          for="updateTentative"
+                        >Tentative</label>
+                      </div>                      
                     </div>
                   </div>
                 </div>
 
-                <!-- Billable -->
-                <div class="form-group col-sm-3">
-                  <label for="billable">Billable</label>
-                  <div class="custom-control custom-checkbox">
-                    <input
-                      v-model="form.billable"
-                      id="updateBillable"
-                      name="billable"
-                      type="checkbox"
-                      class="custom-control-input"
-                    >
-                    <label
-                      class="custom-control-label"
-                      for="updateBillable"
-                    >Billable</label>
+                <fieldset :disabled="!billable">
+                  <!-- Billable -->
+                  <div class="form-group col-sm-3">
+                    <label for="billable">Billable</label>
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        v-model="form.billable"
+                        id="updateBillable"
+                        name="billable"
+                        type="checkbox"
+                        class="custom-control-input"
+                      >
+                      <label
+                        class="custom-control-label"
+                        for="updateBillable"
+                      >Billable</label>
+                    </div>
                   </div>
-                </div>
+                </fieldset>                
 
                 <!-- Offsite -->
                 <div class="form-group col-sm-3">
@@ -379,6 +381,7 @@ export default {
 
   data() {
     return {
+      jobModal: false,
       form: {
         resourceName: "",
         resource_id: null,
@@ -390,12 +393,7 @@ export default {
         endTime: "",
         billable: false,
         offsite: false
-      },
-      statusOptions: [
-        { key: 1, value: "Tentative" },
-        { key: 2, value: "Confirmed" }
-      ],
-      jobModal: false
+      }      
     };
   },
 
@@ -453,6 +451,12 @@ export default {
       return moment(`${this.form.endDate} ${this.form.endTime}`).format(
         "YYYY-MM-DD HH:mm"
       );
+    },
+
+    billable: function(){
+      if(this.event)
+        return this.event.job.billable;
+      return false;
     }
   },
 
@@ -497,6 +501,7 @@ export default {
       form.status = this.form.status.toLowerCase();
       form.start = this.start;
       form.end = this.end;
+      form.billable = this.form.billable;
       form.offsite = this.form.offsite;
 
       e.target.innerHTML = "Updating...";
