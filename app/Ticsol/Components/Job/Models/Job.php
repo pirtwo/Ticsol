@@ -11,6 +11,7 @@ class Job extends Model
     protected $table = 'ts_jobs';
     protected $primaryKey = 'id';
     protected $appends = [
+        'billable',
         'commentsCount', 
         'requestsCount', 
         'reportsCount', 
@@ -51,6 +52,14 @@ class Job extends Model
     public function scopeOfClient($query, $clientId)
     {
         return $query->where('client_id', $clientId);
+    }
+
+    public function getBillableAttribute()
+    {
+        $profile = $this->profile()->first();
+        if($profile)
+            return $profile->billable;
+        else return false;
     }
 
 
