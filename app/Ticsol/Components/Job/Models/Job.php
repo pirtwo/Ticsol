@@ -13,6 +13,7 @@ class Job extends Model
     protected $appends = [
         'depth',
         'hierarchy',
+        'billable',
         'commentsCount', 
         'requestsCount', 
         'reportsCount', 
@@ -90,6 +91,14 @@ class Job extends Model
 
         return $depth;
     }
+    public function getBillableAttribute()
+    {
+        $profile = $this->profile()->first();
+        if($profile)
+            return $profile->billable;
+        else return false;
+    }
+
 
     public function getCommentsCountAttribute()
     {
