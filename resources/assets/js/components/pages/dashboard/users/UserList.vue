@@ -109,7 +109,7 @@
       >
         <p class="">
           Please provide the details of any employees you would like to invite. The new accounts
-          will be created immediately and account credentials will be sent to account owner by E-mail.
+          will be created immediately and account credentials will be sent to account owner by email.
         </p>
         <ts-grid
           v-model="invites"
@@ -384,7 +384,7 @@ export default {
       }
 
       this.inviteModal = false;
-      this.showMessage(`Users & invites created successfuly.`, "success");
+      this.showMessage(`<b>Invites</b> created successfuly.`, "success");
     }
   }
 };
