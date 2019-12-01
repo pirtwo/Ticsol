@@ -22,6 +22,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('logout', 'Auth\LoginController@logout')
         ->name('logout');
 
+    // Change Password
+    Route::get('password/change', 'Auth\ChangePasswordController@showChangePasswordForm')
+        ->name('changePassword.form');    
+    Route::post('password/change', 'Auth\ChangePasswordController@changePassword')
+        ->name('changePassword');    
+
     // Password Reset Routes
     Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')
         ->name('password.request');
