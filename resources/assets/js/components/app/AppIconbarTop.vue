@@ -63,6 +63,12 @@
           >
             <i class="icon material-icons">account_circle</i>Profile
           </router-link>
+          <a
+            class="dropdown-item"
+            href="/password/change"
+          >
+            <i class="icon material-icons">lock</i>Change Password
+          </a>
           <div class="dropdown-divider" />
           <a
             class="dropdown-item"
