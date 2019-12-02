@@ -22,6 +22,7 @@ import TsToast from '../components/base/TsToast.vue';
 import TsDateScroller from '../components/base/TsDateScroller.vue';
 import TsGroupbox from '../components/base/TsGroupbox.vue';
 import TsChipsbox from '../components/base/TsChipsbox.vue';
+import TsSection from '../components/base/TsSection.vue';
 
 
 const VueBase = {
@@ -51,7 +52,8 @@ const VueBase = {
         Vue.component('ts-toast', TsToast);
         Vue.component('ts-datescroller', TsDateScroller); 
         Vue.component('ts-groupbox', TsGroupbox); 
-        Vue.component('ts-chipsbox', TsChipsbox);        
+        Vue.component('ts-chipsbox', TsChipsbox);
+        Vue.component('ts-section', TsSection);           
     }
 }
 
