@@ -1,60 +1,27 @@
 <template>
-  <app-main
-    :scrollbar="true"
-    :loading="isLoading"
-    padding="p-5"
-  >
+  <app-main :scrollbar="true" :loading="isLoading" padding="p-5">
     <template slot="toolbar" />
 
     <template slot="drawer">
       <ul class="v-menu">
         <template v-if="userCan('job', ['full', 'create', 'update'])">
-          <li class="menu-title">
-            Actions
+          <li class="menu-title">Actions</li>
+          <li v-if="!this.id">
+            <button class="btn" @click="clearForm">New</button>
           </li>
           <li v-if="!this.id">
-            <button
-              class="btn"
-              @click="clearForm"
-            >
-              New
-            </button>
-          </li>
-          <li v-if="!this.id">
-            <button
-              class="btn"
-              @click="onSubmit"
-            >
-              Submit
-            </button>
+            <button class="btn" @click="onSubmit">Submit</button>
           </li>
           <li v-if="this.id">
-            <button
-              class="btn"
-              @click="onSave"
-            >
-              Save
-            </button>
+            <button class="btn" @click="onSave">Save</button>
           </li>
           <li>
-            <button
-              class="btn"
-              @click="onCancel"
-            >
-              Cancel
-            </button>
+            <button class="btn" @click="onCancel">Cancel</button>
           </li>
         </template>
-        <li class="menu-title">
-          Links
-        </li>
+        <li class="menu-title">Links</li>
         <li>
-          <router-link
-            class="btn btn-link"
-            :to="{ name: 'jobList' }"
-          >
-            Jobs
-          </router-link>
+          <router-link class="btn btn-link" :to="{ name: 'jobList' }">Jobs</router-link>
         </li>
         <li v-if="job">
           <router-link
@@ -63,9 +30,7 @@
             :to="{ name: 'commentList', params : { entity: 'job', id: this.id } }"
           >
             Comments
-            <ts-badge class="badge-light ml-auto">
-              {{ job.commentsCount }}
-            </ts-badge>
+            <ts-badge class="badge-light ml-auto">{{ job.commentsCount }}</ts-badge>
           </router-link>
         </li>
         <li v-if="job">
@@ -76,9 +41,7 @@
             :to="{ name: 'activityList', params : { opt: 'eq', col: 'job_id', val: this.id } }"
           >
             Activity Reports
-            <ts-badge class="badge-light ml-auto">
-              {{ job.reportsCount }}
-            </ts-badge>
+            <ts-badge class="badge-light ml-auto">{{ job.reportsCount }}</ts-badge>
           </router-link>
         </li>
         <li v-if="job">
@@ -89,9 +52,7 @@
             :to="{ name: 'jobList', params : { opt: 'eq', col: 'parent_id', val: this.id } }"
           >
             Related Jobs
-            <ts-badge class="badge-light ml-auto">
-              {{ job.childsCount }}
-            </ts-badge>
+            <ts-badge class="badge-light ml-auto">{{ job.childsCount }}</ts-badge>
           </router-link>
         </li>
         <li v-if="job">
@@ -102,9 +63,7 @@
             :to="{ name: 'inbox', params : { opt: 'eq', col: 'job_id', val: this.id } }"
           >
             Related Requests
-            <ts-badge class="badge-light ml-auto">
-              {{ job.requestsCount }}
-            </ts-badge>
+            <ts-badge class="badge-light ml-auto">{{ job.requestsCount }}</ts-badge>
           </router-link>
         </li>
         <li v-if="job">
@@ -115,9 +74,7 @@
             :to="{ name: 'contactList', params : { opt: 'in', col: 'contact.jobs.id', val: this.id } }"
           >
             Related Contacts
-            <ts-badge class="badge-light ml-auto">
-              {{ job.contactsCount }}
-            </ts-badge>
+            <ts-badge class="badge-light ml-auto">{{ job.contactsCount }}</ts-badge>
           </router-link>
         </li>
       </ul>
@@ -160,13 +117,8 @@
                   type="text"
                   :class="[{'is-invalid' : $v.form.title.$error } ,'form-control']"
                   placeholder="job title"
-                >
-                <div
-                  class="invalid-feedback"
-                  v-if="!$v.form.title.required"
-                >
-                  Title is required.
-                </div>
+                />
+                <div class="invalid-feedback" v-if="!$v.form.title.required">Title is required.</div>
               </div>
             </div>
           </div>
@@ -185,13 +137,8 @@
                   type="text"
                   :class="[{'is-invalid' : $v.form.code.$error } ,'form-control']"
                   placeholder="display code"
-                >
-                <div
-                  class="invalid-feedback"
-                  v-if="!$v.form.code.required"
-                >
-                  Code is required.
-                </div>
+                />
+                <div class="invalid-feedback" v-if="!$v.form.code.required">Code is required.</div>
               </div>
             </div>
           </div>
@@ -251,11 +198,8 @@
                   value="1"
                   class="custom-control-input"
                   checked
-                >
-                <label
-                  class="custom-control-label"
-                  for="jobEnable"
-                >Enable</label>
+                />
+                <label class="custom-control-label" for="jobEnable">Enable</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input
@@ -265,20 +209,137 @@
                   name="status"
                   value="0"
                   class="custom-control-input"
-                >
-                <label
-                  class="custom-control-label"
-                  for="jobDisable"
-                >Disable</label>
+                />
+                <label class="custom-control-label" for="jobDisable">Disable</label>
               </div>
             </div>
           </div>
 
+          <!-- Billing Details -->
+          <ts-section v-if="isBillable" title="Billing Details" class="mb-5">
+            <!-- payment type -->
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-md-4 col-form-lable">Prepaid or Paid on Arrears?</label>
+                <div class="col">
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      v-model="billing.paymentType"
+                      type="radio"
+                      id="prepaid"
+                      name="paymentType"
+                      value="prepaid"
+                      class="custom-control-input"
+                      checked
+                    />
+                    <label class="custom-control-label" for="prepaid">Prepaid</label>
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      v-model="billing.paymentType"
+                      type="radio"
+                      id="arrears"
+                      name="paymentType"
+                      value="inArrears"
+                      class="custom-control-input"
+                    />
+                    <label class="custom-control-label" for="arrears">Paid on Arrears</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- allow overbilling -->
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-md-4 col-form-lable">Allow Billing above job total value</label>
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input
+                      v-model="billing.allowOverbilling"
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="allowOverbilling"
+                    />
+                    <label class="custom-control-label" for="allowOverbilling" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- fallback rate -->
+            <div class="form-group">
+              <div class="form-row">
+                <label
+                  class="col-md-4 col-form-lable"
+                >When billing above total job value apply same job rate or company default rate?</label>
+                <div class="col">
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      v-model="billing.jobFallbackRate"
+                      value="sameRate"
+                      type="radio"
+                      id="sameRate"
+                      name="jobFallbackRate"
+                      class="custom-control-input"
+                    />
+                    <label class="custom-control-label" for="sameRate">Same Rate</label>
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input
+                      v-model="billing.jobFallbackRate"
+                      value="companyDefault"
+                      type="radio"
+                      id="companyDefault"
+                      name="jobFallbackRate"
+                      class="custom-control-input"
+                    />
+                    <label class="custom-control-label" for="companyDefault">Company Default</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- unit type -->
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-md-4 col-form-lable">Billing Unit Type</label>
+                <div class="col">
+                  <select
+                    v-model="billing.billingUnitType"
+                    name="unitType"
+                    id="unitType"
+                    class="custom-select"
+                  >
+                    <option selected disabled>Choose Unit Type...</option>
+                    <option value="minutes">Minutes</option>
+                    <option value="days">Days</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- revenue account -->
+            <div class="form-group">
+              <div class="form-row">
+                <label class="col-md-4 col-form-lable">Revenue Account</label>
+                <div class="col">
+                  <ts-chipsbox
+                    v-model="billing.revenueAccount"
+                    :data="revenueAccountsList"
+                    :multi="false"
+                    id="revenueAccounts"
+                    name="revenueAccounts"
+                    placeholder="Select revenue account"
+                    search-placeholder="search here..."
+                  />
+                </div>
+              </div>
+            </div>
+          </ts-section>
+
           <!-- Custom Fields -->
-          <form-gen
-            :schema="schema"
-            v-model="form.meta"
-          />
+          <form-gen :schema="schema" v-model="form.meta" />
         </fieldset>
       </form>
     </template>
@@ -308,6 +369,7 @@ export default {
       jobList: [],
       schema: "",
       formData: "",
+      client: null,
       form: {
         title: "",
         code: "",
@@ -316,6 +378,13 @@ export default {
         profile: null,
         contacts: [],
         meta: null
+      },
+      billing: {
+        paymentType: "prepaid",
+        allowOverbilling: false,
+        jobFallbackRate: "sameRate",
+        billingUnitType: "minutes",
+        revenueAccount: null
       }
     };
   },
@@ -346,6 +415,7 @@ export default {
   computed: {
     ...mapGetters({
       userCan: "user/can",
+      userClientId: "user/getClientId",
       getList: "resource/getList"
     }),
 
@@ -377,13 +447,35 @@ export default {
 
     profiles: function() {
       return this.getList("form").map(item => {
-        return { key: item.id, value: item.hierarchy, parentKey: item.parent_id };
+        return {
+          key: item.id,
+          value: item.hierarchy,
+          billable: item.billable,
+          parentKey: item.parent_id
+        };
       });
     },
 
     contacts: function() {
       return this.getList("contact").map(item => {
         return { key: item.id, value: `${item.firstname} ${item.lastname}` };
+      });
+    },
+
+    isBillable: function() {
+      if (this.id) {
+        if (this.job)
+          return this.job.profile ? this.job.profile.billable : false;
+        return false;
+      } else return this.form.profile ? this.form.profile.billable : false;
+    },
+
+    revenueAccountsList: function() {
+      let accounts = this.client
+        ? this.client.billing_settings.revenue_accounts
+        : [];
+      return accounts.map(item => {
+        return { key: item.Id, value: item.Name };
       });
     }
   },
@@ -406,6 +498,7 @@ export default {
     ...mapActions({
       clear: "resource/clearResource",
       list: "resource/list",
+      show: "resource/show",
       create: "resource/create",
       update: "resource/update"
     }),
@@ -413,19 +506,21 @@ export default {
     async loadAssets() {
       this.startLoading();
 
-      let p1 = await this.list({ resource: "form" });
-      let p2 = await this.list({ resource: "contact" });
-      let p3 = await this.list({
+      let p1 = this.list({ resource: "form" });
+      let p2 = this.list({ resource: "contact" });
+      let p3 = this.list({
         resource: "job",
-        query: {
-          with: "parent,profile,contacts"
-        }
+        query: { with: "parent,profile,contacts" }
       });
-
-      Promise.all([p1, p2, p3]).finally(() => {
-        if (this.id) {
-          this.populateForm(this.job);
+      let p4 = this.show({ resource: "client", id: this.userClientId }).then(
+        data => {
+          this.client = data;
         }
+      );
+
+      Promise.all([p1, p2, p3, p4]).finally(() => {
+        if (this.id) this.populateForm(this.job);
+        else this.billingDefaults();
         this.stopLoading();
       });
     },
@@ -458,12 +553,23 @@ export default {
 
       this.form.meta = job.meta;
 
+      // populate custom fields
       this.schema =
         job.form_id !== null
           ? this.getList("form", item => item.id == job.form_id)[0].schema
           : null;
-      console.log(this.form.parent);
-      console.log(this.jobs);
+    },
+
+    /** populate billing defaults. */
+    billingDefaults() {
+      let defaults = this.client.billing_defaults;
+      this.billing.paymentType = defaults.payment_type;
+      this.billing.allowOverbilling = defaults.allow_over_billing;
+      this.billing.jobFallbackRate = defaults.job_fallback_rate;
+      this.billing.billingUnitType = defaults.unit_type;
+      this.billing.revenueAccount = this.revenueAccountsList.find(
+        item => item.key == defaults.revenue_account_id
+      );
     },
 
     onSubmit(e) {
