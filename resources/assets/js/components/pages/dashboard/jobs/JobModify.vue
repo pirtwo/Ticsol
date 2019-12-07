@@ -322,42 +322,58 @@
               <div class="form-row">
                 <!-- rate -->
                 <label class="col-sm-4">Bill job at</label>
-                <div class="col input-group">
-                  <input
-                    v-model="billing.rate"
-                    type="text"
-                    class="form-control"
-                    placeholder
+                <div class="col align-self-start">
+                  <div :class="[{'is-invalid' : $v.billing.rate.$error } ,'input-group']">
+                    <input
+                      v-model="billing.rate"
+                      type="text"
+                      :class="[{'is-invalid' : $v.billing.rate.$error } ,'form-control']"
+                      placeholder="Enter billing rate"
+                    >                 
+                    <div class="input-group-append">
+                      <span class="input-group-text">$</span>
+                    </div>  
+                  </div>                  
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.billing.rate.required"
                   >
-                  <div class="input-group-append">
-                    <span class="input-group-text">$</span>
-                  </div>
+                    Biling rate is required.
+                  </div>                
                 </div>
 
                 <!-- unit type -->
-                <div class="col input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Per</span>
-                  </div>
-                  <select
-                    v-model="billing.unitType"
-                    name="unitType"
-                    id="unitType"
-                    class="custom-select"
-                  >
-                    <option
-                      selected
-                      disabled
+                <div class="col align-self-start">
+                  <div :class="[{'is-invalid' : $v.billing.unitType.$error } ,'input-group']">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Per</span>
+                    </div>
+                    <select
+                      v-model="billing.unitType"
+                      name="unitType"
+                      id="unitType"
+                      :class="[{'is-invalid' : $v.billing.unitType.$error } ,'custom-select']"
                     >
-                      Choose Unit Type...
-                    </option>
-                    <option value="minutes">
-                      Minutes
-                    </option>
-                    <option value="days">
-                      Days
-                    </option>
-                  </select>
+                      <option
+                        selected
+                        disabled
+                      >
+                        Choose Unit Type...
+                      </option>
+                      <option value="minutes">
+                        Minutes
+                      </option>
+                      <option value="days">
+                        Days
+                      </option>
+                    </select>
+                  </div>                  
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.billing.unitType.required"
+                  >
+                    Biling unit type is required.
+                  </div>
                 </div>
               </div>
             </div>
@@ -365,21 +381,29 @@
             <!-- unit -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-4">For</label>
-                <div class="col-sm-8 input-group">
-                  <input
-                    v-model="billing.unit"
-                    type="text"
-                    class="form-control"
-                    placeholder
-                  >
-                  <div class="input-group-append">
-                    <span
-                      class="input-group-text"
-                      style="text-transform: capitalize;"
-                    >{{ billing.unitType }}</span>
+                <label class="col-md-4">For</label>
+                <div class="col-md-8">
+                  <div :class="[{'is-invalid' : $v.billing.unit.$error } ,'input-group']">
+                    <input
+                      v-model="billing.unit"
+                      type="text"
+                      :class="[{'is-invalid' : $v.billing.unit.$error } ,'form-control']"
+                      placeholder="Enter billing unit"
+                    >                 
+                    <div class="input-group-append">
+                      <span
+                        class="input-group-text"
+                        style="text-transform: capitalize;"
+                      >{{ billing.unitType }}</span>
+                    </div>                                  
                   </div>
-                </div>
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.billing.unit.required"
+                  >
+                    Biling unit is required.
+                  </div>     
+                </div>   
               </div>
             </div>
 
@@ -538,10 +562,30 @@ export default {
     };
   },
 
-  validations: {
-    form: {
-      title: { required },
-      code: { required }
+  validations() {
+    if (this.isBillable) {
+      return {
+        form: {
+          title: { required },
+          code: { required }
+        },
+        billing: {
+          paymentType: { required },
+          rate: { required },
+          unit: { required },
+          unitType: { required },
+          allowOverbilling: { required },
+          jobFallbackRate: { required },
+          revenueAccount: {}
+        }
+      };
+    } else {
+      return {
+        form: {
+          title: { required },
+          code: { required }
+        }
+      };
     }
   },
 
@@ -711,19 +755,17 @@ export default {
       this.form.meta = job.meta;
 
       // populate billing details
-      if (this.form.profile && job.billing) {
-        if (this.form.profile.billable) {
-          let billing = job.billing;
-          this.billing.paymentType = billing.payment_type;
-          this.billing.rate = billing.rate;
-          this.billing.unit = billing.unit;
-          this.billing.unitType = billing.unit_type;
-          this.billing.allowOverbilling = billing.allow_over_billing;
-          this.billing.jobFallbackRate = billing.job_fallback_rate;
-          this.billing.revenueAccount = this.revenueAccountsList.find(
-            item => item.key == billing.revenue_account_id
-          );
-        }
+      if (this.isBillable && job.billing) {
+        let billing = job.billing;
+        this.billing.paymentType = billing.payment_type;
+        this.billing.rate = billing.rate;
+        this.billing.unit = billing.unit;
+        this.billing.unitType = billing.unit_type;
+        this.billing.allowOverbilling = billing.allow_over_billing;
+        this.billing.jobFallbackRate = billing.job_fallback_rate;
+        this.billing.revenueAccount = this.revenueAccountsList.find(
+          item => item.key == billing.revenue_account_id
+        );
       }
 
       // populate custom fields
@@ -816,8 +858,7 @@ export default {
     },
 
     fillBillingDetails(form) {
-      if (!this.form.profile) return form;
-      if (!this.form.profile.billable) return form;
+      if (!this.isBillable) return form;
 
       form.payment_type = this.billing.paymentType;
       form.rate = this.billing.rate;
@@ -825,7 +866,9 @@ export default {
       form.unit_type = this.billing.unitType;
       form.allow_over_billing = this.billing.allowOverbilling;
       form.job_fallback_rate = this.billing.jobFallbackRate;
-      form.revenue_account_id = this.billing.revenueAccount ? this.billing.revenueAccount.key : null;
+      form.revenue_account_id = this.billing.revenueAccount
+        ? this.billing.revenueAccount.key
+        : null;
 
       return form;
     },
