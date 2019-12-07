@@ -378,13 +378,17 @@ export default {
         payload.email = this.invites[i].email;
         payload.teams = this.invites[i].teams.map(item => item.key);
         payload.roles = this.invites[i].roles.map(item => item.key);
-        await this.create({ resource: "user", data: payload }).catch(err => {
+        await this.create({ resource: "user", data: payload })
+        .then(()=>{
+          this.showMessage(`<b>${payload.firstname + ' ' + payload.lastname}</b> invited successfuly.`, "success");
+        })
+        .catch(err => {
           this.showMessage(err.message, "danger");
         });
       }
 
-      this.inviteModal = false;
-      this.showMessage(`<b>Invites</b> created successfuly.`, "success");
+      e.target.disabled = false;
+      this.inviteModal = false;      
     }
   }
 };
