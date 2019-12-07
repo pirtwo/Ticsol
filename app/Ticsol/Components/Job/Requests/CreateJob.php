@@ -40,14 +40,24 @@ class CreateJob extends FormRequest
     public function rules()
     {
         return [
-            'qbs_id'        => 'integer',
-            'title'         => 'required|string|between:1,100',
-            'code'          => 'required|string|between:1,100',
-            'isactive'      => 'required|boolean',
-            'contacts'      => 'nullable|array',
-            'meta'          => 'nullable',
+            'qbs_id'                => 'integer',
+            'title'                 => 'required|string|between:1,100',
+            'code'                  => 'required|string|between:1,100',
+            'isactive'              => 'required|boolean',
+            'contacts'              => 'nullable|array',
+            'meta'                  => 'nullable',
 
-            'parent_id'     => [
+            // billing
+            'payment_type'          => 'string|in:prepaid,inArrears',
+            'rate'                  => 'numeric',
+            'unit_type'             => 'string|in:minutes,days',
+            'unit'                  => 'numeric',
+            'allow_over_billing'    => 'boolean',
+            'job_fallback_rate'     => 'string|in:sameRate,companyDefault',
+            'revenue_account_id'    => 'numeric',
+
+            // foreign keys
+            'parent_id' => [
                 'nullable', 
                 'integer',
                 Rule::exists('ts_jobs', 'id')->where(function ($query) {
@@ -65,7 +75,7 @@ class CreateJob extends FormRequest
                 }),
             ],
             
-            'contacts.*'    => [
+            'contacts.*' => [
                 'integer',
                 Rule::exists('ts_contacts', 'id')->where(function ($query) {
                     $query->where('client_id', $this->clientId);

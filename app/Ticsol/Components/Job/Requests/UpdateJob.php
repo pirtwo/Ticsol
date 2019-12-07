@@ -43,12 +43,22 @@ class UpdateJob extends FormRequest
     public function rules()
     {
         return [
-            'title'         => 'required|string|between:1,100',
-            'code'          => 'required|string|between:1,100',
-            'isactive'      => 'required|boolean',
-            'contacts'      => 'nullable|array',
-            'meta'          => 'nullable',
+            'title'                 => 'required|string|between:1,100',
+            'code'                  => 'required|string|between:1,100',
+            'isactive'              => 'required|boolean',
+            'contacts'              => 'nullable|array',
+            'meta'                  => 'nullable',
 
+            // billing
+            'payment_type'          => 'string|in:prepaid,inArrears',
+            'rate'                  => 'numeric',
+            'unit_type'             => 'string|in:minutes,days',
+            'unit'                  => 'numeric',
+            'allow_over_billing'    => 'boolean',
+            'job_fallback_rate'     => 'string|in:sameRate,companyDefault',
+            'revenue_account_id'    => 'numeric',
+
+            // foreign keys
             'parent_id'     => [
                 'nullable', 
                 'integer',

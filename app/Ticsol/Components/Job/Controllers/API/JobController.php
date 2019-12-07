@@ -83,7 +83,11 @@ class JobController extends Controller
             // setup settings
             $job = $this->setupQBsSettings($request, $job);
 
+            // setup billing
+            $job = $this->setupBillingSettings($request, $job);
+
             $job->save();
+            
             if ($request->filled('contacts')) {
                 $job->contacts()->sync($request->input('contacts'));
             }
@@ -154,6 +158,10 @@ class JobController extends Controller
 
             // setup settings
             $job = $this->setupQBsSettings($request, $job);
+
+            // setup billing
+            $job = $this->setupBillingSettings($request, $job);
+
             $job->save();
 
             DB::commit();
@@ -201,6 +209,44 @@ class JobController extends Controller
         }
 
         $job->qbs = $settings;
+
+        return $job;
+    }
+
+    /** setup job billing settings. */
+    private function setupBillingSettings($request, $job)
+    {
+        $billing = $job->billing ? $job->billing : [];
+
+        if ($request->has("payment_type")) {
+            $billing["payment_type"] = $request->input("payment_type");
+        }
+
+        if ($request->has("rate")) {
+            $billing["rate"] = $request->input("rate");
+        }
+
+        if ($request->has("unit")) {
+            $billing["unit"] = $request->input("unit");
+        }
+
+        if ($request->has("unit_type")) {
+            $billing["unit_type"] = $request->input("unit_type");
+        }        
+
+        if ($request->has("allow_over_billing")) {
+            $billing["allow_over_billing"] = $request->input("allow_over_billing");
+        }
+
+        if ($request->has("job_fallback_rate")) {
+            $billing["job_fallback_rate"] = $request->input("job_fallback_rate");
+        }
+
+        if ($request->has("revenue_account_id")) {
+            $billing["revenue_account_id"] = $request->input("revenue_account_id");
+        }
+
+        $job->billing = $billing;
 
         return $job;
     }
