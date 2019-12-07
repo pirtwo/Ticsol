@@ -56,7 +56,6 @@ body {
   }
 }
 
-
 .toolbar-top {
   display: flex;
   align-items: center;
@@ -104,7 +103,6 @@ body {
     margin: 0px !important;
   }
 }
-
 
 .table {
   tr {
@@ -237,7 +235,14 @@ body {
   }
 
   li a,
-  li .btn{
+  li .btn {
     background-color: transparent;
   }
+}
+
+.is-invalid ~ .invalid-feedback,
+.is-invalid ~ .invalid-tooltip,
+.was-validated :invalid ~ .invalid-feedback,
+.was-validated :invalid ~ .invalid-tooltip {
+  display: block;
 }
