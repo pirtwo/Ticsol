@@ -54,7 +54,7 @@ class CreateJob extends FormRequest
             'unit'                  => 'numeric',
             'allow_over_billing'    => 'boolean',
             'job_fallback_rate'     => 'string|in:sameRate,companyDefault',
-            'revenue_account_id'    => 'numeric',
+            'revenue_account_id'    => 'nullable|numeric',
 
             // foreign keys
             'parent_id' => [
