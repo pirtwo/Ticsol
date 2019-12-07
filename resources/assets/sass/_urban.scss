@@ -1,15 +1,27 @@
 // ----- COLORS -------
-$urban-1st: #9e5a63;
-$urban-2nd: #97aabd;
-$urban-3rd: #314455;
+// $urban-1st: #9e5a63;
+// $urban-2nd: #97aabd;
+// $urban-3rd: #314455;
 
-$urban-1st-tp: rgba(158, 90, 99, 0.9);
-$urban-2nd-tp: rgba(151, 170, 189, 0.9);
-$urban-3rd-tp: rgba(49, 68, 85, 0.9);
+// $urban-1st-tp: rgba(158, 90, 99, 0.9);
+// $urban-2nd-tp: rgba(151, 170, 189, 0.9);
+// $urban-3rd-tp: rgba(49, 68, 85, 0.9);
 
-$urban-text-1st: whitesmoke;
+// $urban-text-1st: whitesmoke;
+// $urban-text-2nd: whitesmoke;
+// $urban-text-danger: orange;
+
+$urban-1st: white;
+$urban-2nd: #d76165;
+$urban-3rd: whitesmoke;
+
+$urban-1st-tp: rgba(255, 255, 255, 0.9);
+$urban-2nd-tp: rgba(215, 97, 101, 0.9);
+$urban-3rd-tp: rgba(255, 255, 255, 0.9);
+
+$urban-text-1st: black;
 $urban-text-2nd: whitesmoke;
-$urban-text-danger: orange;
+$urban-text-danger: red;
 
 $urban-schedule-confirm: #314455;
 $urban-schedule-tentative: #C96567;
@@ -34,14 +46,14 @@ $urban-schedule-matrix: rgba(0, 0, 0, 0.1);
       //
     }
   
-    .btn:hover {
-      background-color: rgba(255, 255, 255, 0.4) !important;
-    }
-  
     .icon,
     .caption {
-      color: $urban-3rd;
+      color: #a726a5;
     }
+  
+    .btn:hover {      
+      background-color: rgba($color: #000000, $alpha: 0.1) !important;
+    }  
   }
 
   // ------ Toolbars -----
@@ -184,7 +196,7 @@ $urban-schedule-matrix: rgba(0, 0, 0, 0.1);
   // ----- SCHEDULER ---------------
   .scheduler_green_main {
     font-family: $app-secondary-font !important;
-    background-color: $urban-1st;
+    background-color: transparent;
   }
   
   .scheduler_green_rowheader,
@@ -197,7 +209,7 @@ $urban-schedule-matrix: rgba(0, 0, 0, 0.1);
   .scheduler_green_rowheader,
   .scheduler_green_timeheadercol,
   .scheduler_green_timeheadergroup{
-    background-color: $urban-1st;
+    background-color: transparent;
   }
 
   .scheduler_green_crosshair_top,

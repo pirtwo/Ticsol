@@ -1,14 +1,26 @@
 // ----- COLORS -------
-$jungle-1st: #5CDB95;
-$jungle-2nd: #05386B;
-$jungle-3rd: #EDF5E1;
+// $jungle-1st: #5CDB95;
+// $jungle-2nd: #05386B;
+// $jungle-3rd: #EDF5E1;
 
-$jungle-1st-tp: rgba(92, 219, 149, 0.9);
-$jungle-2nd-tp: rgba(5, 56, 107, 0.9);
-$jungle-3rd-tp: rgba(237, 245, 225, 0.9);
+// $jungle-1st-tp: rgba(92, 219, 149, 0.9);
+// $jungle-2nd-tp: rgba(5, 56, 107, 0.9);
+// $jungle-3rd-tp: rgba(237, 245, 225, 0.9);
 
-$jungle-text-1st: #05386B;
-$jungle-text-2nd: #EDF5E1;
+// $jungle-text-1st: #05386B;
+// $jungle-text-2nd: #EDF5E1;
+// $jungle-text-danger: red;
+
+$jungle-1st: white;
+$jungle-2nd: #d76165;
+$jungle-3rd: whitesmoke;
+
+$jungle-1st-tp: rgba(255, 255, 255, 0.9);
+$jungle-2nd-tp: rgba(215, 97, 101, 0.9);
+$jungle-3rd-tp: rgba(255, 255, 255, 0.9);
+
+$jungle-text-1st: black;
+$jungle-text-2nd: whitesmoke;
 $jungle-text-danger: red;
 
 $jungle-schedule-confirm: #05386B;
@@ -33,14 +45,14 @@ $jungle-schedule-matrix: rgba(0, 0, 0, 0.1);
       //
     }
   
-    .btn:hover {
-      background-color: rgba(255, 255, 255, 0.4) !important;
-    }
-  
     .icon,
     .caption {
-      color: $jungle-2nd;
+      color: #a726a5;
     }
+  
+    .btn:hover {      
+      background-color: rgba($color: #000000, $alpha: 0.1) !important;
+    }  
   }
 
   // ------ Toolbars -----
@@ -183,7 +195,7 @@ $jungle-schedule-matrix: rgba(0, 0, 0, 0.1);
   // ----- SCHEDULER ---------------
   .scheduler_green_main {
     font-family: $app-secondary-font !important;
-    background-color: $jungle-1st;
+    background-color: transparent;
   }
   
   .scheduler_green_rowheader,
@@ -196,7 +208,7 @@ $jungle-schedule-matrix: rgba(0, 0, 0, 0.1);
   .scheduler_green_rowheader,
   .scheduler_green_timeheadercol,
   .scheduler_green_timeheadergroup{
-    background-color: $jungle-1st;
+    background-color: transparent;
   }
 
   .scheduler_green_crosshair_top,

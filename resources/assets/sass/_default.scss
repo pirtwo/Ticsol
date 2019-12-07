@@ -182,7 +182,7 @@ $default-schedule-matrix: rgba(0, 0, 0, 0.1);
   // ----- SCHEDULER ---------------
   .scheduler_green_main {
     font-family: $app-secondary-font !important;
-    background-color: $default-1st;
+    background-color: transparent;
   }
   
   .scheduler_green_rowheader,
@@ -195,7 +195,7 @@ $default-schedule-matrix: rgba(0, 0, 0, 0.1);
   .scheduler_green_rowheader,
   .scheduler_green_timeheadercol,
   .scheduler_green_timeheadergroup{
-    background-color: $default-1st;
+    background-color: transparent;
   }
 
   .scheduler_green_crosshair_top,
