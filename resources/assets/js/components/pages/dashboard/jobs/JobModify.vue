@@ -343,9 +343,15 @@
                   </div>   
                   <div
                     class="invalid-feedback"
-                    v-if="!$v.billing.rate.numeric"
+                    v-if="!$v.billing.rate.decimal"
                   >
                     Biling rate must be a number.
+                  </div>   
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.billing.rate.minValue"
+                  >
+                    Biling rate must be zero or more.
                   </div>                
                 </div>
 
@@ -412,9 +418,15 @@
                   </div>  
                   <div
                     class="invalid-feedback"
-                    v-if="!$v.billing.unit.numeric"
+                    v-if="!$v.billing.unit.decimal"
                   >
                     Biling unit must be a number.
+                  </div>
+                  <div
+                    class="invalid-feedback"
+                    v-if="!$v.billing.unit.minValue"
+                  >
+                    Biling unit must be zero or more.
                   </div>        
                 </div>   
               </div>
@@ -531,7 +543,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { required, numeric } from "vuelidate/lib/validators";
+import { required, decimal, minValue } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import FormGen from "../../../base/formGenerator/BaseFormGenerator";
 import { constants } from "crypto";
@@ -584,8 +596,8 @@ export default {
         },
         billing: {
           paymentType: { required },
-          rate: { required, numeric },
-          unit: { required, numeric },
+          rate: { required, decimal, minValue: minValue(0) },
+          unit: { required, decimal, minValue: minValue(0) },
           unitType: { required },
           allowOverbilling: { required },
           jobFallbackRate: { required },
@@ -676,7 +688,7 @@ export default {
       if (this.billing.rate && this.billing.unit) {
         try {
           let total = parseFloat(this.billing.unit) * parseFloat(this.billing.rate);
-          return isNaN(total) ? 0 : total.toFixed(4);
+          return isNaN(total) || total <= 0 ? 0 : total.toFixed(4);
         } catch (error) {
           return 0;
         }

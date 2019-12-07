@@ -51,9 +51,9 @@ class UpdateJob extends FormRequest
 
             // billing
             'payment_type'          => 'string|in:prepaid,inArrears',
-            'rate'                  => 'numeric',
+            'rate'                  => 'numeric|min:0',
             'unit_type'             => 'string|in:minutes,days',
-            'unit'                  => 'numeric',
+            'unit'                  => 'numeric|min:0',
             'allow_over_billing'    => 'boolean',
             'job_fallback_rate'     => 'string|in:sameRate,companyDefault',
             'revenue_account_id'    => 'nullable|numeric',
