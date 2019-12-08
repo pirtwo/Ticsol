@@ -202,7 +202,11 @@
         </fieldset>
       </form>      
       
-      <ts-section title="Unavailable Hours" :devider="false" class="mb-2">
+      <ts-section
+        title="Unavailable Hours"
+        :devider="false"
+        class="mb-3"
+      >
         <!-- Unavailable hours calendar -->
         <ts-datescroller
           v-model="week"
