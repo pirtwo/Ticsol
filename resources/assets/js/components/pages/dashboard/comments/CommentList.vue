@@ -110,7 +110,7 @@
           :init="{height: 300, menubar: false, statusbar: false}"
           api-key="he51k5qf4qe8668k9rgkie9c13j01h43fh61m72chuvv93ip"
           plugins="bbcode code"
-          toolbar="newdocument | undo redo | cut copy paste pastetext | selectall | code"
+          toolbar="newdocument | undo redo | cut copy paste pastetext | selectall"
         />
         <template slot="footer">
           <button
