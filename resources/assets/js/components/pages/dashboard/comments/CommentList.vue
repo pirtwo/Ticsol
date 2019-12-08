@@ -146,7 +146,7 @@
         size="md"
       >
         <div class="px-2 py-2 text-center">
-          Do you really want to delete this comment? This process cannot be undone and sub treads will be deleted.
+          Do you really want to delete this comment? This process cannot be undone and sub threads will be deleted.
         </div>
         <template slot="footer">
           <button
