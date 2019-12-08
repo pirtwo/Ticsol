@@ -26,7 +26,7 @@
           </button>
         </li>
         <li>
-          <button class="btn">
+          <button class="btn" @click="onCancel">
             Cancel
           </button>
         </li>
@@ -369,6 +369,10 @@ export default {
           this.confirmModal = false;
           e.target.disabled = false;
         });
+    },
+
+    onCancel(){
+      this.$router.go(-1);
     }
   }
 };
