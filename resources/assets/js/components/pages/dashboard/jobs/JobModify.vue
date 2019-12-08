@@ -329,29 +329,29 @@
                       type="text"
                       :class="[{'is-invalid' : $v.billing.rate.$error } ,'form-control']"
                       placeholder="Enter billing rate"
-                    >                 
+                    >
                     <div class="input-group-append">
                       <span class="input-group-text">$</span>
-                    </div>  
-                  </div>                  
+                    </div>
+                  </div>
                   <div
                     class="invalid-feedback"
                     v-if="!$v.billing.rate.required"
                   >
                     Biling rate is required.
-                  </div>   
+                  </div>
                   <div
                     class="invalid-feedback"
                     v-if="!$v.billing.rate.decimal"
                   >
                     Biling rate must be a number.
-                  </div>   
+                  </div>
                   <div
                     class="invalid-feedback"
                     v-if="!$v.billing.rate.minValue"
                   >
                     Biling rate must be zero or more.
-                  </div>                
+                  </div>
                 </div>
 
                 <!-- unit type -->
@@ -379,7 +379,7 @@
                         Days
                       </option>
                     </select>
-                  </div>                  
+                  </div>
                   <div
                     class="invalid-feedback"
                     v-if="!$v.billing.unitType.required"
@@ -401,20 +401,20 @@
                       type="text"
                       :class="[{'is-invalid' : $v.billing.unit.$error } ,'form-control']"
                       placeholder="Enter billing unit"
-                    >                 
+                    >
                     <div class="input-group-append">
                       <span
                         class="input-group-text"
                         style="text-transform: capitalize;"
                       >{{ billing.unitType }}</span>
-                    </div>                                  
+                    </div>
                   </div>
                   <div
                     class="invalid-feedback"
                     v-if="!$v.billing.unit.required"
                   >
                     Biling unit is required.
-                  </div>  
+                  </div>
                   <div
                     class="invalid-feedback"
                     v-if="!$v.billing.unit.decimal"
@@ -426,8 +426,8 @@
                     v-if="!$v.billing.unit.minValue"
                   >
                     Biling unit must be zero or more.
-                  </div>        
-                </div>   
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -686,7 +686,8 @@ export default {
     total: function() {
       if (this.billing.rate && this.billing.unit) {
         try {
-          let total = parseFloat(this.billing.unit) * parseFloat(this.billing.rate);
+          let total =
+            parseFloat(this.billing.unit) * parseFloat(this.billing.rate);
           return isNaN(total) || total <= 0 ? 0 : total.toFixed(4);
         } catch (error) {
           return 0;
@@ -732,7 +733,10 @@ export default {
       this.startLoading();
 
       let p1 = this.list({ resource: "form" });
-      let p2 = this.list({ resource: "contact" });
+      let p2 = this.list({
+        resource: "contact",
+        query: { in: "group,user,customer" }
+      });
       let p3 = this.list({
         resource: "job",
         query: { with: "parent,profile,contacts" }
