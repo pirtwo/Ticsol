@@ -109,9 +109,8 @@
         </li>
         <li v-if="job">
           <router-link
-            :class="[{'disabled' : this.job.contactsCount === 0}, 'btn btn-link' ]"
+            class="btn btn-link"
             role="button"
-            :aria-disabled="this.job.contactsCount === 0"
             :to="{ name: 'contactList', params : { opt: 'in', col: 'contact.jobs.id', val: this.id } }"
           >
             Related Contacts
