@@ -146,15 +146,23 @@ class CommentController extends Controller
     public function delete($id)
     {
         $comment = $this->repository->findBy('id', $id);
+        
         if ($comment == null) {
             throw new NotFound();
         }
+        
+        $clientId = $comment->client_id;
+
 
         //----------------------------
         //      AUTHORIZE ACTION
         //----------------------------
         $this->authorize('delete', $comment);
 
-        return $this->repository->delete('id', $id, false);
+        $this->repository->delete('id', $id, false);
+
+        event(new Events\CommentDeleted($id, $clientId));
+
+        return response()->json(["success" => true]);
     }
 }
