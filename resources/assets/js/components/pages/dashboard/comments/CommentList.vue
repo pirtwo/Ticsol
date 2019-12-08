@@ -26,7 +26,10 @@
           </button>
         </li>
         <li>
-          <button class="btn" @click="onCancel">
+          <button
+            class="btn"
+            @click="onCancel"
+          >
             Cancel
           </button>
         </li>
