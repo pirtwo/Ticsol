@@ -807,6 +807,7 @@ export default {
     /** populate billing defaults. */
     billingDefaults() {
       let defaults = this.client.billing_defaults;
+      if(!defaults) return;
       this.billing.paymentType = defaults.payment_type;
       this.billing.allowOverbilling = defaults.allow_over_billing;
       this.billing.jobFallbackRate = defaults.job_fallback_rate;
