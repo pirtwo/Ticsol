@@ -71,10 +71,22 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
 
   // ------- DRAWER ---------------
   #drawer {
-    .drawer__content,
-    .drawer__drawer,
+    .drawer__content,    
     .drawer__toolbar {      
       background-color: $night-1st-tp;
+    }
+
+    @media (min-width: 0px) {
+      .drawer__drawer{
+        background-color: whitesmoke;
+      }
+    }
+  
+    // Medium devices (tablets, 768px and up)
+    @media (min-width: 768px) {    
+      .drawer__drawer{
+        background-color: $night-1st-tp;
+      }
     }
 
     // toolbar
@@ -98,7 +110,7 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
     }
   }
 
-  // ------ V-MENUE -----------
+  // ------ V-menu -----------
   .v-menu {
     color: $night-text-1st;
 
@@ -292,5 +304,4 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
     color: $night-text-2nd; 
     background-color: $night-2nd;
   }
-  
 }

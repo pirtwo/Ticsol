@@ -44,7 +44,7 @@
               type="button"
               @click="onDrawer"
             >
-              <i class="material-icons">menu</i>
+              <ts-icon icon="menu" />
             </button>
 
             <!-- Back button -->
@@ -53,7 +53,7 @@
               type="button"
               @click="clickBack"
             >
-              <i class="material-icons">arrow_back</i>
+              <ts-icon icon="arrow_back" />
             </button>
 
             <!-- Forward button -->
@@ -62,7 +62,7 @@
               type="button"
               @click="clickForward"
             >
-              <i class="material-icons">arrow_forward</i>
+              <ts-icon icon="arrow_forward" />
             </button>
 
             <!-- Fullscreen button -->
@@ -71,7 +71,7 @@
               type="button"
               @click="onFullscreen"
             >
-              <i class="material-icons">{{ fullscreen ? "fullscreen_exit" : "fullscreen" }}</i>
+              <ts-icon :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" />
             </button>
 
             <!-- title -->
@@ -79,7 +79,14 @@
           </div>
 
           <!-- toolbar slot -->
-          <div class="drawer__toolbar__tools">
+          <button
+            type="button"
+            class="btn btn-sm d-xl-none"
+            @click="toggleTools"
+          >
+            <ts-icon icon="view_column" />
+          </button>
+          <div class="drawer__toolbar__tools d-none d-xl-flex">
             <slot name="toolbar" />
           </div>
         </div>
@@ -145,10 +152,6 @@ export default {
     "loading-screen": AppLoadingScreen
   },
 
-  data() {
-    return {};
-  },
-
   computed: {
     ...mapGetters({
       snackbar: "core/getSnackbar",
@@ -169,6 +172,13 @@ export default {
 
     onDrawer(e) {
       this.toggleDrawer({ show: !this.showDrawer });
+      e.preventDefault();
+    },
+
+    toggleTools(e) {
+      if ($(".drawer__toolbar__tools").children().length > 0) {
+        $(".drawer__toolbar__tools").toggleClass("d-none");
+      }
       e.preventDefault();
     },
 
@@ -226,14 +236,60 @@ export default {
 }
 
 .drawer__drawer {
-  display: flex;
-  flex-flow: column;
   width: 230px;
   height: 100%;
   overflow: hidden;
-  margin-right: 8px;
-  background-color: transparent;
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+@media (min-width: 0px) {
+  .drawer__drawer {
+    top: calc(10% + 5px);
+    left: -250px;
+    z-index: 10;
+    position: absolute;
+    -webkit-box-shadow: 6px 0px 5px -5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 6px 0px 5px -5px rgba(0, 0, 0, 0.75);
+    box-shadow: 6px 0px 5px -5px rgba(0, 0, 0, 0.75);
+  }
+
+  .drawer__drawer__toolbar{
+    height: 50px;
+  }
+
+  .drawer__drawer__content{
+    height: calc(100% - 10% - 60px);
+  }
+
+  .drawer__drawer--open {
+    left: 0px;
+  }
+
+  .drawer__drawer--close {
+    left: -250px;
+  }
+}
+
+@media (min-width: 768px) {
+  .drawer__drawer {
+    top: 0px;
+    z-index: 0;
+    display: flex;
+    flex-flow: column;
+    margin-right: 8px;  
+    box-shadow: none;
+    position: relative;
+  }
+
+  .drawer__drawer--open {
+    width: 270px;
+  }
+
+  .drawer__drawer--close {
+    width: 0px;
+    overflow: hidden;
+    margin-right: 0px;
+  }
 }
 
 .drawer__body {
@@ -255,16 +311,6 @@ export default {
   overflow-y: auto;
 }
 
-.drawer__drawer--open {
-  width: 270px;
-}
-
-.drawer__drawer--close {
-  width: 0px;
-  overflow: hidden;
-  margin-right: 0px;
-}
-
 .drawer__drawer__toolbar {
   flex: 0 1 auto;
   margin-bottom: 5px;
@@ -282,14 +328,34 @@ export default {
   color: rgba(0, 0, 0, 0.3);
 }
 
-.drawer__toolbar .btn,
-.drawer__toolbar .btn i {
-  font-size: 1.2rem;
-  line-height: 1.2;
-}
-
 .drawer__toolbar__tools {
   display: flex;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+@media (min-width: 0px) {
+  .drawer__toolbar__tools {
+    right: 17px;
+    bottom: calc(-100% + 15px);
+    z-index: 20;
+    padding: 10px;
+    position: absolute;
+    background-color: whitesmoke;
+    -webkit-box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
+    box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
+  }
+}
+
+@media (min-width: 1200px){
+  .drawer__toolbar__tools {
+    display: flex;
+    right: 0px;
+    padding: 0px;
+    box-shadow: none;    
+    position: relative;
+    background-color: transparent;
+  }
 }
 
 .snackbar {
@@ -302,9 +368,5 @@ export default {
 
 .scrollbar-show {
   overflow-y: scroll !important;
-}
-
-i.material-icons {
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 </style>
