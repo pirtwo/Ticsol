@@ -307,8 +307,8 @@
           @modalHide="place = {}"
         >
           <template slot-scope="{ item }">
-            <td>{{ item.number }}</td>
             <td>{{ item.unit }}</td>
+            <td>{{ item.number }}</td>           
             <td>{{ item.street }}</td>
             <td>{{ item.suburb }}</td>          
             <td>{{ item.state }}</td>
@@ -501,8 +501,8 @@ export default {
         addresses: []
       },
       columns: [
-        { key: 1, value: "Number" },
-        { key: 2, value: "Unit" },
+        { key: 1, value: "Unit" },
+        { key: 2, value: "Number" },        
         { key: 3, value: "Street" },
         { key: 4, value: "Suburb" },        
         { key: 5, value: "State" },
