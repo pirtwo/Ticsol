@@ -30,7 +30,9 @@ class HierarchyFatherMove implements Rule
     {
         try {
 
-            if ($value === null || $value === $this->item->parent->id) {
+            $currParentId = $this->item->parent ? $this->item->parent->id : null;
+
+            if ($value === null || $value === $currParentId) {
                 return true;
             }
 
