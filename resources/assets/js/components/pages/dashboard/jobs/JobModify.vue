@@ -139,7 +139,7 @@
                   name="jobProfile"
                   placeholder="select job profile"
                   search-placeholder="search here..."
-                  :disabled="!userCan('job', ['full', 'update'])"
+                  :disabled="!userCan('job', ['full', 'update']) || profiles.length == 0"
                 />
               </div>
             </div>
@@ -227,7 +227,7 @@
                   name="contacts"
                   placeholder="select job contacts"
                   search-placeholder="search here..."
-                  :disabled="!userCan('job', ['full', 'update'])"
+                  :disabled="!userCan('job', ['full', 'update']) || contacts.length == 0"
                 />
               </div>
             </div>
