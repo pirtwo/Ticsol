@@ -455,7 +455,7 @@ export default {
 
     billable: function(){
       if(this.event)
-        return this.event.job.billable;
+        return this.event.job? this.event.job.billable : false;
       return false;
     }
   },
