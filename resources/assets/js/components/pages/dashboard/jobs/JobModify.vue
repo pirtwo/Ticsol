@@ -393,8 +393,8 @@
             <!-- unit -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-md-4">For</label>
-                <div class="col-md-8">
+                <label class="col-sm-4">For</label>
+                <div class="col-sm-8">
                   <div :class="[{'is-invalid' : $v.billing.unit.$error } ,'input-group']">
                     <input
                       v-model="billing.unit"

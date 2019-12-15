@@ -574,25 +574,6 @@ export default {
   margin-left: 5px;
 }
 
-.dp-ctrl {
-  width: 60%;
-}
-
-.dp-ctrl input {
-  max-width: 140px;
-  font-size: 0.8rem;
-}
-
-.dp-ctrl .btn {
-  font-size: 1rem;
-  line-height: 1rem !important;
-}
-
-.dp-ctrl i {
-  font-size: inherit;
-  line-height: 1rem !important;
-}
-
 .res-menu {
   list-style: none;
   padding: 3px;
