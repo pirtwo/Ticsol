@@ -32,65 +32,272 @@
       class="drawer__body"
     >
       <!-- toolbar -->
-      <nav
+      <div
         id="drawer__toolbar"
-        class="drawer__toolbar navbar navbar-light"
-      >
-        <div class="d-flex align-items-center w-100">
-          <div class="drawer__toolbar__controls flex-grow-1">
-            <!-- Drawer toggle button -->
+        class="drawer__toolbar"
+      >        
+        <div class="drawer__toolbar__controls d-flex flex-grow-1">
+          <!-- Mini Dashboard -->
+          <div class="mini-dashboard mr-1 btn-group dropdown d-lg-none">
             <button
-              :class="[{ active: showDrawer }, 'btn btn-sm ml-auto']"
               type="button"
-              @click="onDrawer"
-            >
-              <ts-icon icon="menu" />
-            </button>
-
-            <!-- Back button -->
-            <button
               class="btn btn-sm ml-auto"
-              type="button"
-              @click="clickBack"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              data-offset="-100,0"
             >
-              <ts-icon icon="arrow_back" />
+              <i class="icon material-icons">apps</i>
             </button>
+            <div class="dropdown-menu">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h6 class="dropdown-header">
+                    Dashboard
+                  </h6>
+                  <div class="dropdown-divider" />
 
-            <!-- Forward button -->
-            <button
-              class="btn btn-sm ml-auto"
-              type="button"
-              @click="clickForward"
-            >
-              <ts-icon icon="arrow_forward" />
-            </button>
+                  <!-- Home -->
+                  <router-link
+                    :to="{ name : 'dash' }"
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">dashboard</i>
+                    <span class="caption">Home</span>
+                  </router-link>
 
-            <!-- Fullscreen button -->
-            <button
-              :class="[{ active: fullscreen }, 'btn btn-sm ml-auto']"
-              type="button"
-              @click="onFullscreen"
-            >
-              <ts-icon :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" />
-            </button>
+                  <!-- Inbox -->
+                  <router-link
+                    :to="{ name : 'inbox' }"
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">inbox</i>
+                    <span class="caption">Inbox</span>
+                  </router-link>
 
-            <!-- title -->
-            <span class="navbar-brand">{{ menuTitle }}</span>
+                  <!-- Leave -->
+                  <router-link
+                    :to="{ name : 'leaveCreate'}"
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">message</i>
+                    <span class="caption">Leave</span>
+                  </router-link>
+
+                  <!-- Reimbursement -->
+                  <router-link
+                    :to="{ name : 'reimbCreate'}"
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">attach_money</i>
+                    <span class="caption">Reimb</span>
+                  </router-link>
+
+                  <!-- Timesheets -->
+                  <router-link
+                    to="/timesheet"
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">timer</i>
+                    <span class="caption">Timesheet</span>
+                  </router-link>
+
+                  <!-- Scheduler -->
+                  <router-link
+                    :to="{ name : 'scheduler' }"
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">calendar_today</i>
+                    <span class="caption">Schedule</span>
+                  </router-link>
+
+                  <!-- Job -->
+                  <router-link
+                    :to="{ name : 'jobList'}"
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">work</i>
+                    <span class="caption">Jobs</span>
+                  </router-link>
+                
+                  <!-- Job Profile -->
+                  <router-link
+                    :to="{ name : 'profileList'}"
+                    v-if="userCan('job_profile', ['full', 'list', 'create', 'update'])"                      
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">assignment</i>
+                    <span class="caption">Profiles</span>
+                  </router-link>
+                  
+                  <!-- Users -->
+                  <router-link
+                    :to="{ name : 'userList'}"    
+                    v-if="userCan('user', ['full', 'list', 'create', 'update'])"                                     
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">person</i>
+                    <span class="caption">Users</span>
+                  </router-link>
+
+                  <!-- Roles -->
+                  <router-link
+                    :to="{ name : 'roleList'}" 
+                    v-if="userCan('role', ['full', 'list', 'create', 'update'])"                                                       
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">verified_user</i>
+                    <span class="caption">Roles</span>
+                  </router-link>
+                  
+                  <!-- Team -->
+                  <router-link
+                    :to="{ name : 'teamList'}"                                                    
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">group</i>
+                    <span class="caption">Teams</span>
+                  </router-link>
+                  
+                  <!-- Contacts -->
+                  <router-link
+                    :to="{ name : 'contactList'}"                                                   
+                    class="btn ts-btn"
+                    role="button"
+                  >
+                    <i class="icon material-icons">contact_mail</i>
+                    <span class="caption">Contacts</span>
+                  </router-link>
+                  
+                  <!-- Activities -->
+                  <router-link
+                    :to="{ name : 'activityList'}"
+                    class="btn ts-btn"
+                  >
+                    <i class="icon material-icons">description</i>
+                    <span class="caption">Reports</span>
+                  </router-link>
+                </div>                 
+                <div class="col-sm-12">
+                  <h6 class="dropdown-header">
+                    Profile and Settings
+                  </h6>
+                  <div class="dropdown-divider" />
+
+                  <!-- User Profile -->
+                  <router-link
+                    :to="{ name : 'userProfile', params: {id: userId} }"
+                    class="btn ts-btn"
+                  >
+                    <i class="icon material-icons">account_circle</i>
+                    <span class="caption">{{ userName }}</span>
+                  </router-link>
+
+                  <!-- User Settings -->
+                  <router-link
+                    :to="{ name : 'userSettings' }"
+                    class="btn ts-btn"
+                  >
+                    <i class="icon material-icons">settings</i>
+                    <span class="caption">Settings</span>            
+                  </router-link>
+
+                  <!-- Company Settings -->
+                  <router-link
+                    :to="{ name : 'clientSettings' }"
+                    v-if="userCan('client', ['full', 'update'])"                      
+                    class="btn ts-btn"
+                  >
+                    <i class="icon material-icons">domain</i>
+                    <span class="caption">Company</span>   
+                  </router-link>
+
+                  <!-- Change Password -->
+                  <a
+                    class="btn ts-btn"
+                    href="/password/change"
+                  >
+                    <i class="icon material-icons">lock</i>
+                    <span class="caption">Change Password</span>
+                  </a>
+
+                  <!-- Logout -->
+                  <a
+                    class="btn ts-btn"
+                    href="#"
+                    @click.prevent="logoutHandler"
+                  >
+                    <i class="icon material-icons">exit_to_app</i>
+                    <span class="caption">Logout</span>
+                  </a>
+                </div>                  
+              </div>
+            </div>
           </div>
 
-          <!-- toolbar slot -->
+          <!-- Drawer toggle button -->
           <button
+            :class="[{ active: showDrawer }, 'btn btn-sm mr-1']"
             type="button"
-            class="btn btn-sm d-xl-none"
-            @click="toggleTools"
+            @click="onDrawer"
           >
-            <ts-icon icon="view_column" />
+            <ts-icon icon="menu" />
           </button>
-          <div class="drawer__toolbar__tools d-none d-xl-flex">
-            <slot name="toolbar" />
-          </div>
+
+          <!-- Back button -->
+          <button
+            class="btn btn-sm mr-1"
+            type="button"
+            @click="clickBack"
+          >
+            <ts-icon icon="arrow_back" />
+          </button>
+
+          <!-- Forward button -->
+          <button
+            class="btn btn-sm mr-1"
+            type="button"
+            @click="clickForward"
+          >
+            <ts-icon icon="arrow_forward" />
+          </button>
+
+          <!-- Fullscreen button -->
+          <button
+            :class="[{ active: fullscreen }, 'btn btn-sm mr-1']"
+            type="button"
+            @click="onFullscreen"
+          >
+            <ts-icon :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" />
+          </button>
+
+          <!-- title -->
+          <span class="">{{ menuTitle }}</span>
         </div>
-      </nav>
+
+        <!-- toolbar slot -->
+        <button
+          type="button"
+          class="btn btn-sm d-xl-none"
+          @click="toggleTools"
+        >
+          <ts-icon icon="view_column" />
+        </button>
+        <div class="drawer__toolbar__tools d-none d-xl-flex">
+          <slot name="toolbar" />
+        </div>        
+      </div>
 
       <ts-snackbar
         v-model="snackbar.show"
@@ -156,7 +363,11 @@ export default {
     ...mapGetters({
       snackbar: "core/getSnackbar",
       fullscreen: "core/getUiFullscreen",
-      showDrawer: "core/getDrawerStatus"
+      showDrawer: "core/getDrawerStatus",
+      userCan: "user/can",
+      userId: "user/getId",
+      avatar: "user/getAvatar",
+      userName: "user/getUsername"
     }),
 
     enablePadding: function() {
@@ -166,6 +377,7 @@ export default {
 
   methods: {
     ...mapActions({
+      logout: "user/logout",
       toggleDrawer: "core/drawer",
       toggleFullscreen: "core/fullscreen"
     }),
@@ -214,6 +426,18 @@ export default {
         }
       }
     },
+    
+    logoutHandler() {
+      this.logout()
+        .then(() => {
+          console.log("successful logout");
+          this.$router.push({ name: "loggedout" });
+        })
+        .catch(error => {
+          console.log(error);
+          this.showMessage(error.message, "danger");
+        });
+    },
 
     clickForward(e) {
       this.$router.go(1);
@@ -244,7 +468,7 @@ export default {
 
 @media (min-width: 0px) {
   .drawer__drawer {
-    top: calc(10% + 5px);
+    top: 60px;
     left: -250px;
     z-index: 10;
     position: absolute;
@@ -270,7 +494,7 @@ export default {
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .drawer__drawer {
     top: 0px;
     z-index: 0;
@@ -300,15 +524,49 @@ export default {
 }
 
 .drawer__toolbar {
-  height: 10%;
+  display: flex;
+  position: relative;  
   margin-bottom: 5px;
+
+  > .btn,
+  .drawer__toolbar__tools .btn {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn,
+  .btn i {
+      line-height: inherit;
+  }
 }
 
 .drawer__content {
-  height: calc(90% - 5px);
   background-color: #03a9f4;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+@media (min-width: 0px){
+  .drawer__toolbar {
+    height: 55px;    
+    padding: 5px 7px;
+  }
+
+  // 100% - (toolbarHight + marginBot)
+  .drawer__content {
+    height: calc(100% - 60px);
+  }  
+}
+
+@media (min-width: 992px){
+  .drawer__toolbar {
+    height: 45px;
+  }
+
+  // 100% - (toolbarHight + marginBot)
+  .drawer__content {
+    height: calc(100% - 50px);
+  }
 }
 
 .drawer__drawer__toolbar {
@@ -335,12 +593,13 @@ export default {
 
 @media (min-width: 0px) {
   .drawer__toolbar__tools {
-    right: 17px;
-    bottom: calc(-100% + 15px);
+    right: 5px;
+    bottom: -100%;
     z-index: 20;
-    padding: 10px;
+    height: 50px;
+    padding: 5px;
     position: absolute;
-    background-color: whitesmoke;
+    background-color: white;
     -webkit-box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
     box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
@@ -350,8 +609,11 @@ export default {
 @media (min-width: 1200px){
   .drawer__toolbar__tools {
     display: flex;
+    height: auto;
     right: 0px;
+    bottom: 0px;
     padding: 0px;
+    z-index: 0;
     box-shadow: none;    
     position: relative;
     background-color: transparent;
