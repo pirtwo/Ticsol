@@ -146,7 +146,7 @@ export default {
 <style scoped>
 .ts-pagination {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   margin: 0px 5px;
 }
 
@@ -156,11 +156,15 @@ export default {
 
 .ts-pagination__input {
   width: 50px;
-  height: 23.6px;
+  height: 65%;
+  padding: 5px;
 }
 
 .ts-pagination__btn {
   margin-left: 3px;
+  font-size: inherit;
+  display: flex;
+  align-items: center;
 }
 
 .ts-pagination__btn i {

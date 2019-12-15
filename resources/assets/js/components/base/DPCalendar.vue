@@ -141,6 +141,6 @@ export default {
   height: 100%;
   position: absolute;
   background-color: #bfbfbf54;
-  z-index: 10;
+  z-index: 5;
 }
 </style>
