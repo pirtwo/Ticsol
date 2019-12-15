@@ -10,6 +10,7 @@ body {
 //-----------------//
 #app {
   height: 100%;
+  min-height: 500px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -46,7 +47,6 @@ body {
 
   .toolbar-top,
   .toolbar-bot {
-    .icon,
     .icon {
       font-size: 25px !important;
       font-weight: bold;
@@ -69,7 +69,6 @@ body {
       box-shadow: none;
     }
 
-    .btn .badge,
     .btn .badge {
       top: 5px;
       left: 5px;
@@ -91,23 +90,26 @@ body {
 //-----------------//
 // Drawer          //
 //-----------------//
-.drawer {
-  .drawer__drawer {
+#drawer {
+  @media (min-width: 0px) {
+    .drawer__toolbar {
+      font-size: 17px;
+
+      .btn i,
+      .drawer__toolbar__tools .btn i {
+        font-size: 25px;
+      }
+    }
   }
 
-  .drawer__body {
+  @media (min-width: 992px) {
     .drawer__toolbar {
       font-size: 15px;
-    }
 
-    .drawer__toolbar .btn {
-      font-size: 15px;
-      line-height: inherit;
-    }
-
-    .drawer__toolbar .btn i {
-      font-size: 20px;
-      vertical-align: text-bottom;
+      .btn i,
+      .drawer__toolbar__tools .btn i {
+        font-size: 17px;
+      }
     }
   }
 }
@@ -157,6 +159,75 @@ body {
     font-size: 0.85rem;
     font-weight: normal;
     text-align: center;
+  }
+}
+
+//-----------------//
+// Mini Dashboard  //
+//-----------------//
+.mini-dashboard {
+  .row {
+    margin: 0px;
+  }
+
+  .col-sm-12 {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 10px;
+  }
+
+  .dropdown-menu {
+    min-width: 480px;
+    max-height: 400px;
+    overflow-y: scroll;
+
+    .ts-btn {
+      margin: 5px;
+
+      .icon {
+        font-size: 30px !important;
+      }
+
+      .caption {
+        font-size: 12px !important;
+      }
+
+      i {
+        line-height: 1 !important;
+      }
+    }
+  }
+}
+
+//-----------------//
+// Buttons         //
+//-----------------//
+.ts-btn {
+  padding: 10px;
+  min-width: 75px;
+  border: 0px transparent !important;
+
+  .icon {
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .caption {
+    display: block;
+    padding-top: 1px;
+    font-size: 10px;    
+    max-width: 60px;
+    text-align: center;
+    
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;    
+  }
+
+  .badge {
+    top: 5px;
+    left: 5px;
+    position: absolute;
   }
 }
 
@@ -280,17 +351,21 @@ body {
     .container-fluid {
       padding-left: 0px;
       padding-right: 0px;
-      grid-template-rows: 80px calc(100% - 80px) 0px;
+      grid-template-rows: 0px 100% 0px;
     }
-    
-    .toolbar-top {      
-      padding: 0px 0px 5px 0px;
+
+    .toolbar-top {
+      padding: 0px;
     }
   }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
   #app {
     .container-fluid {
       padding-left: 15px;
@@ -298,14 +373,10 @@ body {
       grid-template-rows: 85px calc(100% - 170px) 85px;
     }
 
-    .toolbar-top {      
+    .toolbar-top {
       padding: 10px 0px 5px 0px;
     }
-  }  
-}
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
+  }
 }
 
 // Extra large devices (large desktops, 1200px and up)
