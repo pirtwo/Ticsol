@@ -233,6 +233,29 @@
             </div>
           </div>
 
+          <!-- color -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Color</label>
+              <div class="col-sm-2">
+                <input 
+                  v-model="form.color" 
+                  type="color"
+                  class="form-control"
+                >       
+              </div>
+              <div class="col-sm-8">
+                <button 
+                  type="button"
+                  class="btn btn-light" 
+                  @click="()=>{ form.color = defaultJobColor }"
+                >
+                  Default Color
+                </button>   
+              </div>     
+            </div>
+          </div>
+
           <!-- Status -->
           <div class="form-group">
             <div class="form-row">
@@ -545,8 +568,6 @@ import { mapGetters, mapActions } from "vuex";
 import { required, decimal, minValue } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import FormGen from "../../../base/formGenerator/BaseFormGenerator";
-import { constants } from "crypto";
-import { parse } from "path";
 
 export default {
   name: "JobModify",
@@ -568,6 +589,7 @@ export default {
       form: {
         title: "",
         code: "",
+        color: "",
         isactive: 1,
         parent: null,
         profile: null,
@@ -660,6 +682,10 @@ export default {
       } else {
         return [];
       }
+    },
+
+    defaultJobColor: function() {
+      return "#ff8080";
     },
 
     profiles: function() {
@@ -757,6 +783,7 @@ export default {
     populateForm(job) {
       this.form.title = job.title;
       this.form.code = job.code;
+      this.form.color = job.color ? job.color : this.defaultJobColor;
       this.form.parent = job.parent
         ? {
             key: job.parent.id,
@@ -821,6 +848,8 @@ export default {
       e.preventDefault();
       e.target.disabled = true;
 
+      console.log(this.form.color);
+
       this.$v.$touch();
       if (this.$v.$invalid) {
         e.target.disabled = false;
@@ -830,6 +859,7 @@ export default {
       let form = {};
       form.title = this.form.title;
       form.code = this.form.code;
+      form.color = this.form.color ? this.form.color : null;
       form.isactive = this.form.isactive;
       form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.form_id = this.form.profile ? this.form.profile.key : null;
@@ -865,6 +895,7 @@ export default {
       let form = {};
       form.title = this.form.title;
       form.code = this.form.code;
+      form.color = this.form.color ? this.form.color : null;
       form.isactive = this.form.isactive;
       form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.form_id = this.form.profile ? this.form.profile.key : null;
@@ -907,6 +938,7 @@ export default {
       this.schema = "";
       this.form.title = "";
       this.form.code = "";
+      this.form.color = this.defaultJobColor;
       this.form.isactive = 1;
       this.form.parent = null;
       this.form.profile = null;

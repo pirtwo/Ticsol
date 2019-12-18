@@ -45,6 +45,7 @@ class UpdateJob extends FormRequest
         return [
             'title'                 => 'required|string|between:1,100',
             'code'                  => 'required|string|between:1,100',
+            'color'                 => 'nullable|string|regex:/^#([a-z0-9]){6}$/i',
             'isactive'              => 'required|boolean',
             'contacts'              => 'nullable|array',
             'meta'                  => 'nullable',

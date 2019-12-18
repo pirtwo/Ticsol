@@ -272,6 +272,7 @@ export default {
             text: eventText,
             type: item.event_type,
             status: item.status,
+            backColor: item.job ? item.job.color : null
           };
         });
       else {
@@ -292,6 +293,7 @@ export default {
             text: item.user.fullname,
             type: item.event_type,
             status: item.status,
+            backColor: item.job ? item.job.color : null
           };
         });
       }
