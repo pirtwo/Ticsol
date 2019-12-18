@@ -200,8 +200,8 @@
             </div>
           </div>
         </fieldset>
-      </form>      
-      
+      </form>
+
       <ts-section
         title="Unavailable Hours"
         :devider="false"
@@ -214,9 +214,10 @@
           :week-start="'Sun'"
           @change="loadCalendar"
         />
-        <calendar          
+        <calendar
           :start-date="weekStart"
           :events="unavailables"
+          :event-height="60"
           :view-type="'Weeks'"
           :disabled="id != userId"
           @range-selected="onRangeSelect"
@@ -224,40 +225,72 @@
         />
       </ts-section>
 
-      <!-- Create Event Modal -->
+      <!-- Event Modal -->
       <ts-modal
-        :show.sync="createEventModal"
+        :show.sync="eventModal.show"
+        :title="eventModal.status === 'create' ? 'Assign Unavailable':'Update Event'"
         @onHide="clearModal"
-        title="Assign Unavailable"
       >
         <form>
-          <div class="form-row">
-            <div class="form-group col-sm-6">
-              <div class="form-row">
-                <label class="col-sm-12 col-form-lable">Start</label>
-                <div class="col">
-                  <input
-                    v-model="recurring.event.start"
-                    class="form-control"
-                    type="date"
-                  >
+          <!-- Event Start -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-md-12 col-form-lable">Start</label>
+              <div class="col-md-6">
+                <input
+                  v-model="recurring.event.startDate"
+                  :class="[{'is-invalid' : $v.recurringEventStart.$error } ,'form-control']"
+                  type="date"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.recurringEventStart.lt"
+                >
+                  Start date must be before End date.
                 </div>
               </div>
-            </div>
-            <div class="form-group col-sm-6">
-              <div class="form-row">
-                <label class="col-sm-12 col-form-lable">End</label>
-                <div class="col">
-                  <input
-                    v-model="recurring.event.end"
-                    class="form-control"
-                    type="date"
-                  >
-                </div>
+              <div class="col-md-6">
+                <input
+                  v-model="recurring.event.startTime"
+                  class="form-control"
+                  type="time"
+                >
               </div>
             </div>
           </div>
-          <div class="form-row">
+
+          <!-- Event End -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-12 col-form-lable">End</label>
+              <div class="col-md-6">
+                <input
+                  v-model="recurring.event.endDate"
+                  :class="[{'is-invalid' : $v.recurringEventEnd.$error } ,'form-control']"
+                  type="date"
+                >
+                <div
+                  class="invalid-feedback"
+                  v-if="!$v.recurringEventEnd.gt"
+                >
+                  End date must be after Start date.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <input
+                  v-model="recurring.event.endTime"
+                  class="form-control"
+                  type="time"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Repeat -->
+          <div
+            v-if="eventModal.status === 'create'"
+            class="form-row"
+          >
             <div class="form-group col-sm-6">
               <div class="form-row">
                 <label class="col-sm-12 col-form-lable">Repeat</label>
@@ -300,96 +333,67 @@
             </div>
           </div>
         </form>
+
+        <!-- Confirm Delete Modal -->
+        <ts-modal
+          :show.sync="confirmDeleteModal"
+          :backdrop="false"
+          size="sm"
+          title="Confirm Delete"
+        >
+          <p>
+            Are you sure you want to delete this event?
+          </p>
+          <template slot="footer">
+            <button
+              type="button"
+              class="btn btn-light"
+              @click="()=>{ confirmDeleteModal = false }"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              @click="deleteEvent"
+            >
+              YES
+            </button>
+          </template>
+        </ts-modal>
+
+        <!-- modal footer -->
         <template slot="footer">
           <button
+            type="button"
+            class="btn btn-light"
+            @click="()=>{ eventModal.show = false }"
+          >
+            Cancel
+          </button>
+          <button
+            v-if="eventModal.status === 'create'"
             type="button"
             class="btn btn-primary"
-            @click="onSubmitEvents"
+            @click="createEvent"
           >
-            Save
+            Create
           </button>
           <button
-            type="button"
-            class="btn btn-light"
-            @click="()=>{ createEventModal = false }"
-          >
-            Cancel
-          </button>
-        </template>
-      </ts-modal>
-
-      <!-- Event info modal -->
-      <ts-modal
-        :show.sync="eventInfoModal"
-        title="Event Details"
-      >
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-3 col-form-lable">Start</label>
-            <div class="col">
-              <input
-                v-model="selectedEvent.start"
-                class="form-control"
-                type="date"
-              >
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-row">
-            <label class="col-sm-3 col-form-lable">End</label>
-            <div class="col">
-              <input
-                v-model="selectedEvent.end"
-                class="form-control"
-                type="date"
-              >
-            </div>
-          </div>
-        </div>
-        <template slot="footer">
-          <button
-            type="button"
-            class="btn btn-light"
-            @click="()=>{ eventInfoModal = false }"
-          >
-            Cancel
-          </button>
-          <button
+            v-if="eventModal.status === 'update'"
             type="button"
             class="btn btn-danger"
             @click="onDeleteEvent"
           >
             Delete
           </button>
-        </template>
-      </ts-modal>
-
-      <!-- Confirm Delete Modal -->
-      <ts-modal
-        :show.sync="confirmDeleteModal"
-        title="Confirm Delete"
-      >
-        <p>
-          Are you sure you want to delete this event?
-          <b>
-            Unavailable
-            {{ selectedEvent.startDate.toString("MMM dd") }} till
-            {{ selectedEvent.endDate.toString("MMM dd") }}
-          </b>?
-        </p>
-        <template slot="footer">
           <button
+            v-if="eventModal.status === 'update'"
             type="button"
-            class="btn btn-danger"
+            class="btn btn-primary"
+            @click="updateEvent"
           >
-            Delete
-          </button>
-          <button
-            type="button"
-            class="btn btn-light"
-          >
-            Cancel
+            Update
           </button>
         </template>
       </ts-modal>
@@ -398,12 +402,28 @@
 </template>
 
 <script>
+import {
+  required,
+  email,
+  sameAs,
+  not,
+  helpers
+} from "vuelidate/lib/validators";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
-import { required, email, sameAs, not } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
 import DPCalendarVue from "../../../base/DPCalendar.vue";
 import bsCustomFileInput from "bs-custom-file-input";
+
+const lt = field =>
+  helpers.withParams({ type: "lt", field: field }, function(value, parentVm) {
+    return value < helpers.ref(field, this, parentVm);
+  });
+
+const gt = field =>
+  helpers.withParams({ type: "gt", field: field }, function(value, parentVm) {
+    return value > helpers.ref(field, this, parentVm);
+  });
 
 export default {
   name: "UserProfile",
@@ -419,9 +439,11 @@ export default {
   data() {
     return {
       loadingAvatar: true,
-      createEventModal: false,
+      eventModal: {
+        show: false,
+        status: "create"
+      },
       confirmDeleteModal: false,
-      eventInfoModal: false,
       week: {
         start: moment(),
         end: moment()
@@ -438,15 +460,12 @@ export default {
         repeat: "no repeat",
         times: 1,
         event: {
-          start: "",
-          end: ""
+          id: "",
+          startDate: "",
+          startTime: "00:00",
+          endDate: "",
+          endTime: "00:00"
         }
-      },
-      selectedEvent: {
-        startDate: window.DayPilot.Date.today(),
-        endDate: window.DayPilot.Date.today(),
-        start: "",
-        end: ""
       }
     };
   },
@@ -456,7 +475,9 @@ export default {
       firstname: { required },
       lastname: { required },
       email: { required, email }
-    }
+    },
+    recurringEventStart: { lt: lt("recurringEventEnd") },
+    recurringEventEnd: { gt: gt("recurringEventStart") }
   },
 
   watch: {
@@ -502,13 +523,29 @@ export default {
 
     unavailables: function() {
       return this.getList("schedule").map(item => {
+        let start = new window.DayPilot.Date(item.start);
+        let end = new window.DayPilot.Date(item.end);
         return {
           id: item.id,
-          start: item.start,
-          end: item.end,
-          text: "Unavailable"
+          start: start,
+          end: end,
+          html: `Unavailable <br/>Start: ${start.toString(
+            "hh:mm"
+          )} <br/>End: ${end.toString("hh:mm")}`
         };
       });
+    },
+
+    recurringEventStart: function() {
+      return `${this.recurring.event.startDate.toString("yyyy-MM-dd")} ${
+        this.recurring.event.startTime
+      }`;
+    },
+
+    recurringEventEnd: function() {
+      return `${this.recurring.event.endDate.toString("yyyy-MM-dd")} ${
+        this.recurring.event.endTime
+      }`;
     },
 
     timesLable: function() {
@@ -630,19 +667,32 @@ export default {
         .reduce((acc, cur) => `${cur}${acc ? "," : ""}${acc}`, "");
     },
 
+    //---------------------//
+    // Calendar Events     //
+    //---------------------//
     onRangeSelect(e) {
-      this.recurring.event.start = e.start.slice(0, 10);
-      this.recurring.event.end = e.end.slice(0, 10);
-      this.createEventModal = true;
+      this.recurring.event.startDate = e.start.slice(0, 10);
+      this.recurring.event.endDate = e.end.slice(0, 10);
+
+      this.eventModal.status = "create";
+      this.eventModal.show = true;
     },
 
     onEventClicked(e) {
-      console.log(e);
-      this.selectedEvent.startDate = window.DayPilot.Date(e.e.data.start);
-      this.selectedEvent.endDate = window.DayPilot.Date(e.e.data.end);
-      this.selectedEvent.start = e.e.data.start.slice(0, 10);
-      this.selectedEvent.end = e.e.data.end.slice(0, 10);
-      this.eventInfoModal = true;
+      let event = e.e.data;
+      let start = event.start;
+      let end = event.end;
+
+      this.clearModal();
+
+      this.recurring.event.id = event.id;
+      this.recurring.event.startDate = start.toString("yyyy-MM-dd");
+      this.recurring.event.startTime = start.toString("hh:mm");
+      this.recurring.event.endDate = end.toString("yyyy-MM-dd");
+      this.recurring.event.endTime = end.toString("hh:mm");
+
+      this.eventModal.status = "update";
+      this.eventModal.show = true;      
     },
 
     onEventMoved(e) {
@@ -653,11 +703,24 @@ export default {
       console.log(e);
     },
 
-    onEventDeleted(e) {
-      console.log(e);
+    onDeleteEvent(e) {
+      // Show delete confirmation
+      this.confirmDeleteModal = true;
     },
 
-    onSubmitEvents(e) {
+    async createEvent(e) {
+      e.target.disabled = true;
+
+      this.$v.recurringEventStart.$touch();
+      this.$v.recurringEventEnd.$touch();
+      if (
+        this.$v.recurringEventStart.$invalid ||
+        this.$v.recurringEventEnd.$invalid
+      ) {
+        e.target.disabled = false;
+        return;
+      }
+
       // populate the form data
       let form = {
         event_type: "unavailable",
@@ -665,20 +728,22 @@ export default {
         unavailables: []
       };
 
-      let start = new window.DayPilot.Date(this.recurring.event.start);
-      let end = new window.DayPilot.Date(this.recurring.event.end);
+      let start = new window.DayPilot.Date(this.recurring.event.startDate);
+      let startTime = this.recurring.event.startTime;
+      let end = new window.DayPilot.Date(this.recurring.event.endDate);
+      let endTime = this.recurring.event.endTime;
 
-      // Create recuring events and push them to list
+      // Create recurring events and push them to list
       if (this.recurring.repeat === "no repeat") {
         form.unavailables.push({
-          start: start.toString(),
-          end: end.toString()
+          start: `${start.toString("yyyy-MM-dd")}T${startTime}:00`,
+          end: `${end.toString("yyyy-MM-dd")}T${endTime}:00`
         });
       } else if (this.recurring.repeat === "weekly") {
         for (let i = 1; i <= this.recurring.times; i++) {
           form.unavailables.push({
-            start: start.toString(),
-            end: end.toString()
+            start: `${start.toString("yyyy-MM-dd")}T${startTime}:00`,
+            end: `${end.toString("yyyy-MM-dd")}T${endTime}:00`
           });
           start = start.addDays(7);
           end = end.addDays(7);
@@ -689,16 +754,18 @@ export default {
           .addMonths(Number(this.recurring.times));
         while (start < endDate) {
           form.unavailables.push({
-            start: start.toString(),
-            end: end.toString()
+            start: `${start.toString("yyyy-MM-dd")}T${startTime}:00`,
+            end: `${end.toString("yyyy-MM-dd")}T${endTime}:00`
           });
           start = start.addDays(7);
           end = end.addDays(7);
         }
       }
 
+      console.log(form);
+
       // Submit events to server
-      this.create({ resource: "schedule", data: form })
+      await this.create({ resource: "schedule", data: form })
         .then(() => {
           console.log("events created successfuly.");
           this.showMessage("Unavailable hours created successfuly.", "success");
@@ -708,27 +775,66 @@ export default {
           this.showMessage(error.message, "danger");
         });
 
-      this.createEventModal = false;
+      e.target.disabled = false;
+      this.eventModal.show = false;
     },
 
-    onDeleteEvent(e) {
-      // Show delete confirmation
-      this.eventInfoModal = false;
-      this.confirmDeleteModal = true;
+    async updateEvent(e) {
+      e.target.disabled = true;
+
+      this.$v.recurringEventStart.$touch();
+      this.$v.recurringEventEnd.$touch();
+      if (
+        this.$v.recurringEventStart.$invalid ||
+        this.$v.recurringEventEnd.$invalid
+      ) {
+        e.target.disabled = false;
+        return;
+      }
+
+      let form = {};
+      form.start = this.recurringEventStart;
+      form.end = this.recurringEventEnd;
+
+      await this.update({ resource: "schedule", id: this.recurring.event.id, data: form })
+        .then(() => {
+          this.showMessage("Unavailable hours updated successfuly.", "success");
+        })
+        .catch(error => {
+          console.log(error);
+          this.showMessage(error.message, "danger");
+        });
+
+      e.target.disabled = false;
+      this.eventModal.show = false;
     },
 
-    onConfirmDelete() {
-      // Delete has been confirmed
-      // Delete the event
+    deleteEvent(e) {
+      this.confirmDeleteModal = false;
+      this.eventModal.show = false;
+
+      this.delete({ resource: "schedule", id: this.recurring.event.id })
+        .then(() => {
+          this.showMessage("Unavailable hours deleted successfuly.", "success");
+        })
+        .catch(error => {
+          console.log(error);
+          this.showMessage(error.message, "danger");
+        });
     },
 
     clearModal() {
       this.recurring.repeat = "no repeat";
       this.recurring.times = 1;
-      this.recurring.event.start = "";
-      this.recurring.event.end = "";
+      this.recurring.event.startDate = "";
+      this.recurring.event.startTime = "00:00";
+      this.recurring.event.endDate = "";
+      this.recurring.event.endTime = "00:00";
     },
 
+    //---------------------//
+    // User Profile        //
+    //---------------------//
     onSave(e) {
       e.preventDefault();
       e.target.disabled = true;
