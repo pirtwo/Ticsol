@@ -104,7 +104,7 @@
                   type="radio"
                   id="range1"
                   name="ranges"
-                  value="Week"
+                  value="week"
                   class="custom-control-input"
                 >
                 <label
@@ -118,7 +118,7 @@
                   type="radio"
                   id="range2"
                   name="ranges"
-                  value="Month"
+                  value="month"
                   class="custom-control-input"
                 >
                 <label
@@ -221,11 +221,11 @@ export default {
         { key: 4, value: "Night" }
       ],
       form: {
-        theme: {},
+        theme: { key: 0, value: "Default" },
         ical: false,
         icalUrl: "",
         scheduleView: "user",
-        scheduleRange: "Month"
+        scheduleRange: "month"
       }
     };
   },
@@ -258,30 +258,36 @@ export default {
 
     loadAssets() {
       this.startLoading();
-      this.list({ resource: "user", query: { eq: `id,${this.userId}` } }).then(
+      this.list({ resource: "user", query: { eq: `id,${this.userId}`, with: "client" } }).then(
         data => {
-          this.populateForm(data[0].meta);
+          this.populateForm(data[0]);
           this.stopLoading();
         }
       );
     },
 
-    populateForm(settings) {   
-      if(!settings) return;
-         
-      this.form.theme = this.themes.find(
-        item => item.value.toLowerCase() === settings.theme
-      );
+    populateForm(user) {   
+      let defaults = user.client ? user.client.meta : {};
+      let settings = user.meta;
 
-      if(this.form.theme)
-        this.setTheme(this.form.theme.value);
+      if(settings) {         
+        this.form.theme = this.themes.find(
+          item => item.value.toLowerCase() === settings.theme
+        );
 
-      this.form.scheduleView = settings.schedule_view ? settings.schedule_view : "";
-      this.form.scheduleRange = settings.schedule_range ? settings.schedule_range : "";
-      this.form.ical = settings.ical ? true : false;
-      this.form.icalUrl = settings.ical
-        ? `https://${window.location.hostname}/api/ical/${this.userId}/${settings.ical}`
-        : "";
+        if(this.form.theme)
+          this.setTheme(this.form.theme.value);
+
+        this.form.scheduleView = settings.schedule_view ? settings.schedule_view : "";
+        this.form.scheduleRange = settings.schedule_range ? settings.schedule_range : "";
+        this.form.ical = settings.ical ? true : false;
+        this.form.icalUrl = settings.ical
+          ? `https://${window.location.hostname}/api/ical/${this.userId}/${settings.ical}`
+          : "";
+      } else {
+        this.form.scheduleView = defaults.schedule_view;
+        this.form.scheduleRange = defaults.schedule_range;
+      }
     },
 
     onSave(e) {
@@ -297,7 +303,7 @@ export default {
 
       this.update({ resource: "user", id: this.userId, data: form })
         .then(data => {
-          this.populateForm(data.meta);
+          this.populateForm(data);
           this.updateSettings(data.meta);
           this.showMessage(`Settings updated successfuly.`, "success");
         })
