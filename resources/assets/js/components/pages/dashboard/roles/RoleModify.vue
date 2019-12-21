@@ -86,6 +86,8 @@
         </div>
 
         <!-- Permissions -->
+
+        <!-- Profile & Job -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Jobs</label>
@@ -121,6 +123,7 @@
           </div>
         </div>
 
+        <!-- Timesheet -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Timesheets</label>
@@ -142,6 +145,7 @@
           </div>
         </div>
 
+        <!-- Request -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Requests</label>
@@ -177,6 +181,7 @@
           </div>
         </div>
 
+        <!-- Users -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Users</label>
@@ -208,10 +213,25 @@
                   for="full-role"
                 >Can Create/Maintain Roles</label>
               </div>
+
+              <div class="custom-control custom-checkbox">
+                <input
+                  v-model="form.permissions"
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="full-team"
+                  value="full-team"
+                >
+                <label
+                  class="custom-control-label"
+                  for="full-team"
+                >Can Create/Maintain Teams</label>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Schedule -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Schedule</label>
@@ -247,6 +267,7 @@
           </div>
         </div>
 
+        <!-- Reports -->
         <div class="form-group">
           <div class="form-row">
             <label class="col-sm-2 col-form-label">Activity Reports</label>
@@ -268,9 +289,10 @@
           </div>
         </div>
 
+        <!--  3rd party integrations -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Xero</label>
+            <label class="col-sm-2 col-form-label">Integrations</label>
             <div class="col-sm-10">
               <div class="custom-control custom-checkbox">
                 <input
@@ -283,7 +305,7 @@
                 <label
                   class="custom-control-label"
                   for="full-xero"
-                >Can Maintain Xero Integrations</label>
+                >Can Maintain 3rd Party Integrations</label>
               </div>
             </div>
           </div>
