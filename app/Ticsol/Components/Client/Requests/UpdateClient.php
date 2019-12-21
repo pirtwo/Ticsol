@@ -52,7 +52,7 @@ class UpdateClient extends FormRequest
             'reimbursement_expence_account_id'      => 'nullable|numeric',
 
             // General settings   
-            'schedule_view'             => 'string|in:employee,job',
+            'schedule_view'             => 'string|in:user,job',
             'schedule_range'            => 'string|in:week,month',
             'business_hours'            => 'array',            
             'business_hours.*.day'      => 'required_with:business_hours|numeric|between:0,6', //Sunday as 0 and Saturday as 6

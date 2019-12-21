@@ -110,7 +110,7 @@
                   type="radio"
                   id="view1"
                   name="views"
-                  value="employee"
+                  value="user"
                   class="custom-control-input"
                 >
                 <label

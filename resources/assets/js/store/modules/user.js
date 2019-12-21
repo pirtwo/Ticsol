@@ -55,11 +55,13 @@ export const userModule = {
         },
 
         getScheduleView(state) {
-            return state.settings.scheduleView;
+            if(!state.settings.scheduleView) return null;
+            return state.settings.scheduleView.toLowerCase();
         },
 
         getScheduleRange(state) {
-            return state.settings.scheduleRange;
+            if(!state.settings.scheduleRange) return null;
+            return state.settings.scheduleRange.toLowerCase() == "week" ? "Week" : "Month";
         },
 
         getPermissions(state) {
