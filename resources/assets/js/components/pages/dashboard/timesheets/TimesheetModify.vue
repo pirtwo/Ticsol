@@ -151,9 +151,7 @@
               <span>{{ item.job.value }}</span>
             </router-link>
           </td>
-          <td>
-            {{ item.billable ? 'Yes' : 'No' }}
-          </td>
+          <td>{{ item.billable ? 'Yes' : 'No' }}</td>
           <td>
             <template v-if="item.startTime">
               {{ item.startTime }}
@@ -185,6 +183,7 @@
                 </label>
                 <div class="col-sm-10">
                   <ts-select
+                    class="form-control"
                     v-model="item.date"
                     :data="weekDays"
                     id="parent_id"
@@ -205,6 +204,7 @@
                 </label>
                 <div class="col-sm-10">
                   <ts-select
+                    class="form-control"
                     v-model="item.job"
                     :data="jobs"
                     id="parent_id"
@@ -269,9 +269,7 @@
             <!-- Billable -->
             <div class="form-group">
               <div class="form-row">
-                <label class="col-sm-2 col-form-lable">
-                  Billable                  
-                </label>
+                <label class="col-sm-2 col-form-lable">Billable</label>
                 <div class="col-sm-10">
                   <div class="custom-control custom-checkbox">
                     <input
@@ -335,6 +333,7 @@
             <label class="col-sm-12 col-form-lable">Approver</label>
             <div class="col-sm-12">
               <ts-select
+                class="form-control"
                 v-model="approver"
                 :data="users"
                 :class="[{'is-invalid' : $v.approver.$error } ,'form-control']"
@@ -379,7 +378,7 @@
             @click="onSubmit"
           >
             Submit
-          </button>          
+          </button>
         </template>
       </ts-modal>
 
@@ -423,9 +422,7 @@
                 <span>{{ item.job.value }}</span>
               </router-link>
             </td>
-            <td>
-              {{ item.billable ? 'Yes' : 'No' }}
-            </td>
+            <td>{{ item.billable ? 'Yes' : 'No' }}</td>
             <td>
               <template v-if="item.startTime">
                 {{ item.startTime }}
@@ -452,7 +449,7 @@
             @click="onGenerate"
           >
             Generate
-          </button>          
+          </button>
         </template>
       </ts-modal>
     </template>
@@ -793,32 +790,42 @@ export default {
     canApprove() {
       if (!this.timesheet) {
         return false;
-      } else return this.timesheet.request.assigned_id == this.userId && this.userCan('timesheet', ['full', 'approve']);
+      } else
+        return (
+          this.timesheet.request.assigned_id == this.userId &&
+          this.userCan("timesheet", ["full", "approve"])
+        );
     },
 
     approve(e) {
       e.preventDefault();
       e.target.disabled = true;
 
-      api.update({url:`/api/timesheet/approve/${this.id}`})
-      .then(()=>{
-        this.showMessage(`Timesheet <b>approved</b> successfuly.`, "success");
-      }).catch(error=>{
-        this.showMessage(error.message, "danger");
-      }).finally(()=>{
-        e.target.disabled = false;
-      });
+      api
+        .update({ url: `/api/timesheet/approve/${this.id}` })
+        .then(() => {
+          this.showMessage(`Timesheet <b>approved</b> successfuly.`, "success");
+        })
+        .catch(error => {
+          this.showMessage(error.message, "danger");
+        })
+        .finally(() => {
+          e.target.disabled = false;
+        });
     },
 
     reject(e) {
-      api.update({url:`/api/timesheet/reject/${this.id}`})
-      .then(()=>{
-        this.showMessage(`Timesheet <b>rejected</b> successfuly.`, "success");
-      }).catch(error=>{
-        this.showMessage(error.message, "danger");
-      }).finally(()=>{
-        e.target.disabled = false;
-      });
+      api
+        .update({ url: `/api/timesheet/reject/${this.id}` })
+        .then(() => {
+          this.showMessage(`Timesheet <b>rejected</b> successfuly.`, "success");
+        })
+        .catch(error => {
+          this.showMessage(error.message, "danger");
+        })
+        .finally(() => {
+          e.target.disabled = false;
+        });
     },
 
     onGenerate() {
@@ -849,15 +856,20 @@ export default {
       }
 
       let p = null;
+      let timesheetId = null;
       if (this.timesheet) {
-        p = this.updateTimesheet("submitted", this.comment);
+        p = this.updateTimesheet("submitted", this.comment).then(data => {
+          timesheetId = data.id;
+        });
       } else {
-        p = this.createTimesheet("submitted", this.comment);
+        p = this.createTimesheet("submitted", this.comment).then(data => {
+          timesheetId = data.id;
+        });
       }
 
       p.then(() => {
-        if (this.comment) {
-          this.createComment(this.timesheet.id, this.comment);
+        if (this.comment && timesheetId) {
+          this.createComment(timesheetId, this.comment);
         }
       }).finally(() => {
         e.target.disabled = false;
@@ -941,11 +953,11 @@ export default {
               "success"
             );
 
-            resolve();
+            resolve(data);
           })
           .catch(error => {
             this.showMessage(error.message, "danger");
-            reject();
+            reject(error);
           });
       });
     },
@@ -964,11 +976,11 @@ export default {
         })
           .then(data => {
             this.showMessage(`Timesheet updated successfuly.`, "success");
-            resolve();
+            resolve(data);
           })
           .catch(error => {
             this.showMessage(error.message, "danger");
-            reject();
+            reject(error);
           });
       });
     },

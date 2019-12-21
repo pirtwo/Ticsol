@@ -75,18 +75,12 @@
           </button>
         </li>
 
-        <li>
-          <button class="btn">
-            Print
-          </button>
-        </li>
-
         <li class="menu-title">
           Links
         </li>
         <li>
           <router-link :to="{ name: 'inbox' }">
-            Request History
+            Inbox
           </router-link>
         </li>
       </ul>

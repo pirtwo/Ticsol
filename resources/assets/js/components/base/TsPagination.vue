@@ -1,22 +1,26 @@
 <template>
-  <div class="wrap-pagination">        
-    <div>
-      &nbsp; &nbsp; Go to: &nbsp;
-      <input 
-        ref="pageInput" 
-        class="pag-input pag-text" 
-        @input="dbInput" 
-        type="text" 
+  <div class="ts-pagination">
+    <div class="d-flex align-items-center">
+      <div class="ts-pagination__label">
+        Go to:
+      </div>
+      <input
+        ref="pageInput"
+        class="ts-pagination__input"
+        @input="dbInput"
+        type="text"
         maxlength="3"
-      > : {{ pageCount }}
-      &nbsp; &nbsp; Rows: &nbsp;
-      <select 
-        v-model="perPage" 
-        @change="perPageChange" 
-        class="pag-input pag-select"
       >
-        <option 
-          value="10" 
+      <div class="ts-pagination__label">
+        : {{ pageCount }} &nbsp; &nbsp; Rows:
+      </div>
+      <select
+        v-model="perPage"
+        @change="perPageChange"
+        class="ts-pagination__select"
+      >
+        <option
+          value="10"
           selected
         >
           10
@@ -33,21 +37,21 @@
         <option value="200">
           200
         </option>
-      </select>         
+      </select>
     </div>
-    <button 
-      @click="dbBack" 
-      class="btn btn-sm"
+    <button
+      @click="dbBack"
+      class="btn btn-sm ts-pagination__btn"
     >
       <i class="material-icons">keyboard_arrow_left</i>
     </button>
-    <button 
-      @click="dbForward" 
-      class="btn btn-sm"
+    <button
+      @click="dbForward"
+      class="btn btn-sm ts-pagination__btn"
     >
       <i class="material-icons">keyboard_arrow_right</i>
     </button>
-  </div>    
+  </div>
 </template>
 
 <script>
@@ -70,7 +74,9 @@ export default {
     },
     value: {
       type: Object,
-      default:()=> {return{ page: 1, perPage: 10, pageCount: 1 }}
+      default: () => {
+        return { page: 1, perPage: 10, pageCount: 1 };
+      }
     }
   },
 
@@ -124,7 +130,7 @@ export default {
       });
     },
 
-    perPageChange() {      
+    perPageChange() {
       this.page = 1;
       this.$refs.pageInput.value = this.page.toString();
       this.$emit("input", {
@@ -138,40 +144,30 @@ export default {
 </script>
 
 <style scoped>
-.btn {
+.ts-pagination {
   display: flex;
-  line-height: 1;
-  margin-right: 5px;
-  padding: 0.25rem 0.25rem;
+  align-items: stretch;
+  margin: 0px 5px;
 }
 
-.btn i {
-  font-size: 1.2rem;
+.ts-pagination__label {
+  margin: 0px 3px;
 }
 
-div {
-  display: flex;
-  font-size: 12px;
-  line-height: 1.8;  
-  padding: 2px 4px;  
-}
-
-.pag-input {
-  height: 20px;
-  margin-top: 2px;
-  margin-right: 3px;
-  border-radius: 2px;
-  background-color: transparent;
-  border: 1px solid #0000004d;
-}
-
-.pag-text {
-  width: 35px;
+.ts-pagination__input {
+  width: 50px;
+  height: 65%;
   padding: 5px;
 }
 
-.pag-select {
-  width: auto;
-  padding: 0px;
+.ts-pagination__btn {
+  margin-left: 3px;
+  font-size: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.ts-pagination__btn i {
+  font-size: inherit;
 }
 </style>

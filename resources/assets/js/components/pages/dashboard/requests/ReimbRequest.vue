@@ -64,13 +64,7 @@
           >
             Reject
           </button>
-        </li>
-
-        <li>
-          <button class="btn">
-            Print
-          </button>
-        </li>
+        </li>      
 
         <!-- Links -->
         <li class="menu-title">
@@ -78,7 +72,7 @@
         </li>
         <li>
           <router-link :to="{ name: 'inbox' }">
-            History
+            Inbox
           </router-link>
         </li>
       </ul>

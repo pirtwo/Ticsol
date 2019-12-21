@@ -295,173 +295,178 @@
         </div>
       </form>
 
-      <ts-grid
-        v-model="form.addresses"
-        :columns="columns"
-        :has-toolbar="false"
-        @inserted="place = {}"
-        @modalHide="place = {}"
-      >
-        <template slot-scope="{ item }">
-          <td>{{ item.number }}</td>
-          <td>{{ item.street }}</td>
-          <td>{{ item.suburb }}</td>
-          <td>{{ item.unit }}</td>
-          <td>{{ item.state }}</td>
-          <td>{{ item.country }}</td>
-          <td>{{ item.postcode }}</td>
-        </template>
-        <template
-          slot="grid-modal"
-          slot-scope="{ item }"
+      <ts-section
+        class="mb-3"
+        title="Address"
+      > 
+        <ts-grid
+          v-model="form.addresses"
+          :columns="columns"
+          :has-toolbar="false"
+          @inserted="place = {}"
+          @modalHide="place = {}"
         >
-          <div class="p-2">
-            <!-- google places -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-3 col-form-lable">Find Address</label>
-                <div class="col-sm-9">
-                  <goole-places
-                    :value="place"
-                    @input="placeChange($event, item)"
-                  />
+          <template slot-scope="{ item }">
+            <td>{{ item.unit }}</td>
+            <td>{{ item.number }}</td>           
+            <td>{{ item.street }}</td>
+            <td>{{ item.suburb }}</td>          
+            <td>{{ item.state }}</td>
+            <td>{{ item.country }}</td>
+            <td>{{ item.postcode }}</td>
+          </template>
+          <template
+            slot="grid-modal"
+            slot-scope="{ item }"
+          >
+            <div class="p-2">
+              <!-- google places -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">Find Address</label>
+                  <div class="col-md-9">
+                    <goole-places
+                      :value="place"
+                      @input="placeChange($event, item)"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <hr>
+              <hr>
 
-            <!-- Unit -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-2 col-form-lable">Unit</label>
-                <div class="col-sm-10">
-                  <input
-                    v-model="item.unit"
-                    type="text"
-                    placeholder="please enter unit..."
-                    class="form-control"
-                    id="unit"
-                  >
+              <!-- Unit -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">Unit</label>
+                  <div class="col-md-9">
+                    <input
+                      v-model="item.unit"
+                      type="text"
+                      placeholder="please enter unit..."
+                      class="form-control"
+                      id="unit"
+                    >
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Number -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-2 col-form-lable">
-                  Number
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    v-model="item.number"
-                    type="text"
-                    placeholder="please enter number..."
-                    class="form-control"
-                    id="number"
-                  >
+              <!-- Number -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">
+                    Number
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-md-9">
+                    <input
+                      v-model="item.number"
+                      type="text"
+                      placeholder="please enter number..."
+                      class="form-control"
+                      id="number"
+                    >
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Street -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-2 col-form-lable">
-                  Street
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    v-model="item.street"
-                    type="text"
-                    placeholder="please enter street..."
-                    class="form-control"
-                    id="street"
-                  >
+              <!-- Street -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">
+                    Street
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-md-9">
+                    <input
+                      v-model="item.street"
+                      type="text"
+                      placeholder="please enter street..."
+                      class="form-control"
+                      id="street"
+                    >
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Suburb -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-2 col-form-lable">
-                  Suburb
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    v-model="item.suburb"
-                    type="text"
-                    placeholder="please enter suburb..."
-                    class="form-control"
-                    id="suburb"
-                  >
+              <!-- Suburb -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">
+                    Suburb
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-md-9">
+                    <input
+                      v-model="item.suburb"
+                      type="text"
+                      placeholder="please enter suburb..."
+                      class="form-control"
+                      id="suburb"
+                    >
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- State -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-2 col-form-lable">
-                  State
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    v-model="item.state"
-                    type="text"
-                    placeholder="please enter state..."
-                    class="form-control"
-                    id="unit"
-                  >
+              <!-- State -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">
+                    State
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-md-9">
+                    <input
+                      v-model="item.state"
+                      type="text"
+                      placeholder="please enter state..."
+                      class="form-control"
+                      id="unit"
+                    >
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Country -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-2 col-form-lable">
-                  Country
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    v-model="item.country"
-                    type="text"
-                    placeholder="please enter country..."
-                    class="form-control"
-                    id="country"
-                  >
+              <!-- Country -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">
+                    Country
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-md-9">
+                    <input
+                      v-model="item.country"
+                      type="text"
+                      placeholder="please enter country..."
+                      class="form-control"
+                      id="country"
+                    >
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Post Code -->
-            <div class="form-group">
-              <div class="form-row">
-                <label class="col-sm-2 col-form-lable">
-                  Post Code
-                  <i class="field-required">*</i>
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    v-model="item.postcode"
-                    type="text"
-                    placeholder="please enter post code..."
-                    class="form-control"
-                    id="postcode"
-                  >
+              <!-- Post Code -->
+              <div class="form-group">
+                <div class="form-row">
+                  <label class="col-md-3 col-form-lable">
+                    Post Code
+                    <i class="field-required">*</i>
+                  </label>
+                  <div class="col-md-9">
+                    <input
+                      v-model="item.postcode"
+                      type="text"
+                      placeholder="please enter post code..."
+                      class="form-control"
+                      id="postcode"
+                    >
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </template>
-      </ts-grid>
+          </template>
+        </ts-grid>
+      </ts-section>
     </template>
   </app-main>
 </template>
@@ -496,10 +501,10 @@ export default {
         addresses: []
       },
       columns: [
-        { key: 1, value: "Number" },
-        { key: 2, value: "Street" },
-        { key: 3, value: "Suburb" },
-        { key: 4, value: "Unit" },
+        { key: 1, value: "Unit" },
+        { key: 2, value: "Number" },        
+        { key: 3, value: "Street" },
+        { key: 4, value: "Suburb" },        
         { key: 5, value: "State" },
         { key: 6, value: "Country" },
         { key: 7, value: "Post Code" }

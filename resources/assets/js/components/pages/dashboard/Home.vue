@@ -91,6 +91,6 @@ export default {
 
 <style scoped>
 .wrap-dashboard {
-  height: 80%;
+  height: 100%;
 }
 </style>

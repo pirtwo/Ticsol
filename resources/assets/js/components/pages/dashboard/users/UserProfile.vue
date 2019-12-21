@@ -200,26 +200,29 @@
             </div>
           </div>
         </fieldset>
-      </form>
-
-      <br>
-      <hr>
-
-      <!-- Unavailable hours calendar -->
-      <ts-datescroller
-        v-model="week"
-        range="Week"
-        :week-start="'Sun'"
-        @change="loadCalendar"
-      />
-      <calendar
-        :start-date="weekStart"
-        :events="unavailables"
-        :view-type="'Weeks'"
-        :disabled="id != userId"
-        @range-selected="onRangeSelect"
-        @event-clicked="onEventClicked"
-      />
+      </form>      
+      
+      <ts-section
+        title="Unavailable Hours"
+        :devider="false"
+        class="mb-3"
+      >
+        <!-- Unavailable hours calendar -->
+        <ts-datescroller
+          v-model="week"
+          range="Week"
+          :week-start="'Sun'"
+          @change="loadCalendar"
+        />
+        <calendar          
+          :start-date="weekStart"
+          :events="unavailables"
+          :view-type="'Weeks'"
+          :disabled="id != userId"
+          @range-selected="onRangeSelect"
+          @event-clicked="onEventClicked"
+        />
+      </ts-section>
 
       <!-- Create Event Modal -->
       <ts-modal

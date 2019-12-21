@@ -207,8 +207,8 @@ export default {
   computed: {
     ...mapGetters({
       userCan: "user/can",
-      clientId: "user/getClientId",      
       getList: "resource/getList",
+      clientId: "user/getClientId",         
       dpHeight: "core/getUiContentHeight",
       userScheduleView: "user/getScheduleView",
       userScheduleRange: "user/getScheduleRange",
@@ -265,12 +265,13 @@ export default {
 
           return {
             id: item.id,
+            userId: item.user_id,
             resource: item.user_id,
             start: new window.DayPilot.Date(item.start),
             end: new window.DayPilot.Date(item.end),
             text: eventText,
             type: item.event_type,
-            status: item.status
+            status: item.status,
           };
         });
       else {
@@ -284,12 +285,13 @@ export default {
 
           return {
             id: item.id,
+            userId: item.user_id,
             resource: eventResource,
             start: new window.DayPilot.Date(item.start),
             end: new window.DayPilot.Date(item.end),
             text: item.user.fullname,
             type: item.event_type,
-            status: item.status
+            status: item.status,
           };
         });
       }
@@ -302,7 +304,7 @@ export default {
         });
       else {
         let list = this.getList("job").map(item => {
-          return { id: item.id, name: item.title, code: item.code };
+          return { id: item.id, name: item.title, code: item.code, billable: item.billable };
         });
 
         list.unshift(this.unaviJob, this.leaveJob);
@@ -451,10 +453,13 @@ export default {
 
     // DP Handlers
     rangeSelectHandler(event) {  
-      event.name = this.scheduleResources.find(
+      let resource = this.scheduleResources.find(
         item => item.id == event.resourceId
-      ).name;
+      );
+
       this.event = event;
+      this.event.name = resource.name;
+      if(this.view == 'job') this.event.billable = resource.billable;
       
       this.event.start = new window.DayPilot.Date(
         `${event.start.toString("yyyy-MM-dd")}T${this.getBusinessHourStart(event.start.getDayOfWeek())}`);
@@ -518,7 +523,6 @@ export default {
         resource: "schedule",
         id: event.eventId,
         data: {
-          user_id: event.resourceId,
           start: event.newStart,
           end: event.newEnd
         }
@@ -570,25 +574,6 @@ export default {
   margin-left: 5px;
 }
 
-.dp-ctrl {
-  width: 60%;
-}
-
-.dp-ctrl input {
-  max-width: 140px;
-  font-size: 0.8rem;
-}
-
-.dp-ctrl .btn {
-  font-size: 1rem;
-  line-height: 1rem !important;
-}
-
-.dp-ctrl i {
-  font-size: inherit;
-  line-height: 1rem !important;
-}
-
 .res-menu {
   list-style: none;
   padding: 3px;
@@ -597,8 +582,6 @@ export default {
 .res-menu li {
   padding: 7.5px 12px;  
   margin: 8px 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .res-menu li:active {
@@ -606,12 +589,10 @@ export default {
 }
 
 .draggable{
-  cursor: move;
+  cursor: grab;
 }
 
 .res-menu li a {
-  cursor: -webkit-grab;
-  color: black;
   font-size: 12px;
   text-decoration: none;
 }

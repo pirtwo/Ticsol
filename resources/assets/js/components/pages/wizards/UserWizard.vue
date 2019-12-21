@@ -1014,7 +1014,6 @@ export default {
     },
 
     unavailables: {
-      required,
       $each: {
         start: { required },
         end: { required }
@@ -1154,7 +1153,8 @@ export default {
         })
       };
 
-      await this.create({ resource: "schedule", data: form });
+      if(form.unavailables.length > 0) 
+        await this.create({ resource: "schedule", data: form });
       return Promise.resolve(true);
     },
 
@@ -1270,10 +1270,9 @@ export default {
 
 <style scoped>
 .wrap-wizard {
-  background-color: rgba(255, 255, 255, 0.9);
   padding: 30px;
   width: 50%;
-  height: 70%;
+  height: 100%;
   border-radius: 2px;
   position: relative;
 }

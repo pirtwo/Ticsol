@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     // General Settings
@@ -224,16 +226,23 @@ export default {
     },
 
     range: function(value) {
-      this.dayPilot.days = this.getDays();   
+      this.dayPilot.days = this.getDays();
       this.dayPilot.update();
     },
 
     startDate: function(value) {
       console.log(value);
       this.dayPilot.startDate = new window.DayPilot.Date(value);
-      this.dayPilot.days = this.getDays();      
+      this.dayPilot.days = this.getDays();
       this.dayPilot.update();
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      userId: "user/getId",
+      userCan: "user/can"
+    })
   },
 
   mounted() {
@@ -243,7 +252,7 @@ export default {
 
     dp.theme = "scheduler_green";
     //dp.width = "100%";
-    dp.height = this.height - this.timeHeaderHeight * 2 - 4;
+    dp.height = this.height - this.timeHeaderHeight * 2;
     dp.heightSpec = "Fixed";
     dp.resources = this.resource;
     dp.events.list = this.events;
@@ -283,8 +292,8 @@ export default {
     dp.eventStackingLineHeight = this.eventStackLineHeight;
 
     // Rows
-    dp.rowMarginBottom = 20;
-    dp.rowHeaderHideIconEnabled = true;
+    dp.rowMarginBottom = 1;
+    dp.rowHeaderHideIconEnabled = false;
     dp.rowHeaderWidth = 120;
     dp.rowHeaderWidthMarginLeft = 0;
     dp.rowHeaderWidthMarginRight = 0;
@@ -362,26 +371,45 @@ export default {
       if (this.view === "job") {
         args.resource.html =
           `<div class='res_job_name'>${item.name}</div>` +
-          `<div class='res_job_code'>Code: ${item.code}</div>`;
+          `<div class='res_job_code'>${(item.id == 'sys-001' || item.id == 'sys-002') ? '' : `Code: ${item.code}`}</div>`;
       }
       args.resource.minHeight = 90;
     };
 
-    dp.onBeforeCellRender = function(args){
+    dp.onBeforeCellRender = function(args) {
       //
-    }
+    };
 
     /**
      * Event render function.
      */
     dp.onBeforeEventRender = function(args) {
       let item = dp.events.list.find(item => item.id == args.data.id);
-      args.data.moveDisabled = args.data.resizeDisabled = item.type !== 'scheduled';
+
+      // check permissions on move and resize
+      if (item.type !== "scheduled") {
+        // disable unavHours and leaves
+        args.data.moveDisabled = args.data.resizeDisabled = true;
+      } else {
+        // check maintain own permission
+        if (
+          item.userId == _this.userId &&
+          !_this.userCan("schedule", ["full", "update"])
+        ) {
+          args.data.moveDisabled = args.data.resizeDisabled = true;
+        }
+
+        // check maintain others permission
+        if (item.userId != _this.userId && !_this.userCan("schedule", ["full"])) {
+          args.data.moveDisabled = args.data.resizeDisabled = true;
+        }
+      }
+
       args.data.cssClass = `${item.type} ${item.status}`;
       args.data.html = `
-        <div class=''>${args.data.text}</div>
-        <div class=''>${args.data.start.toString("hh:mm")}</div>
-        <div class=''>${args.data.end.toString("hh:mm")}</div>`;
+        <div class='event-text'>${args.data.text}</div>
+        <div class='event-start'>${args.data.start.toString("hh:mm")}</div>
+        <div class='event-end'>${args.data.end.toString("hh:mm")}</div>`;
     };
 
     dp.init();
@@ -492,10 +520,34 @@ export default {
     },
 
     eventCreatedHandler(arg) {
-      if(arg.resource === "sys-001" || arg.resource === "sys-002"){
+      if (arg.resource === "sys-001" || arg.resource === "sys-002") {
         arg.allowed = false;
         this.dayPilot.clearSelection();
         return;
+      }
+
+      // check maintain own permission
+      if (this.view === "user") {
+        if (
+          arg.resource == this.userId &&
+          !this.userCan("schedule", ["full", "create"])
+        ) {
+          arg.allowed = false;
+          this.dayPilot.clearSelection();
+          return;
+        }
+      }
+
+      // check maintain others permission
+      if (this.view === "user") {
+        if (
+          arg.resource != this.userId &&
+          !this.userCan("schedule", ["full"])
+        ) {
+          arg.allowed = false;
+          this.dayPilot.clearSelection();
+          return;
+        }
       }
 
       this.$emit("range-selected", {
@@ -518,17 +570,40 @@ export default {
       }
     },
 
-    eventMoveHandler(arg){
-      if(arg.newResource === "sys-001" || arg.newResource === "sys-002"){
-        //rg.allowed = false;
+    eventMoveHandler(arg) {
+      console.log(arg);
+
+      // prevent drag and drop on leave and unavailable swim lanes
+      if (arg.newResource === "sys-001" || arg.newResource === "sys-002") {        
         arg.preventDefault();
       }
+
+      // check permissions on drag and drops
+      if (arg.external) {
+        let eventUserId = this.view == 'user' ? arg.newResource : arg.e.data.id;
+
+        // check maintain own permission        
+        if (
+          eventUserId == this.userId &&
+          !this.userCan("schedule", ["full", "update"])
+        ) {
+          arg.preventDefault();
+        }
+
+        // check maintain others permission
+        if (
+          eventUserId != this.userId &&
+          !this.userCan("schedule", ["full"])
+        ) {
+          arg.preventDefault();
+        }
+      } 
     },
 
     eventMovedHandler(arg) {
-      console.log(arg);      
+      console.log(arg);
 
-      if (arg.external) {    
+      if (arg.external) {
         this.$emit("event-dragged", {
           eventId: arg.e.id(),
           resourceId: arg.newResource,

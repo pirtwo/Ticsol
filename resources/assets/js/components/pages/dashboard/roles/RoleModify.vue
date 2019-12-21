@@ -63,7 +63,10 @@
         <!-- Title -->
         <div class="form-group">
           <div class="form-row">
-            <label class="col-sm-2 col-form-label">Title <i class="field-required">*</i></label>
+            <label class="col-sm-2 col-form-label">
+              Title
+              <i class="field-required">*</i>
+            </label>
             <div class="col-sm-10">
               <input
                 v-model="form.name"
@@ -218,6 +221,20 @@
                   v-model="form.permissions"
                   type="checkbox"
                   class="custom-control-input"
+                  id="own-schedule"
+                  value="create-schedule,update-schedule,delete-schedule"
+                >
+                <label
+                  class="custom-control-label"
+                  for="own-schedule"
+                >Can Maintain Own Schedule</label>
+              </div>
+
+              <div class="custom-control custom-checkbox">
+                <input
+                  v-model="form.permissions"
+                  type="checkbox"
+                  class="custom-control-input"
                   id="full-schedule"
                   value="full-schedule"
                 >
@@ -225,6 +242,27 @@
                   class="custom-control-label"
                   for="full-schedule"
                 >Can Maintain Other Users Schedule</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-label">Activity Reports</label>
+            <div class="col-sm-10">
+              <div class="custom-control custom-checkbox">
+                <input
+                  v-model="form.permissions"
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="activity"
+                  value="list_all-activity,view_all-activity"
+                >
+                <label
+                  class="custom-control-label"
+                  for="activity"
+                >Can View Other Users Activity Reports</label>
               </div>
             </div>
           </div>
@@ -256,6 +294,9 @@
 </template>
 
 <script>
+// seperates the rules with comma
+const regex = /([a-zA-Z-_]+)/g;
+
 import { mapActions, mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 import pageMixin from "../../../../mixins/page-mixin";
@@ -283,7 +324,7 @@ export default {
   },
 
   watch: {
-    role: function(val) {      
+    role: function(val) {
       this.populateForm(val);
     }
   },
@@ -294,7 +335,7 @@ export default {
     }),
 
     role: function() {
-      if(!this.id) return null;
+      if (!this.id) return null;
       return this.getList("role")[0];
     }
   },
@@ -335,6 +376,43 @@ export default {
     populateForm(role) {
       this.form.name = role.name;
       this.form.permissions = role.permissions.map(item => item.name);
+
+      // combine create-schedule, update-schedule and delete-schedule into one rule
+      if (
+        this.form.permissions.indexOf("create-schedule") > -1 &&
+        this.form.permissions.indexOf("update-schedule") > -1 &&
+        this.form.permissions.indexOf("delete-schedule") > -1
+      ) {
+        this.form.permissions.splice(
+          this.form.permissions.indexOf("create-schedule"),
+          1
+        );
+        this.form.permissions.splice(
+          this.form.permissions.indexOf("update-schedule"),
+          1
+        );
+        this.form.permissions.splice(
+          this.form.permissions.indexOf("delete-schedule"),
+          1
+        );
+        this.form.permissions.push("create-schedule,update-schedule,delete-schedule");
+      }
+
+      // combine list_all-activity, view_all-activity into one rule
+      if (
+        this.form.permissions.indexOf("list_all-activity") > -1 &&
+        this.form.permissions.indexOf("view_all-activity") > -1
+      ) {
+        this.form.permissions.splice(
+          this.form.permissions.indexOf("list_all-activity"),
+          1
+        );
+        this.form.permissions.splice(
+          this.form.permissions.indexOf("view_all-activity"),
+          1
+        );
+        this.form.permissions.push("list_all-activity,view_all-activity");
+      }
     },
 
     onSubmit(e) {
@@ -348,7 +426,16 @@ export default {
         return;
       }
 
-      this.create({ resource: "role", data: this.form })
+      let form = {};
+      form.name = this.form.name;
+      form.permissions = [];
+      this.form.permissions.forEach(
+        i => (form.permissions = form.permissions.concat(i.match(regex)))
+      );
+
+      console.log(form);
+
+      this.create({ resource: "role", data: form })
         .then(respond => {
           e.target.disabled = false;
           this.showMessage(
@@ -374,7 +461,16 @@ export default {
         return;
       }
 
-      this.update({ resource: "role", id: this.id, data: this.form })
+      let form = {};
+      form.name = this.form.name;
+      form.permissions = [];
+      this.form.permissions.forEach(
+        i => (form.permissions = form.permissions.concat(i.match(regex)))
+      );
+
+      console.log(form);
+
+      this.update({ resource: "role", id: this.id, data: form })
         .then(respond => {
           e.target.disabled = false;
           this.showMessage(
@@ -389,7 +485,7 @@ export default {
         });
     },
 
-    clearForm() {      
+    clearForm() {
       this.$v.form.$reset();
     },
 

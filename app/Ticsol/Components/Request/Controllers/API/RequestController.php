@@ -267,8 +267,9 @@ class RequestController extends Controller
 
         if($req->status == "approved")
             return $req;        
-
+        
         $req->update(['status' => 'approved']); 
+        $req->schedule()->update(["status" => "confirmed"]);
         
         event(new RequestEvents\RequestApproved($req));
 
@@ -293,6 +294,7 @@ class RequestController extends Controller
             return $req;     
 
         $req->update(['status' => 'rejected']);
+        $req->schedule()->update(["status" => "tentative"]);
 
         event(new RequestEvents\RequestRejected($req));
 

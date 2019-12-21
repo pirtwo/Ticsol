@@ -1,13 +1,13 @@
 <template>
-  <div 
-    ref="tsModal" 
-    :class="[{ 'fade': animation }, 'modal']" 
-    tabindex="-1" 
+  <div
+    ref="tsModal"
+    :class="[{ 'fade': animation }, 'modal']"
+    tabindex="-1"
     role="dialog"
   >
     <div
-      :class="[{ 'modal-sm': size === 'sm', 'modal-lg': size === 'lg', 'modal-dialog-centered': centered }, 'modal-dialog']"
       role="document"
+      :class="[{ 'modal-sm': size === 'sm', 'modal-lg': size === 'lg', 'modal-dialog-scrollable' : scrollable, 'modal-dialog-centered': centered }, 'modal-dialog']"      
     >
       <div class="modal-content">
         <div class="modal-header">
@@ -22,13 +22,12 @@
               <h5 class="modal-title">
                 {{ title }}
               </h5>
-              <button 
-                type="button" 
-                class="close" 
-                data-dismiss="modal" 
-                aria-label="Close"
+              <button
+                type="button"
+                class="close"
+                @click="hideModal"
               >
-                <span aria-hidden="true">&times;</span>
+                <span>&times;</span>
               </button>
             </div>
           </slot>
@@ -53,11 +52,11 @@ export default {
       value: Boolean,
       default: false
     },
-    title:{
-      value:String,
-      default:''
+    title: {
+      value: String,
+      default: ""
     },
-    icon:{
+    icon: {
       value: String,
       default: ""
     },
@@ -72,6 +71,14 @@ export default {
     animation: {
       type: Boolean,
       default: true
+    },
+    backdrop: {
+      type: [Boolean, String],
+      default: true
+    },
+    scrollable: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -86,29 +93,42 @@ export default {
   },
 
   mounted() {
+    $(this.$refs.tsModal).modal({
+      show: this.show,
+      backdrop: this.backdrop
+    });
+
     $(this.$refs.tsModal).on("show.bs.modal", this.onShow);
-    $(this.$refs.tsModal).on("shown.bs.modal", this.shown);
     $(this.$refs.tsModal).on("hide.bs.modal", this.onHide);
-    $(this.$refs.tsModal).on("hidden.bs.modal", this.hidden);
+    $(this.$refs.tsModal).on("shown.bs.modal", this.onShown);
+    $(this.$refs.tsModal).on("hidden.bs.modal", this.onHidden);
   },
 
   methods: {
+    hideModal(){
+      $(this.$refs.tsModal).modal("hide");
+    },
+
     onShow(e) {
+      e.stopPropagation();
+      this.$emit("update:show", true);
       this.$emit("onShow");
     },
 
-    shown(e) {
-      this.$emit("shown");
-      this.$emit("update:show", true);
-    },
-
     onHide(e) {
+      e.stopPropagation();
+      this.$emit("update:show", false);
       this.$emit("onHide");
     },
 
-    hidden(e) {
+    onShown(e) {
+      e.stopPropagation();
+      this.$emit("shown");
+    },
+
+    onHidden(e) {
+      e.stopPropagation();
       this.$emit("hidden");
-      this.$emit("update:show", false);
     }
   }
 };

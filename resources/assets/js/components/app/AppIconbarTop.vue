@@ -1,10 +1,10 @@
 <template>
-  <div class="toolbar-top">
-    <div class="d-flex align-items-stretch ml-auto">
-      <notifications-log class="mr-1" />
+  <div class="toolbar-top d-none d-lg-block">
+    <div class="d-flex align-items-stretch w-100">
+      <notifications-log class="ml-auto" />
 
       <!-- Settings -->
-      <div class="btn-group dropdown">
+      <div class="btn-group dropdown ml-1">
         <button 
           type="button" 
           class="btn" 
@@ -63,6 +63,12 @@
           >
             <i class="icon material-icons">account_circle</i>Profile
           </router-link>
+          <a
+            class="dropdown-item"
+            href="/password/change"
+          >
+            <i class="icon material-icons">lock</i>Change Password
+          </a>
           <div class="dropdown-divider" />
           <a
             class="dropdown-item"
@@ -74,7 +80,7 @@
         </div>
       </div>
     </div>
-    <notifications />
+    <notifications />    
   </div>
 </template>
 <script>
@@ -116,7 +122,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .user-avatar {
   width: 40px;
   height: 40px;
@@ -127,12 +133,11 @@ export default {
   line-height: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.7rem !important;
-  display: inline-block !important;
+  display: inline-block;
 }
 
 .dropdown {
-  display: inline-block !important;
+  display: inline-block;
 }
 
 .dropdown-item i {

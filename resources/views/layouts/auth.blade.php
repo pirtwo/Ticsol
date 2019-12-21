@@ -12,12 +12,14 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body>    
     <div id="app" class="default">
         <div class="container-fluid"> 
+            <div></div>
             <main>
                 @yield('content')
             </main>
+            <div></div>
         </div>
     </div>    
 </body>

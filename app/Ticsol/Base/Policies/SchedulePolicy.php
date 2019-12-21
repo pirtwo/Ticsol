@@ -10,6 +10,7 @@ class SchedulePolicy
 {
     use HandlesAuthorization;
 
+    protected $isowner;
     protected $full;
     protected $list;
     protected $view;
@@ -19,7 +20,8 @@ class SchedulePolicy
 
     public function before($user, $ability)
     {      
-        $permissions = $user->permissions;        
+        $permissions = $user->permissions;   
+        $this->isowner = $user->isowner;       
         $this->full = $permissions->contains('full-schedule');
         $this->list = $permissions->contains('list-schedule');
         $this->view = $permissions->contains('view-schedule');
@@ -56,12 +58,18 @@ class SchedulePolicy
      * @param  \App\Ticsol\Components\Models\User  $user
      * @return mixed
      */
-    public function create(User $user, $userId, $eventType)
+    public function create(User $user, $assigneeId, $eventType)
     {
+        // can create unavailable
         if($eventType == 'unavailable')
-            return $user->id == $userId;
+            return $user->id == $assigneeId;
 
-        return $this->full || $this->create;
+        // can create own
+        if($user->id == $assigneeId)
+            return $this->isowner || $this->full || $this->create;
+
+        // can create others
+        return $this->isowner || $this->full;
     }
 
     /**
@@ -71,16 +79,24 @@ class SchedulePolicy
      * @param  \App\Ticsol\Components\Models\Schedule  $schedule
      * @return mixed
      */
-    public function update(User $user, Schedule $schedule)
+    public function update(User $user, Schedule $schedule, $assigneeId)
     {
         if ($schedule->client_id != $user->client_id) {
             return false;
         }
 
-        if($schedule->event_type == 'unavailable')
-            return $user->id == $schedule->user_id;
+        $eventType = $schedule->event_type;
 
-        return $this->full || $this->update;
+        // can update unavailable
+        if($eventType == 'unavailable')
+            return $user->id == $assigneeId;
+
+        // can update own
+        if($user->id == $assigneeId)
+            return $this->isowner || $this->full || $this->update;
+
+        // can update others
+        return $this->isowner || $this->full;
     }
 
     /**
@@ -96,6 +112,18 @@ class SchedulePolicy
             return false;
         }
         
-        return $this->full || $this->delete;
+        $assigneeId = $schedule->user_id;
+        $eventType = $schedule->event_type;
+
+        // can update unavailable
+        if($eventType == 'unavailable')
+            return $user->id == $assigneeId;
+
+        // can update own
+        if($user->id == $assigneeId)
+            return $this->isowner || $this->full || $this->delete;
+
+        // can update others
+        return $this->isowner || $this->full;
     }
 }

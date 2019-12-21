@@ -72,6 +72,8 @@
         <ts-modal 
           :show.sync="modal" 
           :title="modalTitle"
+          :backdrop="false"
+          :scrollable="false"
         >
           <slot 
             name="grid-modal" 

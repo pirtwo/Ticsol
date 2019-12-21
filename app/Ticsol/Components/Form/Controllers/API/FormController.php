@@ -2,16 +2,16 @@
 
 namespace App\Ticsol\Components\Controllers\API;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\Ticsol\Base\Exceptions\NotFound;
-use App\Ticsol\Components\Models\Form;
-use App\Ticsol\Components\Form\Events;
-use App\Ticsol\Components\Form\Requests;
-use App\Ticsol\Components\Form\Repository;
 use App\Ticsol\Base\Criteria\ClientCriteria;
 use App\Ticsol\Base\Criteria\CommonCriteria;
+use App\Ticsol\Base\Exceptions\NotFound;
+use App\Ticsol\Components\Form\Events;
+use App\Ticsol\Components\Form\Repository;
+use App\Ticsol\Components\Form\Requests;
+use App\Ticsol\Components\Models\Form;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class FormController extends Controller
 {
@@ -123,7 +123,7 @@ class FormController extends Controller
         $form->update($request->all());
 
         event(new Events\FormUpdated($form));
-        
+
         return $form;
     }
 

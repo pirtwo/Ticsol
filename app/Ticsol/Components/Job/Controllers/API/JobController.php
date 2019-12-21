@@ -2,19 +2,18 @@
 
 namespace App\Ticsol\Components\Controllers\API;
 
+use App\Http\Controllers\Controller;
+use App\Ticsol\Base\Criteria\ClientCriteria;
+use App\Ticsol\Base\Criteria\CommonCriteria;
+use App\Ticsol\Base\Exceptions\NotFound;
+use App\Ticsol\Components\Job\Criterias;
+use App\Ticsol\Components\Job\Events;
+use App\Ticsol\Components\Job\Repository;
+use App\Ticsol\Components\Job\Requests;
+use App\Ticsol\Components\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Ticsol\Base\Exceptions\NotFound;
-use App\Ticsol\Components\Models\Job;
-use App\Ticsol\Components\Job\Events;
-use App\Ticsol\Components\Job\Requests;
-use App\Ticsol\Components\Job\Repository;
-use App\Ticsol\Components\Job\Criterias;
-use App\Ticsol\Base\Criteria\CommonCriteria;
-use App\Ticsol\Base\Criteria\ClientCriteria;
-use Spatie\WebhookServer\WebhookCall;
 
 class JobController extends Controller
 {
@@ -83,8 +82,12 @@ class JobController extends Controller
 
             // setup settings
             $job = $this->setupQBsSettings($request, $job);
-                        
+
+            // setup billing
+            $job = $this->setupBillingSettings($request, $job);
+
             $job->save();
+            
             if ($request->filled('contacts')) {
                 $job->contacts()->sync($request->input('contacts'));
             }
@@ -96,7 +99,6 @@ class JobController extends Controller
             return response()->json(['code' => 1005, 'error' => true, 'message' => 'Internal Server Error.'], 500);
         }
 
-        
         event(new Events\JobCreated($job));
 
         // dispatch webhooks
@@ -147,7 +149,7 @@ class JobController extends Controller
 
         try {
 
-            DB::beginTransaction();            
+            DB::beginTransaction();
 
             $job->update($request->all());
             if ($request->filled('contacts')) {
@@ -156,6 +158,10 @@ class JobController extends Controller
 
             // setup settings
             $job = $this->setupQBsSettings($request, $job);
+
+            // setup billing
+            $job = $this->setupBillingSettings($request, $job);
+
             $job->save();
 
             DB::commit();
@@ -188,7 +194,7 @@ class JobController extends Controller
             ->webhooks()
             ->where("event", $event)
             ->get();
-        
+
         foreach ($hooks as $hook) {
             $hook->fire($data);
         }
@@ -198,11 +204,49 @@ class JobController extends Controller
     {
         $settings = $job->qbs ? $job->qbs : [];
 
-        if($request->has("qbs_id")){
+        if ($request->has("qbs_id")) {
             $settings["id"] = $request->input("qbs_id");
         }
 
         $job->qbs = $settings;
+
+        return $job;
+    }
+
+    /** setup job billing settings. */
+    private function setupBillingSettings($request, $job)
+    {
+        $billing = $job->billing ? $job->billing : [];
+
+        if ($request->has("payment_type")) {
+            $billing["payment_type"] = $request->input("payment_type");
+        }
+
+        if ($request->has("rate")) {
+            $billing["rate"] = $request->input("rate");
+        }
+
+        if ($request->has("unit")) {
+            $billing["unit"] = $request->input("unit");
+        }
+
+        if ($request->has("unit_type")) {
+            $billing["unit_type"] = $request->input("unit_type");
+        }        
+
+        if ($request->has("allow_over_billing")) {
+            $billing["allow_over_billing"] = $request->input("allow_over_billing");
+        }
+
+        if ($request->has("job_fallback_rate")) {
+            $billing["job_fallback_rate"] = $request->input("job_fallback_rate");
+        }
+
+        if ($request->has("revenue_account_id")) {
+            $billing["revenue_account_id"] = $request->input("revenue_account_id");
+        }
+
+        $job->billing = $billing;
 
         return $job;
     }

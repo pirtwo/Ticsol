@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar-bot">
+  <div class="toolbar-bot d-none d-lg-block">
     <!-- Home -->
     <router-link
       :to="{ name : 'dash' }"

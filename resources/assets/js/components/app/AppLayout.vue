@@ -1,16 +1,19 @@
 <template>
   <div class="container-fluid">
     <header
-      v-if="this.header"
+      id="header"
       class="header"
     >
       <slot name="header" />
     </header>
-    <main class="main">
+    <main
+      id="main"
+      class="main"
+    >
       <slot />
     </main>
     <footer
-      v-if="this.footer"
+      id="footer"
       class="footer"
     >
       <slot name="footer" />
@@ -54,27 +57,23 @@ export default {
     }),
 
     resizeHandler() {
-      let head = $(".header").outerHeight(true) || 0;
-      let foot = $(".footer").outerHeight(true) || 0;
-      let contentHeight = $(window).height() - (head + foot);
-      let toolbarHeight = $(".navbar").outerHeight(true);
+      let drawerBodyHeight = $("#drawer__body").outerHeight(true);
+      let drawerToolbarHeight = $("#drawer__toolbar").outerHeight(true);
+      
+      this.setDocumentDim({
+        width: $("body").outerWidth(true),
+        height:  $("body").outerHeight(true),
+      });
 
-      if (contentHeight > 500) {
-        this.setContentDim({
-          width: $(".main").outerWidth(true),
-          height: contentHeight
-        });
+      this.setContentDim({
+        width: $("#drawer__content").outerWidth(true),
+        height: drawerBodyHeight - drawerToolbarHeight
+      });
 
-        this.setDocumentDim({
-          width: $("body").outerWidth(true),
-          height: $("body").outerHeight(true)
-        });
-
-        this.toolbar({ height: toolbarHeight, show: undefined });
-
-        $(".main").css("height", contentHeight);
-        $(".main .wrap-drawer .drawer").css("height", contentHeight);
-      }
+      this.toolbar({
+        height: drawerToolbarHeight,
+        show: undefined
+      });
     }
   }
 };

@@ -47,6 +47,7 @@
                 v-model="form.theme"
                 :data="themes"
                 id="parent_id"
+                class="form-control"
                 name="jobParent"
                 placeholder="select app theme"
                 search-placeholder="search..."

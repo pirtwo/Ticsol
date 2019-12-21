@@ -1,40 +1,298 @@
-$urban-background: '';
-$urban-primary-color: #FFFFFF;
-$urban-secondary-color: #FFFFFF;
+// ----- COLORS -------
+// $urban-1st: #9e5a63;
+// $urban-2nd: #97aabd;
+// $urban-3rd: #314455;
 
-$urban-primary-bgColor: rgba(217, 191, 154, 0.5);
-$urban-secondary-bgColor: rgba(217, 191, 154, 0.7);
+// $urban-1st-tp: rgba(158, 90, 99, 0.9);
+// $urban-2nd-tp: rgba(151, 170, 189, 0.9);
+// $urban-3rd-tp: rgba(49, 68, 85, 0.9);
 
-$urban-primary-fontColor: rgba(18, 22, 23, 0.9);
-$urban-secondary-fontColor: #121617;
+// $urban-text-1st: whitesmoke;
+// $urban-text-2nd: whitesmoke;
+// $urban-text-danger: orange;
 
-#app.urban{
-  background-image: url("~/img/theme/Urban.jpg");
+$urban-1st: white;
+$urban-2nd: #d76165;
+$urban-3rd: whitesmoke;
+
+$urban-1st-tp: rgba(255, 255, 255, 0.9);
+$urban-2nd-tp: rgba(215, 97, 101, 0.9);
+$urban-3rd-tp: rgba(255, 255, 255, 0.9);
+
+$urban-text-1st: black;
+$urban-text-2nd: whitesmoke;
+$urban-text-danger: red;
+
+$urban-schedule-confirm: #314455;
+$urban-schedule-tentative: #C96567;
+$urban-schedule-leave: red;
+$urban-schedule-unavi: orange;
+$urban-schedule-shadow: rgba(0, 0, 0, 0.1);
+$urban-schedule-matrix: rgba(0, 0, 0, 0.1);
+
+
+#app.urban {
+  text-emphasis: none;
+  color: $urban-text-1st;
   font-family: $app-primary-font;
-  color: $urban-primary-fontColor;
+  background-image: url("~/img/theme/urban.jpg");
 
-  .main .wrap-drawer .wrap-content .navbar,
-  .main .wrap-drawer .wrap-content .content,
-  .main .wrap-drawer .drawer .drawer-toolbar {   
-    background-color: $urban-primary-bgColor;
+  // ------ DASHBOARD ----
+  .dashboard {    
+    background-color: $urban-1st-tp;
+  
+      
+    .btn {
+      //
+    }
+  
+    .icon,
+    .caption {
+      color: #a726a5;
+    }
+  
+    .btn:hover {      
+      background-color: rgba($color: #000000, $alpha: 0.1) !important;
+    }  
   }
 
-  .main .wrap-drawer .drawer .drawer-body {
-    background-color: $urban-secondary-bgColor;
+  // ------ Toolbars -----
+  .toolbar-top,
+  .toolbar-bot {
+    .btn {
+      color: $urban-text-1st;
+      background-color: $urban-3rd-tp;
+    }
+
+    .btn:hover,
+    .btn.active {
+      color: $urban-text-2nd;
+      background-color: $urban-2nd-tp;
+    }
   }
 
-  .main .wrap-drawer .wrap-content .loading-box{
-    background-color: $urban-secondary-bgColor;
+  // ------- DRAWER ---------------
+  #drawer {
+    .drawer__content,
+    .drawer__drawer,
+    .drawer__toolbar {      
+      background-color: $urban-1st-tp;
+    }
+
+    // toolbar
+    .drawer__toolbar {
+      .btn {
+        color: $urban-text-1st;
+        background-color: $urban-3rd;
+      }    
+
+      .btn:focus {
+        box-shadow: none;
+      }
+
+      .btn:hover,
+      .btn:active,
+      .btn.active,
+      .btn-group .btn.active {
+        color: $urban-text-2nd;
+        background-color: $urban-2nd;
+      }
+    }
   }
 
-  .toolbar-top .btn,
-  .toolbar-bot .btn {
-    color: $urban-primary-fontColor;
-    background-color: $urban-primary-bgColor !important;
+  // ------ V-menu -----------
+  .v-menu {
+    color: $urban-text-1st;
+
+    .menu-title {
+      color: $urban-text-1st;
+      background-color: $urban-1st-tp;
+    }
+
+    li a,
+    li .btn {
+      color: $urban-text-1st;
+    }
+
+    li a:hover,
+    li .btn:hover {
+      color: $urban-text-2nd;
+      background-color: $urban-2nd;
+    }
   }
 
-  // Daypilot settings
-  .scheduler_green_main{
+  // ------ LOADING SCREEN --------
+  .loading-box {
+    color: $urban-text-1st;
+    background-color: $urban-3rd;
+  }
+
+  //------- MODAL --------------
+  .modal-content {
+    background-color: $urban-1st;
+  }
+
+  // ------ DROPDOWN -----------
+  .dropdown-menu {
+    background-color: $urban-1st;
+
+    .dropdown-item {
+      color: $urban-text-1st;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:active,
+    .dropdown-item.active {
+      color: $urban-text-2nd;
+      background-color: $urban-2nd;
+    }
+  }
+
+  // ------ TABLE -----------------
+  .table {
+    color: $urban-text-1st;
+
+    th, td{
+      border-top: 0px;
+    }
+
+    tr,
+    tr a,
+    tr .btn{
+      transition: none;
+      color: $urban-text-1st;
+    }
+
+    tbody tr:hover,
+    tbody tr:hover a,
+    tbody tr:hover button i { 
+      color: $urban-text-2nd;     
+      background-color: $urban-2nd;
+      transition: none;
+    }
+  }
+
+  //------- FORM ------------------
+  .field-required,
+  .invalid-feedback {
+    color: $urban-text-danger;
+  }
+
+  // ----- BUTTONS ---------------- 
+  .close {
+    color: $urban-text-1st;
+  }
+
+  .close:hover {
+    color: $urban-2nd;
+    text-shadow: none;
+  }
+
+  // ----- WIZARD ------------------
+  .wrap-wizard{
+    background-color: $urban-1st-tp;
+  }
+
+  // ----- SCHEDULER ---------------
+  .scheduler_green_main {
     font-family: $app-secondary-font !important;
+    background-color: transparent;
   }
+  
+  .scheduler_green_rowheader,
+  .scheduler_green_timeheadercol_inner,
+  .scheduler_green_timeheadergroup_inner{
+    color: $urban-text-1st;
+  }  
+
+  .scheduler_green_corner,
+  .scheduler_green_rowheader,
+  .scheduler_green_timeheadercol,
+  .scheduler_green_timeheadergroup{
+    background-color: transparent;
+  }
+
+  .scheduler_green_crosshair_top,
+  .scheduler_green_crosshair_left,
+  .scheduler_green_shadow_inner {    
+    background-color: $urban-schedule-shadow;  
+  }
+
+  .scheduler_green_divider,
+  .scheduler_green_resourcedivider,  
+  .scheduler_green_divider_horizontal,  
+  .scheduler_green_matrix_vertical_line,
+  .scheduler_green_matrix_horizontal_line {
+    background-color: $urban-schedule-matrix;    
+  } 
+
+  .scheduler_green_timeheadergroup_inner{
+    border-right: 1px solid $urban-schedule-matrix; 
+  }
+
+  .scheduler_green_timeheadercol_inner{
+    border-right: 1px solid $urban-schedule-matrix; 
+    border-top: 1px solid $urban-schedule-matrix; 
+  }
+
+  .scheduler_green_event_bar {
+    background-color: white;
+  }
+
+  .scheduler_green_event_bar_inner {
+    background-color: #ee0a0a;
+  }
+
+  .scheduled {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $urban-schedule-confirm;
+    }    
+  }
+
+  .scheduled.tentative .scheduler_green_event_inner {
+    background: repeating-linear-gradient(
+      45deg, 
+      $urban-schedule-confirm, 
+      $urban-schedule-confirm 10px, 
+      $urban-schedule-tentative 10px, 
+      $urban-schedule-tentative 12px) !important;
+  }
+
+  .leave {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: #ffffff;
+      background: $urban-schedule-leave
+    }   
+  }
+
+  .leave.tentative .scheduler_green_event_inner {
+    background: repeating-linear-gradient(
+      45deg, 
+      $urban-schedule-leave, 
+      $urban-schedule-leave 10px, 
+      $urban-schedule-tentative 10px, 
+      $urban-schedule-tentative 12px) !important;
+  }
+
+  .unavailable {
+    .scheduler_green_event_inner {
+      border: 0px;
+      color: $urban-text-1st;
+      background: $urban-schedule-unavi;
+    }
+  }
+  
+  .draggable {
+    color: $urban-text-1st;    
+    background-color: $urban-1st;
+  }
+
+  .draggable:hover {
+    color: $urban-text-2nd; 
+    background-color: $urban-2nd;
+  }
+  
 }

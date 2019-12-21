@@ -1,0 +1,384 @@
+html,
+body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+//-----------------//
+// Main Sections   //
+//-----------------//
+#app {
+  height: 100%;
+  min-height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .container-fluid {
+    height: 100%;
+    display: grid;
+    justify-items: stretch;
+    grid-template-rows: 85px calc(100% - 170px) 85px;
+  }
+
+  .main {
+    height: 100%;
+  }
+
+  .header {
+    padding: 0px;
+  }
+
+  .footer {
+    padding: 0px;
+  }
+
+  .toolbar-top {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    padding: 10px 0px 5px 0px;
+  }
+
+  .toolbar-bot {
+    padding: 10px 0px 5px 0px;
+  }
+
+  .toolbar-top,
+  .toolbar-bot {
+    .icon {
+      font-size: 25px !important;
+      font-weight: bold;
+    }
+
+    .caption {
+      display: block;
+      padding-top: 1px;
+      font-size: 10px !important;
+      text-align: center;
+    }
+
+    .btn {
+      padding: 10px;
+      min-width: 75px;
+      border: 0px transparent !important;
+    }
+
+    .btn:focus {
+      box-shadow: none;
+    }
+
+    .btn .badge {
+      top: 5px;
+      left: 5px;
+      position: absolute;
+    }
+
+    .dropdown .btn {
+      height: 100%;
+    }
+
+    .md-menu,
+    .md-menu {
+      padding: 0px;
+      margin: 0px !important;
+    }
+  }
+}
+
+//-----------------//
+// Drawer          //
+//-----------------//
+#drawer {
+  @media (min-width: 0px) {
+    .drawer__toolbar {
+      font-size: 17px;
+
+      .btn i,
+      .drawer__toolbar__tools .btn i {
+        font-size: 25px;
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    .drawer__toolbar {
+      font-size: 15px;
+
+      .btn i,
+      .drawer__toolbar__tools .btn i {
+        font-size: 17px;
+      }
+    }
+  }
+}
+
+//-----------------//
+// Dashboard       //
+//-----------------//
+.dashboard {
+  text-align: center;
+  border-radius: 2px;
+  padding: 100px 50px 50px 50px;
+  background-color: rgba(255, 255, 255, 0.8);
+
+  .app-logo {
+    display: block;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 35px;
+  }
+
+  .btn {
+    min-width: 100px;
+    border: 0px transparent !important;
+  }
+
+  .btn:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  .icon,
+  .caption {
+    //color: rgb(132, 80, 168) !important;
+  }
+
+  .icon {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 50px !important;
+  }
+
+  .caption {
+    display: block;
+    padding-top: 3px;
+    font-size: 0.85rem;
+    font-weight: normal;
+    text-align: center;
+  }
+}
+
+//-----------------//
+// Mini Dashboard  //
+//-----------------//
+.mini-dashboard {
+  .row {
+    margin: 0px;
+  }
+
+  .col-sm-12 {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 10px;
+  }
+
+  .dropdown-menu {
+    min-width: 480px;
+    max-height: 400px;
+    overflow-y: scroll;
+
+    .ts-btn {
+      margin: 5px;
+
+      .icon {
+        font-size: 30px !important;
+      }
+
+      .caption {
+        font-size: 12px !important;
+      }
+
+      i {
+        line-height: 1 !important;
+      }
+    }
+  }
+}
+
+//-----------------//
+// Buttons         //
+//-----------------//
+.ts-btn {
+  padding: 10px;
+  min-width: 75px;
+  border: 0px transparent !important;
+
+  .icon {
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .caption {
+    display: block;
+    padding-top: 1px;
+    font-size: 10px;    
+    max-width: 60px;
+    text-align: center;
+    
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;    
+  }
+
+  .badge {
+    top: 5px;
+    left: 5px;
+    position: absolute;
+  }
+}
+
+//-----------------//
+// Auth & Password //
+//-----------------//
+.wrap-auth {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 40px 70px 70px 70px;
+  width: 420px;
+  min-height: 400px;
+  border-radius: 2px;
+
+  .app-logo {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-bottom: 40px;
+  }
+}
+
+//-----------------//
+// Table           //
+//-----------------//
+.table {
+  tr {
+    padding: 0.55rem;
+  }
+
+  td,
+  th,
+  thead th {
+    vertical-align: middle;
+  }
+}
+
+//-----------------//
+// Dropdown        //
+//-----------------//
+.dropdown-menu {
+  border-radius: 0px;
+
+  .dropdown-item {
+    font-size: 15px;
+  }
+}
+
+//-----------------//
+// V-menu         //
+//-----------------//
+.v-menu {
+  list-style: none;
+  padding-left: 0px;
+
+  .menu-title {
+    font-size: 12px;
+    padding: 3px 7px;
+    font-weight: bold;
+  }
+
+  li {
+    width: 100%;
+    height: auto;
+  }
+
+  li .btn {
+    width: 100%;
+    font-size: inherit;
+    text-align: left;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+  }
+
+  li .btn i {
+    line-height: 1.1;
+    vertical-align: bottom;
+  }
+
+  li a {
+    display: block;
+    padding: 7px 10px;
+    text-decoration: none;
+  }
+
+  li a:hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  li a i {
+    line-height: 1.5;
+    vertical-align: bottom;
+  }
+
+  li a,
+  li .btn {
+    background-color: transparent;
+  }
+}
+
+//-----------------//
+// Form Validation //
+//-----------------//
+.is-invalid ~ .invalid-feedback,
+.is-invalid ~ .invalid-tooltip,
+.was-validated :invalid ~ .invalid-feedback,
+.was-validated :invalid ~ .invalid-tooltip {
+  display: block;
+}
+
+//-----------------//
+// Media Queries   //
+//-----------------//
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 0px) {
+  #app {
+    .container-fluid {
+      padding-left: 0px;
+      padding-right: 0px;
+      grid-template-rows: 0px 100% 0px;
+    }
+
+    .toolbar-top {
+      padding: 0px;
+    }
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  #app {
+    .container-fluid {
+      padding-left: 15px;
+      padding-right: 15px;
+      grid-template-rows: 85px calc(100% - 170px) 85px;
+    }
+
+    .toolbar-top {
+      padding: 10px 0px 5px 0px;
+    }
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+}

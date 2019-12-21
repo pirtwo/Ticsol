@@ -32,7 +32,6 @@ class Activity extends Model
      */
     protected $hidden = [
         'client_id',
-        'creator_id',  
     ];    
 
     public function scopeOfClient($query, $clientId)

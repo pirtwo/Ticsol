@@ -42,36 +42,34 @@ export default {
   top: 0px;
   width: 100%;
   height: 100%;
+  z-index: 30;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.15);
-  z-index: 9;
 }
 
 .loading-box {
   left: 50%;
   top: 50%;
-  width: 17vw;
+  width: 200px;
   height: auto;
-  padding: 1vw;
+  padding: 10px;
   position: relative;
   display: flex;
   align-items: center;
   border-radius: 0px;
   transform: translate(-50%, -50%);
-  background-color: white;
 }
 
 .loading-box .spinner-border {
-  width: 2vw;
-  height: 2vw;
-  border: 0.4vw solid currentColor;
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
   border-right-color: transparent;
 }
 
 .wrap-loading .caption {
   margin-left: 10px;
-  display: inline;
   text-align: left;
-  vertical-align: super;
+  font-size: 15px;
 }
 </style>

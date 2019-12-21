@@ -26,7 +26,10 @@
           </button>
         </li>
         <li>
-          <button class="btn">
+          <button
+            class="btn"
+            @click="onCancel"
+          >
             Cancel
           </button>
         </li>
@@ -110,7 +113,7 @@
           :init="{height: 300, menubar: false, statusbar: false}"
           api-key="he51k5qf4qe8668k9rgkie9c13j01h43fh61m72chuvv93ip"
           plugins="bbcode code"
-          toolbar="newdocument | undo redo | cut copy paste pastetext | selectall | code"
+          toolbar="newdocument | undo redo | cut copy paste pastetext | selectall"
         />
         <template slot="footer">
           <button
@@ -146,7 +149,7 @@
         size="md"
       >
         <div class="px-2 py-2 text-center">
-          Do you really want to delete this comment? This process cannot be undone and sub treads will be deleted.
+          Do you really want to delete this comment? This process cannot be undone and sub threads will be deleted.
         </div>
         <template slot="footer">
           <button
@@ -369,6 +372,10 @@ export default {
           this.confirmModal = false;
           e.target.disabled = false;
         });
+    },
+
+    onCancel(){
+      this.$router.go(-1);
     }
   }
 };
