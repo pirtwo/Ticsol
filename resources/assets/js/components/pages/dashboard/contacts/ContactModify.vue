@@ -122,7 +122,7 @@
               <i class="field-required">*</i>
             </label>
             <div class="col-sm-10">
-              <select              
+              <select
                 id="group"
                 v-model="$v.form.group.$model"
                 :class="[{'is-invalid' : $v.form.group.$error } ,'custom-select']"
@@ -164,7 +164,7 @@
             <label class="col-sm-2 col-form-lable">User</label>
             <div class="col-sm-10">
               <input
-                v-model="userFullname"
+                v-model="userName"
                 type="text"
                 class="form-control"
                 name="user"
@@ -298,7 +298,7 @@
       <ts-section
         class="mb-3"
         title="Address"
-      > 
+      >
         <ts-grid
           v-model="form.addresses"
           :columns="columns"
@@ -308,9 +308,9 @@
         >
           <template slot-scope="{ item }">
             <td>{{ item.unit }}</td>
-            <td>{{ item.number }}</td>           
+            <td>{{ item.number }}</td>
             <td>{{ item.street }}</td>
-            <td>{{ item.suburb }}</td>          
+            <td>{{ item.suburb }}</td>
             <td>{{ item.state }}</td>
             <td>{{ item.country }}</td>
             <td>{{ item.postcode }}</td>
@@ -502,9 +502,9 @@ export default {
       },
       columns: [
         { key: 1, value: "Unit" },
-        { key: 2, value: "Number" },        
+        { key: 2, value: "Number" },
         { key: 3, value: "Street" },
-        { key: 4, value: "Suburb" },        
+        { key: 4, value: "Suburb" },
         { key: 5, value: "State" },
         { key: 6, value: "Country" },
         { key: 7, value: "Post Code" }
@@ -542,9 +542,20 @@ export default {
 
   computed: {
     ...mapGetters({
+      userId: "user/getId",
       userFullname: "user/getFullname",
       getList: "resource/getList"
     }),
+
+    userName: function() {
+      if (this.id) {
+        return this.contact.user_id === this.userId
+          ? this.userFullname
+          : this.contact.user.fullname;
+      } else {
+        return this.form.group === "user" || this.form.group === "emergency" ? this.userFullname : "";
+      }
+    },
 
     contact: function() {
       if (!this.id) return null;
@@ -577,7 +588,7 @@ export default {
       let p1 = this.id
         ? this.list({
             resource: "contact",
-            query: { eq: `id,${this.id}`, with: "jobs,addresses" }
+            query: { eq: `id,${this.id}`, with: "user,jobs,addresses" }
           })
         : new Promise(resolve => resolve());
 
@@ -613,7 +624,7 @@ export default {
       form.group = this.form.group;
       form.firstname = this.form.firstname;
       form.lastname = this.form.lastname;
-      if(this.form.group === 'customer') form.email = this.form.email;
+      if (this.form.group === "customer") form.email = this.form.email;
       form.telephone = this.form.telephone;
       form.mobilephone = this.form.mobilephone;
       form.addresses = this.form.addresses;
@@ -647,7 +658,7 @@ export default {
       form.group = this.form.group;
       form.firstname = this.form.firstname;
       form.lastname = this.form.lastname;
-      if(this.form.group === 'customer') form.email = this.form.email;
+      if (this.form.group === "customer") form.email = this.form.email;
       form.telephone = this.form.telephone;
       form.mobilephone = this.form.mobilephone;
       form.addresses = this.form.addresses;
