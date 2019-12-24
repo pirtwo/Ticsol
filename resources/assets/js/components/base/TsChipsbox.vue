@@ -120,7 +120,7 @@ export default {
     value: {
       type: [Object, Array],
       default: () => {
-        return [];
+        return null;
       }
     },
     data: {
