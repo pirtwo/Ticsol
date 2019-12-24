@@ -43,12 +43,15 @@ class UpdateJob extends FormRequest
     public function rules()
     {
         return [
-            'title'                 => 'required|string|between:1,100',
-            'code'                  => 'required|string|between:1,100',
+            'title'                 => 'string|between:1,100',
+            'code'                  => 'string|between:1,100',
             'color'                 => 'nullable|string|regex:/^#([a-z0-9]){6}$/i',
-            'isactive'              => 'required|boolean',
+            'isactive'              => 'boolean',
             'contacts'              => 'nullable|array',
             'meta'                  => 'nullable',
+
+            // QBs
+            'qbs_id'                => 'integer',
 
             // billing
             'payment_type'          => 'string|in:prepaid,inArrears',
