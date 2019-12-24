@@ -1,6 +1,6 @@
 // ----- COLORS -------
 // $night-1st: #474b4f;
-// $night-2nd: #86c232; 
+// $night-2nd: #86c232;
 // $night-3rd: #222629;
 
 // $night-1st-tp: rgba(71, 75, 79, 0.9);
@@ -24,7 +24,7 @@ $night-text-2nd: whitesmoke;
 $night-text-danger: red;
 
 $night-schedule-confirm: #86c232;
-$night-schedule-tentative: #222629; 
+$night-schedule-tentative: #222629;
 $night-schedule-leave: red;
 $night-schedule-unavi: orange;
 $night-schedule-shadow: rgba(0, 0, 0, 0.1);
@@ -37,21 +37,21 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
   background-image: url("~/img/theme/night.jpg");
 
   // ------ DASHBOARD ----
-  .dashboard {    
+  .dashboard {
     background-color: $night-1st-tp;
-          
+
     .btn {
       //
     }
-  
+
     .icon,
     .caption {
       color: #a726a5;
     }
-  
-    .btn:hover {      
+
+    .btn:hover {
       background-color: rgba($color: #000000, $alpha: 0.1) !important;
-    }  
+    }
   }
 
   // ------ Toolbars -----
@@ -71,20 +71,20 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
 
   // ------- DRAWER ---------------
   #drawer {
-    .drawer__content,    
-    .drawer__toolbar {      
+    .drawer__content,
+    .drawer__toolbar {
       background-color: $night-1st-tp;
     }
 
     @media (min-width: 0px) {
-      .drawer__drawer{
+      .drawer__drawer {
         background-color: whitesmoke;
       }
     }
-  
+
     // Medium devices (tablets, 768px and up)
-    @media (min-width: 768px) {    
-      .drawer__drawer{
+    @media (min-width: 768px) {
+      .drawer__drawer {
         background-color: $night-1st-tp;
       }
     }
@@ -94,7 +94,7 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
       .btn {
         color: $night-text-1st;
         background-color: $night-3rd;
-      }    
+      }
 
       .btn:focus {
         box-shadow: none;
@@ -162,21 +162,22 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
   .table {
     color: $night-text-1st;
 
-    th, td{
+    th,
+    td {
       border-top: 0px;
     }
 
     tr,
     tr a,
-    tr .btn{
+    tr .btn {
       transition: none;
       color: $night-text-1st;
     }
 
     tbody tr:hover,
     tbody tr:hover a,
-    tbody tr:hover button i { 
-      color: $night-text-2nd;     
+    tbody tr:hover button i {
+      color: $night-text-2nd;
       background-color: $night-2nd;
       transition: none;
     }
@@ -188,7 +189,7 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
     color: $night-text-danger;
   }
 
-  // ----- BUTTONS ---------------- 
+  // ----- BUTTONS ----------------
   .close {
     color: $night-text-1st;
   }
@@ -199,7 +200,7 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
   }
 
   // ----- WIZARD ------------------
-  .wrap-wizard{
+  .wrap-wizard {
     background-color: $night-1st-tp;
   }
 
@@ -208,41 +209,41 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
     font-family: $app-secondary-font !important;
     background-color: transparent;
   }
-  
+
   .scheduler_green_rowheader,
   .scheduler_green_timeheadercol_inner,
-  .scheduler_green_timeheadergroup_inner{
+  .scheduler_green_timeheadergroup_inner {
     color: $night-text-1st;
-  }  
+  }
 
   .scheduler_green_corner,
   .scheduler_green_rowheader,
   .scheduler_green_timeheadercol,
-  .scheduler_green_timeheadergroup{
+  .scheduler_green_timeheadergroup {
     background-color: transparent;
   }
 
   .scheduler_green_crosshair_top,
   .scheduler_green_crosshair_left,
-  .scheduler_green_shadow_inner {    
-    background-color: $night-schedule-shadow; 
+  .scheduler_green_shadow_inner {
+    background-color: $night-schedule-shadow;
   }
 
   .scheduler_green_divider,
-  .scheduler_green_resourcedivider,  
-  .scheduler_green_divider_horizontal,  
+  .scheduler_green_resourcedivider,
+  .scheduler_green_divider_horizontal,
   .scheduler_green_matrix_vertical_line,
   .scheduler_green_matrix_horizontal_line {
-    background-color: $night-schedule-matrix;    
-  } 
-
-  .scheduler_green_timeheadergroup_inner{
-    border-right: 1px solid $night-schedule-matrix; 
+    background-color: $night-schedule-matrix;
   }
 
-  .scheduler_green_timeheadercol_inner{
-    border-right: 1px solid $night-schedule-matrix; 
-    border-top: 1px solid $night-schedule-matrix; 
+  .scheduler_green_timeheadergroup_inner {
+    border-right: 1px solid $night-schedule-matrix;
+  }
+
+  .scheduler_green_timeheadercol_inner {
+    border-right: 1px solid $night-schedule-matrix;
+    border-top: 1px solid $night-schedule-matrix;
   }
 
   .scheduler_green_event_bar {
@@ -257,34 +258,36 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
     .scheduler_green_event_inner {
       border: 0px;
       color: #ffffff;
-      background: $night-schedule-confirm;
-    }    
+      background-color: $night-schedule-confirm;
+    }
   }
 
-  .scheduled.tentative .scheduler_green_event_inner {
+  .scheduled.tentative .event-body {
     background: repeating-linear-gradient(
-      45deg, 
-      $night-schedule-confirm, 
-      $night-schedule-confirm 10px, 
-      $night-schedule-tentative 10px, 
-      $night-schedule-tentative 12px) !important;
+      45deg,
+      transparent,
+      rgba(0, 0, 0, 0.01) 10px,
+      rgba(0, 0, 0, 0.3) 10px,
+      rgba(0, 0, 0, 0.3) 12px
+    );
   }
 
   .leave {
     .scheduler_green_event_inner {
       border: 0px;
       color: #ffffff;
-      background: $night-schedule-leave
-    }   
+      background: $night-schedule-leave;
+    }
   }
 
   .leave.tentative .scheduler_green_event_inner {
     background: repeating-linear-gradient(
-      45deg, 
-      $night-schedule-leave, 
-      $night-schedule-leave 10px, 
-      $night-schedule-tentative 10px, 
-      $night-schedule-tentative 12px) !important;
+      45deg,
+      $night-schedule-leave,
+      $night-schedule-leave 10px,
+      $night-schedule-tentative 10px,
+      $night-schedule-tentative 12px
+    ) !important;
   }
 
   .unavailable {
@@ -294,14 +297,14 @@ $night-schedule-matrix: rgba(0, 0, 0, 0.1);
       background: $night-schedule-unavi;
     }
   }
-  
+
   .draggable {
-    color: $night-text-1st;    
+    color: $night-text-1st;
     background-color: $night-1st;
   }
 
   .draggable:hover {
-    color: $night-text-2nd; 
+    color: $night-text-2nd;
     background-color: $night-2nd;
   }
 }

@@ -10,7 +10,7 @@
 .scheduler_green_event_inner {
   margin-right: 1px;
   font-size: 12px;
-  padding: 6px;
+  padding: 0px;
   height: auto !important;
   border-radius: 2px;
 }
@@ -179,8 +179,15 @@
   font-size: 10px;
 }
 
-.event-text,
-.event-start,
-.event-end {
-  overflow: hidden;
+.event-body {
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+
+  .event-body__text,
+  .event-body__start,
+  .event-body__end {
+    overflow: hidden;
+  }
 }
+

@@ -23,7 +23,7 @@ $jungle-text-1st: black;
 $jungle-text-2nd: whitesmoke;
 $jungle-text-danger: red;
 
-$jungle-schedule-confirm: #05386B;
+$jungle-schedule-confirm: #379683;
 $jungle-schedule-tentative: #379683;
 $jungle-schedule-leave: red;
 $jungle-schedule-unavi: orange;
@@ -250,13 +250,14 @@ $jungle-schedule-matrix: rgba(0, 0, 0, 0.1);
     }    
   }
 
-  .scheduled.tentative .scheduler_green_event_inner {
+  .scheduled.tentative .event-body {
     background: repeating-linear-gradient(
-      45deg, 
-      $jungle-schedule-confirm, 
-      $jungle-schedule-confirm 10px, 
-      $jungle-schedule-tentative 10px, 
-      $jungle-schedule-tentative 12px) !important;
+      45deg,
+      transparent,
+      rgba(0, 0, 0, 0.01) 10px,
+      rgba(0, 0, 0, 0.3) 10px,
+      rgba(0, 0, 0, 0.3) 12px
+    );
   }
 
   .leave {

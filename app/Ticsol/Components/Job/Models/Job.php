@@ -37,6 +37,7 @@ class Job extends Model
         'form_id',
         'title',
         'code',
+        'color',
         'isactive', 
         'meta',       
     ];

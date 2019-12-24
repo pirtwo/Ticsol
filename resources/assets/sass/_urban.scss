@@ -23,7 +23,7 @@ $urban-text-1st: black;
 $urban-text-2nd: whitesmoke;
 $urban-text-danger: red;
 
-$urban-schedule-confirm: #314455;
+$urban-schedule-confirm: #C96567;
 $urban-schedule-tentative: #C96567;
 $urban-schedule-leave: red;
 $urban-schedule-unavi: orange;
@@ -251,13 +251,14 @@ $urban-schedule-matrix: rgba(0, 0, 0, 0.1);
     }    
   }
 
-  .scheduled.tentative .scheduler_green_event_inner {
+  .scheduled.tentative .event-body {
     background: repeating-linear-gradient(
-      45deg, 
-      $urban-schedule-confirm, 
-      $urban-schedule-confirm 10px, 
-      $urban-schedule-tentative 10px, 
-      $urban-schedule-tentative 12px) !important;
+      45deg,
+      transparent,
+      rgba(0, 0, 0, 0.01) 10px,
+      rgba(0, 0, 0, 0.3) 10px,
+      rgba(0, 0, 0, 0.3) 12px
+    );
   }
 
   .leave {
