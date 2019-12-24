@@ -21,11 +21,11 @@ class QuickBooksController extends Controller
             'scope' => env("QUICKBOOKS_SCOPE"),
             'baseUrl' => env("QUICKBOOKS_BASE_URL"),
         );
-    }    
+    }
 
     /**
      * method: GET
-     * 
+     *
      * return the QBs company informations.
      */
     public function companyInfo(Request $req)
@@ -37,7 +37,7 @@ class QuickBooksController extends Controller
 
     /**
      * method: GET
-     * 
+     *
      * return the QBs employees list.
      */
     public function employeeList(Request $req)
@@ -49,7 +49,7 @@ class QuickBooksController extends Controller
 
     /**
      * method: GET
-     * 
+     *
      * return the QBs vendor list.
      */
     public function vendorList(Request $req)
@@ -61,7 +61,7 @@ class QuickBooksController extends Controller
 
     /**
      * method: GET
-     * 
+     *
      * return the QBs cutomers list.
      */
     public function customerList(Request $req)
@@ -73,7 +73,7 @@ class QuickBooksController extends Controller
 
     /**
      * method: GET
-     * 
+     *
      * return the QBs class list.
      */
     public function classList(Request $req)
@@ -85,15 +85,15 @@ class QuickBooksController extends Controller
 
     /**
      * method: GET
-     * 
+     *
      * return QBs departments(locations) list.
      */
     public function departmentList(Request $req)
-    {        
+    {
         $api = $this->createQBsAPI($req);
 
         return \json_encode($api->getDepartments());
-    }  
+    }
 
     public function accountList(Request $req)
     {
@@ -101,20 +101,20 @@ class QuickBooksController extends Controller
         $type = $req->query('type', null);
         $classification = $req->query('classification', null);
 
-        if($type){
+        if ($type) {
             $condition = "accountType = '{$type}'";
-        }elseif ($classification) {
+        } elseif ($classification) {
             $condition = "classification = '{$classification}'";
         }
 
         $api = $this->createQBsAPI($req);
 
         return \json_encode($api->getAccounts([], $condition));
-    }    
+    }
 
     /**
      * method: POST
-     * 
+     *
      * return created vendor object.
      */
     public function createVendor(Request $req)
@@ -123,13 +123,53 @@ class QuickBooksController extends Controller
 
         return \json_encode($api->createVendor($req->only(["GivenName", "FamilyName", "PrimaryEmailAddr"])));
     }
-    
+
+    /**
+     * method: POST
+     * 
+     * creates a customer in QBs.
+     * 
+     * return created customer object.
+     */
+    public function createCustomer(Request $req)
+    {
+        $api = $this->createQBsAPI($req);
+
+        $result = $api->create("Customer", $req->all());
+
+        if ($result->error) {
+            return response()->json($this->getErrorBody($result->error), $result->error->getHttpStatusCode());
+        }
+
+        return \json_encode($result);
+    }
+
+    /**
+     * method: PUT
+     * 
+     * updates a customer in QBs by its ID.
+     * 
+     * return updated customer object.
+     */
+    public function updateCustomer(Request $req, $id)
+    {
+        $api = $this->createQBsAPI($req);
+
+        $result = $api->update("Customer", $req->all(), $id);
+
+        if ($result->error) {
+            return response()->json($this->getErrorBody($result->error), $result->error->getHttpStatusCode());
+        }
+
+        return \json_encode($result);
+    }
+
     // ===== helpers =====
 
     /**
      * creates instance of QBsAPI class.
-     * 
-     * @param \App\Ticsol\components\Models\Client $client  
+     *
+     * @param \App\Ticsol\components\Models\Client $client
      * @return \App\Ticsol\components\QuickBooks\Classes\QBsAPI
      */
     protected function createQBsAPI($request)
@@ -143,9 +183,9 @@ class QuickBooksController extends Controller
 
     /**
      * creates instance of QBsAuth class.
-     * 
-     * @param \App\Ticsol\components\Models\Client $client 
-     * @return \App\Ticsol\components\QuickBooks\Classes\QBsAuth 
+     *
+     * @param \App\Ticsol\components\Models\Client $client
+     * @return \App\Ticsol\components\QuickBooks\Classes\QBsAuth
      */
     protected function createAuth($client)
     {
@@ -167,5 +207,20 @@ class QuickBooksController extends Controller
         }
 
         return $auth;
+    }
+
+    /**
+     * creates an array from QBs API error responed.
+     * 
+     * @return array
+     */
+    protected function getErrorBody($error)
+    {
+        return [
+            "error" => true, 
+            "statusCode" => $error->getHttpStatusCode(), 
+            "OAuthMessage" => $error->getOAuthHelperError(),
+            "message" => $error->getResponseBody()
+        ];
     }
 }

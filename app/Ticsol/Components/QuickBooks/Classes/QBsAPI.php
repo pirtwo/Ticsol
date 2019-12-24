@@ -4,7 +4,7 @@ namespace App\Ticsol\Components\QuickBooks\Classes;
 
 use App\Ticsol\Components\QuickBooks\Classes\QBsAuth;
 use QuickBooksOnline\API\Core\Http\Serialization\JsonObjectSerializer;
-
+use QuickBooksOnline\API\Facades\Customer;
 use QuickBooksOnline\API\Facades\Vendor;
 
 class QBsAPI
@@ -87,6 +87,46 @@ class QBsAPI
         return $res;
     }
 
+    public function createCustomer($data)
+    {
+        $obj = Customer::create($data);
+        $res = $this->dataService->Add($obj);
+    }
+
+    /**
+     * creates a resource in QBs API by its name, exp: create('Customer', $data).
+     * 
+     * @return object
+     */
+    public function create($className, $data)
+    {
+        $class = $this->getFullyQualifiedName($className);
+
+        $obj = $class::create($data);
+        $respond = $this->dataService->Add($obj);
+
+        $error = $this->dataService->getLastError();
+
+        return (object)["error" => $error, "respond" => $respond];
+    }
+
+    /**
+     * updates a resource in QBs API by its name, exp: update('Customer', $data, $id).
+     * 
+     * @return object
+     */
+    public function update($className, $data, $id)
+    {
+        $class = $this->getFullyQualifiedName($className);
+
+        $obj = $this->dataService->findbyId($className, $id);
+        $obj = $class::update($obj, $data);
+        $respond = $this->dataService->Update($obj);
+
+        $error = $this->dataService->getLastError();
+
+        return (object)["error" => $error, "respond" => $respond];
+    }
 
     // ======== Helpers =========
 
@@ -98,19 +138,13 @@ class QBsAPI
         return "SELECT {$columns} FROM {$entityName} {$condition}";
     }
 
-    protected function create()
+    /**
+     * returns fully qualified name of QBs class name.
+     * 
+     * @return string
+     */
+    private function getFullyQualifiedName($className)
     {
-
+        return "\\QuickBooksOnline\\API\\Facades\\" . $className;
     }
-
-    protected function update()
-    {
-        //
-    }
-
-    protected function delete()
-    {
-        //
-    }
-
 }
