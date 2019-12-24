@@ -30,7 +30,7 @@
             :to="{ name : 'clientSettings' }"
             class="dropdown-item"
           >
-            <i class="icon material-icons">domain</i>Global
+            <i class="icon material-icons">domain</i>Company
           </router-link>
         </div>
       </div>
