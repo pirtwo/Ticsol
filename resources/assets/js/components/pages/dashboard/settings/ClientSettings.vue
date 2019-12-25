@@ -146,7 +146,7 @@
                     type="radio"
                     id="view1"
                     name="views"
-                    value="employee"
+                    value="user"
                     :class="[{'invalid' : $v.settings.scheduleView.$error } ,'custom-control-input']"
                   >
                   <label
