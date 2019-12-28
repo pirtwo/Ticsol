@@ -4,7 +4,7 @@
       <label 
         class="col-sm-2 col-form-lable" 
         :for="name"
-      >{{ label }}</label>
+      >{{ label ? label : name }}</label>
       <div class="col">
         <input 
           class="form-control"

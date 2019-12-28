@@ -204,8 +204,23 @@ export default {
 
       await $("#formBuilder")
         .formBuilder({
-          disabledAttrs: ["className", "value"],
-          disableFields: ["hidden", "button", "paragraph", "header"],
+          disabledAttrs: [
+            'label',
+            'access',
+            'className',
+            'description',
+            'max',
+            'maxlength',
+            'min',
+            'other',
+            'placeholder',
+            'required',
+            'style',
+            'subtype',
+            'toggle',
+            'value'
+          ],
+          disableFields: ["hidden", "button", "paragraph", "header", "autocomplete", "file"],
           controlOrder: [],
           controlPosition: "right",
           stickyControls: {

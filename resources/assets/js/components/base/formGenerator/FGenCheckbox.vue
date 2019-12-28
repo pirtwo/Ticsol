@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <div class="form-row">
-      <label class="col-sm-2 col-form-lable">{{ label }}</label>
+      <label class="col-sm-2 col-form-lable">{{ label ? label : name }}</label>
       <div class="col">
         <div 
           class="custom-control custom-checkbox" 
