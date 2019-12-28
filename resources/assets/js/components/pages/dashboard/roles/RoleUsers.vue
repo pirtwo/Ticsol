@@ -89,20 +89,16 @@
         </div>
 
         <ts-table
-          class="table table-striped"
+          class="table-responsive"
           :data="roleUsers"
-          :header="header"
-          :selection="false"
-          order-by="title"
-          order="asc"
+          :headers="headers"
+          orderby="Name"
         >
           <template
             slot="header"
             slot-scope="{item}"
           >
-            <div :data-orderBy="item.orderBy">
-              {{ item.value }}
-            </div>
+            <div>{{ item.value }}</div>
           </template>
           <template
             slot="body"
@@ -159,10 +155,20 @@ export default {
         name: "",
         users: []
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Name", orderBy: "name" },
-        { value: "Roles", orderBy: "roles" }
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Name",
+          orderby: f => {
+            return f.fullname;
+          }
+        },
+        {
+          value: "Roles",
+          orderby: f => {
+            return f.roles;
+          }
+        }
       ]
     };
   },
@@ -191,7 +197,8 @@ export default {
           key: item.id,
           value: item.fullname,
           pic: item.avatar,
-          roles: item.roles
+          roles: item.roles,
+          fullname: item.fullname
         };
       });
     },
@@ -218,8 +225,8 @@ export default {
     ...mapActions({
       show: "resource/show",
       list: "resource/list",
-      update: "resource/update",      
-      clear: "resource/clearResource",
+      update: "resource/update",
+      clear: "resource/clearResource"
     }),
 
     async loadAssets() {
@@ -244,7 +251,8 @@ export default {
           key: item.id,
           value: item.fullname,
           pic: item.avatar,
-          roles: item.roles
+          roles: item.roles,
+          fullname: item.fullname
         };
       });
     },
@@ -272,7 +280,10 @@ export default {
         .then(respond => {
           e.target.disabled = false;
           console.log("role updated successfuly");
-          this.showMessage(`<b>${this.form.name}</b> updated successfuly.`, "success");
+          this.showMessage(
+            `<b>${this.form.name}</b> updated successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
           console.log(error);

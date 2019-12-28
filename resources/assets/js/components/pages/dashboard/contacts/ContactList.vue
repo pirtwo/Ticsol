@@ -41,12 +41,10 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped"
+        class="table-responsive"
         :data="contacts"
-        :header="header"
-        :selection="false"
-        order-by="name"
-        order="asc"
+        :headers="headers"
+        orderby="Name"
       >
         <template
           slot="header"
@@ -93,8 +91,6 @@ export default {
 
   mixins: [pageMixin],
 
-  components: {},
-
   props: ["col", "opt", "val"],
 
   data() {
@@ -106,12 +102,32 @@ export default {
         perPage: 10,
         pageCount: 10
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Name", orderBy: "name" },
-        { value: "Group", orderBy: "group" },
-        { value: "Tel", orderBy: "telephone" },
-        { value: "Mobile", orderBy: "mobilephone" }
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Name",
+          orderby: f => {
+            return `${f.firstname} ${f.lastname}`;
+          }
+        },
+        {
+          value: "Group",
+          orderby: f => {
+            return f.group;
+          }
+        },
+        {
+          value: "Tel",
+          orderby: f => {
+            return f.telephone;
+          }
+        },
+        {
+          value: "Mobile",
+          orderby: f => {
+            return f.mobilephone;
+          }
+        }
       ],
       order: "asc"
     };
@@ -175,7 +191,7 @@ export default {
           value: "Contact\\Jobs\\Profile",
           type: "array",
           placeholder: "seperate values with comma..."
-        },
+        }
       ];
     }
   },

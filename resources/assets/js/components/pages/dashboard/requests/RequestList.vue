@@ -23,7 +23,7 @@
       <ul class="v-menu">
         <li class="menu-title">
           Actions
-        </li>       
+        </li>
         <li class="menu-title">
           Links
         </li>
@@ -32,18 +32,17 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped table-hover"
+        class="table-responsive"
         :data="requests"
-        :header="header"
-        :selection="false"
+        :headers="headers"
+        orderby="Submitted At"
+        order="des"
       >
         <template
           slot="header"
           slot-scope="{item}"
         >
-          <div :data-orderBy="item.orderBy">
-            {{ item.value }}
-          </div>
+          <div>{{ item.value }}</div>
         </template>
         <template
           slot="body"
@@ -114,16 +113,45 @@ export default {
         perPage: 10,
         pageCount: 10
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Type", orderBy: "type" },
-        { value: "Creator", orderBy: "user.fullname" },
-        { value: "Approver", orderBy: "assigned.fullname" },
-        { value: "Status", orderBy: "status" },
-        { value: "Summary", orderBy: "" },
-        { value: "Submitted At", orderBy: "created_at" }
-      ],
-      order: "asc"
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Type",
+          orderby: f => {
+            return f.type;
+          }
+        },
+        {
+          value: "Creator",
+          orderby: f => {
+            return f.user.fullname;
+          }
+        },
+        {
+          value: "Approver",
+          orderby: f => {
+            return f.assigned ? f.assigned.fullname : "Z";
+          }
+        },
+        {
+          value: "Status",
+          orderby: f => {
+            return f.status;
+          }
+        },
+        {
+          value: "Summary",
+          orderby: f => {
+            return "";
+          }
+        },
+        {
+          value: "Submitted At",
+          orderby: f => {
+            return f.created_at;
+          }
+        }
+      ]
     };
   },
 
@@ -178,7 +206,7 @@ export default {
     }
   },
 
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     this.clear("request");
     next();
   },
@@ -188,9 +216,9 @@ export default {
   },
 
   methods: {
-    ...mapActions({ 
+    ...mapActions({
       fetchList: "resource/list",
-      clear: "resource/clearResource",
+      clear: "resource/clearResource"
     }),
 
     feedTable() {
@@ -217,22 +245,24 @@ export default {
     },
 
     summary(item) {
-      let dateFormat = moment.localeData().longDateFormat('L');
+      let dateFormat = moment.localeData().longDateFormat("L");
       if (item.type === "leave") {
         // Show summary for leave request
         let from = moment(item.meta.from);
         let till = moment(item.meta.till);
         let days = till.diff(from, "days");
         let hours = till.diff(from, "hours");
-        return `From: ${from.format(dateFormat)} - Till: ${till.format(dateFormat)}, ${
-          days > 0 ? `Days: ${days}` : `Hours: ${hours}`
-        }`;
+        return `From: ${from.format(dateFormat)} - Till: ${till.format(
+          dateFormat
+        )}, ${days > 0 ? `Days: ${days}` : `Hours: ${hours}`}`;
       } else if (item.type === "timesheet") {
         // Show summary for timesheet request
         let from = moment(item.timesheet.week_start);
         let till = moment(item.timesheet.week_end);
         let hours = item.timesheet.total_hours.slice(0, 2);
-        return `${from.format(dateFormat)} - ${till.format(dateFormat)}, ${hours} Hours`;
+        return `${from.format(dateFormat)} - ${till.format(
+          dateFormat
+        )}, ${hours} Hours`;
       } else if (item.type === "reimbursement") {
         // Show summary for reimbursement request
         return `${item.meta.date} - $${item.meta.amount}`;

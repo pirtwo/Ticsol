@@ -1,12 +1,12 @@
 <template>
-  <app-main 
-    :scrollbar="true" 
-    :loading="isLoading" 
+  <app-main
+    :scrollbar="true"
+    :loading="isLoading"
     padding="p-2"
   >
     <template slot="toolbar">
       <ts-pagination
-        v-model="pager" 
+        v-model="pager"
         :page-count="pager.pageCount"
         @input="feedTable"
       />
@@ -25,9 +25,9 @@
           Actions
         </li>
         <li>
-          <router-link 
-            tag="button" 
-            class="btn" 
+          <router-link
+            tag="button"
+            class="btn"
             :to="{ name: 'roleCreate' }"
           >
             New
@@ -41,23 +41,19 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped"        
+        class="table-responsive"
         :data="roles"
-        :header="header"
-        :selection="false"
-        order-by="title"
-        order="asc"
+        :headers="headers"
+        orderby="Title"
       >
-        <template 
-          slot="header" 
+        <template
+          slot="header"
           slot-scope="{item}"
         >
-          <div :data-orderBy="item.orderBy">
-            {{ item.value }}
-          </div>
+          <div>{{ item.value }}</div>
         </template>
-        <template 
-          slot="body" 
+        <template
+          slot="body"
           slot-scope="{item}"
         >
           <td>
@@ -92,27 +88,40 @@ export default {
 
   mixins: [pageMixin],
 
-  components: {
-  },
+  components: {},
 
   props: ["col", "opt", "val"],
 
   data() {
     return {
-      query: [],           
+      query: [],
       showFilter: false,
       pager: {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },      
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Title", orderBy: "name" },
-        { value: "Created At", orderBy: "created_at" },
-        { value: "Updated At", orderBy: "updated_at" }
-      ],
-      order: "asc"
+      },
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Title",
+          orderby: f => {
+            return f.name;
+          }
+        },
+        {
+          value: "Created At",
+          orderby: f => {
+            return f.created_at;
+          }
+        },
+        {
+          value: "Updated At",
+          orderby: f => {
+            return f.updated_at;
+          }
+        }
+      ]
     };
   },
 
@@ -138,7 +147,7 @@ export default {
           value: "Creator",
           type: "string",
           placeholder: "Search for code..."
-        },        
+        }
       ];
     }
   },
@@ -151,7 +160,7 @@ export default {
     ...mapActions({ fetchList: "resource/list" }),
 
     feedTable() {
-       this.startLoading();
+      this.startLoading();
       if (this.opt)
         this.query.push({ opt: this.opt, col: this.col, val: this.val });
       this.fetchList({

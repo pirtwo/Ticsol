@@ -34,7 +34,7 @@
               New
             </router-link>
           </li>
-        </template>       
+        </template>
         <li class="menu-title">
           Links
         </li>
@@ -43,16 +43,16 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped table-hover"        
+        class="table-responsive"
         :data="jobs"
-        :header="header"
-        :selection="false"
+        :headers="headers"
+        orderby="Profile"
       >
         <template
           slot="header"
           slot-scope="{item}"
         >
-          <div :data-orderBy="item.orderBy">
+          <div>
             {{ item.value }}
           </div>
         </template>
@@ -68,9 +68,9 @@
               <i class="material-icons">visibility</i>
             </router-link>
           </td>
-          <td>{{ item.title }}</td>   
-          <td>{{ item.profile ? item.profile.name : "-" }}</td>       
-          <td>{{ item.parent ? item.parent.title : "-" }}</td>          
+          <td>{{ item.title }}</td>
+          <td>{{ item.profile ? item.profile.name : "-" }}</td>
+          <td>{{ item.parent ? item.parent.title : "-" }}</td>
           <td>{{ item.code }}</td>
           <td>{{ item.isactive ? "Yes" : "No" }}</td>
         </template>
@@ -87,15 +87,14 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import pageMixin from '../../../../mixins/page-mixin';
+import pageMixin from "../../../../mixins/page-mixin";
 
 export default {
   name: "JobList",
 
-  mixins:[pageMixin],
+  mixins: [pageMixin],
 
-  components: {
-  },
+  components: {},
 
   props: ["col", "opt", "val"],
 
@@ -107,14 +106,39 @@ export default {
         page: 1,
         perPage: 10,
         pageCount: 10
-      },       
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Title", orderBy: "title" },
-        { value: "Profile", orderBy: "profile.name" },
-        { value: "Parent", orderBy: "parent.title" },        
-        { value: "Code", orderBy: "code" },
-        { value: "Active", orderBy: "active" }
+      },
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Title",
+          orderby: f => {
+            return f.title;
+          }
+        },        
+        {
+          value: "Profile",
+          orderby: f => {
+            return f.profile ? f.profile.name : "Z";
+          }
+        },
+        {
+          value: "Parent",
+          orderby: f => {
+            return f.parent ? f.parent.title : "Z";
+          }
+        },  
+        {
+          value: "Code",
+          orderby: f => {
+            return f.code;
+          }
+        },      
+        {
+          value: "Active",
+          orderby: f => {
+            return f.isactive;
+          }
+        }
       ]
     };
   },
@@ -122,7 +146,7 @@ export default {
   computed: {
     ...mapGetters({
       userCan: "user/can",
-      getList: "resource/getList",
+      getList: "resource/getList"
     }),
 
     jobs: function() {
@@ -172,7 +196,7 @@ export default {
           value: "Contacts\\LastName",
           type: "string",
           placeholder: "Search for Job\\Contacts\\LastName..."
-        },
+        }
       ];
     }
   },

@@ -41,17 +41,16 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped"
+        class="table-responsive"
         :data="teams"
-        :header="header"
+        :headers="headers"
+        orderby="Title"
       >
         <template
           slot="header"
           slot-scope="{item}"
         >
-          <div :data-orderBy="item.orderBy">
-            {{ item.value }}
-          </div>
+          <div>{{ item.value }}</div>
         </template>
         <template
           slot="body"
@@ -100,15 +99,29 @@ export default {
         perPage: 10,
         pageCount: 10
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Title", orderBy: "name" },
-        { value: "Created At", orderBy: "created_at" },
-        { value: "Updated At", orderBy: "updated_at" }
-      ],
-      order: "asc"
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Title",
+          orderby: f => {
+            return f.name;
+          }
+        },
+        {
+          value: "Created At",
+          orderby: f => {
+            return f.created_at;
+          }
+        },
+        {
+          value: "Updated At",
+          orderby: f => {
+            return f.updated_at;
+          }
+        }
+      ]
     };
-  }, 
+  },
 
   computed: {
     ...mapGetters({

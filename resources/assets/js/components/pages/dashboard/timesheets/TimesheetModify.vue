@@ -388,21 +388,19 @@
         :show.sync="generateModal"
       >
         <ts-table
-          class="table table-striped table-hover"
+          class="table-responsive"
           v-model="selectedSchedules"
           :data="mapedScheduleElements"
-          :header="scheduleColumns"
+          :headers="scheduleColumns"
           :selection="true"
-          order-by="day"
+          orderby="Day"
           order="asc"
         >
           <template
             slot="header"
             slot-scope="{item}"
           >
-            <div :data-orderBy="item.orderBy">
-              {{ item.value }}
-            </div>
+            <div>{{ item.value }}</div>
           </template>
           <template
             slot="body"
@@ -498,11 +496,36 @@ export default {
         { key: "total", value: "Total" }
       ],
       scheduleColumns: [
-        { value: "Day", orderBy: "date.value" },
-        { value: "Job", orderBy: "job.value" },
-        { value: "Billable", orderBy: "billable" },
-        { value: "Start", orderBy: "startTime" },
-        { value: "End", orderBy: "endTime" }
+        {
+          value: "Day",
+          orderby: f => {
+            return f.date.key;
+          }
+        },
+        {
+          value: "Job",
+          orderby: f => {
+            return f.job.value;
+          }
+        },
+        {
+          value: "Billable",
+          orderby: f => {
+            return f.billable;
+          }
+        },
+        {
+          value: "Start",
+          orderby: f => {
+            return f.startTime;
+          }
+        },
+        {
+          value: "End",
+          orderby: f => {
+            return f.endTime;
+          }
+        }
       ]
     };
   },

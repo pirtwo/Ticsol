@@ -33,17 +33,16 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped"
+        class="table-responsive"
         :data="users"
-        :header="header"
+        :headers="headers"
+        orderby="Name"
       >
         <template
           slot="header"
           slot-scope="{item}"
         >
-          <div :data-orderBy="item.orderBy">
-            {{ item.value }}
-          </div>
+          <div>{{ item.value }}</div>
         </template>
         <template
           slot="body"
@@ -107,7 +106,7 @@
         title="Invite Users"
         :show.sync="inviteModal"
       >
-        <p class="">
+        <p class>
           Please provide the details of any employees you would like to invite. The new accounts
           will be created immediately and account credentials will be sent to account owner by email.
         </p>
@@ -266,12 +265,32 @@ export default {
         perPage: 10,
         pageCount: 10
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Name", orderBy: "fullname" },
-        { value: "Roles", orderBy: "roles" },
-        { value: "Teams", orderBy: "team" },
-        { value: "Contacts", orderBy: "contact" }
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Name",
+          orderby: f => {
+            return f.fullname;
+          }
+        },
+        {
+          value: "Roles",
+          orderby: f => {
+            return f.roles;
+          }
+        },
+        {
+          value: "Teams",
+          orderby: f => {
+            return f.teams;
+          }
+        },
+        {
+          value: "Contacts",
+          orderby: f => {
+            return f.contacts;
+          }
+        }
       ]
     };
   },
@@ -379,16 +398,21 @@ export default {
         payload.teams = this.invites[i].teams.map(item => item.key);
         payload.roles = this.invites[i].roles.map(item => item.key);
         await this.create({ resource: "user", data: payload })
-        .then(()=>{
-          this.showMessage(`<b>${payload.firstname + ' ' + payload.lastname}</b> invited successfuly.`, "success");
-        })
-        .catch(err => {
-          this.showMessage(err.message, "danger");
-        });
+          .then(() => {
+            this.showMessage(
+              `<b>${payload.firstname +
+                " " +
+                payload.lastname}</b> invited successfuly.`,
+              "success"
+            );
+          })
+          .catch(err => {
+            this.showMessage(err.message, "danger");
+          });
       }
 
       e.target.disabled = false;
-      this.inviteModal = false;      
+      this.inviteModal = false;
     }
   }
 };

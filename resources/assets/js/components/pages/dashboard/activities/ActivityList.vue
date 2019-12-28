@@ -41,10 +41,11 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped"
+        class="table-responsive"
         :data="reports"
-        :header="header"
-        :selection="false"
+        :headers="headers"
+        orderby="From"
+        order="des"
       >
         <template
           slot="header"
@@ -104,12 +105,32 @@ export default {
         perPage: 10,
         pageCount: 10
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Creator", orderBy: "creator.fullname" },
-        { value: "Job", orderBy: "job.title" },
-        { value: "From", orderBy: "from" },
-        { value: "Till", orderBy: "till" }
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Creator",
+          orderby: f => {
+            return f.creator.fullname;
+          }
+        },
+        {
+          value: "Job",
+          orderby: f => {
+            return f.job.title;
+          }
+        },
+        {
+          value: "From",
+          orderby: f => {
+            return f.from;
+          }
+        },
+        {
+          value: "Till",
+          orderby: f => {
+            return f.till;
+          }
+        }
       ]
     };
   },
@@ -160,7 +181,7 @@ export default {
           value: "Job\\Profile\\Title",
           type: "string",
           placeholder: "Enter job profile name"
-        },
+        }
       ];
     }
   },

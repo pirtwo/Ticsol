@@ -57,7 +57,10 @@
           <div class="form-row">
             <div class="col-sm-6">
               <div class="row">
-                <label class="col-sm-2 col-form-label">Name <i class="field-required">*</i></label>
+                <label class="col-sm-2 col-form-label">
+                  Name
+                  <i class="field-required">*</i>
+                </label>
                 <div class="col-sm-10">
                   <input
                     v-model="form.name"
@@ -104,20 +107,16 @@
         </div>
 
         <ts-table
-          class="table table-striped"
+          class="table-responsive"
           :data="teamMembers"
-          :header="header"
-          :selection="false"
-          order-by="title"
-          order="asc"
+          :headers="headers"
+          order-by="Name"
         >
           <template
             slot="header"
             slot-scope="{item}"
           >
-            <div :data-orderBy="item.orderBy">
-              {{ item.value }}
-            </div>
+            <div>{{ item.value }}</div>
           </template>
           <template
             slot="body"
@@ -168,10 +167,20 @@ export default {
         name: "",
         users: []
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Name", orderBy: "name" },
-        { value: "Teams", orderBy: "teams" }
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Name",
+          orderby: f => {
+            return f.fullname;
+          }
+        },
+        {
+          value: "Teams",
+          orderby: f => {
+            return f.teams;
+          }
+        }
       ]
     };
   },
@@ -182,8 +191,8 @@ export default {
     }
   },
 
-  watch: {    
-    id: function(val){
+  watch: {
+    id: function(val) {
       this.loadAssets();
     },
 
@@ -278,20 +287,20 @@ export default {
     populateForm(team) {
       this.form.name = team.name;
       this.form.users = team.users.map(item => {
-        return { 
+        return {
           key: item.id,
           value: item.fullname,
           pic: item.avatar,
           fullname: item.fullname,
           teams: item.teams
-         };
+        };
       });
     },
 
     /**
      * Create a new team with form data.
      */
-    onSubmit(e) {      
+    onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
 
@@ -324,7 +333,7 @@ export default {
     /**
      * Update the current team with form data.
      */
-    onSave(e) {      
+    onSave(e) {
       e.preventDefault();
       e.target.disabled = true;
 
@@ -343,7 +352,10 @@ export default {
       this.startLoading();
       this.update({ resource: "team", id: this.id, data: form })
         .then(() => {
-          this.showMessage(`Team <b>${form.name}</b> updated successfuly.`, "success");
+          this.showMessage(
+            `Team <b>${form.name}</b> updated successfuly.`,
+            "success"
+          );
         })
         .catch(error => {
           this.showMessage(error.message, "danger");
@@ -354,7 +366,7 @@ export default {
         });
     },
 
-    clearForm() {      
+    clearForm() {
       this.$v.form.$reset();
     },
 

@@ -41,20 +41,16 @@
 
     <template slot="content">
       <ts-table
-        class="table table-striped"
+        class="table-responsive"
         :data="profiles"
-        :header="header"
-        :selection="false"
-        order-by="name"
-        order="asc"
+        :headers="headers"
+        orderby="Title"
       >
         <template
           slot="header"
           slot-scope="{item}"
         >
-          <div :data-orderBy="item.orderBy">
-            {{ item.value }}
-          </div>
+          <div>{{ item.value }}</div>
         </template>
         <template
           slot="body"
@@ -93,8 +89,7 @@ export default {
 
   mixins: [pageMixin],
 
-  components: {
-  },
+  components: {},
 
   props: ["col", "opt", "val"],
 
@@ -107,14 +102,33 @@ export default {
         perPage: 10,
         pageCount: 10
       },
-      header: [
-        { value: "", orderBy: "" },
-        { value: "Title", orderBy: "name" },
-        { value: "Parent", orderBy: "parent_id" },
-        { value: "Create", orderBy: "created_at" },
-        { value: "Update", orderBy: "updated_at" }
-      ],
-      order: "asc"
+      headers: [
+        { value: "", orderby: "" },
+        {
+          value: "Title",
+          orderby: f => {
+            return f.name;
+          }
+        },
+        {
+          value: "Parent",
+          orderby: f => {
+            return f.parent ? f.parent.name : "Z";
+          }
+        },
+        {
+          value: "Create",
+          orderby: f => {
+            return f.created_at;
+          }
+        },
+        {
+          value: "Update",
+          orderby: f => {
+            return f.updated_at;
+          }
+        }
+      ]
     };
   },
 
@@ -140,7 +154,7 @@ export default {
           value: "Jobs\\Title",
           type: "string",
           placeholder: "Search for Jobs\\Title..."
-        },        
+        },
         {
           key: "form.jobs.code",
           value: "Jobs\\Code",
@@ -167,7 +181,7 @@ export default {
         query: this.$queryBuilder(
           this.pager.page,
           this.pager.perPage,
-          ['parent'],
+          ["parent"],
           this.query
         )
       })
