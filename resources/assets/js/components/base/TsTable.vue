@@ -1,101 +1,114 @@
 <template>
-  <table>
-    <thead>
-      <slot name="toolbar" />
-      <th v-if="selection">
-        <input
-          type="checkbox"
-          @click.self="onSelectAll"
-        >
-      </th>
-
-      <th
-        v-for="(value, index) in header"
-        :key="index"
-        @click="toggleOrder(index, $event)"
-      >
-        <slot
-          name="header"
-          :item="value"
-        >
-          {{ value }}
-          <!-- fallback content -->
-        </slot>
-        <i
-          v-show="sortBy == value.orderBy"
-          class="material-icons"
-        >{{ colOrder === "asc" ? "arrow_upward" : "arrow_downward" }}</i>
-      </th>
-    </thead>
-
-    <tbody>
-      <tr v-show="list.length < 1">
-        <td :colspan="header.length + 1">
-          No Record
-        </td>
-      </tr>
-      <tr
-        v-for="(value, index) in list"
-        :key="index"
-      >
-        <td v-if="selection">
+  <div>
+    <table :class="cssClass">
+      <thead>
+        <slot name="toolbar" />
+        <th v-if="selection">
           <input
             type="checkbox"
-            :value="value"
-            @input="onSelect(index, $event)"
+            @click.self="onSelectAll"
           >
-        </td>
-        <slot
-          name="body"
-          :item="value"
+        </th>
+
+        <th
+          v-for="(header, index) in headers"
+          :key="index"
+          @click="toggleOrder(header, index, $event)"
         >
-          {{ value }}
-        </slot>
-      </tr>
-    </tbody>
-  </table>
+          <slot
+            name="header"
+            :item="header"
+          >
+            {{ header }}
+            <!-- fallback content -->
+          </slot>
+          <i
+            v-show="header.value === tableOrderby"
+            class="material-icons"
+          >{{ columnOrder === "asc" ? "arrow_upward" : "arrow_downward" }}</i>
+        </th>
+      </thead>
+
+      <tbody>
+        <tr v-show="records.length < 1">
+          <td :colspan="headers.length + 1">
+            No Record
+          </td>
+        </tr>
+        <tr
+          v-for="(row, index) in records"
+          :key="index"
+        >
+          <td v-if="selection">
+            <input
+              type="checkbox"
+              :value="row"
+              @input="onSelect(index, $event)"
+            >
+          </td>
+          <slot
+            name="body"
+            :item="row"
+          >
+            {{ row }}
+          </slot>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
-import { isArray } from "util";
-import { constants } from "crypto";
 export default {
   name: "TsTable",
   props: {
+    value: {
+      type: [Array, Object],
+      default: null
+    },
+
     data: {
       type: Array,
       default: null
     },
-    header: {
+
+    cssClass:{
+      type: String,
+      default: "table table-striped table-hover"
+    },
+
+    headers: {
       type: Array,
       default: null
     },
-    orderBy: {
+
+    selection: {
+      type: Boolean,
+      default: false
+    },
+
+    orderby: {
       type: String,
       default: null
     },
+
     order: {
       type: String,
       default: "asc",
       validator: value => {
         return ["asc", "des"].indexOf(value) !== -1;
       }
-    },
-    selection: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: [Array, Object],
-      default: null
     }
   },
 
   data() {
     return {
       selects: [],
-      sortBy: this.orderBy,
-      colOrder: this.order
+      columnOrder: this.order,
+      columnOrderby: this.orderby ? this.headers.find(i => i.value === this.orderby).orderby : () => {
+        return "";
+      },
+      tableOrderby: this.orderBy
     };
   },
 
@@ -109,15 +122,15 @@ export default {
   },
 
   computed: {
-    list: function() {
+    records: function() {
       return this.data.slice().sort((a, b) => {
-        if (this.colOrder === "asc") {
-          if (a[this.sortBy] < b[this.sortBy]) return -1;
-          if (a[this.sortBy] > b[this.sortBy]) return 1;
+        if (this.columnOrder === "asc") {
+          if (this.columnOrderby(a) < this.columnOrderby(b)) return -1;
+          if (this.columnOrderby(a) > this.columnOrderby(b)) return 1;
           return 0;
         } else {
-          if (a[this.sortBy] < b[this.sortBy]) return 1;
-          if (a[this.sortBy] > b[this.sortBy]) return -1;
+          if (this.columnOrderby(a) < this.columnOrderby(b)) return 1;
+          if (this.columnOrderby(a) > this.columnOrderby(b)) return -1;
           return 0;
         }
       });
@@ -149,14 +162,11 @@ export default {
       this.$emit("input", this.selects.slice());
     },
 
-    toggleOrder(index, e) { 
-      if (this.colOrder === "asc") {
-        this.colOrder = "des";
-      } else {
-        this.colOrder = "asc";
-      }
-
-      this.sortBy = this.header[index].orderBy; 
+    toggleOrder(header, index, e) {
+      if(!header.value) return;
+      this.tableOrderby = header.value;
+      this.columnOrderby = header.orderby;
+      this.columnOrder = this.columnOrder === "asc" ? "des" : "asc";
     }
   }
 };
