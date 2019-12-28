@@ -253,6 +253,7 @@ export default {
       form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.billable = this.form.billable;
       form.schema = this.frmBuilder.actions.getData();
+      form.schema = JSON.parse(JSON.stringify(form.schema).replace(/<br>/ig, ""));
       
       this.create({ resource: "form", data: form })
         .then(() => {          
@@ -279,12 +280,13 @@ export default {
         e.target.disabled = false;
         return;
       }
-
+      
       let form = {};
       form.name = this.form.name;
       form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.billable = this.form.billable;
       form.schema = this.frmBuilder.actions.getData();
+      form.schema = JSON.parse(JSON.stringify(form.schema).replace(/<br>/ig, ""));
 
       this.update({ resource: "form", id: this.id, data: form })
         .then(() => {         
