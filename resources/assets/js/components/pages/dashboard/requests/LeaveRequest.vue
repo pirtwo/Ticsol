@@ -568,7 +568,9 @@ export default {
      */
     canEdit() {
       if (!this.request) return false;
-      return this.request.user_id === this.userId;
+      return this.request.user_id === this.userId && 
+        this.request.status !== 'approved' && 
+        this.request.status !== 'rejected';
     },
 
     /**
@@ -576,7 +578,10 @@ export default {
      */
     canApprove() {
       if (!this.request) return false;
-      return this.request.assigned_id === this.userId && this.userCan('leave', ['full', 'approve']);
+      return this.request.assigned_id === this.userId && 
+        this.userCan('leave', ['full', 'approve']) &&
+        this.request.status !== 'approved' && 
+        this.request.status !== 'rejected';
     },
 
     onAttachment(e) {

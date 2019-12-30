@@ -188,6 +188,14 @@ class RequestController extends Controller
         //      AUTHORIZE ACTION
         //----------------------------
         $this->authorize('update', $req);
+        
+
+        if ($this->isRequestUpdateabel($req)) {
+            return \response()->json([
+                "error"=>true, 
+                'message' => "Can't update a request with status of Approved or Rejected."
+            ], 403);
+        }
 
         try {
             DB::beginTransaction();
@@ -265,8 +273,12 @@ class RequestController extends Controller
         //----------------------------
         $this->authorize('approve', $req);
 
-        if($req->status == "approved")
-            return $req;        
+        if ($this->isRequestUpdateabel($req)) {
+            return \response()->json([
+                "error"=>true, 
+                'message' => "Can't update a request with status of Approved or Rejected."
+            ], 403);
+        }      
         
         $req->update(['status' => 'approved']); 
         $req->schedule()->update(["status" => "confirmed"]);
@@ -290,8 +302,12 @@ class RequestController extends Controller
         //----------------------------
         $this->authorize('approve', $req);
 
-        if($req->status == "rejected")
-            return $req;     
+        if ($this->isRequestUpdateabel($req)) {
+            return \response()->json([
+                "error"=>true, 
+                'message' => "Can't update a request with status of Approved or Rejected."
+            ], 403);
+        }  
 
         $req->update(['status' => 'rejected']);
         $req->schedule()->update(["status" => "tentative"]);
@@ -301,6 +317,16 @@ class RequestController extends Controller
         $this->dispatchWebhook($req, "{$req->type}:rejected");  
 
         return $req;
+    }
+
+    /**
+     * Check to see if request is updateabel, returns false if request status is approved or rejected.
+     * 
+     * @return bool
+     */
+    protected function isRequestUpdateabel(RequestModel $request)
+    {
+        return $request->status != 'approved' && $request->status != 'rejected';
     }
 
     /**
@@ -354,7 +380,7 @@ class RequestController extends Controller
     /**
      * Send out the webhooks.
      */
-    private function dispatchWebhook($request, $event)
+    protected function dispatchWebhook($request, $event)
     {
         $data = $request->toArray();
 
@@ -365,7 +391,5 @@ class RequestController extends Controller
 
         if($hook)
             $hook->fire($data);
-    }
-
-
+    }    
 }

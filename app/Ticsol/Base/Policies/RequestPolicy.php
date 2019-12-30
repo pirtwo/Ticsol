@@ -60,10 +60,6 @@ class RequestPolicy
             return false;
         }
 
-        if ($request->status == 'approved') {
-            return false;
-        }
-
         return $user->id == $request->user_id;
     }
 
@@ -89,8 +85,11 @@ class RequestPolicy
     public function approve(User $user, Request $request)
     {
         $canApproveLeave = false;
-        $canApproveTimesheet = false;
         $canApproveReimbursement = false;
+
+        $permissions = $user->permissions;
+        $canApproveLeave = $permissions->contains('approve-leave');  
+        $canApproveReimbursement = $permissions->contains('approve-reimbursement');      
 
         if ($user->client_id != $request->client_id) {
             return false;
@@ -98,11 +97,7 @@ class RequestPolicy
         
         if ($user->id != $request->assigned_id) {
             return false;
-        }
-
-        $permissions = $user->permissions;
-        $canApproveLeave = $permissions->contains('approve-leave');  
-        $canApproveReimbursement = $permissions->contains('approve-reimbursement');        
+        }          
 
         if ($request->type === 'leave') {
             return $canApproveLeave;
@@ -110,6 +105,41 @@ class RequestPolicy
 
         if ($request->type === 'reimbursement') {
             return $canApproveReimbursement;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can reject the request.
+     *
+     * @param  \App\Ticsol\Components\Models\User  $user
+     * @param  \App\Ticsol\Components\Models\Request  $request
+     * @return mixed
+     */
+    public function reject(User $user, Request $request)
+    {
+        $canRejectLeave = false;
+        $canRejectReimbursement = false;
+
+        $permissions = $user->permissions;
+        $canRejectLeave = $permissions->contains('reject-leave');  
+        $canRejectReimbursement = $permissions->contains('reject-reimbursement');      
+
+        if ($user->client_id != $request->client_id) {
+            return false;
+        }       
+        
+        if ($user->id != $request->assigned_id) {
+            return false;
+        }          
+
+        if ($request->type === 'leave') {
+            return $canRejectLeave;
+        }
+
+        if ($request->type === 'reimbursement') {
+            return $canRejectReimbursement;
         }
 
         return false;
