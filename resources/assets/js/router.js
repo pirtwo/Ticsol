@@ -158,6 +158,13 @@ export const router = new VueRouter({
                     component: require('./components/pages/dashboard/timesheets/TimeSheets.vue').default,
                     children: [
                         {
+                            path: 'list',
+                            name: 'timesheetList',
+                            meta: { requireAuth: true },
+                            component: require('./components/pages/dashboard/timesheets/TimesheetList.vue').default,
+                            beforeEnter: routerGaurd, 
+                        },
+                        {
                             path: 'create',
                             name: 'timesheetCreate',
                             meta: { requireAuth: true },
