@@ -1412,7 +1412,7 @@
                       type="radio"
                       id="view1"
                       name="views"
-                      value="employee"
+                      value="user"
                       class="custom-control-input"
                     >
                     <label
@@ -1645,7 +1645,7 @@ export default {
           { day: 6, start: "00:00", end: "00:00", isopen: false },
           { day: 0, start: "00:00", end: "00:00", isopen: false }
         ],
-        scheduleView: "employee",
+        scheduleView: "user",
         scheduleRange: "week"
       }
     };

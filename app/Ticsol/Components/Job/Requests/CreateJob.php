@@ -39,14 +39,17 @@ class CreateJob extends FormRequest
      */
     public function rules()
     {
-        return [
-            'qbs_id'                => 'integer',
+        return [            
             'title'                 => 'required|string|between:1,100',
             'code'                  => 'required|string|between:1,100',
+            'color'                 => 'nullable|string|regex:/^#([a-z0-9]){6}$/i',
             'isactive'              => 'required|boolean',
             'contacts'              => 'nullable|array',
             'meta'                  => 'nullable',
 
+            // QBs
+            'qbs_id'                => 'integer',
+            
             // billing
             'payment_type'          => 'string|in:prepaid,inArrears',
             'rate'                  => 'numeric|min:0',

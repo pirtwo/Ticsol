@@ -36,6 +36,14 @@
               Save
             </button>
           </li>
+          <li v-if="this.id">
+            <button
+              class="btn"
+              @click="onQBsSync"
+            >
+              Quickbooks Sync
+            </button>
+          </li>
           <li>
             <button
               class="btn"
@@ -229,6 +237,29 @@
                   search-placeholder="search here..."
                   :disabled="!userCan('job', ['full', 'update']) || contacts.length == 0"
                 />
+              </div>
+            </div>
+          </div>
+
+          <!-- color -->
+          <div class="form-group">
+            <div class="form-row">
+              <label class="col-sm-2 col-form-lable">Color</label>
+              <div class="col-sm-2">
+                <input
+                  v-model="form.color"
+                  type="color"
+                  class="form-control"
+                >
+              </div>
+              <div class="col-sm-8">
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  @click="()=>{ form.color = defaultJobColor }"
+                >
+                  Default Color
+                </button>
               </div>
             </div>
           </div>
@@ -541,12 +572,12 @@
 </template>
 
 <script>
+import { api } from "../../../../api/http";
+import * as QBS_ENDPOINTS from "../../../../api/qbs-endpoints";
 import { mapGetters, mapActions } from "vuex";
 import { required, decimal, minValue } from "vuelidate/lib/validators";
 import PageMixin from "../../../../mixins/page-mixin.js";
 import FormGen from "../../../base/formGenerator/BaseFormGenerator";
-import { constants } from "crypto";
-import { parse } from "path";
 
 export default {
   name: "JobModify",
@@ -568,6 +599,7 @@ export default {
       form: {
         title: "",
         code: "",
+        color: "",
         isactive: 1,
         parent: null,
         profile: null,
@@ -660,6 +692,10 @@ export default {
       } else {
         return [];
       }
+    },
+
+    defaultJobColor: function() {
+      return "#ff8080";
     },
 
     profiles: function() {
@@ -757,6 +793,7 @@ export default {
     populateForm(job) {
       this.form.title = job.title;
       this.form.code = job.code;
+      this.form.color = job.color ? job.color : this.defaultJobColor;
       this.form.parent = job.parent
         ? {
             key: job.parent.id,
@@ -807,7 +844,7 @@ export default {
     /** populate billing defaults. */
     billingDefaults() {
       let defaults = this.client.billing_defaults;
-      if(!defaults) return;
+      if (!defaults) return;
       this.billing.paymentType = defaults.payment_type;
       this.billing.allowOverbilling = defaults.allow_over_billing;
       this.billing.jobFallbackRate = defaults.job_fallback_rate;
@@ -817,9 +854,27 @@ export default {
       );
     },
 
+    fillBillingDetails(form) {
+      if (!this.isBillable) return form;
+
+      form.payment_type = this.billing.paymentType;
+      form.rate = this.billing.rate;
+      form.unit = this.billing.unit;
+      form.unit_type = this.billing.unitType;
+      form.allow_over_billing = this.billing.allowOverbilling;
+      form.job_fallback_rate = this.billing.jobFallbackRate;
+      form.revenue_account_id = this.billing.revenueAccount
+        ? this.billing.revenueAccount.key
+        : null;
+
+      return form;
+    },
+
     onSubmit(e) {
       e.preventDefault();
       e.target.disabled = true;
+
+      console.log(this.form.color);
 
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -830,6 +885,7 @@ export default {
       let form = {};
       form.title = this.form.title;
       form.code = this.form.code;
+      form.color = this.form.color ? this.form.color : null;
       form.isactive = this.form.isactive;
       form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.form_id = this.form.profile ? this.form.profile.key : null;
@@ -865,6 +921,7 @@ export default {
       let form = {};
       form.title = this.form.title;
       form.code = this.form.code;
+      form.color = this.form.color ? this.form.color : null;
       form.isactive = this.form.isactive;
       form.parent_id = this.form.parent ? this.form.parent.key : null;
       form.form_id = this.form.profile ? this.form.profile.key : null;
@@ -887,26 +944,96 @@ export default {
         });
     },
 
-    fillBillingDetails(form) {
-      if (!this.isBillable) return form;
+    onQBsSync(e) {
+      e.preventDefault();
+      e.target.disabled = true;
 
-      form.payment_type = this.billing.paymentType;
-      form.rate = this.billing.rate;
-      form.unit = this.billing.unit;
-      form.unit_type = this.billing.unitType;
-      form.allow_over_billing = this.billing.allowOverbilling;
-      form.job_fallback_rate = this.billing.jobFallbackRate;
-      form.revenue_account_id = this.billing.revenueAccount
-        ? this.billing.revenueAccount.key
-        : null;
+      this.$v.form.$touch();
+      if (this.$v.form.$invalid) {
+        e.target.disabled = false;
+        return;
+      }
 
-      return form;
+      let jobCustomerId = this.job.qbs ? this.job.qbs.id : null;
+
+      let form = {};
+      form.Title = this.job.title;
+
+      this.startLoading();
+
+      if (jobCustomerId) {
+        api
+          .update({
+            url: `${QBS_ENDPOINTS.CUSTOMER}/${jobCustomerId}`,
+            data: form
+          })
+          .then(res => {
+            this.showMessage(
+              `<b>${this.job.title}</b> synced successfuly.`,
+              "success"
+            );
+          })
+          .catch(error => {
+            this.showMessage(error.message, "danger");
+          })
+          .finally(() => {
+            e.target.disabled = false;
+            this.stopLoading();
+          });
+      } else {
+        // check QBs for a customer with FullyQualifiedName equal to current job title
+        api
+          .get({ url: QBS_ENDPOINTS.CUSTOMER })
+          .then(customers => {
+            let relatedCustomer = customers.data.find(
+              item => item.FullyQualifiedName === this.job.title
+            );
+            return relatedCustomer ? relatedCustomer.Id : null;
+          })
+          .then(relatedCustomerId => {
+            if (relatedCustomerId)
+              // if exists, update customer title
+              return api.update({
+                url: `${QBS_ENDPOINTS.CUSTOMER}/${relatedCustomerId}`,
+                data: form
+              });
+            // if not exists, create customer
+            else return api.create({ url: QBS_ENDPOINTS.CUSTOMER, data: form });
+          })
+          .then(syncRespond => {
+            let customer = syncRespond.data.respond;
+
+            // update job's QBs customer id
+            return this.update({
+              resource: "job",
+              data: { qbs_id: customer.Id },
+              id: this.id
+            });
+          })
+          .then(() => {
+            this.showMessage(
+              `<b>${this.job.title}</b> synced successfuly.`,
+              "success"
+            );
+          })
+          .catch(error => {
+            this.showMessage(
+              "An error occurred during the sync, please try again. ",
+              "danger"
+            );
+          })
+          .finally(() => {
+            e.target.disabled = false;
+            this.stopLoading();
+          });
+      }
     },
 
     clearForm() {
       this.schema = "";
       this.form.title = "";
       this.form.code = "";
+      this.form.color = this.defaultJobColor;
       this.form.isactive = 1;
       this.form.parent = null;
       this.form.profile = null;

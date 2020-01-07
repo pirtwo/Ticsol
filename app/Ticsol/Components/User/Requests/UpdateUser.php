@@ -38,7 +38,7 @@ class UpdateUser extends FormRequest
             'ical'                      => 'boolean',            
             'theme'                     => 'string|in:default,urban,jungle,beach,night',
             'schedule_view'             => 'string|in:user,job',              
-            'schedule_range'            => 'string|in:Week,Month',             
+            'schedule_range'            => 'string|in:week,month',             
             
             // profile picture
             'avatar'                    => 'nullable|mimes:jpg,jpeg,png|max:5120',

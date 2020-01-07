@@ -22,12 +22,12 @@ class TeamPolicy
     {          
         $permissions = $user->permissions; 
         $this->isowner = $user->isowner;       
-        $this->full = $permissions->contains('full-role');
-        $this->list = $permissions->contains('list-role');
-        $this->view = $permissions->contains('view-role');
-        $this->create = $permissions->contains('create-role');
-        $this->update = $permissions->contains('update-role');
-        $this->delete = $permissions->contains('delete-role');    
+        $this->full = $permissions->contains('full-team');
+        $this->list = $permissions->contains('list-team');
+        $this->view = $permissions->contains('view-team');
+        $this->create = $permissions->contains('create-team');
+        $this->update = $permissions->contains('update-team');
+        $this->delete = $permissions->contains('delete-team');    
     }
     
     /**
@@ -38,7 +38,7 @@ class TeamPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $this->isowner || $this->full || $this->list;
     }
 
     /**

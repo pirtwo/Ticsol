@@ -23,6 +23,10 @@ export default {
         return [];
       }
     },
+    eventHeight:{
+      type:Number,
+      default: 50
+    },
     viewType: {
       type: String,
       default: "Days",
@@ -82,6 +86,8 @@ export default {
     this.dpCal.weeks = 1;
     this.dpCal.timeRangeSelectedHandling = true;
     this.dpCal.events.list = [];
+
+    this.dpCal.eventHeight = this.eventHeight;
 
     this.dpCal.onEventMoved = this.eventMoveHandler;
     this.dpCal.onEventClicked = this.eventClickHandler;

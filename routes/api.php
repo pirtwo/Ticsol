@@ -122,7 +122,9 @@ Route::group(['prefix' => '', 'namespace' => 'App\Ticsol\Components\Controllers\
             Route::get('quickbooks/employee', 'QuickBooksController@employeeList'); 
             Route::get('quickbooks/vendor', 'QuickBooksController@vendorList');                
             Route::post('quickbooks/vendor', 'QuickBooksController@createVendor'); 
-            Route::get('quickbooks/customer', 'QuickBooksController@customerList');               
+            Route::get('quickbooks/customer', 'QuickBooksController@customerList');
+            Route::post('quickbooks/customer', 'QuickBooksController@createCustomer'); 
+            Route::put('quickbooks/customer/{id}', 'QuickBooksController@updateCustomer');               
             Route::get('quickbooks/class', 'QuickBooksController@classList'); 
             Route::get('quickbooks/department', 'QuickBooksController@departmentList');
             Route::get('quickbooks/account', 'QuickBooksController@accountList');

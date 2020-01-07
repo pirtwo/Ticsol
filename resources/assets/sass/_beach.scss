@@ -250,13 +250,14 @@ $beach-schedule-matrix: rgba(0, 0, 0, 0.1);
     }    
   }
 
-  .scheduled.tentative .scheduler_green_event_inner {
+  .scheduled.tentative .event-body {
     background: repeating-linear-gradient(
-      45deg, 
-      $beach-schedule-confirm, 
-      $beach-schedule-confirm 10px, 
-      $beach-schedule-tentative 10px, 
-      $beach-schedule-tentative 12px) !important;
+      45deg,
+      transparent,
+      rgba(0, 0, 0, 0.01) 10px,
+      rgba(0, 0, 0, 0.3) 10px,
+      rgba(0, 0, 0, 0.3) 12px
+    );
   }
 
   .leave {

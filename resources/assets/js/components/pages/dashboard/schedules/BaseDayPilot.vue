@@ -384,6 +384,7 @@ export default {
      * Event render function.
      */
     dp.onBeforeEventRender = function(args) {
+      //console.log(args);
       let item = dp.events.list.find(item => item.id == args.data.id);
 
       // check permissions on move and resize
@@ -405,11 +406,14 @@ export default {
         }
       }
 
+
       args.data.cssClass = `${item.type} ${item.status}`;
       args.data.html = `
-        <div class='event-text'>${args.data.text}</div>
-        <div class='event-start'>${args.data.start.toString("hh:mm")}</div>
-        <div class='event-end'>${args.data.end.toString("hh:mm")}</div>`;
+        <div class='event-body'>
+        <div class='event-body__text'>${args.data.text}</div>
+        <div class='event-body__start'>${args.data.start.toString("hh:mm")}</div>
+        <div class='event-body__end'>${args.data.end.toString("hh:mm")}</div>
+        </div>`;
     };
 
     dp.init();
