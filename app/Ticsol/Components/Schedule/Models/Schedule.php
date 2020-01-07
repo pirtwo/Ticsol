@@ -3,14 +3,14 @@
 namespace App\Ticsol\Components\Models;
 
 use App\Ticsol\Components\Models;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
     protected $table = 'ts_schedules';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id';    
     protected $dates = ['deleted_at'];
+    protected $appends = ['canExportToQBs'];
 
     /**
      * The attributes that are mass assignable.
@@ -50,6 +50,17 @@ class Schedule extends Model
         return $query->where('type', 'schedule');
     }
 
+    public function getCanExportToQBsAttribute()
+    {
+        $job = $this->job()->first();
+
+        if ($job) {        
+            if($job->qbs && $job->billing)    
+                return $job->qbs['id'] != null;            
+        }
+        
+        return false;
+    }
 
     #region Eloquent_Relationships
 
@@ -91,7 +102,7 @@ class Schedule extends Model
     public function job()
     {
         return $this->belongsTo(Job::class, 'job_id');
-    }    
+    }
 
     /**
      * Assosiated timesheet to current schedule item.
@@ -99,7 +110,7 @@ class Schedule extends Model
     public function timesheet()
     {
         return $this->belongsTo(Timesheet::class, 'timesheet_id');
-    }    
+    }
 
     /**
      * Current schedule item activities.
