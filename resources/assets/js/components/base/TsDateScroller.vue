@@ -123,7 +123,7 @@ export default {
 
     calcEnd() {
       if (this.stepSize) {
-        return this.start.clone().add(this.stepSize, this.stepType);
+        return this.start.clone().add(this.stepSize - 1, this.stepType);
       } else {
         return this.range == "Month"
           ? this.start
