@@ -1,5 +1,9 @@
 <template>
-  <app-main :scrollbar="false" :loading="isLoading" padding="p-0">
+  <app-main
+    :scrollbar="false"
+    :loading="isLoading"
+    padding="p-0"
+  >
     <template slot="toolbar">
       <ts-datescroller
         v-model="currentDate"
@@ -9,30 +13,36 @@
         @input="populateSchedule"
       />
 
-      <button type="button" class="btn btn-sm ml-2" @click="showFilter = true">
+      <button
+        type="button"
+        class="btn btn-sm ml-2"
+        @click="showFilter = true"
+      >
         <i class="material-icons">filter_list</i>
       </button>
     </template>
 
     <template slot="drawer">
       <ul class="v-menu">
-        <li class="menu-title">Actions</li>
-        <li>
-          <router-link tag="button" class="btn" :to="{ name: 'teamCreate' }">New</router-link>
+        <li class="menu-title">
+          Actions
+        </li>        
+        <li class="menu-title">
+          Links
         </li>
-        <li class="menu-title">Links</li>
       </ul>
     </template>
 
     <template slot="content">
       <scheduler
         :config="dpConfig"
-        :height="viewHeight - 45"
+        :height="viewHeight - 20"
         :start-date="startDate"
         :events="scheduleEvents"
         :resource="scheduleResources"
         @event-clicked="eventClicked"
         @event-render="eventRender"
+        @timerange-selected="timeRangeSelected"
         @resheader-render="resheaderRender"
         @timeheader-render="timeheaderRender"
       />
@@ -75,11 +85,12 @@ export default {
       },
       dpConfig: {
         days: 28,
-        scale: "Day",
+        scale: "Week",
         weekStarts: 1,
         heightSpec: "Fixed",
+        cellWidthMin: 160,
         cellWidthSpec: "Auto",
-        rowMinHeight: 60,
+        rowMinHeight: 55,
         durationBarVisible: false,
         theme: "scheduler_green",
         timeRangeSelectedHandling: "Enabled",
@@ -89,8 +100,7 @@ export default {
         eventClickHandling: "Enabled",
         eventHoverHandling: "Disabled",
         timeHeaders: [
-          { groupBy: "Week", format: "MMM yyyy" },
-          { groupBy: "Day", format: "dd" }
+          { groupBy: "Week", format: "MMM yyyy" }
         ]
       }
     };
@@ -113,7 +123,8 @@ export default {
             0,
             2
           )} Hours`,
-          status: item.request.status
+          status: item.request.status,
+          canExportToQBs: item.canExportToQBs
         };
       });
     },
@@ -129,6 +140,11 @@ export default {
       return this.currentDate.start.format("YYYY-MM-DD");
     },
 
+    endDate: function() {
+      if (!this.currentDate) return "";
+      return this.currentDate.end.format("YYYY-MM-DD");
+    },
+
     filterColumns: function() {
       return [
         {
@@ -136,42 +152,6 @@ export default {
           value: "Schedule\\Start-Date",
           type: "date",
           placeholder: "Search for Start-Date..."
-        },
-        {
-          key: "end",
-          value: "Schedule\\End-Date",
-          type: "date",
-          placeholder: "Search for End-Date..."
-        },
-        {
-          key: "schedule.job.title",
-          value: "Schedule\\Job\\Title",
-          type: "string",
-          placeholder: "Search for Job\\Title..."
-        },
-        {
-          key: "schedule.job.code",
-          value: "Schedule\\Job\\Code",
-          type: "string",
-          placeholder: "Search for Job\\code..."
-        },
-        {
-          key: "schedule.job.parent.title",
-          value: "Schedule\\Job\\Parent\\Title",
-          type: "string",
-          placeholder: "Search for Job\\code..."
-        },
-        {
-          key: "schedule.user.firstname",
-          value: "Schedule\\User\\Firstname",
-          type: "string",
-          placeholder: "Search for User\\Firstname..."
-        },
-        {
-          key: "schedule.user.lastname",
-          value: "Schedule\\User\\Lastname",
-          type: "string",
-          placeholder: "Search for User\\Lastname..."
         }
       ];
     }
@@ -201,12 +181,23 @@ export default {
       let p1 = this.list({ resource: "user" });
       let p2 = this.list({
         resource: "timesheet",
-        query: { with: "request,schedules" }
+        query: Object.assign(
+          {
+            with: "request,schedules",
+            gte: `week_start,${this.startDate}`,
+            lte: `week_end,${this.endDate}`
+          },
+          this.query
+        )
       });
 
       Promise.all([p1, p2]).then(() => {
         this.stopLoading();
       });
+    },
+
+    timeRangeSelected(e) {
+      console.log(e);
     },
 
     eventClicked(e) {
@@ -223,13 +214,17 @@ export default {
     },
 
     eventRender(e) {
-      console.log(e);
       e.data.html = `
-      <div style='padding:10px; margin:2px; border-radius:2px; background-color:whitesmoke; border: 1px solid #b9b9b9;'>
-        <div>${e.data.text}</div>
-        <span class="badge badge-${
-          e.data.status === "approved" ? "success" : "secondary"
-        }">${e.data.status.toUpperCase()}</span>
+      <div style='padding:10px; margin:2px; border-radius:2px; background-color:whitesmoke; border: 1px solid #b9b9b9;'>        
+        <div>${e.data.text}</div>  
+        <div class='d-flex'>
+          <span class="badge badge-${
+            e.data.status === "approved" ? "success" : "secondary"
+          }">${e.data.status.toUpperCase()}</span>
+          <div class='ml-2'>
+            ${e.data.canExportToQBs ? '' : '<span class="badge badge-warning">Export Warning</span>'}
+          </div>
+        </div>
       </div>`;
     },
 
@@ -242,12 +237,9 @@ export default {
     },
 
     timeheaderRender(e) {
-      e.header.html =
-        e.header.level === 0
-          ? `${e.header.start.toString("MMM dd")} - ${e.header.start
-              .addDays(6)
-              .toString("MMM dd")}`
-          : `${e.header.start.getDay()}`;
+      e.header.html = `${e.header.start.toString(
+        "MMM dd"
+      )} - ${e.header.start.addDays(6).toString("MMM dd")}`;
     }
   }
 };
