@@ -46,6 +46,7 @@ export default {
         return {};
       }
     },
+
     range: {
       type: String,
       default: "",
@@ -53,6 +54,7 @@ export default {
         return ["Month", "Week"].indexOf(val) > -1;
       }
     },
+
     weekStart: {
       type: String,
       default: "Mon",
@@ -60,6 +62,19 @@ export default {
         return (
           ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(val) > -1
         );
+      }
+    },
+
+    stepSize: {
+      type: Number,
+      default: null
+    },
+
+    stepType: {
+      type: String,
+      default: "d",
+      validator: val => {
+        return ["d", "M"].indexOf(val) > -1;
       }
     }
   },
@@ -107,16 +122,20 @@ export default {
     },
 
     calcEnd() {
-      return this.range == "Month"
-        ? this.start
-            .clone()
-            .add(1, "M")
-            .add(-1, "d")
-            .endOf("d")
-        : this.start
-            .clone()
-            .add(6, "d")
-            .endOf("d");
+      if (this.stepSize) {
+        return this.start.clone().add(this.stepSize - 1, this.stepType);
+      } else {
+        return this.range == "Month"
+          ? this.start
+              .clone()
+              .add(1, "M")
+              .add(-1, "d")
+              .endOf("d")
+          : this.start
+              .clone()
+              .add(6, "d")
+              .endOf("d");
+      }
     },
 
     onToday() {
@@ -126,17 +145,29 @@ export default {
     },
 
     onNext() {
-      this.start =
-        this.range == "Month" ? this.start.add(1, "M") : this.start.add(7, "d");
+      if (this.stepSize) {
+        this.start = this.start.add(this.stepSize, this.stepType);
+      } else {
+        this.start =
+          this.range == "Month"
+            ? this.start.add(1, "M")
+            : this.start.add(7, "d");
+      }
+
       this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
       this.$emit("change");
     },
 
     onBack() {
-      this.start =
-        this.range == "Month"
-          ? this.start.add(-1, "M")
-          : this.start.add(-7, "d");
+      if (this.stepSize) {
+        this.start = this.start.add(-this.stepSize, this.stepType);
+      } else {
+        this.start =
+          this.range == "Month"
+            ? this.start.add(-1, "M")
+            : this.start.add(-7, "d");
+      }
+
       this.$emit("input", { start: this.start.clone(), end: this.calcEnd() });
       this.$emit("change");
     }

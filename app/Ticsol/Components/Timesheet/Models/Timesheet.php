@@ -2,17 +2,15 @@
 
 namespace App\Ticsol\Components\Models;
 
-use Carbon\Carbon;
 use App\Ticsol\Components\Models;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Timesheet extends Model
 {
     protected $table = 'ts_timesheets';
-    protected $primaryKey = 'id';
-    protected $appends = ['commentsCount'];
+    protected $primaryKey = 'id';    
     protected $dates = ['deleted_at'];
+    protected $appends = ['user', 'approver', 'status', 'canExportToQBs', 'commentsCount'];
 
     /**
      * The attributes that are mass assignable.
@@ -54,10 +52,50 @@ class Timesheet extends Model
             });
     }
 
+    public function getStatusAttribute()
+    {
+        return $this->request()->first()->status;
+    }
+
+    public function getUserAttribute()
+    {
+        $creator = $this->creator()->first();
+        $user = new \stdClass();
+        $user->id = $creator->id;
+        $user->fullname = $creator->fullname;
+        return $user;
+    }
+
+    public function getApproverAttribute()
+    {
+        $assigned = $this->request()->first()->assigned()->first();
+        if ($assigned) {
+            $approver = new \stdClass();
+            $approver->id = $assigned->id;
+            $approver->fullname = $assigned->fullname;
+            return $approver;
+        } else {
+            return null;
+        }
+    }
+
+    public function getCanExportToQBsAttribute()
+    {
+        $items = $this->schedules()->get()->all();
+
+        foreach ($items as $item) {
+            if ($item->billable && !$item->canExportToQBs) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function getCommentsCountAttribute()
     {
         return $this->comments()->count();
-    }    
+    }
 
     #region Eloquent_Relationships
 
