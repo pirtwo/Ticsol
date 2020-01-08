@@ -50,14 +50,33 @@
     </div>
 
     <!-- Timesheets -->
-    <router-link
-      to="/timesheet"
-      class="btn"
-      role="button"
-    >
-      <i class="icon material-icons">timer</i>
-      <span class="caption">TIMESHEETS</span>
-    </router-link>
+    <div class="btn-group dropup">
+      <button
+        type="button"
+        class="btn"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="icon material-icons">timer</i>
+        <span class="caption">TIMESHEETS</span>
+      </button>
+      <div class="dropdown-menu">
+        <router-link
+          :to="{ name : 'timesheetList'}"
+          class="dropdown-item"
+        >
+          List
+        </router-link>
+        <router-link
+          :to="{ name : 'timesheetCreate'}"
+          class="dropdown-item"
+        >
+          Create
+        </router-link>
+      </div>
+    </div>
 
     <!-- Scheduler -->
     <router-link
